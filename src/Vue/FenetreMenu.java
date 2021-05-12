@@ -1,4 +1,4 @@
-package main.java;
+package Vue;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,13 +10,13 @@ import static java.awt.Component.CENTER_ALIGNMENT;
 
 public class FenetreMenu {
 
-    JFrame menuPrincipal;
-    public JSpinner ligne, colonne;
-    ButtonGroup buttonGroup, IAMode, IA2Mode;
-    public JButton bPlay;
-    JRadioButton player_vs_player, player_vs_ia, ia_vs_ia, easy, normal, hard, easy2, normal2, hard2;
-    JLabel textSpinner1, textSpinner2, titre, gameModeText, IAText, IA2Text;
-    JPanel boxGameButtons, boxIADifficultyButtons, boxIAvsIADifficultyButtons;
+    private JFrame menuPrincipal;
+    private JSpinner ligne, colonne;
+    private ButtonGroup buttonGroup, IAMode, IA2Mode;
+    private JButton bPlay;
+    private JRadioButton player_vs_player, player_vs_ia, ia_vs_ia, easy, normal, hard, easy2, normal2, hard2;
+    private JLabel textSpinner1, textSpinner2, titre, gameModeText, IAText, IA2Text;
+    private JPanel boxGameButtons, boxIADifficultyButtons, boxIAvsIADifficultyButtons;
 
     public FenetreMenu(){
         lancerMenu();
@@ -213,6 +213,13 @@ public class FenetreMenu {
 
             }
         });
+    }
+
+    public JRadioButton getPlayerVsPlayer(){
+        return player_vs_player;
+    }
+    public JButton getbPlay() {
+        return bPlay;
     }
 
 }

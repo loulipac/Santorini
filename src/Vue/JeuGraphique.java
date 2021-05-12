@@ -1,8 +1,8 @@
-package main.java;
+package Vue;
 
-import javax.imageio.ImageIO;
+import Modele.Jeu;
+
 import javax.swing.*;
-import java.awt.*;
 
 public class JeuGraphique extends JComponent {
     Jeu jeu;

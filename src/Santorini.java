@@ -1,4 +1,4 @@
-package main.java;
+import Vue.FenetreMenu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,7 +10,7 @@ public class Santorini implements Runnable, ActionListener {
 
     public void run() {
         fenetreMenu = new FenetreMenu();
-        fenetreMenu.bPlay.addActionListener(this);
+        fenetreMenu.getbPlay().addActionListener(this);
     }
 
     public static void main(String[] args) {
@@ -19,7 +19,7 @@ public class Santorini implements Runnable, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (fenetreMenu.player_vs_player.isSelected()) {
+        if (fenetreMenu.getPlayerVsPlayer().isSelected()) {
             // A remplir :
             // Lancer une FenetreJeu à partir de FenetreMenu
             System.out.println("A FAIRE : Lancer une FenetreJeu");

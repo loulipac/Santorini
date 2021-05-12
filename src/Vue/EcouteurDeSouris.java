@@ -1,4 +1,4 @@
-package main.java;
+package Vue;
 
 import java.awt.event.MouseEvent;
 
