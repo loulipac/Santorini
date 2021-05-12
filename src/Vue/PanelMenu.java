@@ -1,5 +1,7 @@
 package Vue;
 
+import Modele.Jeu;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -70,8 +72,8 @@ class PanelMenu extends JPanel {
 
         /* redirection */
 
-        bJouer.addActionListener(this::actionPerformed);
-        bTutoriel.addActionListener(this::actionPerformed2);
+        bJouer.addActionListener(this::actionBoutonJouer);
+        bTutoriel.addActionListener(this::actionBoutonTutoriel);
 
         /* Adding */
         add(Box.createRigidArea(new Dimension(40,20)));
@@ -86,17 +88,17 @@ class PanelMenu extends JPanel {
         add(bQuitter);
         add(Box.createRigidArea(new Dimension(40,40)));
 
-
+//        add(new JeuGraphique(new Jeu(5,5).getPlateau()));
         //setBackground(Color.GREEN);
         setBackground(new Color(47, 112, 162));
     }
 
-    public void actionPerformed(ActionEvent e) {
+    public void actionBoutonJouer(ActionEvent e) {
         FenetreMenu f = (FenetreMenu) SwingUtilities.getWindowAncestor(this);
-        f.getCardLayout().show(f.mainPanel, "game");
+        f.getCardLayout().show(f.mainPanel, "options");
     }
 
-    public void actionPerformed2(ActionEvent e) {
+    public void actionBoutonTutoriel(ActionEvent e) {
         FenetreMenu f = (FenetreMenu) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "plateau");
     }

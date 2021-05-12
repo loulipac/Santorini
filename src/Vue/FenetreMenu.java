@@ -17,26 +17,22 @@ public class FenetreMenu extends JFrame {
     PanelPlateau plateau;
 
     public FenetreMenu() {
-
-        new JFrame("Santorini - Menu Principal");
+        setTitle("Santorini");
         setMinimumSize(new Dimension(1500, 900));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         menu = new PanelMenu();
         options = new PanelOptions();
         plateau = new PanelPlateau();
         mainPanel.add(menu, "menu");
-        mainPanel.add(options, "game");
+        mainPanel.add(options, "options");
         mainPanel.add(plateau, "plateau");
-
-
 
         add(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();
-        setLocationByPlatform(true);
         setVisible(true);
     }
 
@@ -48,7 +44,7 @@ public class FenetreMenu extends JFrame {
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
-                FenetreMenu gameFrame = new FenetreMenu();
+                FenetreMenu fenetreMenu = new FenetreMenu();
             }
         });
     }
