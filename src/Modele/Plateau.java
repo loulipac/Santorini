@@ -187,7 +187,7 @@ public class Plateau {
     public int getTypeBatiments(int l, int c){
         return cases[l][c] & 0xf;
     }
-    public int geetTypeBatisseurs(int l, int c){
+    public int getTypeBatisseurs(int l, int c){
         return cases[l][c] & (~0xf);
     }
 }

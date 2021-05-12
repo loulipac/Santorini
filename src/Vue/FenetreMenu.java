@@ -19,7 +19,7 @@ public class FenetreMenu extends JFrame {
     public FenetreMenu() {
 
         new JFrame("Santorini - Menu Principal");
-        setMinimumSize(new Dimension(500, 500));
+        setMinimumSize(new Dimension(1500, 900));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         cardLayout = new CardLayout();

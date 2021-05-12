@@ -15,14 +15,14 @@ public class JeuGraphique extends JComponent {
 
     public JeuGraphique(Plateau p) {
         this.plateau = p;
-        case_claire = readImage("case_claire.png");
-        case_fonce = readImage("case_fonce.png");
-        coupole_etage_3 = readImage("coupole_etage_3.png");
-        etage_1 = readImage("etage_1.png");
-        etage_2 = readImage("etage_2.png");
-        etage_3 = readImage("etage_3.png");
-        batisseur_bleu = readImage("batisseur_bleu.png");
-        batisseur_rouge = readImage("batisseur_rouge.png");
+        case_claire = readImage("src/Ressources/cases/case_claire.png");
+        case_fonce = readImage("src/Ressources/cases/case_fonce.png");
+        coupole_etage_3 = readImage("src/Ressources/Etages/coupole_etage_3.png");
+        etage_1 = readImage("src/Ressources/Etages/etage_1.png");
+        etage_2 = readImage("src/Ressources/Etages/etage_2.png");
+        etage_3 = readImage("src/Ressources/Etages/etage_3.png");
+        batisseur_bleu = readImage("src/Ressources/batisseur/batisseur_bleu.png");
+        batisseur_rouge = readImage("src/Ressources/batisseur/batisseur_rouge.png");
     }
 
     public Image readImage(String _name) {
@@ -36,20 +36,24 @@ public class JeuGraphique extends JComponent {
 
     @Override
     public void paintComponent(Graphics g) {
+
+        FenetreMenu f = (FenetreMenu) SwingUtilities.getWindowAncestor(this);
         // Graphics 2D est le vrai type de l'objet passé en paramètre
         // Le cast permet d'avoir acces a un peu plus de primitives de dessin
         drawable = (Graphics2D) g;
 
         // On reccupere quelques infos provenant de la partie JComponent
-        largeur = getSize().width/plateau.getColonnes();
-        hauteur = getSize().height/plateau.getLignes();
+
+        largeur = f.getSize().width/plateau.getColonnes();
+        hauteur = f.getSize().height/plateau.getLignes();
+
 
         int taille_case = Math.min(largeur,hauteur);
 
         // On efface tout
         drawable.clearRect(0, 0, largeur, hauteur);
 
-        /*for (int l = 0; l < plateau.getLignes(); l++) {
+        for (int l = 0; l < plateau.getLignes(); l++) {
             for (int c = 0; c < plateau.getColonnes(); c++) {
 
                 if((l+c)%2 == 0){
@@ -60,16 +64,16 @@ public class JeuGraphique extends JComponent {
                 }
 
                 switch(plateau.getTypeBatiments(l,c)){
-                    case plateau.RDC:
+                    case 1:
                         drawable.drawImage(etage_1,c*taille_case,l*taille_case,taille_case,taille_case,null);
                         break;
-                    case plateau.ETAGE:
+                    case 2:
                         drawable.drawImage(etage_2,c*taille_case,l*taille_case,taille_case,taille_case,null);
                         break;
-                    case plateau.TOIT:
+                    case 4:
                         drawable.drawImage(etage_3,c*taille_case,l*taille_case,taille_case,taille_case,null);
                         break;
-                    case plateau.COUPOLE:
+                    case 8:
                         drawable.drawImage(coupole_etage_3,c*taille_case,l*taille_case,taille_case,taille_case,null);
                         break;
                 }
@@ -82,6 +86,6 @@ public class JeuGraphique extends JComponent {
                         break;
                 }
             }
-        }*/
+        }
     }
 }

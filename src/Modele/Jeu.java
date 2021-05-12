@@ -131,4 +131,7 @@ public class Jeu {
         return (plateau.atteignable(l,c,batisseur) && !plateau.estCoupole(l,c) && plateau.estLibre(l,c));
     }
 
+    public Plateau getPlateau() {
+        return plateau;
+    }
 }
