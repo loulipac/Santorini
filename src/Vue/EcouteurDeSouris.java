@@ -19,8 +19,9 @@ public class EcouteurDeSouris implements MouseListener {
         if(e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
-            System.out.println("pos_x : " + pos_x + ", pos_y : " + pos_y);
-            jg.getJeu().jouer(pos_x, pos_y);
+//            System.out.println("pos_x : " + pos_x + ", pos_y : " + pos_y);
+            jg.getJeu().jouer(pos_y, pos_x);
+            jg.repaint();
         }
     }
 
