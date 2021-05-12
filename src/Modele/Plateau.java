@@ -183,4 +183,11 @@ public class Plateau {
     public int getColonnes() {
         return colonnes;
     }
+
+    public int getTypeBatiments(int l, int c){
+        return cases[l][c] & 0xf;
+    }
+    public int geetTypeBatisseurs(int l, int c){
+        return cases[l][c] & (~0xf);
+    }
 }
