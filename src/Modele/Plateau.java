@@ -1,11 +1,9 @@
 package Modele;
 
-import java.util.Arrays;
-
 public class Plateau {
     private int[][] cases;
-    private int ligne;
-    private int colonne;
+    private int lignes;
+    private int colonnes;
 
     public static final int VIDE = 0;
     public static final int RDC = 1;
@@ -20,8 +18,8 @@ public class Plateau {
      */
     public Plateau(int l, int c) {
         cases = new int[l][c];
-        ligne = l;
-        colonne = c;
+        lignes = l;
+        colonnes = c;
     }
 
     /**
@@ -177,5 +175,13 @@ public class Plateau {
         int a = Math.abs(l-dl);
         int b = Math.abs(c-dc);
         return a+b>0 && a<2 && b<2;
+    }
+
+    public int getLignes() {
+        return lignes;
+    }
+
+    public int getColonnes() {
+        return colonnes;
     }
 }
