@@ -1,22 +1,20 @@
 package Vue;
 
-import Modele.Jeu;
+import Modele.BoutonMenu;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /**
- * @TODO les valeurs des dimensions sont hard coded basé sur la taille des images, faire quelque chose de plus clean ? (setup automatique ?)
+ * @TODO Reussir a afficher bQuitter en tant que BoutonMenu et non JButton
  */
 class PanelMenu extends JPanel {
 
-    private JButton bJouer,bTutoriel,bRegles,bQuitter;
+//    private JButton bQuitter;
+    private BoutonMenu bQuitter;
+    private BoutonMenu bJouer, bTutoriel, bRegles;
     private JLabel titre;
 
     public PanelMenu() {
@@ -28,41 +26,20 @@ class PanelMenu extends JPanel {
         setBorder(new EmptyBorder(new Insets(30, 50, 30, 50)));
 
         /* Button */
-        bJouer = new JButton(new ImageIcon("src/Ressources/bouton_menu/jouer.png"));
-        bJouer.setOpaque(false);
-        bJouer.setFocusPainted(false);
-        bJouer.setBorderPainted(false);
-        bJouer.setContentAreaFilled(false);
-        bJouer.setBorder(null);
-        bJouer.setAlignmentX(CENTER_ALIGNMENT);
-        bJouer.setMaximumSize(new Dimension(415, 90));
 
-        bTutoriel = new JButton(new ImageIcon("src/Ressources/bouton_menu/tutoriel.png"));
-        bTutoriel.setOpaque(false);
-        bTutoriel.setFocusPainted(false);
-        bTutoriel.setBorderPainted(false);
-        bTutoriel.setContentAreaFilled(false);
-        bTutoriel.setBorder(null);
-        bTutoriel.setAlignmentX(CENTER_ALIGNMENT);
-        bTutoriel.setMaximumSize(new Dimension(415, 90));
+        bJouer = new BoutonMenu("src/Ressources/bouton_menu/jouer.png", 415, 90);
+        bTutoriel = new BoutonMenu("src/Ressources/bouton_menu/tutoriel.png", 415, 90);
+        bRegles = new BoutonMenu("src/Ressources/bouton_menu/regle_jeu.png", 415, 90);
+        bQuitter = new BoutonMenu("src/Ressources/bouton_menu/barre_vide.png", 415, 90);
 
-        bRegles = new JButton(new ImageIcon("src/Ressources/bouton_menu/regle_jeu.png"));
-        bRegles.setOpaque(false);
-        bRegles.setFocusPainted(false);
-        bRegles.setBorderPainted(false);
-        bRegles.setContentAreaFilled(false);
-        bRegles.setBorder(null);
-        bRegles.setAlignmentX(CENTER_ALIGNMENT);
-        bRegles.setMaximumSize(new Dimension(415, 90));
-
-        bQuitter = new JButton(new ImageIcon("src/Ressources/assets_recurrents/barre_vide.png"));
-        bQuitter.setOpaque(false);
-        bQuitter.setFocusPainted(false);
-        bQuitter.setBorderPainted(false);
-        bQuitter.setContentAreaFilled(false);
-        bQuitter.setBorder(null);
-        bQuitter.setAlignmentX(CENTER_ALIGNMENT);
-        bQuitter.setMaximumSize(new Dimension(415, 90));
+//        bQuitter = new JButton(new ImageIcon("src/Ressources/assets_recurrents/barre_vide.png"));
+//        bQuitter.setOpaque(false);
+//        bQuitter.setFocusPainted(false);
+//        bQuitter.setBorderPainted(false);
+//        bQuitter.setContentAreaFilled(false);
+//        bQuitter.setBorder(null);
+//        bQuitter.setAlignmentX(CENTER_ALIGNMENT);
+//        bQuitter.setMaximumSize(new Dimension(415, 90));
 
         /* Label */
 
@@ -76,20 +53,18 @@ class PanelMenu extends JPanel {
         bTutoriel.addActionListener(this::actionBoutonTutoriel);
 
         /* Adding */
-        add(Box.createRigidArea(new Dimension(40,20)));
+        add(Box.createRigidArea(new Dimension(40, 20)));
         add(titre);
-        add(Box.createRigidArea(new Dimension(40,110)));
+        add(Box.createRigidArea(new Dimension(40, 110)));
         add(bJouer);
-        add(Box.createRigidArea(new Dimension(40,40)));
+        add(Box.createRigidArea(new Dimension(40, 40)));
         add(bTutoriel);
-        add(Box.createRigidArea(new Dimension(40,40)));
+        add(Box.createRigidArea(new Dimension(40, 40)));
         add(bRegles);
-        add(Box.createRigidArea(new Dimension(40,40)));
+        add(Box.createRigidArea(new Dimension(40, 40)));
         add(bQuitter);
-        add(Box.createRigidArea(new Dimension(40,40)));
+        add(Box.createRigidArea(new Dimension(40, 40)));
 
-//        add(new JeuGraphique(new Jeu(5,5).getPlateau()));
-        //setBackground(Color.GREEN);
         setBackground(new Color(47, 112, 162));
     }
 
@@ -101,11 +76,6 @@ class PanelMenu extends JPanel {
     public void actionBoutonTutoriel(ActionEvent e) {
         FenetreMenu f = (FenetreMenu) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "plateau");
-    }
-
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(300, 300);
     }
 
     /*public void paintComponent(Graphics g)
