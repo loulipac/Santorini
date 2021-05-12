@@ -58,4 +58,5 @@ public class Jeu {
     public boolean peutConstruire(int l, int c,Point ouvrier){
         return (plateau.atteignable(ouvrier.x,ouvrier.y,l,c) && !plateau.estCoupole(l,c) && plateau.estLibre(l,c));
     }
+
 }
