@@ -15,11 +15,10 @@ public class EcouteurDeSouris implements MouseListener {
     public void mousePressed(MouseEvent e) {
         this.largeur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getColonnes();
         this.hauteur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getLignes();
-
+        System.out.println("e.getX() : "+ e.getX() + ", e.getY() : " + e.getY());
         if(e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
-//            System.out.println("pos_x : " + pos_x + ", pos_y : " + pos_y);
             jg.getJeu().jouer(pos_y, pos_x);
             jg.repaint();
         }

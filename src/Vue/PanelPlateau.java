@@ -4,11 +4,13 @@ import Modele.Jeu;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 public class PanelPlateau extends JPanel {
     private JLabel titre;
-    Jeu jeu;
-    JeuGraphique jg;
+    private JButton bRetour;
+    private Jeu jeu;
+    private JeuGraphique jg;
 
     public PanelPlateau() {
         initialiserPanel();
@@ -28,6 +30,13 @@ public class PanelPlateau extends JPanel {
         titre.setAlignmentX(CENTER_ALIGNMENT);
         titre.setMaximumSize(new Dimension(415, 100));
         add(titre);
+
+        /* Boutons */
+        bRetour = new JButton("Retour au menu");
+        bRetour.setAlignmentX(CENTER_ALIGNMENT);
+        bRetour.setMaximumSize(new Dimension(300, 40));
+        bRetour.addActionListener(this::actionBoutonRetourMenu);
+        add(bRetour);
     }
 
     public void lancerJeu() {
@@ -35,7 +44,12 @@ public class PanelPlateau extends JPanel {
         jg = new JeuGraphique(jeu);
         jg.setAlignmentX(CENTER_ALIGNMENT);
         jg.addMouseListener(new EcouteurDeSouris(jg));
-
+        jg.setMaximumSize(new Dimension(500,500));
         add(jg);
+    }
+
+    public void actionBoutonRetourMenu(ActionEvent e) {
+        Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f2.getCardLayout().show(f2.mainPanel, "menu");
     }
 }
