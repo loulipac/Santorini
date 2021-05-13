@@ -41,21 +41,23 @@ public class Jeu {
      */
     public int jouer(int l, int c){
         int retour = 0;
-
         // placement des batisseurs sur la grille
         if (nombre_batisseurs < 4) {
             if(plateau.estLibre(l, c)) {
                 plateau.ajouterJoueur(l, c, joueur_en_cours);
                 nombre_batisseurs++;
-                if( nombre_batisseurs%2 == 0){
+                if (nombre_batisseurs%2 == 0) {
                     finTour();
                 }
             }
         }
         else if(situation == 0) {
-            batisseur_en_cours.x = l;
-            batisseur_en_cours.y = c;
-            situation = 1;
+            batisseur_en_cours = choisirBatisseur(l, c);
+            if(batisseur_en_cours == null) {
+                situation = 0;
+            } else {
+                situation = 1;
+            }
             retour = situation;
         }
         else if(situation == 1){ // déplace un batisseur aux coordonées l et c de la grille
@@ -69,7 +71,32 @@ public class Jeu {
                 retour = 3;
             }
         }
+        printPlateau();
+
+        switch (situation) {
+            case 0:
+                System.out.println("Choix du batisseur.");
+                break;
+
+            case 1:
+                System.out.println("Déplacement du batisseur.");
+                break;
+
+            case 2:
+                System.out.println("Construction.");
+                break;
+            default: break;
+        }
+
         return retour;
+    }
+
+    public Point choisirBatisseur(int l, int c) {
+        if(plateau.getTypeBatisseurs(l, c) == joueur_en_cours) {
+            return new Point(l, c);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -92,8 +119,8 @@ public class Jeu {
      */
     public boolean avancer(int l, int c, Point batisseur){
         if(plateau.atteignable(l,c,batisseur) && plateau.estLibre(l,c) && plateau.deplacementPossible(l,c,batisseur)){
-            plateau.ajouterJoueur(batisseur.x,batisseur.y,0); // enlève le batisseurs de la case du point batisseurs
-            plateau.ajouterJoueur(l,c,joueur_en_cours); // ajoute un batisseurs à la case en position l,c
+            plateau.ajouterJoueur(batisseur.x, batisseur.y,0); // enlève le batisseurs de la case du point batisseurs
+            plateau.ajouterJoueur(l, c, joueur_en_cours); // ajoute un batisseurs à la case en position l,c
             return true;
         }
         return false;
@@ -128,6 +155,17 @@ public class Jeu {
      */
     public boolean peutConstruire(int l, int c,Point batisseur){
         return (plateau.atteignable(l,c,batisseur) && !plateau.estCoupole(l,c) && plateau.estLibre(l,c));
+    }
+
+    public void printPlateau() {
+        for (int i = 0; i < plateau.getLignes(); i++) {
+            for (int j = 0; j < plateau.getColonnes(); j++) {
+                //System.out.print("| " + plateau.getTypeBatiments(i, j) + " : " + plateau.getTypeBatisseurs(i, j) + " ");
+                System.out.print("| " + plateau.cases[i][j] + " ");
+            }
+            System.out.println("");
+        }
+        System.out.println("");
     }
 
     public Plateau getPlateau() {

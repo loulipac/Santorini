@@ -6,7 +6,7 @@ import java.awt.*;
  *
  */
 public class Plateau {
-    private int[][] cases;
+    public int[][] cases;
     private int lignes;
     private int colonnes;
 
@@ -117,7 +117,11 @@ public class Plateau {
      * @return vrai si l'amélioration a marché
      */
     public boolean ameliorerBatiment(int l, int c){
-        cases[l][c] = cases[l][c] << 1;
+        //cases[l][c] = cases[l][c] << 1;
+        if(estVide(l, c)) ajouterRDC(l, c);
+        else if(estRDC(l, c)) ajouterEtage(l, c);
+        else if(estEtage(l, c)) ajouterToit(l, c);
+        else if(estToit(l, c)) ajouterCoupole(l, c);
         return true;
     }
 
@@ -170,7 +174,7 @@ public class Plateau {
      * @param batisseur position (x;y) d'un batisseur
      * @return
      */
-    public boolean atteignable(int l, int c, Point batisseur){
+    public boolean atteignable(int l, int c, Point batisseur) {
         int a = Math.abs(l-batisseur.x);
         int b = Math.abs(c-batisseur.y);
         return (a + b > 0) && (a < 2) && (b < 2);
