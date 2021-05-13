@@ -19,7 +19,7 @@ public class Fenetre extends JFrame {
 
     public Fenetre() {
         setTitle("Santorini");
-        setMinimumSize(new Dimension(1500, 900));
+        setMinimumSize(new Dimension(1200, 900));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
@@ -28,7 +28,7 @@ public class Fenetre extends JFrame {
         menu = new PanelMenu(getSize().width, getSize().height);
         options = new PanelOptions();
         regles = new PanelRegles();
-        plateau = new PanelPlateau();
+        plateau = new PanelPlateau(getSize().width, getSize().height);
 
         mainPanel.add(menu, "menu");
         mainPanel.add(options, "options");

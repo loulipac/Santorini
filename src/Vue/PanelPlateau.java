@@ -8,33 +8,29 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class PanelPlateau extends JPanel {
-    private JLabel titre;
-    private JButton bRetour;
     private Jeu jeu;
     private JeuGraphique jg;
 
-    public PanelPlateau() {
+    public PanelPlateau(int largeur, int hauteur) {
         initialiserPanel();
-        lancerJeu();
+        lancerJeu(largeur, hauteur);
     }
 
 
     public void initialiserPanel() {
-
         /* BoxLayout */
         BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
         setLayout(boxlayout);
-//        setBorder(new EmptyBorder(new Insets(30, 50, 30, 50)));
         setAlignmentX(Component.CENTER_ALIGNMENT);
         setBackground(new Color(47, 112, 162));
 
         /* Label */
-        titre = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
+        JLabel titre = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
         titre.setAlignmentX(CENTER_ALIGNMENT);
         titre.setMaximumSize(new Dimension(415, 100));
 
         /* Boutons */
-        bRetour = new JButton("Retour au menu");
+        JButton bRetour = new JButton("Retour au menu");
         bRetour.setAlignmentX(CENTER_ALIGNMENT);
         bRetour.setMaximumSize(new Dimension(300, 40));
         bRetour.addActionListener(this::actionBoutonRetourMenu);
@@ -45,21 +41,22 @@ public class PanelPlateau extends JPanel {
         add(Box.createRigidArea(new Dimension(40, 20)));
         add(bRetour);
         add(Box.createRigidArea(new Dimension(40, 40)));
-
     }
 
-    public void lancerJeu() {
-        Border blackline = BorderFactory.createLineBorder(Color.black);
+    public void lancerJeu(int largeur, int hauteur) {
         this.jeu = new Jeu(5, 5);
-        jg = new JeuGraphique(jeu);
+        this.jg = new JeuGraphique(jeu);
         jg.setAlignmentX(CENTER_ALIGNMENT);
         jg.addMouseListener(new EcouteurDeSouris(jg));
-        jg.setMaximumSize(new Dimension(450,450));
+        int min = Math.min(largeur, hauteur);
+        jg.setMaximumSize(new Dimension(min/2,min/2));
         add(jg);
+
+        System.out.println(getSize());
     }
 
     public void actionBoutonRetourMenu(ActionEvent e) {
-        Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f2.getCardLayout().show(f2.mainPanel, "menu");
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.getCardLayout().show(f.mainPanel, "menu");
     }
 }
