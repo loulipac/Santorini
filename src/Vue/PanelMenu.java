@@ -28,10 +28,10 @@ class PanelMenu extends JPanel {
 
         /* Button */
 
-        bJouer = new BoutonMenu("src/Ressources/bouton_menu/jouer.png", "src/Ressources/bouton_menu/tutoriel.png", (int)(largeur*0.3), (int)(hauteur*0.106));
-        bTutoriel = new BoutonMenu("src/Ressources/bouton_menu/tutoriel.png", "src/Ressources/bouton_menu/tutoriel.png", (int)(largeur*0.3), (int)(hauteur*0.1));
-        bRegles = new BoutonMenu("src/Ressources/bouton_menu/regle_jeu.png", "src/Ressources/bouton_menu/tutoriel.png", (int)(largeur*0.3), (int)(hauteur*0.1));
-        bQuitter = new BoutonMenu("src/Ressources/bouton_menu/quitter.png", "src/Ressources/bouton_menu/tutoriel.png", (int)(largeur*0.3), (int)(hauteur*0.1));
+        bJouer = new BoutonMenu("src/Ressources/bouton_menu/jouer.png", "src/Ressources/bouton_menu/jouer_hover.png", (int)(largeur*0.3), (int)(hauteur*0.106));
+        bTutoriel = new BoutonMenu("src/Ressources/bouton_menu/tutoriel.png", "src/Ressources/bouton_menu/tutoriel_hover.png", (int)(largeur*0.3), (int)(hauteur*0.1));
+        bRegles = new BoutonMenu("src/Ressources/bouton_menu/regle_jeu.png", "src/Ressources/bouton_menu/regle_jeu_hover.png", (int)(largeur*0.3), (int)(hauteur*0.1));
+        bQuitter = new BoutonMenu("src/Ressources/bouton_menu/quitter.png", "src/Ressources/bouton_menu/quitter_hover.png", (int)(largeur*0.3), (int)(hauteur*0.1));
 
 
         /* Label */
