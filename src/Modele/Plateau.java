@@ -13,8 +13,8 @@ public class Plateau {
     public static final int VIDE = 0;
     public static final int RDC = 1;
     public static final int ETAGE = 2;
-    public static final int TOIT = 4;
-    public static final int COUPOLE = 8;
+    public static final int TOIT = 3;
+    public static final int COUPOLE = 4;
 
     /**
      * Instantie une classe Plateau depuis une taille de grille passé en paramètre du constructeur
@@ -35,7 +35,7 @@ public class Plateau {
      *
      */
     public boolean estVide(int l, int c) {
-        return (cases[l][c] & 0xF) == VIDE;
+        return getTypeBatiments(l,c) == VIDE;
     }
 
     /**
@@ -44,7 +44,7 @@ public class Plateau {
      * @return vrai si la case de la grille est un rez-de-chaussée (bâtiment de hauteur 1)
      */
     public boolean estRDC(int l, int c) {
-        return (cases[l][c] & 0xF) == RDC;
+        return getTypeBatiments(l,c) == RDC;
     }
 
     /**
@@ -53,7 +53,7 @@ public class Plateau {
      * @return vrai si la case de la grille est un étage (bâtiment de hauteur 2)
      */
     public boolean estEtage(int l, int c) {
-        return (cases[l][c] & 0xF) == ETAGE;
+        return getTypeBatiments(l,c) == ETAGE;
     }
 
     /**
@@ -62,7 +62,7 @@ public class Plateau {
      * @return boolean si la case de la grille est un toit (bâtiment de hauteur 3)
      */
     public boolean estToit(int l, int c) {
-        return (cases[l][c] & 0xF) == TOIT;
+        return getTypeBatiments(l,c) == TOIT;
     }
 
     /**
@@ -71,7 +71,7 @@ public class Plateau {
      * @return boolean si la case de la grille est une coupole (bâtiment de hauteur 4)
      */
     public boolean estCoupole(int l, int c) {
-        return (cases[l][c] & 0xF) == COUPOLE;
+        return getTypeBatiments(l,c) == COUPOLE;
     }
 
     /**
@@ -80,7 +80,7 @@ public class Plateau {
      * @param c un indice de colonne sur la grille
      */
     public void ajouterRDC(int l, int c) {
-        cases[l][c] = (cases[l][c] & ~0xf) | RDC;
+        cases[l][c] = getTypeBatisseurs(l,c) | RDC;
     }
 
     /**
@@ -89,7 +89,7 @@ public class Plateau {
      * @param c un indice de colonne sur la grille
      */
     public void ajouterEtage(int l, int c) {
-        cases[l][c] = (cases[l][c] & ~0xf) | ETAGE;
+        cases[l][c] = getTypeBatisseurs(l,c) | ETAGE;
     }
 
     /**
@@ -98,7 +98,7 @@ public class Plateau {
      * @param c un indice de colonne sur la grille
      */
     public void ajouterToit(int l, int c) {
-        cases[l][c] = (cases[l][c] & ~0xf) | TOIT;
+        cases[l][c] = getTypeBatisseurs(l,c) | TOIT;
     }
 
     /**
@@ -107,7 +107,7 @@ public class Plateau {
      * @param c un indice de colonne sur la grille
      */
     public void ajouterCoupole(int l, int c) {
-        cases[l][c] = (cases[l][c] & ~0xf) | COUPOLE;
+        cases[l][c] = getTypeBatisseurs(l,c) | COUPOLE;
     }
 
     /**
@@ -117,11 +117,7 @@ public class Plateau {
      * @return vrai si l'amélioration a marché
      */
     public boolean ameliorerBatiment(int l, int c){
-        //cases[l][c] = cases[l][c] << 1;
-        if(estVide(l, c)) ajouterRDC(l, c);
-        else if(estRDC(l, c)) ajouterEtage(l, c);
-        else if(estEtage(l, c)) ajouterToit(l, c);
-        else if(estToit(l, c)) ajouterCoupole(l, c);
+        cases[l][c]++;
         return true;
     }
 
@@ -132,7 +128,7 @@ public class Plateau {
      * @param joueur
      */
     public boolean estBatisseur(int l,int c, int joueur){
-        return (cases[l][c] & ~0xf) == joueur;
+        return getTypeBatisseurs(l,c) == joueur;
     }
 
     /**
@@ -142,7 +138,7 @@ public class Plateau {
      * @return
      */
     public boolean estLibre(int l, int c) {
-        return (cases[l][c] & (~0xf)) == 0;
+        return getTypeBatisseurs(l,c) == 0;
     }
 
     /**
@@ -153,8 +149,7 @@ public class Plateau {
      * @return
      */
     public boolean deplacementPossible(int l, int c, Point batisseur){
-        int temp = (cases[batisseur.x][batisseur.y]&0xf) >> 1;
-        return temp <= (cases[l][c] &0xf);
+        return getTypeBatiments(l,c) - getTypeBatiments(batisseur.x, batisseur.y) <=1 && !estCoupole(l, c);
     }
 
     /**
@@ -164,11 +159,11 @@ public class Plateau {
      * @param joueur
      */
     public void ajouterJoueur(int l, int c, int joueur){
-        cases[l][c] = ((cases[l][c] & 0xf) | joueur);
+        cases[l][c] = (getTypeBatiments(l,c) | joueur);
     }
 
     /**
-     *
+     * Vérifie que la distance entre le batisseur et le case cliqué est inférieur à 2 (en x et en y)
      * @param l un indice de ligne sur la grille
      * @param c un indice de colonne sur la grille
      * @param batisseur position (x;y) d'un batisseur
@@ -189,9 +184,9 @@ public class Plateau {
     }
 
     public int getTypeBatiments(int l, int c){
-        return cases[l][c] & 0xf;
+        return cases[l][c] & 7;
     }
     public int getTypeBatisseurs(int l, int c){
-        return cases[l][c] & (~0xf);
+        return cases[l][c] & (~7);
     }
 }

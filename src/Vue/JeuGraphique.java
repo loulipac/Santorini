@@ -63,16 +63,16 @@ public class JeuGraphique extends JComponent {
                 }
 
                 switch (jeu.getPlateau().getTypeBatiments(l, c)) {
-                    case 1:
+                    case Plateau.RDC:
                         drawable.drawImage(etage_1, c * taille_case, l * taille_case, taille_case, taille_case, null);
                         break;
-                    case 2:
+                    case Plateau.ETAGE:
                         drawable.drawImage(etage_2, c * taille_case, l * taille_case, taille_case, taille_case, null);
                         break;
-                    case 4:
+                    case Plateau.TOIT:
                         drawable.drawImage(etage_3, c * taille_case, l * taille_case, taille_case, taille_case, null);
                         break;
-                    case 8:
+                    case Plateau.COUPOLE:
                         drawable.drawImage(coupole_etage_3, c * taille_case, l * taille_case, taille_case, taille_case, null);
                         break;
                 }

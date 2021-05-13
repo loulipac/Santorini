@@ -1,14 +1,16 @@
 package Modele;
 
 import java.awt.*;
+import java.text.DecimalFormat;
+
 /**
  *
  */
 public class Jeu {
     Plateau plateau;
 
-    public static final int JOUEUR1 = 16;
-    public static final int JOUEUR2 = 32;
+    public static final int JOUEUR1 = 8;
+    public static final int JOUEUR2 = 16;
 
     private int joueur_en_cours;
     private int situation;
@@ -88,6 +90,8 @@ public class Jeu {
             default: break;
         }
 
+        System.out.println("Tour joueur n°" + joueur_en_cours/JOUEUR1);
+
         return retour;
     }
 
@@ -121,6 +125,7 @@ public class Jeu {
         if(plateau.atteignable(l,c,batisseur) && plateau.estLibre(l,c) && plateau.deplacementPossible(l,c,batisseur)){
             plateau.ajouterJoueur(batisseur.x, batisseur.y,0); // enlève le batisseurs de la case du point batisseurs
             plateau.ajouterJoueur(l, c, joueur_en_cours); // ajoute un batisseurs à la case en position l,c
+            batisseur_en_cours = new Point(l, c);
             return true;
         }
         return false;
@@ -160,8 +165,8 @@ public class Jeu {
     public void printPlateau() {
         for (int i = 0; i < plateau.getLignes(); i++) {
             for (int j = 0; j < plateau.getColonnes(); j++) {
-                //System.out.print("| " + plateau.getTypeBatiments(i, j) + " : " + plateau.getTypeBatisseurs(i, j) + " ");
-                System.out.print("| " + plateau.cases[i][j] + " ");
+                // formatter permet de print un entier sur deux digit (ex : 1 -> 01)
+                System.out.print("| " + plateau.getTypeBatisseurs(i, j)/JOUEUR1 + " : "+ plateau.getTypeBatiments(i, j) + " ");
             }
             System.out.println("");
         }
