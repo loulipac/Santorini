@@ -41,7 +41,7 @@ public class JeuGraphique extends JComponent {
     @Override
     public void paintComponent(Graphics g) {
 
-        FenetreMenu f = (FenetreMenu) SwingUtilities.getWindowAncestor(this);
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         // Graphics 2D est le vrai type de l'objet passé en paramètre
         // Le cast permet d'avoir acces a un peu plus de primitives de dessin
         drawable = (Graphics2D) g;

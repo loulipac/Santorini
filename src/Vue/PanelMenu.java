@@ -2,14 +2,10 @@ package Vue;
 
 import Modele.BoutonMenu;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 
 class PanelMenu extends JPanel {
@@ -42,6 +38,7 @@ class PanelMenu extends JPanel {
 
         bJouer.addActionListener(this::actionBoutonJouer);
         bTutoriel.addActionListener(this::actionBoutonTutoriel);
+        bRegles.addActionListener(this::actionBoutonRegles);
 
         /* Adding */
         add(Box.createRigidArea(new Dimension(40, 20)));
@@ -60,13 +57,18 @@ class PanelMenu extends JPanel {
     }
 
     public void actionBoutonJouer(ActionEvent e) {
-        FenetreMenu f = (FenetreMenu) SwingUtilities.getWindowAncestor(this);
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "options");
     }
 
     public void actionBoutonTutoriel(ActionEvent e) {
-        FenetreMenu f = (FenetreMenu) SwingUtilities.getWindowAncestor(this);
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "plateau");
+    }
+
+    public void actionBoutonRegles(ActionEvent e) {
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.getCardLayout().show(f.mainPanel, "regles");
     }
 
 //    public void paintComponent(Graphics g)

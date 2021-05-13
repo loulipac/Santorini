@@ -8,15 +8,16 @@ import java.awt.*;
  * Cette fenêtre permet de démarrer le jeu, de lire les règles, de suivre un tutoriel.
  * @TODO : renommer les instances de @PanelMenu et @PanelOptions, clean code la fonction @FenetreMenu.
  */
-public class FenetreMenu extends JFrame {
+public class Fenetre extends JFrame {
 
     CardLayout cardLayout;
     JPanel mainPanel;
     PanelMenu menu;
     PanelOptions options;
+    PanelRegles regles;
     PanelPlateau plateau;
 
-    public FenetreMenu() {
+    public Fenetre() {
         setTitle("Santorini");
         setMinimumSize(new Dimension(1500, 900));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,9 +27,12 @@ public class FenetreMenu extends JFrame {
         mainPanel = new JPanel(cardLayout);
         menu = new PanelMenu();
         options = new PanelOptions();
+        regles = new PanelRegles();
         plateau = new PanelPlateau();
+
         mainPanel.add(menu, "menu");
         mainPanel.add(options, "options");
+        mainPanel.add(regles, "regles");
         mainPanel.add(plateau, "plateau");
 
         add(mainPanel);
@@ -44,7 +48,7 @@ public class FenetreMenu extends JFrame {
         SwingUtilities.invokeLater(new Runnable(){
             @Override
             public void run() {
-                FenetreMenu fenetreMenu = new FenetreMenu();
+                Fenetre fenetre = new Fenetre();
             }
         });
     }

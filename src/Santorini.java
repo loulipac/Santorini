@@ -1,15 +1,13 @@
-import Vue.FenetreMenu;
+import Vue.Fenetre;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class Santorini implements Runnable {
 
-    FenetreMenu fenetreMenu;
+    Fenetre fenetre;
 
     public void run() {
-        fenetreMenu = new FenetreMenu();
+        fenetre = new Fenetre();
         //fenetreMenu.getbPlay().addActionListener(this);
     }
 
