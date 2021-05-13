@@ -1,13 +1,12 @@
 package Modele;
 
 import java.awt.*;
-import java.text.DecimalFormat;
 
 /**
  *
  */
 public class Jeu {
-    Plateau plateau;
+    private Plateau plateau;
 
     public static final int JOUEUR1 = 8;
     public static final int JOUEUR2 = 16;
@@ -41,8 +40,7 @@ public class Jeu {
      * @see #avancer(int ligne, int colonne, Point batisseur)
      * @see #construire(int ligne, int colonne, Point batisseur)
      */
-    public int jouer(int l, int c){
-        int retour = 0;
+    public void jouer(int l, int c){
         // placement des batisseurs sur la grille
         if (nombre_batisseurs < 4) {
             if(plateau.estLibre(l, c)) {
@@ -54,48 +52,31 @@ public class Jeu {
             }
         }
         else if(situation == 0) {
+            System.out.println("Choix du batisseur.");
             batisseur_en_cours = choisirBatisseur(l, c);
             if(batisseur_en_cours == null) {
                 situation = 0;
             } else {
                 situation = 1;
             }
-            retour = situation;
         }
         else if(situation == 1){ // déplace un batisseur aux coordonées l et c de la grille
+            System.out.println("Déplacement du batisseur.");
             situation = avancer(l, c, batisseur_en_cours)? 2 : 1;
-            retour = situation;
         }
         else if(situation == 2){ // construit un bâtiment aux coordonées l et c de la grille si possib
+            System.out.println("Construction.");
             if(construire(l,c,batisseur_en_cours)){
                 finTour();
                 situation = 0;
-                retour = 3;
             }
         }
         printPlateau();
 
-        switch (situation) {
-            case 0:
-                System.out.println("Choix du batisseur.");
-                break;
-
-            case 1:
-                System.out.println("Déplacement du batisseur.");
-                break;
-
-            case 2:
-                System.out.println("Construction.");
-                break;
-            default: break;
-        }
-
         System.out.println("Tour joueur n°" + joueur_en_cours/JOUEUR1);
-
-        return retour;
     }
 
-    public Point choisirBatisseur(int l, int c) {
+    private Point choisirBatisseur(int l, int c) {
         if(plateau.getTypeBatisseurs(l, c) == joueur_en_cours) {
             return new Point(l, c);
         } else {
@@ -106,8 +87,8 @@ public class Jeu {
     /**
      * Fini le tour pour le joueur en cours.
      */
-    public void finTour(){
-        joueur_en_cours = joueur_en_cours == JOUEUR1 ? JOUEUR2: JOUEUR1; // BOUTON "VALIDER"
+    private void finTour(){
+        joueur_en_cours = joueur_en_cours == JOUEUR1 ? JOUEUR2 : JOUEUR1; // BOUTON "VALIDER"
     }
 
     /**
@@ -121,8 +102,8 @@ public class Jeu {
      * @see Plateau#estLibre(int ligne, int colonne)
      * @see Plateau#deplacementPossible(int ligne, int colonne, Point batisseur)
      */
-    public boolean avancer(int l, int c, Point batisseur){
-        if(plateau.atteignable(l,c,batisseur) && plateau.estLibre(l,c) && plateau.deplacementPossible(l,c,batisseur)){
+    private boolean avancer(int l, int c, Point batisseur){
+        if (plateau.deplacementPossible(l,c,batisseur)) {
             plateau.ajouterJoueur(batisseur.x, batisseur.y,0); // enlève le batisseurs de la case du point batisseurs
             plateau.ajouterJoueur(l, c, joueur_en_cours); // ajoute un batisseurs à la case en position l,c
             batisseur_en_cours = new Point(l, c);
@@ -158,11 +139,11 @@ public class Jeu {
      * @see Plateau#estCoupole(int ligne, int colonne)
      * @see Plateau#estLibre(int ligne, int colonne)
      */
-    public boolean peutConstruire(int l, int c,Point batisseur){
+    private boolean peutConstruire(int l, int c,Point batisseur) {
         return (plateau.atteignable(l,c,batisseur) && !plateau.estCoupole(l,c) && plateau.estLibre(l,c));
     }
 
-    public void printPlateau() {
+    private void printPlateau() {
         for (int i = 0; i < plateau.getLignes(); i++) {
             for (int j = 0; j < plateau.getColonnes(); j++) {
                 // formatter permet de print un entier sur deux digit (ex : 1 -> 01)

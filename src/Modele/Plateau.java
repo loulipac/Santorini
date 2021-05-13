@@ -6,7 +6,7 @@ import java.awt.*;
  *
  */
 public class Plateau {
-    public int[][] cases;
+    private int[][] cases;
     private int lignes;
     private int colonnes;
 
@@ -149,7 +149,8 @@ public class Plateau {
      * @return
      */
     public boolean deplacementPossible(int l, int c, Point batisseur){
-        return getTypeBatiments(l,c) - getTypeBatiments(batisseur.x, batisseur.y) <=1 && !estCoupole(l, c);
+        return estLibre(l, c) && atteignable(l, c, batisseur) &&
+                getTypeBatiments(l,c) - getTypeBatiments(batisseur.x, batisseur.y) <=1 && !estCoupole(l, c);
     }
 
     /**
