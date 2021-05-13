@@ -3,7 +3,6 @@ package Vue;
 import Modele.Jeu;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
@@ -15,7 +14,6 @@ public class PanelPlateau extends JPanel {
         initialiserPanel();
         lancerJeu(largeur, hauteur);
     }
-
 
     public void initialiserPanel() {
         /* BoxLayout */
@@ -51,8 +49,6 @@ public class PanelPlateau extends JPanel {
         int min = Math.min(largeur, hauteur);
         jg.setMaximumSize(new Dimension(min/2,min/2));
         add(jg);
-
-        System.out.println(getSize());
     }
 
     public void actionBoutonRetourMenu(ActionEvent e) {

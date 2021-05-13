@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Crée une fenêtre pour le menu principal du jeu.
  * Cette fenêtre permet de démarrer le jeu, de lire les règles, de suivre un tutoriel.
- * @TODO : renommer les instances de @PanelMenu et @PanelOptions, clean code la fonction @FenetreMenu.
+ * @TODO : renommer les instances de @PanelMenu et @PanelOptions, clean code la fonction @Fenetre.
  */
 public class Fenetre extends JFrame {
 
@@ -26,8 +26,8 @@ public class Fenetre extends JFrame {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         menu = new PanelMenu(getSize().width, getSize().height);
-        options = new PanelOptions();
-        regles = new PanelRegles();
+        options = new PanelOptions(getSize().width, getSize().height);
+        regles = new PanelRegles(getSize().width, getSize().height);
         plateau = new PanelPlateau(getSize().width, getSize().height);
 
         mainPanel.add(menu, "menu");

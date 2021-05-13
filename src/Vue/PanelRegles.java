@@ -1,18 +1,18 @@
 package Vue;
 
-import Modele.BoutonMenu;
+import Modele.Bouton;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class PanelRegles extends JPanel {
-    private BoutonMenu bRetour;
+    private Bouton bRetour;
     private JLabel titre;
     private JPanel panel;
     private JScrollPane scroll;
 
-    public PanelRegles() {
+    public PanelRegles(int largeur, int hauteur) {
         initialiserPanel();
     }
 
@@ -41,7 +41,7 @@ public class PanelRegles extends JPanel {
         scroll.setBorder(null);
         add(scroll);
 
-        bRetour = new BoutonMenu("src/Ressources/bouton_menu/retour.png", "src/Ressources/bouton_menu/retour.png", 415, 90);
+        bRetour = new Bouton("src/Ressources/bouton_menu/retour.png", "src/Ressources/bouton_menu/retour.png", 415, 90);
         bRetour.addActionListener(this::actionBoutonRetourMenu);
 
         add(bRetour);

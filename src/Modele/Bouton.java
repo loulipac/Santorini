@@ -2,21 +2,17 @@ package Modele;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
-public class BoutonMenu extends JButton {
+public class Bouton extends JButton {
     int largeur, hauteur;
     String image;
 
-    public BoutonMenu(String image, String imageHover, int largeur, int hauteur) {
+    public Bouton(String image, String imageHover, int largeur, int hauteur) {
         this.largeur = largeur;
         this.hauteur = hauteur;
         this.image = image;
 
-
-        ImageIcon iconButton = ScaleImage(image, hauteur, largeur);
-        setIcon(iconButton);
+        /* Parametres principaux du bouton */
         setOpaque(false);
         setFocusPainted(false);
         setBorderPainted(false);
@@ -25,10 +21,12 @@ public class BoutonMenu extends JButton {
         setAlignmentX(CENTER_ALIGNMENT);
         setMaximumSize(new Dimension(this.largeur, this.hauteur));
         setRolloverEnabled(true);
+
+        /* Ajout de l'image par dessus le bouton*/
+        ImageIcon iconButton = ScaleImage(image, hauteur, largeur);
+        setIcon(iconButton);
         ImageIcon iconButtonHover = ScaleImage(imageHover, hauteur+5, largeur+5);
         setRolloverIcon(iconButtonHover);
-
-
     }
 
     private ImageIcon ScaleImage(String nomImage, int largeur, int hauteur){
