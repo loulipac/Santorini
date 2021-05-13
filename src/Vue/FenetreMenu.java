@@ -24,7 +24,7 @@ public class FenetreMenu extends JFrame {
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
-        menu = new PanelMenu();
+        menu = new PanelMenu(getSize().width, getSize().height);
         options = new PanelOptions();
         plateau = new PanelPlateau();
         mainPanel.add(menu, "menu");

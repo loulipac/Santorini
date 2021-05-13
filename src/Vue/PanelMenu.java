@@ -7,6 +7,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +19,7 @@ class PanelMenu extends JPanel {
     private BoutonMenu bJouer, bTutoriel, bRegles, bQuitter;
     private JLabel titre;
 
-    public PanelMenu() {
+    public PanelMenu(int largeur, int hauteur) {
 
         /* BoxLayout */
 
@@ -27,10 +29,11 @@ class PanelMenu extends JPanel {
 
         /* Button */
 
-        bJouer = new BoutonMenu("src/Ressources/bouton_menu/jouer.png", 415, 90);
-        bTutoriel = new BoutonMenu("src/Ressources/bouton_menu/tutoriel.png", 415, 90);
-        bRegles = new BoutonMenu("src/Ressources/bouton_menu/regle_jeu.png", 415, 90);
-        bQuitter = new BoutonMenu("src/Ressources/bouton_menu/quitter.png", 415, 90);
+        bJouer = new BoutonMenu("src/Ressources/bouton_menu/jouer.png", "src/Ressources/bouton_menu/tutoriel.png", (int)(largeur*0.3), (int)(hauteur*0.106));
+        bTutoriel = new BoutonMenu("src/Ressources/bouton_menu/tutoriel.png", "src/Ressources/bouton_menu/tutoriel.png", (int)(largeur*0.3), (int)(hauteur*0.1));
+        bRegles = new BoutonMenu("src/Ressources/bouton_menu/regle_jeu.png", "src/Ressources/bouton_menu/tutoriel.png", (int)(largeur*0.3), (int)(hauteur*0.1));
+        bQuitter = new BoutonMenu("src/Ressources/bouton_menu/quitter.png", "src/Ressources/bouton_menu/tutoriel.png", (int)(largeur*0.3), (int)(hauteur*0.1));
+
 
         /* Label */
 
