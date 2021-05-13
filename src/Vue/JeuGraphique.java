@@ -41,15 +41,14 @@ public class JeuGraphique extends JComponent {
     @Override
     public void paintComponent(Graphics g) {
 
-        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         // Graphics 2D est le vrai type de l'objet passé en paramètre
         // Le cast permet d'avoir acces a un peu plus de primitives de dessin
         drawable = (Graphics2D) g;
 
-        largeur = f.getSize().width / jeu.getPlateau().getColonnes();
-        hauteur = f.getSize().height / jeu.getPlateau().getLignes();
+        largeur = getSize().width / jeu.getPlateau().getColonnes();
+        hauteur = getSize().height / jeu.getPlateau().getLignes();
 
-        taille_case = Math.min(largeur / 2, hauteur / 2);
+        taille_case = Math.min(largeur, hauteur);
 
         // On efface tout
         drawable.clearRect(0, 0, taille_case * jeu.getPlateau().getColonnes(), taille_case * jeu.getPlateau().getLignes());
