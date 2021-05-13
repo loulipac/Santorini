@@ -45,6 +45,7 @@ class PanelMenu extends JPanel {
         bJouer.addActionListener(this::actionBoutonJouer);
         bTutoriel.addActionListener(this::actionBoutonTutoriel);
         bRegles.addActionListener(this::actionBoutonRegles);
+        bQuitter.addActionListener(this::actionBoutonQuitter);
 
         /* Adding */
         add(Box.createRigidArea(new Dimension(40, 20)));
@@ -76,6 +77,11 @@ class PanelMenu extends JPanel {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "regles");
     }
+
+    public void actionBoutonQuitter(ActionEvent e) {
+        System.exit(0);
+     }
+
 
 //    public void paintComponent(Graphics g)
 //    {
