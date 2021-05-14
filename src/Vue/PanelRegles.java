@@ -3,6 +3,7 @@ package Vue;
 import Modele.Bouton;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
@@ -13,10 +14,13 @@ public class PanelRegles extends JPanel {
     private JScrollPane scroll;
 
     public PanelRegles(int largeur, int hauteur) {
-        initialiserPanel();
+        initialiserPanel(largeur, hauteur);
     }
 
-    public void initialiserPanel() {
+    public void initialiserPanel(int largeur, int hauteur) {
+        Border blackline = BorderFactory.createLineBorder(Color.black);
+        Border blueline = BorderFactory.createLineBorder(Color.blue);
+
         setBackground(new Color(47, 112, 162));
         BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
         setLayout(boxlayout);
@@ -27,21 +31,41 @@ public class PanelRegles extends JPanel {
         titre.setMaximumSize(new Dimension(415, 100));
         add(titre);
 
-        /* Zone scrollable */
-        panel = new JPanel();
+        JLabel titreCommentJouer = new JLabel("Comment jouer");
+        titreCommentJouer.setBorder(blueline);
+        titreCommentJouer.setMaximumSize(new Dimension(largeur/2, hauteur/2));
+
+        /* Boutons */
+        bRetour = new Bouton("src/Ressources/bouton_menu/retour.png", "src/Ressources/bouton_menu/retour.png", 415, 90);
+
+        /* Panel */
+        panel = new JPanel(new GridBagLayout());
         panel.setBackground(new Color(47, 112, 162));
+        GridBagConstraints c = new GridBagConstraints();
 
-        JTextArea textArea = new JTextArea("Test");
+        JTextArea texteCommentJouer = new JTextArea("En partant du premier joueur, chaque joueur réalise son tour.");
 
-        panel.add(textArea);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        c.gridx = 0;
+        c.gridy = 0;
+        panel.add(titreCommentJouer,c);
+
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.weightx = 0.5;
+        c.gridx = 1;
+        c.gridy = 0;
+        panel.add(texteCommentJouer,c);
+        panel.setMaximumSize(new Dimension(largeur/2,hauteur/2));
+
+        /* Zone scrollable */
         scroll = new JScrollPane(panel, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        // scroll.setMaximumSize(new Dimension(500,500));
         scroll.setOpaque(false);
-        scroll.setBorder(null);
+
+//        scroll.setBorder(null);
+        panel.setBorder(blackline);
         add(scroll);
 
-        bRetour = new Bouton("src/Ressources/bouton_menu/retour.png", "src/Ressources/bouton_menu/retour.png", 415, 90);
         bRetour.addActionListener(this::actionBoutonRetourMenu);
 
         add(bRetour);

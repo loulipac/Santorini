@@ -48,8 +48,6 @@ class PanelOptions extends JPanel {
 
         boutons_principaux_panel.setOpaque(false);
         boutons_principaux_panel.setMaximumSize(new Dimension(largeur, hauteur/10));
-//        Border blackline = BorderFactory.createLineBorder(Color.black);
-//        boutons_principaux_panel.setBorder(blackline);
         boutons_principaux_panel.setBorder(null);
 
         /* Boutons*/
