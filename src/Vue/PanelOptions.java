@@ -1,5 +1,7 @@
 package Vue;
 
+import Modele.Constante;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +17,7 @@ import java.io.File;
  */
 
 class PanelOptions extends JPanel {
-    private Bouton bRetour, bCommencer, bSon;
+    private Bouton bRetour, bCommencer;
 
     public PanelOptions(int largeur, int hauteur) {
         initialiserPanel(largeur, hauteur);
@@ -31,7 +33,6 @@ class PanelOptions extends JPanel {
         JLabel versus_texte = new JLabel("Mode de jeu");
         JLabel IA_texte = new JLabel("Difficulté de l'IA");
         JLabel IA2_texte = new JLabel("Difficulté de l'IA 2");
-        JLabel son_texte = new JLabel("Son");
 
         titre.setAlignmentX(CENTER_ALIGNMENT);
         titre.setMaximumSize(new Dimension(415, 100));
@@ -41,7 +42,6 @@ class PanelOptions extends JPanel {
         JPanel versus_panel = new JPanel();
         JPanel IA_panel = new JPanel();
         JPanel IA2_panel = new JPanel();
-        JPanel son_panel = new JPanel();
         JPanel boutons_principaux_panel = new JPanel();
 
         contenu.setAlignmentX(CENTER_ALIGNMENT);
@@ -56,22 +56,20 @@ class PanelOptions extends JPanel {
         ButtonGroup boutons_IA = new ButtonGroup();
         ButtonGroup boutons_IA2 = new ButtonGroup();
 
-        JRadioButton joueur_joueur = new BoutonRadio("src/Ressources/bouton/joueur_contre_joueur.png", "src/Ressources/bouton/active.png", largeur/6, largeur / 30, adversaires_boutons);
-        JRadioButton joueur_ia = new BoutonRadio("src/Ressources/bouton/joueur_contre_ia.png", "src/Ressources/bouton/active.png", largeur/6, largeur / 30, adversaires_boutons);
-        JRadioButton ia_ia = new BoutonRadio("src/Ressources/bouton/ia_contre_ia.png", "src/Ressources/bouton/active.png", largeur/6, largeur / 30, adversaires_boutons);
+        JRadioButton joueur_joueur = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/joueur_contre_joueur",largeur/6, largeur / 30, adversaires_boutons);
+        JRadioButton joueur_ia = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia",largeur/6, largeur / 30, adversaires_boutons);
+        JRadioButton ia_ia = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/ia_contre_ia", largeur/6, largeur / 30, adversaires_boutons);
 
-        JRadioButton facile = new BoutonRadio("src/Ressources/bouton/facile.png", "src/Ressources/bouton/active.png", largeur/6, largeur / 30, boutons_IA);
-        JRadioButton normale = new BoutonRadio("src/Ressources/bouton/normale.png", "src/Ressources/bouton/active.png", largeur/6, largeur / 30, boutons_IA);
-        JRadioButton difficile = new BoutonRadio("src/Ressources/bouton/difficile.png", "src/Ressources/bouton/active.png", largeur/6, largeur / 30, boutons_IA);
+        JRadioButton facile = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/facile",largeur/6, largeur / 30, boutons_IA);
+        JRadioButton normale = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/normale",largeur/6, largeur / 30, boutons_IA);
+        JRadioButton difficile = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/difficile",largeur/6, largeur / 30, boutons_IA);
 
-        JRadioButton facile2 = new BoutonRadio("src/Ressources/bouton/facile.png", "src/Ressources/bouton/active.png", largeur/6, largeur / 30, boutons_IA2);
-        JRadioButton normale2 = new BoutonRadio("src/Ressources/bouton/normale.png", "src/Ressources/bouton/active.png", largeur/6, largeur / 30, boutons_IA2);
-        JRadioButton difficile2 = new BoutonRadio("src/Ressources/bouton/difficile.png", "src/Ressources/bouton/active.png", largeur/6, largeur / 30, boutons_IA2);
+        JRadioButton facile2 = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/facile", largeur/6, largeur / 30, boutons_IA2);
+        JRadioButton normale2 = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/normale", largeur/6, largeur / 30, boutons_IA2);
+        JRadioButton difficile2 = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/difficile", largeur/6, largeur / 30, boutons_IA2);
 
-        bSon = new Bouton("src/Ressources/bouton/desactive.png", "src/Ressources/bouton/active.png", largeur/6, largeur / 30);
-        bCommencer = new Bouton("src/Ressources/bouton/commencer_la_partie.png", "src/Ressources/bouton/commencer_la_partie.png", largeur / 4, largeur / 20);
-        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour.png", largeur / 4, largeur / 20);
-
+        bCommencer = new Bouton("src/Ressources/bouton/commencer_la_partie.png", "src/Ressources/bouton/commencer_la_partie_hover.png", largeur / 4, largeur / 20);
+        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour_hover.png", largeur / 4, largeur / 20);
 
         /* Evenements */
         bRetour.addActionListener(this::actionBoutonRetourMenu);
@@ -119,11 +117,6 @@ class PanelOptions extends JPanel {
         IA2_panel.add(normale2);
         IA2_panel.add(difficile2);
 
-        son_panel.add(bSon);
-
-        contenu.add(son_texte);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
-        contenu.add(son_panel);
         contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
         contenu.add(versus_texte);
         contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));

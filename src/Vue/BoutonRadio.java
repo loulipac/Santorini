@@ -4,13 +4,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class BoutonRadio extends JRadioButton {
-    int largeur, hauteur;
-    String image;
 
-    public BoutonRadio(String image, String imageSelected, int largeur, int hauteur, ButtonGroup groupe) {
-        this.largeur = largeur;
-        this.hauteur = hauteur;
-        this.image = image;
+    public BoutonRadio(String image, int largeur, int hauteur, ButtonGroup groupe) {
+        String img = image + ".png";
+        String imgSurvole = image + "_hover.png";
+        String imgClique = image + "_clicked.png";
 
         /* Parametres principaux du bouton */
         setOpaque(false);
@@ -19,14 +17,16 @@ public class BoutonRadio extends JRadioButton {
         setContentAreaFilled(false);
         setBorder(null);
         setAlignmentX(CENTER_ALIGNMENT);
-        setMaximumSize(new Dimension(this.largeur, this.hauteur));
+        setMaximumSize(new Dimension(largeur, hauteur));
         setRolloverEnabled(true);
 
         /* Ajout de l'image par dessus le bouton*/
-        ImageIcon iconButton = ScaleImage(image, hauteur, largeur);
-        setIcon(iconButton);
-        ImageIcon iconButtonHover = ScaleImage(imageSelected, hauteur, largeur);
-        setSelectedIcon(iconButtonHover);
+        ImageIcon iconeBouton = ScaleImage(img, hauteur, largeur);
+        setIcon(iconeBouton);
+        ImageIcon iconeBoutonSurvole = ScaleImage(imgSurvole, hauteur, largeur);
+        setRolloverIcon(iconeBoutonSurvole);
+        ImageIcon iconeBoutonClique = ScaleImage(imgClique, hauteur, largeur);
+        setSelectedIcon(iconeBoutonClique);
 
         /* BoutonRadio ajouté au groupe de bouton*/
         groupe.add(this);
