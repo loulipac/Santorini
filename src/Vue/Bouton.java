@@ -25,7 +25,7 @@ public class Bouton extends JButton {
         /* Ajout de l'image par dessus le bouton*/
         ImageIcon iconButton = ScaleImage(image, hauteur, largeur);
         setIcon(iconButton);
-        ImageIcon iconButtonHover = ScaleImage(imageHover, hauteur+5, largeur+5);
+        ImageIcon iconButtonHover = ScaleImage(imageHover, hauteur, largeur);
         setRolloverIcon(iconButtonHover);
     }
 

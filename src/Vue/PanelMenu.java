@@ -8,6 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+/**
+ *
+ * @TODO : Changer le logo titre
+ */
+
 class PanelMenu extends JPanel {
 
     private Bouton bJouer, bTutoriel, bRegles, bQuitter;
@@ -44,17 +49,16 @@ class PanelMenu extends JPanel {
         bQuitter.addActionListener(this::actionBoutonQuitter);
 
         /* Adding */
-        add(Box.createRigidArea(new Dimension(largeur, hauteur/9)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur * 1/9)));
         add(titre);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur/9)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur * 1/9)));
         add(bJouer);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur/45)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur * 1/45)));
         add(bTutoriel);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur/45)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur * 1/45)));
         add(bRegles);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur/45)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur * 1/45)));
         add(bQuitter);
-        add(Box.createRigidArea(new Dimension(largeur, 20)));
 
         setBackground(new Color(47, 112, 162));
     }
@@ -88,7 +92,7 @@ class PanelMenu extends JPanel {
         try {
             BufferedImage img = ImageIO.read(new File("src/Ressources/artwork/base.png"));
             Dimension img_dim = new Dimension(img.getWidth(), img.getHeight());
-            Dimension taille_max = new Dimension((int) (getWidth() - getWidth() * 0.25), (int) (getHeight() - getHeight() * 0.25));
+            Dimension taille_max = new Dimension((int) (getWidth() * 0.8), (int) (getHeight() * 0.8));
             Dimension taille_redimensionnee = conserverRatio(img_dim, taille_max);
             g.drawImage(
                     img,
@@ -117,22 +121,22 @@ class PanelMenu extends JPanel {
     public Dimension conserverRatio(Dimension imgSize, Dimension boundary) {
         int largeur_original = imgSize.width;
         int hauteur_original = imgSize.height;
-        int bound_width = boundary.width;
-        int bound_height = boundary.height;
+        int largeur_max = boundary.width;
+        int hauteur_max = boundary.height;
         int nouvelle_largeur = largeur_original;
         int nouvelle_hauteur = hauteur_original;
 
         // first check if we need to scale width
-        if (largeur_original > bound_width) {
+        if (largeur_original > largeur_max) {
             //scale width to fit
-            nouvelle_largeur = bound_width;
+            nouvelle_largeur = largeur_max;
             //scale height to maintain aspect ratio
             nouvelle_hauteur = (nouvelle_largeur * hauteur_original) / largeur_original;
         }
         // then check if we need to scale even with the new height
-        if (nouvelle_hauteur > bound_height) {
+        if (nouvelle_hauteur > hauteur_max) {
             //scale height to fit instead
-            nouvelle_hauteur = bound_height;
+            nouvelle_hauteur = hauteur_max;
             //scale width to maintain aspect ratio
             nouvelle_largeur = (nouvelle_hauteur * largeur_original) / hauteur_original;
         }
