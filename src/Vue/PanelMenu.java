@@ -82,64 +82,61 @@ class PanelMenu extends JPanel {
         System.exit(0);
     }
 
-
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         //Chargement de l"image de fond
         try {
             BufferedImage img = ImageIO.read(new File("src/Ressources/artwork/base.png"));
             Dimension img_dim = new Dimension(img.getWidth(), img.getHeight());
-            Dimension boundary_dim = new Dimension((int) (getWidth() - getWidth() * 0.25), (int) (getHeight() - getHeight() * 0.25));
-            Dimension scaled_dim = getScaledDimension(img_dim, boundary_dim);
+            Dimension taille_max = new Dimension((int) (getWidth() - getWidth() * 0.25), (int) (getHeight() - getHeight() * 0.25));
+            Dimension taille_redimensionnee = conserverRatio(img_dim, taille_max);
             g.drawImage(
                     img,
                     getWidth() / 2 - img.getWidth() / 2,
                     getHeight() / 2 - img.getHeight() / 2,
-                    scaled_dim.width,
-                    scaled_dim.height,
+                    taille_redimensionnee.width,
+                    taille_redimensionnee.height,
                     this
             );
 
-            BufferedImage img_columns = ImageIO.read(new File("src/Ressources/artwork/columns.png"));
+            BufferedImage img_colonnes = ImageIO.read(new File("src/Ressources/artwork/columns.png"));
             g.drawImage(
-                    img_columns,
+                    img_colonnes,
                     0,
                     0,
                     getWidth(),
                     getHeight(),
                     this
             );
-
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erreur image de fond: " + e.getMessage());
         }
     }
 
-    public Dimension getScaledDimension(Dimension imgSize, Dimension boundary) {
-        int original_width = imgSize.width;
-        int original_height = imgSize.height;
+    public Dimension conserverRatio(Dimension imgSize, Dimension boundary) {
+        int largeur_original = imgSize.width;
+        int hauteur_original = imgSize.height;
         int bound_width = boundary.width;
         int bound_height = boundary.height;
-        int new_width = original_width;
-        int new_height = original_height;
+        int nouvelle_largeur = largeur_original;
+        int nouvelle_hauteur = hauteur_original;
 
         // first check if we need to scale width
-        if (original_width > bound_width) {
+        if (largeur_original > bound_width) {
             //scale width to fit
-            new_width = bound_width;
+            nouvelle_largeur = bound_width;
             //scale height to maintain aspect ratio
-            new_height = (new_width * original_height) / original_width;
+            nouvelle_hauteur = (nouvelle_largeur * hauteur_original) / largeur_original;
         }
-
         // then check if we need to scale even with the new height
-        if (new_height > bound_height) {
+        if (nouvelle_hauteur > bound_height) {
             //scale height to fit instead
-            new_height = bound_height;
+            nouvelle_hauteur = bound_height;
             //scale width to maintain aspect ratio
-            new_width = (new_height * original_width) / original_height;
+            nouvelle_largeur = (nouvelle_hauteur * largeur_original) / hauteur_original;
         }
 
-        return new Dimension(new_width, new_height);
+        return new Dimension(nouvelle_largeur, nouvelle_hauteur);
     }
 }

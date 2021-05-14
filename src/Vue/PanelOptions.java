@@ -1,12 +1,16 @@
 package Vue;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 /**
  * Ce panel permet de modifier les options du jeu
+ *
  * @TODO : Changer les images des boutons selectionnés
  */
 
@@ -41,10 +45,10 @@ class PanelOptions extends JPanel {
         JPanel boutons_principaux_panel = new JPanel();
 
         contenu.setAlignmentX(CENTER_ALIGNMENT);
-        contenu.setMaximumSize(new Dimension(largeur*2/3,500));
+        contenu.setMaximumSize(new Dimension(largeur * 2 / 3, 500));
 
         boutons_principaux_panel.setOpaque(false);
-        boutons_principaux_panel.setMaximumSize(new Dimension(largeur, hauteur/10));
+        boutons_principaux_panel.setMaximumSize(new Dimension(largeur, hauteur / 10));
         boutons_principaux_panel.setBorder(null);
 
         /* Boutons*/
@@ -52,21 +56,21 @@ class PanelOptions extends JPanel {
         ButtonGroup boutons_IA = new ButtonGroup();
         ButtonGroup boutons_IA2 = new ButtonGroup();
 
-        JRadioButton joueur_joueur = new BoutonRadio("src/Ressources/bouton/joueur_contre_joueur.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, adversaires_boutons);
-        JRadioButton joueur_ia = new BoutonRadio("src/Ressources/bouton/joueur_contre_ia.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, adversaires_boutons);
-        JRadioButton ia_ia = new BoutonRadio("src/Ressources/bouton/ia_contre_ia.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, adversaires_boutons);
+        JRadioButton joueur_joueur = new BoutonRadio("src/Ressources/bouton/joueur_contre_joueur.png", "src/Ressources/bouton/active.png", largeur / 6, largeur / 30, adversaires_boutons);
+        JRadioButton joueur_ia = new BoutonRadio("src/Ressources/bouton/joueur_contre_ia.png", "src/Ressources/bouton/active.png", largeur / 6, largeur / 30, adversaires_boutons);
+        JRadioButton ia_ia = new BoutonRadio("src/Ressources/bouton/ia_contre_ia.png", "src/Ressources/bouton/active.png", largeur / 6, largeur / 30, adversaires_boutons);
 
-        JRadioButton facile = new BoutonRadio("src/Ressources/bouton/facile.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, boutons_IA);
-        JRadioButton normale = new BoutonRadio("src/Ressources/bouton/normale.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, boutons_IA);
-        JRadioButton difficile = new BoutonRadio("src/Ressources/bouton/difficile.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, boutons_IA);
+        JRadioButton facile = new BoutonRadio("src/Ressources/bouton/facile.png", "src/Ressources/bouton/active.png", largeur / 6, largeur / 30, boutons_IA);
+        JRadioButton normale = new BoutonRadio("src/Ressources/bouton/normale.png", "src/Ressources/bouton/active.png", largeur / 6, largeur / 30, boutons_IA);
+        JRadioButton difficile = new BoutonRadio("src/Ressources/bouton/difficile.png", "src/Ressources/bouton/active.png", largeur / 6, largeur / 30, boutons_IA);
 
-        JRadioButton facile2 = new BoutonRadio("src/Ressources/bouton/facile.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, boutons_IA2);
-        JRadioButton normale2 = new BoutonRadio("src/Ressources/bouton/normale.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, boutons_IA2);
-        JRadioButton difficile2 = new BoutonRadio("src/Ressources/bouton/difficile.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, boutons_IA2);
+        JRadioButton facile2 = new BoutonRadio("src/Ressources/bouton/facile.png", "src/Ressources/bouton/active.png", largeur / 6, largeur / 30, boutons_IA2);
+        JRadioButton normale2 = new BoutonRadio("src/Ressources/bouton/normale.png", "src/Ressources/bouton/active.png", largeur / 6, largeur / 30, boutons_IA2);
+        JRadioButton difficile2 = new BoutonRadio("src/Ressources/bouton/difficile.png", "src/Ressources/bouton/active.png", largeur / 6, largeur / 30, boutons_IA2);
 
-        bSon = new Bouton("src/Ressources/bouton/desactive.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30);
-        bCommencer = new Bouton("src/Ressources/bouton/commencer_la_partie.png", "src/Ressources/bouton/commencer_la_partie.png", largeur/4, largeur/20);
-        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour.png", largeur/4, largeur/20);
+        bSon = new Bouton("src/Ressources/bouton/desactive.png", "src/Ressources/bouton/active.png", largeur / 6, largeur / 30);
+        bCommencer = new Bouton("src/Ressources/bouton/commencer_la_partie.png", "src/Ressources/bouton/commencer_la_partie.png", largeur / 4, largeur / 20);
+        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour.png", largeur / 4, largeur / 20);
 
 
         /* Evenements */
@@ -120,19 +124,19 @@ class PanelOptions extends JPanel {
         contenu.add(son_texte);
         contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
         contenu.add(son_panel);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
         contenu.add(versus_texte);
         contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
         contenu.add(versus_panel);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
         contenu.add(IA_texte);
         contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
         contenu.add(IA_panel);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
         contenu.add(IA2_texte);
         contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
         contenu.add(IA2_panel);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
 
         boutons_principaux_panel.add(bRetour);
         boutons_principaux_panel.add(bCommencer);
@@ -147,19 +151,64 @@ class PanelOptions extends JPanel {
         IA2_texte.setVisible(false);
 
         /* Adding */
-        add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur / 15)));
         add(titre);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
         add(contenu);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
         add(boutons_principaux_panel);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
 
     }
 
-    
     public void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f2.getCardLayout().show(f2.mainPanel, "menu");
+    }
+
+
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        //Chargement de l"image de fond
+        try {
+            BufferedImage img_colonnes = ImageIO.read(new File("src/Ressources/artwork/columns.png"));
+            g.drawImage(
+                    img_colonnes,
+                    0,
+                    0,
+                    getWidth(),
+                    getHeight(),
+                    this
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur image de fond: " + e.getMessage());
+        }
+    }
+
+    public Dimension conserverRatio(Dimension imgSize, Dimension boundary) {
+        int largeur_original = imgSize.width;
+        int hauteur_original = imgSize.height;
+        int bound_width = boundary.width;
+        int bound_height = boundary.height;
+        int nouvelle_largeur = largeur_original;
+        int nouvelle_hauteur = hauteur_original;
+
+        // Vérifie si on doit redimensionner la largeur
+        if (largeur_original > bound_width) {
+            // redimensionne la largeur
+            nouvelle_largeur = bound_width;
+            // redimensionne la hauteur pour preserver le ratio
+            nouvelle_hauteur = (nouvelle_largeur * hauteur_original) / largeur_original;
+        }
+        // Verifie si on doit redimensionner la hauteur
+        if (nouvelle_hauteur > bound_height) {
+            // redimensionne la hauteur
+            nouvelle_hauteur = bound_height;
+            // redimensionne la largeur pour preserver le ratio
+            nouvelle_largeur = (nouvelle_hauteur * largeur_original) / hauteur_original;
+        }
+
+        return new Dimension(nouvelle_largeur, nouvelle_hauteur);
     }
 }
