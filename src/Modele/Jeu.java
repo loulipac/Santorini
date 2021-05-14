@@ -3,6 +3,7 @@ package Modele;
 import Vue.SoundPlayer;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,12 +14,15 @@ public class Jeu {
     public static final int JOUEUR1 = 8;
     public static final int JOUEUR2 = 16;
 
+    public static final int SELECTION = 0;
+    public static final int DEPLACEMENT = 1;
+    public static final int CONSTRUCTION = 2;
+
     private int joueur_en_cours;
     private int situation;
     private int nombre_batisseurs;
     private Point batisseur_en_cours;
-    private SoundPlayer construction_son;
-
+    private final SoundPlayer construction_son;
 
     /**
      * Instantie une classe jeu.
@@ -27,11 +31,11 @@ public class Jeu {
      * @param c
      */
     public Jeu(int l, int c) {
-        situation = 0;
+        situation = SELECTION;
         joueur_en_cours = JOUEUR1;
         plateau = new Plateau(l, c);
         nombre_batisseurs = 0;
-        batisseur_en_cours = new Point();
+        batisseur_en_cours = null;
         construction_son = new SoundPlayer("boulder_drop.wav");
     }
 
@@ -54,23 +58,23 @@ public class Jeu {
                     finTour();
                 }
             }
-        } else if (situation == 0) {
+        } else if (situation == SELECTION || (plateau.estBatisseur(l,c,joueur_en_cours) && situation == DEPLACEMENT)) {
             System.out.println("Choix du batisseur.");
             batisseur_en_cours = choisirBatisseur(l, c);
             if (batisseur_en_cours == null) {
-                situation = 0;
+                situation = SELECTION;
             } else {
-                situation = 1;
+                situation = DEPLACEMENT;
             }
-        } else if (situation == 1) { // déplace un batisseur aux coordonées l et c de la grille
+        } else if (situation == DEPLACEMENT) { // déplace un batisseur aux coordonées l et c de la grille
             System.out.println("Déplacement du batisseur.");
-            situation = avancer(l, c, batisseur_en_cours) ? 2 : 1;
-        } else if (situation == 2) { // construit un bâtiment aux coordonées l et c de la grille si possib
+            situation = avancer(l, c, batisseur_en_cours) ? CONSTRUCTION : DEPLACEMENT;
+        } else if (situation == CONSTRUCTION) { // construit un bâtiment aux coordonées l et c de la grille si possib
             System.out.println("Construction.");
             if (construire(l, c, batisseur_en_cours)) {
                 construction_son.playSound();
                 finTour();
-                situation = 0;
+                situation = SELECTION;
             }
         }
         printPlateau();
@@ -78,12 +82,16 @@ public class Jeu {
         System.out.println("Tour joueur n°" + joueur_en_cours / JOUEUR1);
     }
 
+    public int getSituation() {
+        return situation;
+    }
+
+    public int getJoueur_en_cours() {
+        return joueur_en_cours;
+    }
+
     private Point choisirBatisseur(int l, int c) {
-        if (plateau.getTypeBatisseurs(l, c) == joueur_en_cours) {
-            return new Point(l, c);
-        } else {
-            return null;
-        }
+        return plateau.estBatisseur(l,c,joueur_en_cours) ? new Point(l,c) : null;
     }
 
     /**
@@ -91,6 +99,7 @@ public class Jeu {
      */
     private void finTour() {
         joueur_en_cours = joueur_en_cours == JOUEUR1 ? JOUEUR2 : JOUEUR1; // BOUTON "VALIDER"
+        batisseur_en_cours = null;
     }
 
     /**
@@ -122,31 +131,18 @@ public class Jeu {
      * @param c         un indice de colonne sur la grille
      * @param batisseur position (x;y) d'un batisseur
      * @return vrai si la construction a bien eu lieu
-     * @see #peutConstruire(int ligne, int colonne, Point batisseur)
+     * @see Plateau#peutConstruire(int ligne, int colonne, Point batisseur)
      * @see Plateau#ameliorerBatiment(int ligne, int colonne)
      */
     private boolean construire(int l, int c, Point batisseur) {
-        if (peutConstruire(l, c, batisseur)) {
+        if (plateau.peutConstruire(l, c, batisseur)) {
             return plateau.ameliorerBatiment(l, c);
         } else {
             return false;
         }
     }
 
-    /**
-     * Vérifie si un ouvrier peut construire sur la case de la grille en l et c
-     *
-     * @param l         un indice de ligne sur la grille
-     * @param c         un indice de colonne sur la grille
-     * @param batisseur position (x;y) d'un batisseur
-     * @return vrai si le batisseur peut construire ici.
-     * @see Plateau#atteignable(int ligne, int colonne, Point batisseur)
-     * @see Plateau#estCoupole(int ligne, int colonne)
-     * @see Plateau#estLibre(int ligne, int colonne)
-     */
-    private boolean peutConstruire(int l, int c, Point batisseur) {
-        return (plateau.atteignable(l, c, batisseur) && !plateau.estCoupole(l, c) && plateau.estLibre(l, c));
-    }
+
 
     private void printPlateau() {
         for (int i = 0; i < plateau.getLignes(); i++) {
@@ -162,4 +158,9 @@ public class Jeu {
     public Plateau getPlateau() {
         return plateau;
     }
+
+    public Point getBatisseur_en_cours() {
+        return batisseur_en_cours;
+    }
+
 }
