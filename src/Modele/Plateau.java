@@ -1,6 +1,7 @@
 package Modele;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -189,5 +190,101 @@ public class Plateau {
     }
     public int getTypeBatisseurs(int l, int c){
         return cases[l][c] & (~7);
+    }
+
+
+    public ArrayList<Point> getCasesAcessibles(Point batisseurs){
+        ArrayList<Point> cases_acessibles = new ArrayList<>();
+
+        int l = batisseurs.x;
+        int c = batisseurs.y;
+
+        boolean case_existe_haut = l-1>=0;
+        boolean case_existe_bas = l+1<lignes;
+        boolean case_existe_droite = c+1<colonnes;
+        boolean case_existe_gauche = c-1>=0;
+
+        if(case_existe_haut){
+            if(case_existe_gauche && deplacementPossible(l-1,c-1,batisseurs)){
+                cases_acessibles.add(new Point(l-1,c-1));
+            }
+            if(case_existe_droite && deplacementPossible(l-1,c+1,batisseurs)){
+                cases_acessibles.add(new Point(l-1,c+1));
+            }
+            if(deplacementPossible(l-1,c,batisseurs))
+                cases_acessibles.add(new Point(l-1,c));
+        }
+        if(case_existe_bas){
+            if (case_existe_gauche && deplacementPossible(l+1,c-1,batisseurs)){
+                cases_acessibles.add(new Point(l+1,c-1));
+            }
+            if(case_existe_droite && deplacementPossible(l+1,c+1,batisseurs)){
+                cases_acessibles.add(new Point(l+1,c+1));
+            }
+            if(deplacementPossible(l+1,c,batisseurs))
+                cases_acessibles.add(new Point(l+1,c));
+        }
+        if(case_existe_gauche && deplacementPossible(l,c-1,batisseurs)){
+            cases_acessibles.add(new Point(l,c-1));
+        }
+        if(case_existe_droite && deplacementPossible(l,c+1,batisseurs)){
+            cases_acessibles.add(new Point(l,c+1));
+        }
+        return cases_acessibles;
+    }
+
+    public ArrayList<Point> getConstructionsPossible(Point batisseurs){
+        ArrayList<Point> constructions_possibles = new ArrayList<>();
+
+        int l = batisseurs.x;
+        int c = batisseurs.y;
+
+        boolean case_existe_haut = l-1>=0;
+        boolean case_existe_bas = l+1<lignes;
+        boolean case_existe_droite = c+1<colonnes;
+        boolean case_existe_gauche = c-1>=0;
+
+        if(case_existe_haut){
+            if(case_existe_gauche && peutConstruire(l-1,c-1,batisseurs)){
+                constructions_possibles.add(new Point(l-1,c-1));
+            }
+            if(case_existe_droite && peutConstruire(l-1,c+1,batisseurs)){
+                constructions_possibles.add(new Point(l-1,c+1));
+            }
+            if(peutConstruire(l-1,c,batisseurs))
+                constructions_possibles.add(new Point(l-1,c));
+        }
+        if(case_existe_bas){
+            if (case_existe_gauche && peutConstruire(l+1,c-1,batisseurs)){
+                constructions_possibles.add(new Point(l+1,c-1));
+            }
+            if(case_existe_droite && peutConstruire(l+1,c+1,batisseurs)){
+                constructions_possibles.add(new Point(l+1,c+1));
+            }
+            if(peutConstruire(l+1,c,batisseurs))
+                constructions_possibles.add(new Point(l+1,c));
+        }
+        if(case_existe_gauche && peutConstruire(l,c-1,batisseurs)){
+            constructions_possibles.add(new Point(l,c-1));
+        }
+        if(case_existe_droite && peutConstruire(l,c+1,batisseurs)){
+            constructions_possibles.add(new Point(l,c+1));
+        }
+        return constructions_possibles;
+    }
+
+    /**
+     * Vérifie si un ouvrier peut construire sur la case de la grille en l et c
+     *
+     * @param l         un indice de ligne sur la grille
+     * @param c         un indice de colonne sur la grille
+     * @param batisseur position (x;y) d'un batisseur
+     * @return vrai si le batisseur peut construire ici.
+     * @see #atteignable(int ligne, int colonne, Point batisseur)
+     * @see #estCoupole(int ligne, int colonne)
+     * @see #estLibre(int ligne, int colonne)
+     */
+    public boolean peutConstruire(int l, int c, Point batisseur) {
+        return (atteignable(l, c, batisseur) && !estCoupole(l, c) && estLibre(l, c));
     }
 }
