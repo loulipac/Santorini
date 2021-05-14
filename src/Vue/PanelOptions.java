@@ -102,7 +102,6 @@ class PanelOptions extends JPanel {
 
             }
         });
-
         /* Add dans les sous-panel */
         versus_panel.add(joueur_joueur);
         versus_panel.add(joueur_ia);
