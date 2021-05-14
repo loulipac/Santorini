@@ -138,8 +138,8 @@ class PanelOptions extends JPanel {
         contenu.add(IA2_panel);
         contenu.add(Box.createRigidArea(new Dimension(largeur, 20)));
 
-        boutons_principaux_panel.add(bCommencer);
         boutons_principaux_panel.add(bRetour);
+        boutons_principaux_panel.add(bCommencer);
 
         /* Selection par défaut des boutons radio*/
         joueur_joueur.setSelected(true);
