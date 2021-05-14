@@ -26,10 +26,10 @@ class PanelMenu extends JPanel {
 
         /* Button */
 
-        bJouer = new Bouton("src/Ressources/bouton_menu/jouer.png", "src/Ressources/bouton_menu/jouer_hover.png", (int)(largeur*0.3), (int)(hauteur*0.106));
-        bTutoriel = new Bouton("src/Ressources/bouton_menu/tutoriel.png", "src/Ressources/bouton_menu/tutoriel_hover.png", (int)(largeur*0.3), (int)(hauteur*0.1));
-        bRegles = new Bouton("src/Ressources/bouton_menu/regle_jeu.png", "src/Ressources/bouton_menu/regle_jeu_hover.png", (int)(largeur*0.3), (int)(hauteur*0.1));
-        bQuitter = new Bouton("src/Ressources/bouton_menu/quitter.png", "src/Ressources/bouton_menu/quitter_hover.png", (int)(largeur*0.3), (int)(hauteur*0.1));
+        bJouer = new Bouton("src/Ressources/bouton_menu/jouer.png", "src/Ressources/bouton_menu/jouer_hover.png", (int) (largeur * 0.3), (int) (hauteur * 0.106));
+        bTutoriel = new Bouton("src/Ressources/bouton_menu/tutoriel.png", "src/Ressources/bouton_menu/tutoriel_hover.png", (int) (largeur * 0.3), (int) (hauteur * 0.1));
+        bRegles = new Bouton("src/Ressources/bouton_menu/regle_jeu.png", "src/Ressources/bouton_menu/regle_jeu_hover.png", (int) (largeur * 0.3), (int) (hauteur * 0.1));
+        bQuitter = new Bouton("src/Ressources/bouton_menu/quitter.png", "src/Ressources/bouton_menu/quitter_hover.png", (int) (largeur * 0.3), (int) (hauteur * 0.1));
 
 
         /* Label */
@@ -82,11 +82,10 @@ class PanelMenu extends JPanel {
     public void actionBoutonQuitter(ActionEvent e) {
         sound_button.playSound();
         System.exit(0);
-     }
+    }
 
 
-    public void paintComponent(Graphics g)
-    {
+    public void paintComponent(Graphics g) {
         super.paintComponent(g);
         //Chargement de l"image de fond
         try {
@@ -96,8 +95,8 @@ class PanelMenu extends JPanel {
             Dimension scaled_dim = getScaledDimension(img_dim, boundary_dim);
             g.drawImage(
                     img,
-                    getWidth()/2 - img.getWidth()/2,
-                    getHeight()/2 - img.getHeight()/2,
+                    getWidth() / 2 - img.getWidth() / 2,
+                    getHeight() / 2 - img.getHeight() / 2,
                     scaled_dim.width,
                     scaled_dim.height,
                     this
@@ -115,7 +114,7 @@ class PanelMenu extends JPanel {
 
         } catch (Exception e) {
             e.printStackTrace();
-           System.out.println("Erreur image de fond: " +e.getMessage());
+            System.out.println("Erreur image de fond: " + e.getMessage());
         }
     }
 
