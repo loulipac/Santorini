@@ -1,10 +1,14 @@
 package Vue;
 
+import Modele.Constante;
 import Modele.Jeu;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 public class PanelPlateau extends JPanel {
     private Jeu jeu;
@@ -39,6 +43,39 @@ public class PanelPlateau extends JPanel {
         add(Box.createRigidArea(new Dimension(40, 20)));
         add(bRetour);
         add(Box.createRigidArea(new Dimension(40, 40)));
+    }
+
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+        try {
+            BufferedImage img_bg = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/background_in_game.png"));
+            g.drawImage(
+                    img_bg,
+                    0,
+                    0,
+                    getWidth(),
+                    getHeight(),
+                    this
+            );
+
+            BufferedImage img = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/banniere.png"));
+
+            g.drawImage(
+                    img,
+                    0,
+                    0,
+                    getWidth(),
+                    (int) (getHeight() * 0.2),
+                    this
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Erreur image de fond: " + e.getMessage());
+        }
     }
 
     public void lancerJeu(int largeur, int hauteur) {
