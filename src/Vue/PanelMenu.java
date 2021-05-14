@@ -1,5 +1,7 @@
 package Vue;
 
+import Modele.Constante;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -15,7 +17,7 @@ import java.io.File;
 
 class PanelMenu extends JPanel {
 
-    private Bouton bJouer, bTutoriel, bRegles, bQuitter;
+    private Bouton bJouer, bTutoriel, bRegles, bQuitter, bFullScreen;
     private JLabel titre;
     private SoundPlayer sound_button;
 
@@ -29,20 +31,18 @@ class PanelMenu extends JPanel {
 
         /* Button */
 
-        bJouer = new Bouton("src/Ressources/bouton/jouer.png", "src/Ressources/bouton/jouer_hover.png", largeur/4, largeur/20);
-        bTutoriel = new Bouton("src/Ressources/bouton/tutoriel.png", "src/Ressources/bouton/tutoriel_hover.png", largeur/4, largeur/20);
-        bRegles = new Bouton("src/Ressources/bouton/regle_jeu.png", "src/Ressources/bouton/regle_jeu_hover.png", largeur/4, largeur/20);
-        bQuitter = new Bouton("src/Ressources/bouton/quitter.png", "src/Ressources/bouton/quitter_hover.png", largeur/4, largeur/20);
-
+        bJouer = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/jouer.png", Constante.CHEMIN_RESSOURCE + "/bouton/jouer_hover.png", largeur/4, largeur/20);
+        bTutoriel = new Bouton(Constante .CHEMIN_RESSOURCE + "/bouton/tutoriel.png", Constante.CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png", largeur/4, largeur/20);
+        bRegles = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", largeur/4, largeur/20);
+        bQuitter = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/quitter.png", Constante.CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", largeur/4, largeur/20);
+        // bFullScreen = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", largeur/, largeur*0.1);
 
         /* Label */
-
-        titre = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
+        titre = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
         titre.setAlignmentX(CENTER_ALIGNMENT);
         titre.setMaximumSize(new Dimension(415, 100));
 
         /* redirection */
-
         bJouer.addActionListener(this::actionBoutonJouer);
         bTutoriel.addActionListener(this::actionBoutonTutoriel);
         bRegles.addActionListener(this::actionBoutonRegles);
@@ -90,7 +90,7 @@ class PanelMenu extends JPanel {
         super.paintComponent(g);
         //Chargement de l"image de fond
         try {
-            BufferedImage img = ImageIO.read(new File("src/Ressources/artwork/base.png"));
+            BufferedImage img = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/base.png"));
             Dimension img_dim = new Dimension(img.getWidth(), img.getHeight());
             Dimension taille_max = new Dimension((int) (getWidth() * 0.8), (int) (getHeight() * 0.8));
             Dimension taille_redimensionnee = conserverRatio(img_dim, taille_max);
@@ -103,7 +103,7 @@ class PanelMenu extends JPanel {
                     this
             );
 
-            BufferedImage img_colonnes = ImageIO.read(new File("src/Ressources/artwork/columns.png"));
+            BufferedImage img_colonnes = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/columns.png"));
             g.drawImage(
                     img_colonnes,
                     0,
