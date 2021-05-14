@@ -63,12 +63,13 @@ public class PanelPlateau extends JPanel {
 
             BufferedImage img = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/banniere.png"));
 
+//            float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre
+            
             g.drawImage(
                     img,
                     0,
                     0,
-                    getWidth(),
-                    (int) (getHeight() * 0.2),
+                    getWidth(), (int) (getWidth()*0.2),
                     this
             );
 
