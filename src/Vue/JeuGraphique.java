@@ -11,11 +11,10 @@ import java.io.FileInputStream;
 public class JeuGraphique extends JComponent {
     private Plateau plateau;
     private Jeu jeu;
-    private Graphics2D drawable;
     private int largeur;
     private int hauteur;
     private int taille_case;
-    private Image case_claire, case_fonce, coupole_etage_3, etage_1, etage_2, etage_3, batisseur_bleu, batisseur_rouge;
+    private final Image case_claire, case_fonce, coupole_etage_3, etage_1, etage_2, etage_3, batisseur_bleu, batisseur_rouge,batisseur_rouge_selectionne,batisseur_bleu_selectionne,pas_rouge,pas_bleu,outil_bleu,outil_rouge;
 
     public JeuGraphique(Jeu j) {
         this.jeu = j;
@@ -27,6 +26,13 @@ public class JeuGraphique extends JComponent {
         etage_3 = readImage("src/Ressources/Etages/etage_3.png");
         batisseur_bleu = readImage("src/Ressources/batisseur/batisseur_bleu.png");
         batisseur_rouge = readImage("src/Ressources/batisseur/batisseur_rouge.png");
+        batisseur_rouge_selectionne = readImage("src/Ressources/batisseur/batisseur_rouge_selectionne.png");
+        batisseur_bleu_selectionne = readImage("src/Ressources/batisseur/batisseur_bleu_selectionne.png");
+        pas_rouge = readImage("src/Ressources/icone/pas_rouge.png");
+        pas_bleu = readImage("src/Ressources/icone/pas_bleu.png");
+        outil_bleu = readImage("src/Ressources/icone/outil_bleu.png");
+        outil_rouge = readImage("src/Ressources/icone/outil_rouge.png");
+        plateau = j.getPlateau();
     }
 
     public Image readImage(String _name) {
@@ -43,46 +49,69 @@ public class JeuGraphique extends JComponent {
 
         // Graphics 2D est le vrai type de l'objet passé en paramètre
         // Le cast permet d'avoir acces a un peu plus de primitives de dessin
-        drawable = (Graphics2D) g;
+        Graphics2D drawable = (Graphics2D) g;
 
-        largeur = getSize().width / jeu.getPlateau().getColonnes();
-        hauteur = getSize().height / jeu.getPlateau().getLignes();
+        largeur = getSize().width / plateau.getColonnes();
+        hauteur = getSize().height / plateau.getLignes();
 
         taille_case = Math.min(largeur, hauteur);
 
         // On efface tout
-        drawable.clearRect(0, 0, taille_case * jeu.getPlateau().getColonnes(), taille_case * jeu.getPlateau().getLignes());
+        drawable.clearRect(0, 0, taille_case * plateau.getColonnes(), taille_case * plateau.getLignes());
 
-        for (int l = 0; l < jeu.getPlateau().getLignes(); l++) {
-            for (int c = 0; c < jeu.getPlateau().getColonnes(); c++) {
-                if ((l + c) % 2 == 0) {
-                    drawable.drawImage(case_claire, c * taille_case, l * taille_case, taille_case, taille_case, null);
-                } else {
-                    drawable.drawImage(case_fonce, c * taille_case, l * taille_case, taille_case, taille_case, null);
+
+        Point batisseur_en_cours = jeu.getBatisseur_en_cours();
+        int batisseurs_ligne = batisseur_en_cours!=null ? batisseur_en_cours.x : -1;
+        int batisseurs_colonne = batisseur_en_cours!=null ? batisseur_en_cours.y : -1;
+
+        Image image_batisseurs,image_case,image_batiment;
+
+        for (int l = 0; l < plateau.getLignes(); l++) {
+            for (int c = 0; c < plateau.getColonnes(); c++) {
+
+                image_case = ((l + c) % 2 == 0) ? case_claire : case_fonce;
+                drawable.drawImage(image_case, c * taille_case, l * taille_case, taille_case, taille_case, null);
+
+
+                switch (plateau.getTypeBatiments(l, c)) {
+                    case Plateau.RDC -> image_batiment = etage_1;
+                    case Plateau.ETAGE -> image_batiment = etage_2;
+                    case Plateau.TOIT -> image_batiment = etage_3;
+                    case Plateau.COUPOLE -> image_batiment = coupole_etage_3;
+                    default -> image_batiment = null;
                 }
 
-                switch (jeu.getPlateau().getTypeBatiments(l, c)) {
-                    case Plateau.RDC:
-                        drawable.drawImage(etage_1, c * taille_case, l * taille_case, taille_case, taille_case, null);
-                        break;
-                    case Plateau.ETAGE:
-                        drawable.drawImage(etage_2, c * taille_case, l * taille_case, taille_case, taille_case, null);
-                        break;
-                    case Plateau.TOIT:
-                        drawable.drawImage(etage_3, c * taille_case, l * taille_case, taille_case, taille_case, null);
-                        break;
-                    case Plateau.COUPOLE:
-                        drawable.drawImage(coupole_etage_3, c * taille_case, l * taille_case, taille_case, taille_case, null);
-                        break;
+                if(image_batiment!=null)
+                    drawable.drawImage(image_batiment, c * taille_case, l * taille_case, taille_case, taille_case, null);
+
+                if(plateau.getTypeBatisseurs(l, c)>0){
+
+                    boolean batisseur_selectionne = (batisseurs_ligne == l && batisseurs_colonne == c);
+
+                    if(plateau.getTypeBatisseurs(l, c)==Jeu.JOUEUR1)
+                    {
+                        image_batisseurs = batisseur_selectionne ? batisseur_bleu_selectionne : batisseur_bleu;
+                    }
+                    else{
+                        image_batisseurs = batisseur_selectionne ? batisseur_rouge_selectionne : batisseur_rouge;
+                    }
+
+                    drawable.drawImage(image_batisseurs, c * taille_case, l * taille_case, taille_case, taille_case, null);
                 }
-                switch (jeu.getPlateau().getTypeBatisseurs(l, c)) {
-                    case Jeu.JOUEUR1:
-                        drawable.drawImage(batisseur_bleu, c * taille_case, l * taille_case, taille_case, taille_case, null);
-                        break;
-                    case Jeu.JOUEUR2:
-                        drawable.drawImage(batisseur_rouge, c * taille_case, l * taille_case, taille_case, taille_case, null);
-                        break;
-                }
+            }
+        }
+        if(jeu.getSituation() == Jeu.DEPLACEMENT){
+            Image pas_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? pas_bleu : pas_rouge;
+
+            for(Point case_autour : plateau.getCasesAcessibles(jeu.getBatisseur_en_cours())){
+                drawable.drawImage(pas_joueur, case_autour.y * taille_case, case_autour.x * taille_case, taille_case, taille_case, null);
+            }
+        }
+        else if(jeu.getSituation()==Jeu.CONSTRUCTION){
+            Image outil_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? outil_bleu : outil_rouge;
+
+            for(Point constructions_autour : plateau.getConstructionsPossible(jeu.getBatisseur_en_cours())){
+                drawable.drawImage(outil_joueur, constructions_autour.y * taille_case, constructions_autour.x * taille_case, taille_case, taille_case, null);
             }
         }
     }
