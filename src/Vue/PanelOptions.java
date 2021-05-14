@@ -6,10 +6,15 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+/**
+ * Ce panel permet de modifier les options du jeu
+ * @TODO : Changer les images des boutons selectionnés
+ */
 
 class PanelOptions extends JPanel {
     private Bouton bRetour, bCommencer, bSon;
-
 
     public PanelOptions(int largeur, int hauteur) {
         initialiserPanel(largeur, hauteur);
@@ -52,17 +57,17 @@ class PanelOptions extends JPanel {
         ButtonGroup boutons_IA = new ButtonGroup();
         ButtonGroup boutons_IA2 = new ButtonGroup();
 
-        JRadioButton joueur_joueur = new BoutonRadio("src/Ressources/bouton_menu/joueur_contre_joueur.png", "src/Ressources/bouton_menu/joueur_contre_joueur.png", largeur/6, largeur/30, adversaires_boutons);
-        JRadioButton joueur_ia = new BoutonRadio("src/Ressources/bouton_menu/joueur_contre_ia.png", "src/Ressources/bouton_menu/joueur_contre_ia.png", largeur/6, largeur/30, adversaires_boutons);
-        JRadioButton ia_ia = new BoutonRadio("src/Ressources/bouton_menu/ia_contre_ia.png", "src/Ressources/bouton_menu/ia_contre_ia.png", largeur/6, largeur/30, adversaires_boutons);
+        JRadioButton joueur_joueur = new BoutonRadio("src/Ressources/bouton_menu/joueur_contre_joueur.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, adversaires_boutons);
+        JRadioButton joueur_ia = new BoutonRadio("src/Ressources/bouton_menu/joueur_contre_ia.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, adversaires_boutons);
+        JRadioButton ia_ia = new BoutonRadio("src/Ressources/bouton_menu/ia_contre_ia.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, adversaires_boutons);
 
-        JRadioButton facile = new BoutonRadio("src/Ressources/bouton_menu/facile.png", "src/Ressources/bouton_menu/facile.png", largeur/6, largeur/30, boutons_IA);
-        JRadioButton normale = new BoutonRadio("src/Ressources/bouton_menu/normale.png", "src/Ressources/bouton_menu/normale.png", largeur/6, largeur/30, boutons_IA);
-        JRadioButton difficile = new BoutonRadio("src/Ressources/bouton_menu/difficile.png", "src/Ressources/bouton_menu/difficile.png", largeur/6, largeur/30, boutons_IA);
+        JRadioButton facile = new BoutonRadio("src/Ressources/bouton_menu/facile.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, boutons_IA);
+        JRadioButton normale = new BoutonRadio("src/Ressources/bouton_menu/normale.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, boutons_IA);
+        JRadioButton difficile = new BoutonRadio("src/Ressources/bouton_menu/difficile.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, boutons_IA);
 
-        JRadioButton facile2 = new BoutonRadio("src/Ressources/bouton_menu/facile.png", "src/Ressources/bouton_menu/facile.png", largeur/6, largeur/30, boutons_IA2);
-        JRadioButton normale2 = new BoutonRadio("src/Ressources/bouton_menu/normale.png", "src/Ressources/bouton_menu/normale.png", largeur/6, largeur/30, boutons_IA2);
-        JRadioButton difficile2 = new BoutonRadio("src/Ressources/bouton_menu/difficile.png", "src/Ressources/bouton_menu/difficile.png", largeur/6, largeur/30, boutons_IA2);
+        JRadioButton facile2 = new BoutonRadio("src/Ressources/bouton_menu/facile.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, boutons_IA2);
+        JRadioButton normale2 = new BoutonRadio("src/Ressources/bouton_menu/normale.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, boutons_IA2);
+        JRadioButton difficile2 = new BoutonRadio("src/Ressources/bouton_menu/difficile.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, boutons_IA2);
 
         bSon = new Bouton("src/Ressources/bouton_menu/desactive.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30);
         bCommencer = new Bouton("src/Ressources/bouton_menu/commencer_la_partie.png", "src/Ressources/bouton_menu/commencer_la_partie.png", largeur/3, largeur/15);
@@ -71,6 +76,37 @@ class PanelOptions extends JPanel {
 
         /* Evenements */
         bRetour.addActionListener(this::actionBoutonRetourMenu);
+
+        joueur_joueur.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IA_texte.setVisible(false);
+                IA2_texte.setVisible(false);
+                IA_panel.setVisible(false);
+                IA2_panel.setVisible(false);
+            }
+        });
+
+        joueur_ia.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IA_texte.setVisible(true);
+                IA2_texte.setVisible(false);
+                IA_panel.setVisible(true);
+                IA2_panel.setVisible(false);
+            }
+        });
+
+        ia_ia.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IA_texte.setVisible(true);
+                IA2_texte.setVisible(true);
+                IA_panel.setVisible(true);
+                IA2_panel.setVisible(true);
+
+            }
+        });
 
         /* Add dans les sous-panel */
         versus_panel.add(joueur_joueur);
@@ -87,6 +123,10 @@ class PanelOptions extends JPanel {
 
         son_panel.add(bSon);
 
+        contenu.add(son_texte);
+        contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
+        contenu.add(son_panel);
+        contenu.add(Box.createRigidArea(new Dimension(largeur, 20)));
         contenu.add(versus_texte);
         contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
         contenu.add(versus_panel);
@@ -99,10 +139,6 @@ class PanelOptions extends JPanel {
         contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
         contenu.add(IA2_panel);
         contenu.add(Box.createRigidArea(new Dimension(largeur, 20)));
-        contenu.add(son_texte);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
-        contenu.add(son_panel);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, 20)));
 
         boutons_principaux_panel.add(bCommencer);
         boutons_principaux_panel.add(bRetour);
@@ -111,6 +147,12 @@ class PanelOptions extends JPanel {
         joueur_joueur.setSelected(true);
         facile.setSelected(true);
         facile2.setSelected(true);
+        IA_panel.setVisible(false);
+        IA2_panel.setVisible(false);
+        IA_texte.setVisible(false);
+        IA2_texte.setVisible(false);
+
+
 
         /* Adding */
         add(titre);
@@ -126,10 +168,5 @@ class PanelOptions extends JPanel {
     public void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f2.getCardLayout().show(f2.mainPanel, "menu");
-    }
-
-    @Override
-    public Dimension getPreferredSize() {
-        return new Dimension(300, 300);
     }
 }
