@@ -49,15 +49,15 @@ class PanelMenu extends JPanel {
         bQuitter.addActionListener(this::actionBoutonQuitter);
 
         /* Adding */
-        add(Box.createRigidArea(new Dimension(largeur, hauteur * 1/9)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur / 9)));
         add(titre);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur * 1/9)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur / 9)));
         add(bJouer);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur * 1/45)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur / 45)));
         add(bTutoriel);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur * 1/45)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur / 45)));
         add(bRegles);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur * 1/45)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur / 45)));
         add(bQuitter);
 
         setBackground(new Color(47, 112, 162));
