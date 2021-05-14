@@ -1,7 +1,5 @@
 package Vue;
 
-import Modele.Bouton;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
@@ -36,7 +34,7 @@ public class PanelRegles extends JPanel {
         titreCommentJouer.setMaximumSize(new Dimension(largeur/2, hauteur/2));
 
         /* Boutons */
-        bRetour = new Bouton("src/Ressources/bouton_menu/retour.png", "src/Ressources/bouton_menu/retour.png", 415, 90);
+        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour.png", 415, 90);
 
         /* Panel */
         panel = new JPanel(new GridBagLayout());

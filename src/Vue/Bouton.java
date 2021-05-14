@@ -1,13 +1,13 @@
-package Modele;
+package Vue;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class BoutonRadio extends JRadioButton {
+public class Bouton extends JButton {
     int largeur, hauteur;
     String image;
 
-    public BoutonRadio(String image, String imageSelected, int largeur, int hauteur, ButtonGroup groupe) {
+    public Bouton(String image, String imageHover, int largeur, int hauteur) {
         this.largeur = largeur;
         this.hauteur = hauteur;
         this.image = image;
@@ -25,11 +25,8 @@ public class BoutonRadio extends JRadioButton {
         /* Ajout de l'image par dessus le bouton*/
         ImageIcon iconButton = ScaleImage(image, hauteur, largeur);
         setIcon(iconButton);
-        ImageIcon iconButtonHover = ScaleImage(imageSelected, hauteur, largeur);
-        setSelectedIcon(iconButtonHover);
-
-        /* BoutonRadio ajouté au groupe de bouton*/
-        groupe.add(this);
+        ImageIcon iconButtonHover = ScaleImage(imageHover, hauteur+5, largeur+5);
+        setRolloverIcon(iconButtonHover);
     }
 
     private ImageIcon ScaleImage(String nomImage, int largeur, int hauteur){

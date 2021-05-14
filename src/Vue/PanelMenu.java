@@ -1,7 +1,5 @@
 package Vue;
 
-import Modele.Bouton;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -26,10 +24,10 @@ class PanelMenu extends JPanel {
 
         /* Button */
 
-        bJouer = new Bouton("src/Ressources/bouton_menu/jouer.png", "src/Ressources/bouton_menu/jouer_hover.png", (int) (largeur * 0.3), (int) (hauteur * 0.106));
-        bTutoriel = new Bouton("src/Ressources/bouton_menu/tutoriel.png", "src/Ressources/bouton_menu/tutoriel_hover.png", (int) (largeur * 0.3), (int) (hauteur * 0.1));
-        bRegles = new Bouton("src/Ressources/bouton_menu/regle_jeu.png", "src/Ressources/bouton_menu/regle_jeu_hover.png", (int) (largeur * 0.3), (int) (hauteur * 0.1));
-        bQuitter = new Bouton("src/Ressources/bouton_menu/quitter.png", "src/Ressources/bouton_menu/quitter_hover.png", (int) (largeur * 0.3), (int) (hauteur * 0.1));
+        bJouer = new Bouton("src/Ressources/bouton/jouer.png", "src/Ressources/bouton/jouer_hover.png", largeur/4, largeur/20);
+        bTutoriel = new Bouton("src/Ressources/bouton/tutoriel.png", "src/Ressources/bouton/tutoriel_hover.png", largeur/4, largeur/20);
+        bRegles = new Bouton("src/Ressources/bouton/regle_jeu.png", "src/Ressources/bouton/regle_jeu_hover.png", largeur/4, largeur/20);
+        bQuitter = new Bouton("src/Ressources/bouton/quitter.png", "src/Ressources/bouton/quitter_hover.png", largeur/4, largeur/20);
 
 
         /* Label */
@@ -46,17 +44,17 @@ class PanelMenu extends JPanel {
         bQuitter.addActionListener(this::actionBoutonQuitter);
 
         /* Adding */
-        add(Box.createRigidArea(new Dimension(40, 20)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur/9)));
         add(titre);
-        add(Box.createRigidArea(new Dimension(40, 110)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur/9)));
         add(bJouer);
-        add(Box.createRigidArea(new Dimension(40, 40)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur/45)));
         add(bTutoriel);
-        add(Box.createRigidArea(new Dimension(40, 40)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur/45)));
         add(bRegles);
-        add(Box.createRigidArea(new Dimension(40, 40)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur/45)));
         add(bQuitter);
-        add(Box.createRigidArea(new Dimension(40, 40)));
+        add(Box.createRigidArea(new Dimension(largeur, 20)));
 
         setBackground(new Color(47, 112, 162));
     }

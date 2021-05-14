@@ -19,7 +19,7 @@ public class Fenetre extends JFrame {
 
     public Fenetre() {
         setTitle("Santorini");
-        setMinimumSize(new Dimension(1200, 900));
+        setMinimumSize(new Dimension(1600, 900));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 

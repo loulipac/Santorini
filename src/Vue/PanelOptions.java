@@ -1,9 +1,6 @@
 package Vue;
 
-import Modele.Bouton;
-import Modele.BoutonRadio;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -55,21 +52,21 @@ class PanelOptions extends JPanel {
         ButtonGroup boutons_IA = new ButtonGroup();
         ButtonGroup boutons_IA2 = new ButtonGroup();
 
-        JRadioButton joueur_joueur = new BoutonRadio("src/Ressources/bouton_menu/joueur_contre_joueur.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, adversaires_boutons);
-        JRadioButton joueur_ia = new BoutonRadio("src/Ressources/bouton_menu/joueur_contre_ia.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, adversaires_boutons);
-        JRadioButton ia_ia = new BoutonRadio("src/Ressources/bouton_menu/ia_contre_ia.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, adversaires_boutons);
+        JRadioButton joueur_joueur = new BoutonRadio("src/Ressources/bouton/joueur_contre_joueur.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, adversaires_boutons);
+        JRadioButton joueur_ia = new BoutonRadio("src/Ressources/bouton/joueur_contre_ia.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, adversaires_boutons);
+        JRadioButton ia_ia = new BoutonRadio("src/Ressources/bouton/ia_contre_ia.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, adversaires_boutons);
 
-        JRadioButton facile = new BoutonRadio("src/Ressources/bouton_menu/facile.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, boutons_IA);
-        JRadioButton normale = new BoutonRadio("src/Ressources/bouton_menu/normale.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, boutons_IA);
-        JRadioButton difficile = new BoutonRadio("src/Ressources/bouton_menu/difficile.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, boutons_IA);
+        JRadioButton facile = new BoutonRadio("src/Ressources/bouton/facile.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, boutons_IA);
+        JRadioButton normale = new BoutonRadio("src/Ressources/bouton/normale.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, boutons_IA);
+        JRadioButton difficile = new BoutonRadio("src/Ressources/bouton/difficile.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, boutons_IA);
 
-        JRadioButton facile2 = new BoutonRadio("src/Ressources/bouton_menu/facile.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, boutons_IA2);
-        JRadioButton normale2 = new BoutonRadio("src/Ressources/bouton_menu/normale.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, boutons_IA2);
-        JRadioButton difficile2 = new BoutonRadio("src/Ressources/bouton_menu/difficile.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30, boutons_IA2);
+        JRadioButton facile2 = new BoutonRadio("src/Ressources/bouton/facile.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, boutons_IA2);
+        JRadioButton normale2 = new BoutonRadio("src/Ressources/bouton/normale.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, boutons_IA2);
+        JRadioButton difficile2 = new BoutonRadio("src/Ressources/bouton/difficile.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30, boutons_IA2);
 
-        bSon = new Bouton("src/Ressources/bouton_menu/desactive.png", "src/Ressources/bouton_menu/active.png", largeur/6, largeur/30);
-        bCommencer = new Bouton("src/Ressources/bouton_menu/commencer_la_partie.png", "src/Ressources/bouton_menu/commencer_la_partie.png", largeur/3, largeur/15);
-        bRetour = new Bouton("src/Ressources/bouton_menu/retour.png", "src/Ressources/bouton_menu/retour.png", largeur/3, largeur/15);
+        bSon = new Bouton("src/Ressources/bouton/desactive.png", "src/Ressources/bouton/active.png", largeur/6, largeur/30);
+        bCommencer = new Bouton("src/Ressources/bouton/commencer_la_partie.png", "src/Ressources/bouton/commencer_la_partie.png", largeur/4, largeur/20);
+        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour.png", largeur/4, largeur/20);
 
 
         /* Evenements */
@@ -124,19 +121,19 @@ class PanelOptions extends JPanel {
         contenu.add(son_texte);
         contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
         contenu.add(son_panel);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, 20)));
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
         contenu.add(versus_texte);
         contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
         contenu.add(versus_panel);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, 20)));
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
         contenu.add(IA_texte);
         contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
         contenu.add(IA_panel);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, 20)));
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
         contenu.add(IA2_texte);
         contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
         contenu.add(IA2_panel);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, 20)));
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
 
         boutons_principaux_panel.add(bRetour);
         boutons_principaux_panel.add(bCommencer);
@@ -150,15 +147,14 @@ class PanelOptions extends JPanel {
         IA_texte.setVisible(false);
         IA2_texte.setVisible(false);
 
-
-
         /* Adding */
+        add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
         add(titre);
-        add(Box.createRigidArea(new Dimension(largeur, 20)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
         add(contenu);
-        add(Box.createRigidArea(new Dimension(largeur, 20)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
         add(boutons_principaux_panel);
-        add(Box.createRigidArea(new Dimension(largeur, 20)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur/30)));
 
     }
 
