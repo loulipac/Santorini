@@ -9,12 +9,26 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
-public class PanelPlateau extends JPanel {
+public class PanelPlateau extends JPanel implements Observer{
+
     private Jeu jeu;
     private JeuGraphique jg;
+    GraphicsEnvironment ge;
+    Font lilly_belle;
+    JTextField jt;
 
     public PanelPlateau(int largeur, int hauteur) {
+
+        try {
+            ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Ressources/font/LillyBelle.ttf")));
+
+        } catch (IOException|FontFormatException e) {
+            //Handle exception
+        }
+        lilly_belle = new Font("LillyBelle",Font.PLAIN,28);
         initialiserPanel();
         lancerJeu(largeur, hauteur);
     }
@@ -37,12 +51,29 @@ public class PanelPlateau extends JPanel {
         bRetour.setMaximumSize(new Dimension(300, 40));
         bRetour.addActionListener(this::actionBoutonRetourMenu);
 
+        /* Texte de suivi du déroulement de la partie */
+        jt = new JTextField("C'est au tour du Joueur 1 (bleu)");
+        jt.setAlignmentX(CENTER_ALIGNMENT);
+        jt.setMaximumSize(new Dimension(600, 40));
+        jt.setOpaque(false);
+        jt.setBorder(null);
+        jt.setFont(lilly_belle);
+        jt.setEditable(false);
+        jt.setFocusable(false);
+        jt.setForeground(Color.WHITE);
+
+
+
         /* Adding */
+
         add(Box.createRigidArea(new Dimension(40, 40)));
         add(titre);
         add(Box.createRigidArea(new Dimension(40, 20)));
+        add(jt,BorderLayout.CENTER);
+        add(Box.createRigidArea(new Dimension(40, 40)));
         add(bRetour);
         add(Box.createRigidArea(new Dimension(40, 40)));
+
     }
 
 
@@ -80,7 +111,7 @@ public class PanelPlateau extends JPanel {
     }
 
     public void lancerJeu(int largeur, int hauteur) {
-        this.jeu = new Jeu(5, 5);
+        this.jeu = new Jeu(5, 5,this);
         this.jg = new JeuGraphique(jeu);
         jg.setAlignmentX(CENTER_ALIGNMENT);
         jg.addMouseListener(new EcouteurDeSouris(jg));
@@ -92,5 +123,16 @@ public class PanelPlateau extends JPanel {
     public void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "menu");
+    }
+
+    @Override
+    public void miseAjour() {
+        String annonce_tour_joueur;
+        if(jeu.estJeufini())
+            annonce_tour_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? "Joueur 1 gagne (bleu)" : "Joueur 2 gagne (rouge)";
+        else{
+            annonce_tour_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? "C'est au tour du Joueur 1 (bleu)" : "C'est au tour du Joueur 2 (rouge)";
+        }
+        jt.setText(annonce_tour_joueur);
     }
 }
