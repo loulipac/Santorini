@@ -5,6 +5,7 @@ import Modele.Jeu;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.FileInputStream;
 
@@ -46,13 +47,14 @@ public class JeuGraphique extends JComponent {
 
     @Override
     public void paintComponent(Graphics g) {
-
+        super.paintComponent(g);
         // Graphics 2D est le vrai type de l'objet passé en paramètre
         // Le cast permet d'avoir acces a un peu plus de primitives de dessin
         Graphics2D drawable = (Graphics2D) g;
 
         largeur = getSize().width / plateau.getColonnes();
         hauteur = getSize().height / plateau.getLignes();
+        System.out.println(getSize().height);
 
         taille_case = Math.min(largeur, hauteur);
 
