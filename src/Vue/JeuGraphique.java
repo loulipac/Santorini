@@ -14,13 +14,13 @@ public class JeuGraphique extends JComponent {
     private int largeur;
     private int hauteur;
     private int taille_case;
-    private final Image case_claire, case_fonce, coupole_etage_3, etage_1, etage_2, etage_3, batisseur_bleu, batisseur_rouge,batisseur_rouge_selectionne,batisseur_bleu_selectionne,pas_rouge,pas_bleu,outil_bleu,outil_rouge;
+    private final Image case_claire, case_fonce, coupole, etage_1, etage_2, etage_3, batisseur_bleu, batisseur_rouge,batisseur_rouge_selectionne,batisseur_bleu_selectionne,pas_rouge,pas_bleu,outil_bleu,outil_rouge;
 
     public JeuGraphique(Jeu j) {
         this.jeu = j;
         case_claire = readImage("src/Ressources/cases/case_claire.png");
         case_fonce = readImage("src/Ressources/cases/case_fonce.png");
-        coupole_etage_3 = readImage("src/Ressources/Etages/coupole_etage_3.png");
+        coupole = readImage("src/Ressources/Etages/coupole.png");
         etage_1 = readImage("src/Ressources/Etages/etage_1.png");
         etage_2 = readImage("src/Ressources/Etages/etage_2.png");
         etage_3 = readImage("src/Ressources/Etages/etage_3.png");
@@ -77,7 +77,7 @@ public class JeuGraphique extends JComponent {
                     case Plateau.RDC -> image_batiment = etage_1;
                     case Plateau.ETAGE -> image_batiment = etage_2;
                     case Plateau.TOIT -> image_batiment = etage_3;
-                    case Plateau.COUPOLE -> image_batiment = coupole_etage_3;
+                    case Plateau.COUPOLE -> image_batiment = coupole;
                     default -> image_batiment = null;
                 }
 
@@ -107,7 +107,7 @@ public class JeuGraphique extends JComponent {
                 drawable.drawImage(pas_joueur, case_autour.y * taille_case, case_autour.x * taille_case, taille_case, taille_case, null);
             }
         }
-        else if(jeu.getSituation()==Jeu.CONSTRUCTION){
+        else if(jeu.getSituation()==Jeu.CONSTRUCTION && !   jeu.estJeufini()){
             Image outil_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? outil_bleu : outil_rouge;
 
             for(Point constructions_autour : plateau.getConstructionsPossible(jeu.getBatisseur_en_cours())){
