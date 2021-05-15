@@ -1,5 +1,6 @@
 package Modele;
 
+import Vue.Observer;
 import Vue.SoundPlayer;
 
 import java.awt.*;
@@ -23,6 +24,8 @@ public class Jeu {
     private int nombre_batisseurs;
     private Point batisseur_en_cours;
     private final SoundPlayer construction_son;
+    private Observer observateur;
+    private boolean jeu_fini;
 
     /**
      * Instantie une classe jeu.
@@ -30,13 +33,15 @@ public class Jeu {
      * @param l
      * @param c
      */
-    public Jeu(int l, int c) {
+    public Jeu(int l, int c, Observer o) {
         situation = SELECTION;
         joueur_en_cours = JOUEUR1;
         plateau = new Plateau(l, c);
         nombre_batisseurs = 0;
         batisseur_en_cours = null;
         construction_son = new SoundPlayer("boulder_drop.wav");
+        observateur = o;
+        jeu_fini = false;
     }
 
     /**
@@ -69,7 +74,8 @@ public class Jeu {
         } else if (situation == DEPLACEMENT) { // déplace un batisseur aux coordonées l et c de la grille
             System.out.println("Déplacement du batisseur.");
             situation = avancer(l, c, batisseur_en_cours) ? CONSTRUCTION : DEPLACEMENT;
-        } else if (situation == CONSTRUCTION) { // construit un bâtiment aux coordonées l et c de la grille si possib
+            victoireJoueur();
+        } else if (!jeu_fini && situation == CONSTRUCTION) { // construit un bâtiment aux coordonées l et c de la grille si possib
             System.out.println("Construction.");
             if (construire(l, c, batisseur_en_cours)) {
                 construction_son.playSound();
@@ -100,6 +106,7 @@ public class Jeu {
     private void finTour() {
         joueur_en_cours = joueur_en_cours == JOUEUR1 ? JOUEUR2 : JOUEUR1; // BOUTON "VALIDER"
         batisseur_en_cours = null;
+        observateur.miseAjour();
     }
 
     /**
@@ -142,8 +149,6 @@ public class Jeu {
         }
     }
 
-
-
     private void printPlateau() {
         for (int i = 0; i < plateau.getLignes(); i++) {
             for (int j = 0; j < plateau.getColonnes(); j++) {
@@ -163,4 +168,16 @@ public class Jeu {
         return batisseur_en_cours;
     }
 
+    public void victoireJoueur(){
+        if(batisseur_en_cours!=null && plateau.getTypeBatiments(batisseur_en_cours.x,batisseur_en_cours.y) == Plateau.TOIT)
+        {
+            System.out.println("cest fini");
+            jeu_fini = true;
+            observateur.miseAjour();
+        }
+    }
+
+    public boolean estJeufini() {
+        return jeu_fini;
+    }
 }
