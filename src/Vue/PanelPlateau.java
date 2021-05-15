@@ -16,7 +16,6 @@ public class PanelPlateau extends JPanel implements Observer {
 
     private Jeu jeu;
     private JeuGraphique jg;
-    GraphicsEnvironment ge;
     Font lilly_belle;
     JLabel jt;
     int largeur, hauteur;
@@ -26,11 +25,11 @@ public class PanelPlateau extends JPanel implements Observer {
         this.hauteur = hauteur;
 
         try {
-            ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Ressources/font/LilyScriptOne.ttf")));
 
         } catch (IOException | FontFormatException e) {
-            //Handle exception
+            System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
         }
         lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT , 28);
         initialiserPanel();
