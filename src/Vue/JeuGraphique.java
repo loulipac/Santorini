@@ -15,7 +15,7 @@ public class JeuGraphique extends JComponent {
     private int largeur;
     private int hauteur;
     private int taille_case;
-    private final Image case_claire, case_fonce, coupole, etage_1, etage_2, etage_3, batisseur_bleu, batisseur_rouge,batisseur_rouge_selectionne,batisseur_bleu_selectionne,pas_rouge,pas_bleu,outil_bleu,outil_rouge;
+    private final Image case_claire, case_fonce, coupole, etage_1, etage_2, etage_3, batisseur_bleu, batisseur_rouge, batisseur_rouge_selectionne, batisseur_bleu_selectionne, pas_rouge, pas_bleu, outil_bleu, outil_rouge;
 
     public JeuGraphique(Jeu j) {
         this.jeu = j;
@@ -51,28 +51,39 @@ public class JeuGraphique extends JComponent {
         // Graphics 2D est le vrai type de l'objet passé en paramètre
         // Le cast permet d'avoir acces a un peu plus de primitives de dessin
         Graphics2D drawable = (Graphics2D) g;
+        setBorder(new LineBorder(Color.GREEN));
 
         largeur = getSize().width / plateau.getColonnes();
         hauteur = getSize().height / plateau.getLignes();
-        System.out.println(getSize().height);
 
         taille_case = Math.min(largeur, hauteur);
 
         // On efface tout
-        drawable.clearRect(0, 0, taille_case * plateau.getColonnes(), taille_case * plateau.getLignes());
+        //int nouvelle_origine = (getSize().width / 2) - (taille_case * plateau.getColonnes() / 2);
+        int nouvelle_origine = 0;
+        drawable.clearRect(
+                nouvelle_origine,
+                0,
+                taille_case * plateau.getColonnes(),
+                taille_case * plateau.getLignes() + nouvelle_origine
+        );
 
 
         Point batisseur_en_cours = jeu.getBatisseur_en_cours();
-        int batisseurs_ligne = batisseur_en_cours!=null ? batisseur_en_cours.x : -1;
-        int batisseurs_colonne = batisseur_en_cours!=null ? batisseur_en_cours.y : -1;
+        int batisseurs_ligne = batisseur_en_cours != null ? batisseur_en_cours.x : -1;
+        int batisseurs_colonne = batisseur_en_cours != null ? batisseur_en_cours.y : -1;
 
-        Image image_batisseurs,image_case,image_batiment;
+        Image image_batisseurs, image_case, image_batiment;
 
         for (int l = 0; l < plateau.getLignes(); l++) {
             for (int c = 0; c < plateau.getColonnes(); c++) {
 
+                Point position_case = new Point(
+                        c * taille_case + nouvelle_origine,
+                        l * taille_case
+                );
                 image_case = ((l + c) % 2 == 0) ? case_claire : case_fonce;
-                drawable.drawImage(image_case, c * taille_case, l * taille_case, taille_case, taille_case, null);
+                drawable.drawImage(image_case, position_case.x, position_case.y, taille_case, taille_case, null);
 
 
                 switch (plateau.getTypeBatiments(l, c)) {
@@ -83,36 +94,33 @@ public class JeuGraphique extends JComponent {
                     default -> image_batiment = null;
                 }
 
-                if(image_batiment!=null)
-                    drawable.drawImage(image_batiment, c * taille_case, l * taille_case, taille_case, taille_case, null);
+                if (image_batiment != null)
+                    drawable.drawImage(image_batiment, position_case.x, position_case.y, taille_case, taille_case, null);
 
-                if(plateau.getTypeBatisseurs(l, c)>0){
+                if (plateau.getTypeBatisseurs(l, c) > 0) {
 
                     boolean batisseur_selectionne = (batisseurs_ligne == l && batisseurs_colonne == c);
 
-                    if(plateau.getTypeBatisseurs(l, c)==Jeu.JOUEUR1)
-                    {
+                    if (plateau.getTypeBatisseurs(l, c) == Jeu.JOUEUR1) {
                         image_batisseurs = batisseur_selectionne ? batisseur_bleu_selectionne : batisseur_bleu;
-                    }
-                    else{
+                    } else {
                         image_batisseurs = batisseur_selectionne ? batisseur_rouge_selectionne : batisseur_rouge;
                     }
 
-                    drawable.drawImage(image_batisseurs, c * taille_case, l * taille_case, taille_case, taille_case, null);
+                    drawable.drawImage(image_batisseurs, position_case.x, position_case.y, taille_case, taille_case, null);
                 }
             }
         }
-        if(jeu.getSituation() == Jeu.DEPLACEMENT){
+        if (jeu.getSituation() == Jeu.DEPLACEMENT) {
             Image pas_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? pas_bleu : pas_rouge;
 
-            for(Point case_autour : plateau.getCasesAcessibles(jeu.getBatisseur_en_cours())){
+            for (Point case_autour : plateau.getCasesAcessibles(jeu.getBatisseur_en_cours())) {
                 drawable.drawImage(pas_joueur, case_autour.y * taille_case, case_autour.x * taille_case, taille_case, taille_case, null);
             }
-        }
-        else if(jeu.getSituation()==Jeu.CONSTRUCTION && !   jeu.estJeufini()){
+        } else if (jeu.getSituation() == Jeu.CONSTRUCTION && !jeu.estJeufini()) {
             Image outil_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? outil_bleu : outil_rouge;
 
-            for(Point constructions_autour : plateau.getConstructionsPossible(jeu.getBatisseur_en_cours())){
+            for (Point constructions_autour : plateau.getConstructionsPossible(jeu.getBatisseur_en_cours())) {
                 drawable.drawImage(outil_joueur, constructions_autour.y * taille_case, constructions_autour.x * taille_case, taille_case, taille_case, null);
             }
         }
