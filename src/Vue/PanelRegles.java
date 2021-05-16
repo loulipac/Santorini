@@ -4,7 +4,6 @@ import Modele.Constante;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -33,7 +32,6 @@ public class PanelRegles extends JPanel {
         int hauteur_panel = hauteur / 2;
         int largeur_sous_panel = largeur_panel / 3;
         int hauteur_sous_panel = hauteur_panel / 3;
-//        int espacement_entre_texte = hauteur_sous_panel / 40;
         int espacement_entre_texte = 0;
 
         setBackground(new Color(47, 112, 162));
@@ -58,7 +56,7 @@ public class PanelRegles extends JPanel {
         titreConstruction.setFont(lilly_belle);
 
         /* TextArea */
-        JTextArea texteCommentJouer = new JTextArea("Ce jeu se joue à 2 joueurs au tour par tour, soit joueur contre joueur, soit le joueur contre l'ordinateur.\n" +
+        JTextArea texteCommentJouer = new JTextArea("Ce jeu se joue à 2 joueurs au tour par tour.\n" +
                 "Le but du jeu est de monter le plus vite possible au sommet \n" +
                 "d'une tour de 3 étages qu'il faut construire.\n" +
                 "Chaque joueur dispose de 2 Ouvriers qu'il place sur le plateau au début de la partie.\n" +
@@ -85,9 +83,9 @@ public class PanelRegles extends JPanel {
         bRetour.addActionListener(this::actionBoutonRetourMenu);
 
         /* Images */
-        JLabel image_jouer = creerImage("src/Ressources/artwork/comment_jouer.png", hauteur_sous_panel, hauteur_sous_panel);
-        JLabel image_deplacement = creerImage("src/Ressources/artwork/deplacement.png", hauteur_sous_panel, hauteur_sous_panel);
-        JLabel image_construction = creerImage("src/Ressources/artwork/construction.png", hauteur_sous_panel, hauteur_sous_panel);
+        JLabel image_jouer = creerImage("src/Ressources/artwork/comment_jouer.png", largeur_sous_panel, hauteur_sous_panel);
+        JLabel image_deplacement = creerImage("src/Ressources/artwork/deplacement.png", largeur_sous_panel, hauteur_sous_panel);
+        JLabel image_construction = creerImage("src/Ressources/artwork/construction.png", largeur_sous_panel, hauteur_sous_panel);
 
         /* Panel */
         ReglesPanel panel = new ReglesPanel();
@@ -181,7 +179,6 @@ public class PanelRegles extends JPanel {
                         getSize().height,
                         this
                 );
-                System.out.println("draw.");
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Erreur image de fond: " + e.getMessage());
