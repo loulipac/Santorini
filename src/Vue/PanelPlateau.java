@@ -32,7 +32,7 @@ public class PanelPlateau extends JPanel implements Observer {
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
         }
-        lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT, 28);
+        lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT, 40);
         initialiserPanel();
         lancerJeu(largeur, hauteur);
 
@@ -146,7 +146,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
     public class TopPanel extends JPanel {
         public TopPanel() {
-            setBorder(new LineBorder(Color.red));
+//            setBorder(new LineBorder(Color.red));
             setOpaque(false);
             setLayout(new BorderLayout());
 
@@ -162,7 +162,7 @@ public class PanelPlateau extends JPanel implements Observer {
             jt.setBorder(null);
             jt.setFont(lilly_belle);
             jt.setForeground(Color.WHITE);
-            add(jt, BorderLayout.NORTH);
+            add(jt, BorderLayout.CENTER);
         }
     }
 
