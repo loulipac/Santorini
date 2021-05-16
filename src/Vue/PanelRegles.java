@@ -27,6 +27,12 @@ public class PanelRegles extends JPanel {
         initialiserPanel(largeur, hauteur);
     }
 
+    /**
+     * Ajoute tous les composants au panel
+     *
+     * @param largeur la largeur de la fenetre
+     * @param hauteur la hauteur de la fenetre
+     */
     public void initialiserPanel(int largeur, int hauteur) {
         int largeur_panel = largeur / 2;
         int hauteur_panel = hauteur / 2;

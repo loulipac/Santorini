@@ -36,13 +36,11 @@ public class PanelPlateau extends JPanel implements Observer {
         lancerJeu(largeur, hauteur);
     }
 
+    /**
+     * Ajoute tous les composants au panel
+     *
+     */
     public void initialiserPanel() {
-        /* BoxLayout */
-        //BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
-        //setLayout(boxlayout);
-
-        //setAlignmentX(Component.CENTER_ALIGNMENT);
-
         /* Label */
         JLabel titre = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
         titre.setAlignmentX(CENTER_ALIGNMENT);

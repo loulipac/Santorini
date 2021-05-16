@@ -62,24 +62,44 @@ class PanelMenu extends JPanel {
         setBackground(new Color(47, 112, 162));
     }
 
+    /**
+     * Remplace le contenu de la fenetre par les options
+     *
+     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     */
     public void actionBoutonJouer(ActionEvent e) {
         sound_button.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "options");
     }
 
+    /**
+     * Remplace le contenu de la fenetre par le plateau du jeu
+     *
+     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     */
     public void actionBoutonTutoriel(ActionEvent e) {
         sound_button.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "plateau");
     }
 
+    /**
+     * Remplace le contenu de la fenetre par les règles du jeu
+     *
+     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     */
     public void actionBoutonRegles(ActionEvent e) {
         sound_button.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "regles");
     }
 
+    /**
+     * Ferme la fenetre
+     *
+     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     */
     public void actionBoutonQuitter(ActionEvent e) {
         sound_button.playSound();
         System.exit(0);
