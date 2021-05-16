@@ -167,7 +167,7 @@ class PanelOptions extends JPanel {
             );
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Erreur image de fond: " + e.getMessage());
+            System.err.println("Erreur image de fond: " + e.getMessage());
         }
     }
 
@@ -197,7 +197,7 @@ class PanelOptions extends JPanel {
                 );
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Erreur image de fond: " + e.getMessage());
+                System.err.println("Erreur image de fond: " + e.getMessage());
             }
         }
     }

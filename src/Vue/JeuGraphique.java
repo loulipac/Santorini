@@ -40,7 +40,7 @@ public class JeuGraphique extends JComponent {
         try {
             return ImageIO.read(new FileInputStream(_name));
         } catch (Exception e) {
-            System.out.println(e);
+            System.err.println(e);
         }
         return null;
     }
