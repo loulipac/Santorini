@@ -5,7 +5,6 @@ import Modele.Jeu;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,6 +19,7 @@ public class PanelPlateau extends JPanel implements Observer {
     Font lilly_belle;
     JLabel jt;
     int largeur, hauteur;
+    Image colonne_rouge,colonne_bleu,arriere_plan;
 
     public PanelPlateau(int largeur, int hauteur) {
         this.largeur = largeur;
@@ -35,6 +35,10 @@ public class PanelPlateau extends JPanel implements Observer {
         lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT, 28);
         initialiserPanel();
         lancerJeu(largeur, hauteur);
+
+        colonne_rouge = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
+        colonne_bleu = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
+        arriere_plan = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/artwork/background_in_game.png");
     }
 
     /**
@@ -152,7 +156,7 @@ public class PanelPlateau extends JPanel implements Observer {
             add(titre, BorderLayout.CENTER);*/
             /* Texte de suivi du déroulement de la partie */
 
-            jt = new JLabel("C'est au tour du Joueur 1 (bleu)");
+            jt = new JLabel("C'est au tour du Joueur 1");
             jt.setAlignmentX(CENTER_ALIGNMENT);
             jt.setOpaque(false);
             jt.setBorder(null);
@@ -174,9 +178,9 @@ public class PanelPlateau extends JPanel implements Observer {
         largeur = getWidth();
         hauteur = getHeight();
         try {
-            BufferedImage img_bg = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/background_in_game.png"));
+
             g2d.drawImage(
-                    img_bg,
+                    arriere_plan,
                     0,
                     0,
                     getWidth(),
@@ -184,12 +188,11 @@ public class PanelPlateau extends JPanel implements Observer {
                     this
             );
 
-            BufferedImage img = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/banniere.png"));
-
+            Image colonne = (jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? colonne_bleu : colonne_rouge);
 //            float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre
 
             g2d.drawImage(
-                    img,
+                    colonne,
                     0,
                     0,
                     getWidth(), (int) (getHeight() * 0.25),
@@ -238,10 +241,11 @@ public class PanelPlateau extends JPanel implements Observer {
     public void miseAjour() {
         String annonce_tour_joueur;
         if (jeu.estJeufini())
-            annonce_tour_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? "Joueur 1 gagne (bleu)" : "Joueur 2 gagne (rouge)";
+            annonce_tour_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? "Joueur 1 gagne" : "Joueur 2 gagne";
         else {
-            annonce_tour_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? "C'est au tour du Joueur 1 (bleu)" : "C'est au tour du Joueur 2 (rouge)";
+            annonce_tour_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2";
         }
         jt.setText(annonce_tour_joueur);
+        repaint();
     }
 }

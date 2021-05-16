@@ -36,7 +36,7 @@ public class JeuGraphique extends JComponent {
         plateau = j.getPlateau();
     }
 
-    public Image readImage(String _name) {
+    public static Image readImage(String _name) {
         try {
             return ImageIO.read(new FileInputStream(_name));
         } catch (Exception e) {
