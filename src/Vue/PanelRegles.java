@@ -166,9 +166,13 @@ public class PanelRegles extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             try {
                 BufferedImage bg_regles = ImageIO.read(new File("src/Ressources/artwork/bg_regles.png"));
-                g.drawImage(
+                g2d.drawImage(
                         bg_regles,
                         0,
                         0,
@@ -199,10 +203,14 @@ public class PanelRegles extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Chargement de l"image de fond
         try {
             BufferedImage img_colonnes = ImageIO.read(new File("src/Ressources/artwork/columns.png"));
-            g.drawImage(
+            g2d.drawImage(
                     img_colonnes,
                     0,
                     0,
