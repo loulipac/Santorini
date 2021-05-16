@@ -75,6 +75,10 @@ public class PanelRegles extends JPanel {
         texteDeplacement.setOpaque(false);
         texteConstruction.setOpaque(false);
 
+        texteCommentJouer.setEditable(false);
+        texteDeplacement.setEditable(false);
+        texteConstruction.setEditable(false);
+
         /* Boutons */
         bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour.png", 415, 90);
         bRetour.addActionListener(this::actionBoutonRetourMenu);
