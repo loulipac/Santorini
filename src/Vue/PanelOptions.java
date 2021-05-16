@@ -38,14 +38,14 @@ class PanelOptions extends JPanel {
         titre.setMaximumSize(new Dimension(415, 100));
 
         /* JPanel */
-        JPanel contenu = new JPanel();
+        OptionPanel contenu = new OptionPanel();
         JPanel versus_panel = new JPanel();
         JPanel IA_panel = new JPanel();
         JPanel IA2_panel = new JPanel();
         JPanel boutons_principaux_panel = new JPanel();
 
         contenu.setAlignmentX(CENTER_ALIGNMENT);
-        contenu.setMaximumSize(new Dimension(largeur * 2/3, hauteur * 2/3));
+        contenu.setMaximumSize(new Dimension((int) (largeur * 0.55), hauteur * 2/3));
 
         boutons_principaux_panel.setOpaque(false);
         boutons_principaux_panel.setMaximumSize(new Dimension(largeur, hauteur / 10));
@@ -162,10 +162,14 @@ class PanelOptions extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Chargement de l"image de fond
         try {
             BufferedImage img_colonnes = ImageIO.read(new File("src/Ressources/artwork/columns.png"));
-            g.drawImage(
+            g2d.drawImage(
                     img_colonnes,
                     0,
                     0,
@@ -176,6 +180,37 @@ class PanelOptions extends JPanel {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erreur image de fond: " + e.getMessage());
+        }
+    }
+
+    private class OptionPanel extends JPanel {
+        public OptionPanel() {
+            super();
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            try {
+                BufferedImage bg_panel = ImageIO.read(new File("src/Ressources/artwork/bg_choix_jeu.png"));
+                g2d.drawImage(
+                        bg_panel,
+                        0,
+                        0,
+                        getWidth(),
+                        getHeight(),
+                        this
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Erreur image de fond: " + e.getMessage());
+            }
         }
     }
 
