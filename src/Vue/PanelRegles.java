@@ -145,12 +145,15 @@ public class PanelRegles extends JPanel {
         panel_texte_construction.setPreferredSize(new Dimension(largeur_sous_panel * 2, hauteur_sous_panel));
 
         /* Adding */
-        sous_panel_1.add(panel_image_jouer, BorderLayout.WEST);
-        sous_panel_1.add(panel_texte_jouer, BorderLayout.EAST);
-        sous_panel_2.add(panel_texte_deplacement, BorderLayout.WEST);
-        sous_panel_2.add(panel_image_deplacement, BorderLayout.EAST);
-        sous_panel_3.add(panel_image_construction, BorderLayout.WEST);
-        sous_panel_3.add(panel_texte_construction, BorderLayout.EAST);
+        sous_panel_1.add(panel_texte_jouer, BorderLayout.WEST);
+        sous_panel_1.add(panel_image_jouer, BorderLayout.EAST);
+
+        sous_panel_2.add(panel_image_deplacement, BorderLayout.WEST);
+        sous_panel_2.add(panel_texte_deplacement, BorderLayout.EAST);
+
+        sous_panel_3.add(panel_texte_construction, BorderLayout.WEST);
+        sous_panel_3.add(panel_image_construction, BorderLayout.EAST);
+
 
         panel.add(sous_panel_1);
         panel.add(sous_panel_2);
