@@ -11,7 +11,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 /**
- *
  * @TODO : Changer le logo titre
  */
 
@@ -31,10 +30,10 @@ class PanelMenu extends JPanel {
 
         /* Button */
 
-        bJouer = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/jouer.png", Constante.CHEMIN_RESSOURCE + "/bouton/jouer_hover.png", largeur/4, largeur/20);
-        bTutoriel = new Bouton(Constante .CHEMIN_RESSOURCE + "/bouton/tutoriel.png", Constante.CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png", largeur/4, largeur/20);
-        bRegles = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", largeur/4, largeur/20);
-        bQuitter = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/quitter.png", Constante.CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", largeur/4, largeur/20);
+        bJouer = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/jouer.png", Constante.CHEMIN_RESSOURCE + "/bouton/jouer_hover.png", largeur / 4, largeur / 20);
+        bTutoriel = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/tutoriel.png", Constante.CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png", largeur / 4, largeur / 20);
+        bRegles = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", largeur / 4, largeur / 20);
+        bQuitter = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/quitter.png", Constante.CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", largeur / 4, largeur / 20);
         // bFullScreen = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", largeur/, largeur*0.1);
 
         /* Label */
@@ -88,23 +87,27 @@ class PanelMenu extends JPanel {
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Chargement de l"image de fond
         try {
             BufferedImage img = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/base.png"));
             Dimension img_dim = new Dimension(img.getWidth(), img.getHeight());
             Dimension taille_max = new Dimension((int) (getWidth() * 0.8), (int) (getHeight() * 0.8));
             Dimension taille_redimensionnee = conserverRatio(img_dim, taille_max);
-            g.drawImage(
+            g2d.drawImage(
                     img,
-                    getWidth() / 2 - img.getWidth() / 2,
-                    getHeight() / 2 - img.getHeight() / 2,
+                    getWidth() / 2 - ((int) (taille_redimensionnee.getWidth() / 2)),
+                    getHeight() / 2 - ((int) (taille_redimensionnee.getHeight() / 2)),
                     taille_redimensionnee.width,
                     taille_redimensionnee.height,
                     this
             );
 
             BufferedImage img_colonnes = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/columns.png"));
-            g.drawImage(
+            g2d.drawImage(
                     img_colonnes,
                     0,
                     0,

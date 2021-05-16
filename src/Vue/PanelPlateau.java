@@ -132,13 +132,17 @@ public class PanelPlateau extends JPanel implements Observer {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         largeur = getWidth();
         hauteur = getHeight();
         System.out.println("largeur : "+largeur+" Hauteur : "+hauteur);
         try {
             BufferedImage img_bg = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/background_in_game.png"));
-            g.drawImage(
+            g2d.drawImage(
                     img_bg,
                     0,
                     0,
@@ -151,7 +155,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
 //            float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre
 
-            g.drawImage(
+            g2d.drawImage(
                     img,
                     0,
                     0,
