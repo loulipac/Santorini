@@ -51,24 +51,75 @@ public class PanelPlateau extends JPanel implements Observer {
 
         TopPanel tp = new TopPanel();
         JGamePanel jgame = new JGamePanel();
-
-        JButton bRetour = new JButton("Retour au menu");
-        bRetour.setAlignmentX(CENTER_ALIGNMENT);
-        bRetour.addActionListener(this::actionBoutonRetourMenu);
+        JButtonPanel panel_bouton = new JButtonPanel();
 
         // setting position on the grid bag layout
         c.fill = GridBagConstraints.VERTICAL;
-        c.weighty = 0.25;
+        c.weighty = 0.22;
         c.gridy = 0;
         add(tp, c);
         c.fill = GridBagConstraints.VERTICAL;
         c.weighty = 0.65;
         c.gridy = 1;
         add(jgame, c);
-        c.fill = GridBagConstraints.VERTICAL;
-        c.weighty = 0.10;
+        c.fill = GridBagConstraints.BOTH;
+        c.weighty = 0.13;
         c.gridy = 2;
-        add(bRetour, c);
+        add(panel_bouton, c);
+    }
+
+    public class JButtonPanel extends JPanel {
+        public JButtonPanel() {
+            setOpaque(false);
+            setLayout(new GridLayout(1, 5));
+            Dimension bouton_taille = new Dimension(
+                    largeur / 5,
+                    hauteur / 19
+            );
+
+            JPanel cote = new JPanel();
+            cote.setOpaque(false);
+            //cote.setLayout(new GridLayout(2, 1));
+
+            Bouton bRetour = new Bouton(
+                    Constante.CHEMIN_RESSOURCE + "/bouton/quitter.png",
+                    Constante.CHEMIN_RESSOURCE + "/bouton/quitter_hover.png",
+                    bouton_taille.width,
+                    bouton_taille.height
+            );
+            bRetour.addActionListener(PanelPlateau.this::actionBoutonRetourMenu);
+
+            Bouton bNouvelle = new Bouton(
+                    Constante.CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png",
+                    Constante.CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png",
+                    bouton_taille.width,
+                    bouton_taille.height
+            );
+            bNouvelle.addActionListener(PanelPlateau.this::actionBoutonNouvellePartie);
+
+
+            Bouton bFin = new Bouton(
+                    Constante.CHEMIN_RESSOURCE + "/bouton/fin_tour.png",
+                    Constante.CHEMIN_RESSOURCE + "/bouton/fin_tour.png",
+                    bouton_taille.width,
+                    bouton_taille.height
+            );
+            bFin.addActionListener(PanelPlateau.this::actionBoutonFinDuTour);
+
+            Bouton bAnnuler = new Bouton(
+                    Constante.CHEMIN_RESSOURCE + "/bouton/annuler.png",
+                    Constante.CHEMIN_RESSOURCE + "/bouton/annuler.png",
+                    bouton_taille.width,
+                    bouton_taille.height
+            );
+            bAnnuler.addActionListener(PanelPlateau.this::actionBoutonAnnuler);
+
+
+            add(bNouvelle);
+            add(bAnnuler);
+            add(bFin);
+            add(bRetour);
+        }
     }
 
     public class JGamePanel extends JPanel {
@@ -122,7 +173,6 @@ public class PanelPlateau extends JPanel implements Observer {
 
         largeur = getWidth();
         hauteur = getHeight();
-        System.out.println("largeur : " + largeur + " Hauteur : " + hauteur);
         try {
             BufferedImage img_bg = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/background_in_game.png"));
             g2d.drawImage(
@@ -168,6 +218,20 @@ public class PanelPlateau extends JPanel implements Observer {
     public void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "menu");
+    }
+
+    public void actionBoutonFinDuTour(ActionEvent e) {
+        // TODO : Changement joueur
+        System.out.println("NOT IMPLEMENTED");
+    }
+
+    public void actionBoutonAnnuler(ActionEvent e) {
+        // TODO : Redémarrer le tour pour le joueur en cours
+        System.out.println("NOT IMPLEMENTED");
+    }
+
+    public void actionBoutonNouvellePartie(ActionEvent e) {
+        // TODO : Reset la grille et tout ce qui va avec
     }
 
     @Override
