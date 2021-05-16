@@ -186,7 +186,7 @@ class PanelOptions extends JPanel {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             try {
-                BufferedImage bg_panel = ImageIO.read(new File("src/Ressources/artwork/bg_choix_jeu.png"));
+                BufferedImage bg_panel = ImageIO.read(new File("src/Ressources/artwork/bg_regles.png"));
                 g2d.drawImage(
                         bg_panel,
                         0,
