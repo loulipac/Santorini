@@ -85,7 +85,7 @@ public class PanelRegles extends JPanel {
         JLabel image_construction = creerImage("src/Ressources/artwork/construction.png", hauteur_sous_panel, hauteur_sous_panel);
 
         /* Panel */
-        JPanel panel = new JPanel();
+        ReglesPanel panel = new ReglesPanel();
         JPanel sous_panel_1 = new JPanel(new BorderLayout());
         JPanel sous_panel_2 = new JPanel(new BorderLayout());
         JPanel sous_panel_3 = new JPanel(new BorderLayout());
@@ -100,6 +100,16 @@ public class PanelRegles extends JPanel {
         sous_panel_1.setMaximumSize(new Dimension(largeur_panel, hauteur_sous_panel));
         sous_panel_2.setMaximumSize(new Dimension(largeur_panel, hauteur_sous_panel));
         sous_panel_3.setMaximumSize(new Dimension(largeur_panel, hauteur_sous_panel));
+
+        sous_panel_1.setOpaque(false);
+        sous_panel_2.setOpaque(false);
+        sous_panel_3.setOpaque(false);
+        panel_image_jouer.setOpaque(false);
+        panel_texte_jouer.setOpaque(false);
+        panel_texte_deplacement.setOpaque(false);
+        panel_image_deplacement.setOpaque(false);
+        panel_image_construction.setOpaque(false);
+        panel_texte_construction.setOpaque(false);
 
         panel_image_jouer.add(image_jouer);
         panel_image_jouer.setPreferredSize(new Dimension(largeur_sous_panel, hauteur_sous_panel));
@@ -141,6 +151,33 @@ public class PanelRegles extends JPanel {
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
         add(bRetour);
         setVisible(true);
+    }
+
+    private class ReglesPanel extends JPanel {
+        public ReglesPanel() {
+            super();
+            setOpaque(false);
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            try {
+                BufferedImage bg_regles = ImageIO.read(new File("src/Ressources/artwork/bg_regles.png"));
+                g.drawImage(
+                        bg_regles,
+                        0,
+                        0,
+                        getSize().width,
+                        getSize().height,
+                        this
+                );
+                System.out.println("draw.");
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Erreur image de fond: " + e.getMessage());
+            }
+        }
     }
 
     public void actionBoutonRetourMenu(ActionEvent e) {
