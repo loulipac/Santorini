@@ -33,7 +33,8 @@ public class PanelRegles extends JPanel {
         int hauteur_panel = hauteur / 2;
         int largeur_sous_panel = largeur_panel / 3;
         int hauteur_sous_panel = hauteur_panel / 3;
-        int espacement_entre_texte = hauteur_sous_panel / 25;
+//        int espacement_entre_texte = hauteur_sous_panel / 40;
+        int espacement_entre_texte = 0;
 
         setBackground(new Color(47, 112, 162));
         BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -57,19 +58,19 @@ public class PanelRegles extends JPanel {
         titreConstruction.setFont(lilly_belle);
 
         /* TextArea */
-        JTextArea texteCommentJouer = new JTextArea("En partant du premier joueur, chaque joueur réalise son tour.\n" +
-                "A votre tour, sélectionnez un de vos Ouvriers.\n" +
-                "Vous devez le déplacer et ensuite construire avec l'Ouvrier choisi.");
+        JTextArea texteCommentJouer = new JTextArea("Ce jeu se joue à 2 joueurs au tour par tour, soit joueur contre joueur, soit le joueur contre l'ordinateur.\n" +
+                "Le but du jeu est de monter le plus vite possible au sommet \n" +
+                "d'une tour de 3 étages qu'il faut construire.\n" +
+                "Chaque joueur dispose de 2 Ouvriers qu'il place sur le plateau au début de la partie.\n" +
+                "A chaque tour, le joueur doit sélectionner un ouvrier à déplacer\n" +
+                "et construire un étage dans les cases adjacentes.");
 
-        JTextArea texteDeplacement = new JTextArea("L'Ouvrier choisi peut se déplacer sur un \n" +
-                "des (jusqu'à) 8 emplacements adjacents.\n" +
-                "Un Ouvrier peut monter au maximum un étage, descendre d'autant d'étages qu'il le\n" +
-                "souhaite et se déplacer sur un même niveau.\n" +
-                "Un Ouvrier ne peut pas monter plus d'un étage.");
+        JTextArea texteDeplacement = new JTextArea("L'Ouvrier choisi peut se déplacer sur un des emplacements proposés. \n" +
+                "L'Ouvrier ne peut monter que d'un étage à la fois et ne peut pas se déplacer sur un dôme.");
 
-        JTextArea texteConstruction = new JTextArea("Vous pouvez construire sur n'importe quel niveau.\n" +
-                "On considère une tour avec 3 Blocs et un Dôme\n" +
-                "comme une \"Tour Complète”.");
+        JTextArea texteConstruction = new JTextArea("Un Ouvrier peut construire un étage sur les emplacements proposés.\n" +
+                "L'Ouvrier peut poser un dôme en haut de la tour pour bloquer son adversaire. \n" +
+                "On considère une tour de 3 étages et un dôme comme une 'Tour Complète'.");
 
         texteCommentJouer.setOpaque(false);
         texteDeplacement.setOpaque(false);
