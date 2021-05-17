@@ -69,11 +69,11 @@ public class PanelRegles extends JPanel {
                 "A chaque tour, le joueur doit sélectionner un ouvrier à déplacer\n" +
                 "et construire un étage dans les cases adjacentes.");
 
-        JTextArea texteDeplacement = new JTextArea("L'Ouvrier choisi peut se déplacer sur un des emplacements proposés. \n" +
-                "L'Ouvrier ne peut monter que d'un étage à la fois et ne peut pas se déplacer sur un dôme.");
+        JTextArea texteDeplacement = new JTextArea("Le batisseur choisi peut se déplacer sur un des emplacements proposés. \n" +
+                "Le batisseur ne peut monter que d'un étage à la fois et ne peut pas se déplacer sur un dôme.");
 
-        JTextArea texteConstruction = new JTextArea("Un Ouvrier peut construire un étage sur les emplacements proposés.\n" +
-                "L'Ouvrier peut poser un dôme en haut de la tour pour bloquer son adversaire. \n" +
+        JTextArea texteConstruction = new JTextArea("Un batisseur peut construire un étage sur les emplacements proposés.\n" +
+                "Le batisseur peut poser un dôme en haut de la tour pour bloquer son adversaire. \n" +
                 "On considère une tour de 3 étages et un dôme comme une 'Tour Complète'.");
 
         texteCommentJouer.setOpaque(false);
