@@ -3,12 +3,9 @@ package Vue;
 import Modele.Constante;
 import Modele.Jeu;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -151,10 +148,10 @@ public class PanelPlateau extends JPanel implements Observer {
             setOpaque(false);
             setLayout(new BorderLayout());
 
-            /*JLabel titre = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
-            titre.setAlignmentX(CENTER_ALIGNMENT);
-            titre.setBorder(new LineBorder(Color.cyan));
-            add(titre, BorderLayout.CENTER);*/
+            /*JLabel logo = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
+            logo.setAlignmentX(CENTER_ALIGNMENT);
+            logo.setBorder(new LineBorder(Color.cyan));
+            add(logo, BorderLayout.CENTER);*/
             /* Texte de suivi du déroulement de la partie */
 
             jt = new JLabel("C'est au tour du Joueur 1");
@@ -221,7 +218,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
     public void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getCardLayout().show(f.mainPanel, "menu");
+        f.getPileCarte().show(f.panelPrincipal, "menu");
     }
 
     public void actionBoutonFinDuTour(ActionEvent e) {

@@ -1,7 +1,5 @@
 package Vue;
 
-import Modele.Constante;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +10,7 @@ import java.io.IOException;
 
 public class PanelRegles extends JPanel {
     private Bouton bRetour;
-    private JLabel titre;
+    private JLabel logo;
     Font lilly_belle;
 
     public PanelRegles(int largeur, int hauteur) {
@@ -45,11 +43,11 @@ public class PanelRegles extends JPanel {
         setLayout(boxlayout);
 
         /* Label */
-        titre = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
-        titre.setAlignmentX(CENTER_ALIGNMENT);
-        titre.setMaximumSize(new Dimension(415, 100));
+        logo = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
+        logo.setAlignmentX(CENTER_ALIGNMENT);
+        logo.setMaximumSize(new Dimension(415, 100));
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 10)));
-        add(titre);
+        add(logo);
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 20)));
 
 
@@ -61,19 +59,24 @@ public class PanelRegles extends JPanel {
         titreDeplacement.setFont(lilly_belle);
         titreConstruction.setFont(lilly_belle);
 
+        titreCommentJouer.setForeground(new Color(82,60,43));
+        titreDeplacement.setForeground(new Color(82,60,43));
+        titreConstruction.setForeground(new Color(82,60,43));
+
+
         /* TextArea */
         JTextArea texteCommentJouer = new JTextArea("Ce jeu se joue à 2 joueurs au tour par tour.\n" +
                 "Le but du jeu est de monter le plus vite possible au sommet \n" +
                 "d'une tour de 3 étages qu'il faut construire.\n" +
-                "Chaque joueur dispose de 2 Ouvriers qu'il place sur le plateau au début de la partie.\n" +
-                "A chaque tour, le joueur doit sélectionner un ouvrier à déplacer\n" +
+                "Chaque joueur dispose de 2 bâtisseur qu'il place sur le plateau au début de la partie.\n" +
+                "A chaque tour, le joueur doit sélectionner un bâtisseur à déplacer\n" +
                 "et construire un étage dans les cases adjacentes.");
 
-        JTextArea texteDeplacement = new JTextArea("Le batisseur choisi peut se déplacer sur un des emplacements proposés. \n" +
-                "Le batisseur ne peut monter que d'un étage à la fois et ne peut pas se déplacer sur un dôme.");
+        JTextArea texteDeplacement = new JTextArea("Le bâtisseur choisi peut se déplacer sur un des emplacements proposés. \n" +
+                "Le bâtisseur ne peut monter que d'un étage à la fois et ne peut pas se déplacer sur un dôme.");
 
-        JTextArea texteConstruction = new JTextArea("Un batisseur peut construire un étage sur les emplacements proposés.\n" +
-                "Le batisseur peut poser un dôme en haut de la tour pour bloquer son adversaire. \n" +
+        JTextArea texteConstruction = new JTextArea("Un bâtisseur peut construire un étage sur les emplacements proposés.\n" +
+                "Le bâtisseur peut poser un dôme en haut de la tour pour bloquer son adversaire. \n" +
                 "On considère une tour de 3 étages et un dôme comme une 'Tour Complète'.");
 
         texteCommentJouer.setOpaque(false);
@@ -85,7 +88,7 @@ public class PanelRegles extends JPanel {
         texteConstruction.setEditable(false);
 
         /* Boutons */
-        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour.png", 415, 90);
+        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour_hover.png", largeur / 4, largeur / 20);
         bRetour.addActionListener(this::actionBoutonRetourMenu);
 
         /* Images */
@@ -197,7 +200,7 @@ public class PanelRegles extends JPanel {
 
     public void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f2.getCardLayout().show(f2.mainPanel, "menu");
+        f2.getPileCarte().show(f2.panelPrincipal, "menu");
     }
 
     public JLabel creerImage(String image, int largeur, int hauteur) {

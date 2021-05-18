@@ -1,10 +1,9 @@
 package Modele;
 
 import Vue.Observer;
-import Vue.SoundPlayer;
+import Vue.LecteurSon;
 
 import java.awt.*;
-import java.util.ArrayList;
 
 /**
  *
@@ -24,7 +23,7 @@ public class Jeu {
     private int situation;
     private int nombre_batisseurs;
     private Point batisseur_en_cours;
-    private final SoundPlayer construction_son;
+    private final LecteurSon construction_son;
     private Observer observateur;
     private boolean jeu_fini;
 
@@ -40,7 +39,7 @@ public class Jeu {
         plateau = new Plateau(l, c);
         nombre_batisseurs = 0;
         batisseur_en_cours = null;
-        construction_son = new SoundPlayer("boulder_drop.wav");
+        construction_son = new LecteurSon("boulder_drop.wav");
         observateur = o;
         jeu_fini = false;
     }

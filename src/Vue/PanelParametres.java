@@ -1,20 +1,20 @@
 package Vue;
 
-import Modele.Constante;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-class PanelOptions extends JPanel {
-    private Bouton bRetour, bCommencer;
+class PanelParametres extends JPanel {
+    private Bouton bAbandonner, bNouvellePartie, bSauvegarder, bReprendre;
     Font lilly_belle;
+    private LecteurSon son_bouton;
 
-    public PanelOptions(int largeur, int hauteur) {
+    public PanelParametres(int largeur, int hauteur) {
+        son_bouton = new LecteurSon("menu_click.wav");
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Ressources/font/LilyScriptOne.ttf")));
@@ -22,7 +22,7 @@ class PanelOptions extends JPanel {
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
         }
-        lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT , 20);
+        lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT , 30);
         initialiserPanel(largeur, hauteur);
     }
 
@@ -39,110 +39,62 @@ class PanelOptions extends JPanel {
 
         /* Label */
         JLabel logo = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
-        JLabel versus_texte = new JLabel("Mode de jeu");
-        JLabel IA_texte = new JLabel("Difficulté de l'IA");
-
-        versus_texte.setFont(lilly_belle);
-        IA_texte.setFont(lilly_belle);
+        JLabel parametres_texte = new JLabel("Paramètres");
 
         logo.setAlignmentX(CENTER_ALIGNMENT);
         logo.setMaximumSize(new Dimension(largeur/3, largeur/9));
 
+        parametres_texte.setForeground(new Color(82,60,43));
+        parametres_texte.setFont(lilly_belle);
+
         /* JPanel */
-        OptionPanel contenu = new OptionPanel();
-        JPanel versus_panel = new JPanel();
-        JPanel IA_panel = new JPanel();
-        JPanel boutons_principaux_panel = new JPanel();
+        ParametresPanel contenu = new ParametresPanel();
 
         contenu.setAlignmentX(CENTER_ALIGNMENT);
         contenu.setMaximumSize(new Dimension((int) (largeur * 0.55), hauteur * 2/3));
 
-        versus_panel.setOpaque(false);
-        IA_panel.setOpaque(false);
-        boutons_principaux_panel.setOpaque(false);
-
-        boutons_principaux_panel.setMaximumSize(new Dimension(largeur, hauteur / 10));
-        boutons_principaux_panel.setBorder(null);
-
         /* Boutons*/
-        ButtonGroup adversaires_boutons = new ButtonGroup();
-        ButtonGroup boutons_IA = new ButtonGroup();
-
-        JRadioButton joueur_joueur = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/joueur_contre_joueur",largeur/6, largeur / 30, adversaires_boutons);
-        JRadioButton joueur_ia = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia",largeur/6, largeur / 30, adversaires_boutons);
-
-        JRadioButton facile = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/facile",largeur/6, largeur / 30, boutons_IA);
-        JRadioButton normale = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/normale",largeur/6, largeur / 30, boutons_IA);
-        JRadioButton difficile = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/difficile",largeur/6, largeur / 30, boutons_IA);
-
-        bCommencer = new Bouton("src/Ressources/bouton/commencer_la_partie.png", "src/Ressources/bouton/commencer_la_partie_hover.png", largeur / 4, largeur / 20);
-        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour_hover.png", largeur / 4, largeur / 20);
+        bAbandonner = new Bouton("src/Ressources/bouton/abandonner.png", "src/Ressources/bouton/abandonner_hover.png", largeur / 6, largeur / 30);
+        bNouvellePartie = new Bouton("src/Ressources/bouton/nouvelle_partie.png", "src/Ressources/bouton/nouvelle_partie_hover.png", largeur / 6, largeur / 30);
+        bSauvegarder = new Bouton("src/Ressources/bouton/sauvegarder.png", "src/Ressources/bouton/sauvegarder_hover.png", largeur / 6, largeur / 30);
+        bReprendre = new Bouton("src/Ressources/bouton/reprendre.png", "src/Ressources/bouton/reprendre_hover.png", largeur / 4, largeur / 20);
 
         /* Evenements */
-        bRetour.addActionListener(this::actionBoutonRetourMenu);
 
-        joueur_joueur.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                IA_texte.setVisible(false);
-                IA_panel.setVisible(false);
-            }
-        });
-
-        joueur_ia.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                IA_texte.setVisible(true);
-                IA_panel.setVisible(true);
-            }
-        });
-
-        /* Add dans les sous-panel */
-        versus_panel.add(joueur_joueur);
-        versus_panel.add(joueur_ia);
-
-        IA_panel.add(facile);
-        IA_panel.add(normale);
-        IA_panel.add(difficile);
-
-        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
-        contenu.add(versus_texte);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
-        contenu.add(versus_panel);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
-        contenu.add(IA_texte);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
-        contenu.add(IA_panel);
-        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
-
-        boutons_principaux_panel.add(bRetour);
-        boutons_principaux_panel.add(bCommencer);
-
-        /* Selection par défaut des boutons radio*/
-        joueur_joueur.setSelected(true);
-        facile.setSelected(true);
-        IA_panel.setVisible(false);
-        IA_texte.setVisible(false);
+        bReprendre.addActionListener(this::actionBoutonReprendre);
 
         /* Adding */
-        add(Box.createRigidArea(new Dimension(largeur, hauteur / 15)));
+
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
+        contenu.add(parametres_texte);
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
+        contenu.add(bAbandonner);
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
+        contenu.add(bNouvellePartie);
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
+        contenu.add(bSauvegarder);
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
+
+        add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
         add(logo);
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
         add(contenu);
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
-        add(boutons_principaux_panel);
+        add(bReprendre);
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
 
     }
 
     /**
-     * Change l'affichage de la fenetre par le menu
+     * Remet l'affichage du jeu
      *
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
-    public void actionBoutonRetourMenu(ActionEvent e) {
+    public void actionBoutonReprendre(ActionEvent e) {
+        son_bouton.playSound();
         Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f2.getPileCarte().show(f2.panelPrincipal, "menu");
+        f2.getPileCarte().show(f2.panelPrincipal, "plateau");
     }
 
 
@@ -169,8 +121,8 @@ class PanelOptions extends JPanel {
         }
     }
 
-    private class OptionPanel extends JPanel {
-        public OptionPanel() {
+    private class ParametresPanel extends JPanel {
+        public ParametresPanel() {
             super();
             setOpaque(false);
         }
@@ -225,5 +177,4 @@ class PanelOptions extends JPanel {
 
         return new Dimension(nouvelle_largeur, nouvelle_hauteur);
     }
-
 }

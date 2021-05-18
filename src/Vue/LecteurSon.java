@@ -5,10 +5,10 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.io.File;
 
-public class SoundPlayer {
+public class LecteurSon {
     File f;
 
-    public SoundPlayer(String sound) {
+    public LecteurSon(String sound) {
         f = new File("./src/Ressources/sons/" + sound);
     }
 
