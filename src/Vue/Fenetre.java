@@ -10,8 +10,8 @@ import java.awt.*;
  */
 public class Fenetre extends JFrame {
 
-    CardLayout cardLayout;
-    JPanel mainPanel;
+    CardLayout pileCarte;
+    JPanel panelPrincipal;
     PanelMenu menu;
     PanelOptions options;
     PanelRegles regles;
@@ -24,27 +24,27 @@ public class Fenetre extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        cardLayout = new CardLayout();
-        mainPanel = new JPanel(cardLayout);
+        pileCarte = new CardLayout();
+        panelPrincipal = new JPanel(pileCarte);
         menu = new PanelMenu(getSize().width, getSize().height);
         options = new PanelOptions(getSize().width, getSize().height);
         regles = new PanelRegles(getSize().width, getSize().height);
         plateau = new PanelPlateau(getSize().width, getSize().height);
         parametres = new PanelParametres(getSize().width, getSize().height);
 
-        mainPanel.add(menu, "menu");
-        mainPanel.add(options, "options");
-        mainPanel.add(regles, "regles");
-        mainPanel.add(plateau, "plateau");
-        mainPanel.add(parametres, "parametres");
+        panelPrincipal.add(menu, "menu");
+        panelPrincipal.add(options, "options");
+        panelPrincipal.add(regles, "regles");
+        panelPrincipal.add(plateau, "plateau");
+        panelPrincipal.add(parametres, "parametres");
 
-        add(mainPanel);
+        add(panelPrincipal);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
 
-    public CardLayout getCardLayout() {
-        return cardLayout;
+    public CardLayout getPileCarte() {
+        return pileCarte;
     }
 
     public static void main(String[] args) {

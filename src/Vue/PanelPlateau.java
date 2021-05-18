@@ -217,7 +217,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
     public void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getCardLayout().show(f.mainPanel, "menu");
+        f.getPileCarte().show(f.panelPrincipal, "menu");
     }
 
     public void actionBoutonFinDuTour(ActionEvent e) {

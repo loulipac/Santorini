@@ -4,7 +4,6 @@ import Modele.Constante;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -14,10 +13,10 @@ class PanelMenu extends JPanel {
 
     private Bouton bJouer, bTutoriel, bRegles, bQuitter, bFullScreen, bParametres;
     private JLabel logo;
-    private SoundPlayer son_bouton;
+    private LecteurSon son_bouton;
 
     public PanelMenu(int largeur, int hauteur) {
-        son_bouton = new SoundPlayer("menu_click.wav");
+        son_bouton = new LecteurSon("menu_click.wav");
         /* BoxLayout */
 
 /*        JPanel pListeMenu = new JPanel();
@@ -94,12 +93,12 @@ class PanelMenu extends JPanel {
     public void actionBoutonJouer(ActionEvent e) {
         son_bouton.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getCardLayout().show(f.mainPanel, "options");
+        f.getPileCarte().show(f.panelPrincipal, "options");
     }
     public void actionBoutonParametres(ActionEvent e) {
         son_bouton.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getCardLayout().show(f.mainPanel, "parametres");
+        f.getPileCarte().show(f.panelPrincipal, "parametres");
     }
 
 
@@ -111,7 +110,7 @@ class PanelMenu extends JPanel {
     public void actionBoutonTutoriel(ActionEvent e) {
         son_bouton.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getCardLayout().show(f.mainPanel, "plateau");
+        f.getPileCarte().show(f.panelPrincipal, "plateau");
     }
 
     /**
@@ -122,7 +121,7 @@ class PanelMenu extends JPanel {
     public void actionBoutonRegles(ActionEvent e) {
         son_bouton.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getCardLayout().show(f.mainPanel, "regles");
+        f.getPileCarte().show(f.panelPrincipal, "regles");
     }
 
     /**

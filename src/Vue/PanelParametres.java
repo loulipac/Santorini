@@ -1,8 +1,5 @@
 package Vue;
 
-import Modele.Constante;
-import Modele.Plateau;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -14,10 +11,10 @@ import java.io.IOException;
 class PanelParametres extends JPanel {
     private Bouton bAbandonner, bNouvellePartie, bSauvegarder, bReprendre;
     Font lilly_belle;
-    private SoundPlayer son_bouton;
+    private LecteurSon son_bouton;
 
     public PanelParametres(int largeur, int hauteur) {
-        son_bouton = new SoundPlayer("menu_click.wav");
+        son_bouton = new LecteurSon("menu_click.wav");
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Ressources/font/LilyScriptOne.ttf")));
@@ -97,7 +94,7 @@ class PanelParametres extends JPanel {
     public void actionBoutonReprendre(ActionEvent e) {
         son_bouton.playSound();
         Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f2.getCardLayout().show(f2.mainPanel, "plateau");
+        f2.getPileCarte().show(f2.panelPrincipal, "plateau");
     }
 
 
