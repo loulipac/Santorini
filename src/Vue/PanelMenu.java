@@ -13,9 +13,8 @@ class PanelMenu extends JPanel {
 
     private Bouton bJouer, bTutoriel, bRegles, bQuitter, bFullScreen, bParametres;
     private JLabel logo;
-    private SoundPlayer son_bouton;
-    Image arriere_plan,colonnes;
     private LecteurSon son_bouton;
+    Image arriere_plan,colonnes;
 
     public PanelMenu(int largeur, int hauteur) {
         son_bouton = new LecteurSon("menu_click.wav");
