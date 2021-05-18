@@ -12,12 +12,13 @@ import java.util.ArrayList;
 public class Jeu {
     private Plateau plateau;
 
-    public static final int JOUEUR1 = 8;
-    public static final int JOUEUR2 = 16;
+    public static final int JOUEUR1 = Constante.JOUEUR1;
+    public static final int JOUEUR2 = Constante.JOUEUR2;
 
-    public static final int SELECTION = 0;
-    public static final int DEPLACEMENT = 1;
-    public static final int CONSTRUCTION = 2;
+    public static final int SELECTION = Constante.SELECTION;
+    public static final int DEPLACEMENT = Constante.DEPLACEMENT;
+    public static final int CONSTRUCTION = Constante.CONSTRUCTION;
+    public static final int PLACEMENT = Constante.PLACEMENT;
 
     private int joueur_en_cours;
     private int situation;
@@ -34,7 +35,7 @@ public class Jeu {
      * @param c
      */
     public Jeu(int l, int c, Observer o) {
-        situation = SELECTION;
+        situation = PLACEMENT;
         joueur_en_cours = JOUEUR1;
         plateau = new Plateau(l, c);
         nombre_batisseurs = 0;
@@ -55,7 +56,7 @@ public class Jeu {
      */
     public void jouer(int l, int c) {
         // placement des batisseurs sur la grille
-        if (nombre_batisseurs < 4) {
+        if (situation == PLACEMENT) {
             if (plateau.estLibre(l, c)) {
                 plateau.ajouterJoueur(l, c, joueur_en_cours);
                 nombre_batisseurs++;
@@ -63,7 +64,10 @@ public class Jeu {
                     finTour();
                 }
             }
-        } else if (situation == SELECTION || (plateau.estBatisseur(l,c,joueur_en_cours) && situation == DEPLACEMENT)) {
+            if(nombre_batisseurs >= 4) {
+                situation = SELECTION;
+            }
+        } else if (situation == SELECTION || (plateau.estBatisseur(l, c, joueur_en_cours) && situation == DEPLACEMENT)) {
             System.out.println("Choix du batisseur.");
             batisseur_en_cours = choisirBatisseur(l, c);
             if (batisseur_en_cours == null) {
@@ -97,7 +101,16 @@ public class Jeu {
     }
 
     private Point choisirBatisseur(int l, int c) {
-        return plateau.estBatisseur(l,c,joueur_en_cours) ? new Point(l,c) : null;
+        return plateau.estBatisseur(l, c, joueur_en_cours) ? new Point(l, c) : null;
+    }
+
+    public boolean estAtteignable(int l, int c) {
+        if (situation == DEPLACEMENT)
+            return (batisseur_en_cours != null) && plateau.deplacementPossible(l, c, batisseur_en_cours);
+        else if (situation == CONSTRUCTION)
+            return (batisseur_en_cours != null) && plateau.peutConstruire(l, c, batisseur_en_cours);
+        else if (situation == SELECTION) return plateau.estBatisseur(l, c, joueur_en_cours);
+        else return nombre_batisseurs < 4;
     }
 
     /**
@@ -168,9 +181,8 @@ public class Jeu {
         return batisseur_en_cours;
     }
 
-    public void victoireJoueur(){
-        if(batisseur_en_cours!=null && plateau.getTypeBatiments(batisseur_en_cours.x,batisseur_en_cours.y) == Plateau.TOIT)
-        {
+    public void victoireJoueur() {
+        if (batisseur_en_cours != null && plateau.getTypeBatiments(batisseur_en_cours.x, batisseur_en_cours.y) == Plateau.TOIT) {
             System.out.println("cest fini");
             jeu_fini = true;
             observateur.miseAjour();
