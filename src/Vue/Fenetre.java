@@ -16,6 +16,7 @@ public class Fenetre extends JFrame {
     PanelOptions options;
     PanelRegles regles;
     PanelPlateau plateau;
+    PanelParametres parametres;
 
     public Fenetre() {
         setTitle("Santorini");
@@ -29,11 +30,13 @@ public class Fenetre extends JFrame {
         options = new PanelOptions(getSize().width, getSize().height);
         regles = new PanelRegles(getSize().width, getSize().height);
         plateau = new PanelPlateau(getSize().width, getSize().height);
+        parametres = new PanelParametres(getSize().width, getSize().height);
 
         mainPanel.add(menu, "menu");
         mainPanel.add(options, "options");
         mainPanel.add(regles, "regles");
         mainPanel.add(plateau, "plateau");
+        mainPanel.add(parametres, "parametres");
 
         add(mainPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

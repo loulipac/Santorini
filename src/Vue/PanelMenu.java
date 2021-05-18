@@ -10,18 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-/**
- * @TODO : Changer le logo titre
- */
-
 class PanelMenu extends JPanel {
 
-    private Bouton bJouer, bTutoriel, bRegles, bQuitter, bFullScreen;
+    private Bouton bJouer, bTutoriel, bRegles, bQuitter, bFullScreen, bParametres;
     private JLabel titre;
-    private SoundPlayer sound_button;
+    private SoundPlayer son_bouton;
 
     public PanelMenu(int largeur, int hauteur) {
-        sound_button = new SoundPlayer("menu_click.wav");
+        son_bouton = new SoundPlayer("menu_click.wav");
         /* BoxLayout */
 
         BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -35,6 +31,7 @@ class PanelMenu extends JPanel {
         bRegles = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", largeur / 4, largeur / 20);
         bQuitter = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/quitter.png", Constante.CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", largeur / 4, largeur / 20);
         // bFullScreen = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", largeur/, largeur*0.1);
+        bParametres = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/parametres.png", Constante.CHEMIN_RESSOURCE + "/bouton/parametres_hover.png", largeur / 20, largeur / 20);
 
         /* Label */
         titre = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
@@ -46,8 +43,10 @@ class PanelMenu extends JPanel {
         bTutoriel.addActionListener(this::actionBoutonTutoriel);
         bRegles.addActionListener(this::actionBoutonRegles);
         bQuitter.addActionListener(this::actionBoutonQuitter);
+        bParametres.addActionListener(this::actionBoutonParametres);
 
         /* Adding */
+//        add(bParametres);
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 9)));
         add(titre);
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 9)));
@@ -68,10 +67,16 @@ class PanelMenu extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonJouer(ActionEvent e) {
-        sound_button.playSound();
+        son_bouton.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "options");
     }
+    public void actionBoutonParametres(ActionEvent e) {
+        son_bouton.playSound();
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.getCardLayout().show(f.mainPanel, "parametres");
+    }
+
 
     /**
      * Remplace le contenu de la fenetre par le plateau du jeu
@@ -79,7 +84,7 @@ class PanelMenu extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonTutoriel(ActionEvent e) {
-        sound_button.playSound();
+        son_bouton.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "plateau");
     }
@@ -90,7 +95,7 @@ class PanelMenu extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonRegles(ActionEvent e) {
-        sound_button.playSound();
+        son_bouton.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getCardLayout().show(f.mainPanel, "regles");
     }
@@ -101,7 +106,7 @@ class PanelMenu extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonQuitter(ActionEvent e) {
-        sound_button.playSound();
+        son_bouton.playSound();
         System.exit(0);
     }
 

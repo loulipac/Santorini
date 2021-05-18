@@ -61,6 +61,11 @@ public class PanelRegles extends JPanel {
         titreDeplacement.setFont(lilly_belle);
         titreConstruction.setFont(lilly_belle);
 
+        titreCommentJouer.setForeground(new Color(82,60,43));
+        titreDeplacement.setForeground(new Color(82,60,43));
+        titreConstruction.setForeground(new Color(82,60,43));
+
+
         /* TextArea */
         JTextArea texteCommentJouer = new JTextArea("Ce jeu se joue à 2 joueurs au tour par tour.\n" +
                 "Le but du jeu est de monter le plus vite possible au sommet \n" +
