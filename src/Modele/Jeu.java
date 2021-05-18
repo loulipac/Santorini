@@ -77,7 +77,7 @@ public class Jeu {
         } else if (!jeu_fini && situation == CONSTRUCTION) { // construit un bâtiment aux coordonées l et c de la grille si possib
             System.out.println("Construction.");
             if (construire(l, c, batisseur_en_cours)) {
-                construction_son.playSound();
+                construction_son.joueSon(false);
                 finTour();
                 situation = SELECTION;
             }

@@ -91,12 +91,12 @@ class PanelMenu extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonJouer(ActionEvent e) {
-        son_bouton.playSound();
+        son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getPileCarte().show(f.panelPrincipal, "options");
     }
     public void actionBoutonParametres(ActionEvent e) {
-        son_bouton.playSound();
+        son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getPileCarte().show(f.panelPrincipal, "parametres");
     }
@@ -108,7 +108,7 @@ class PanelMenu extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonTutoriel(ActionEvent e) {
-        son_bouton.playSound();
+        son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getPileCarte().show(f.panelPrincipal, "plateau");
     }
@@ -119,7 +119,7 @@ class PanelMenu extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonRegles(ActionEvent e) {
-        son_bouton.playSound();
+        son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getPileCarte().show(f.panelPrincipal, "regles");
     }
@@ -130,7 +130,7 @@ class PanelMenu extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonQuitter(ActionEvent e) {
-        son_bouton.playSound();
+        son_bouton.joueSon(false);
         System.exit(0);
     }
 

@@ -17,6 +17,7 @@ public class Fenetre extends JFrame {
     PanelRegles regles;
     PanelPlateau plateau;
     PanelParametres parametres;
+    LecteurSon musique;
 
     public Fenetre() {
         setTitle("Santorini");
@@ -31,6 +32,7 @@ public class Fenetre extends JFrame {
         regles = new PanelRegles(getSize().width, getSize().height);
         plateau = new PanelPlateau(getSize().width, getSize().height);
         parametres = new PanelParametres(getSize().width, getSize().height);
+        musique = new LecteurSon("musiqueBGtest.wav");
 
         panelPrincipal.add(menu, "menu");
         panelPrincipal.add(options, "options");
@@ -41,6 +43,7 @@ public class Fenetre extends JFrame {
         add(panelPrincipal);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        //musique.joueSon(true);
     }
 
     public CardLayout getPileCarte() {

@@ -6,18 +6,27 @@ import javax.sound.sampled.Clip;
 import java.io.File;
 
 public class LecteurSon {
-    File f;
+    File fichier;
 
     public LecteurSon(String sound) {
-        f = new File("./src/Ressources/sons/" + sound);
+        fichier = new File("./src/Ressources/sons/" + sound);
     }
 
-    public void playSound() {
+    /**
+     * Joue le son pointé par l'attribut file.
+     * @param loop si vrai : joue en boucle le son, si faux le joue une seule fois.
+     */
+
+    public void joueSon(boolean loop) {
         try {
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(f.toURI().toURL());
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(fichier.toURI().toURL());
             Clip clip = AudioSystem.getClip();
             clip.open(audioIn);
-            clip.start();
+            if (!loop) {
+                clip.start();
+            } else {
+                clip.loop(Clip.LOOP_CONTINUOUSLY);
+            }
         } catch (Exception ex) {
             System.err.println(ex.toString());
         }

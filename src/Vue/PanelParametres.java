@@ -92,7 +92,7 @@ class PanelParametres extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonReprendre(ActionEvent e) {
-        son_bouton.playSound();
+        son_bouton.joueSon(false);
         Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f2.getPileCarte().show(f2.panelPrincipal, "plateau");
     }
