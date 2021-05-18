@@ -6,53 +6,58 @@ import Modele.Jeu;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.lang.reflect.Field;
 
 public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     JeuGraphique jg;
     Jeu j;
     int largeur_plateau, hauteur_plateau;
-    Cursor c_construire_rouge;
-    Cursor c_construire_bleu;
-    Cursor c_construire_gris;
-    Cursor c_deplacer_rouge;
     Cursor c_deplacer_bleu;
+    Cursor c_deplacer_rouge;
     Cursor c_deplacer_gris;
-    Cursor c_drapeau_rouge;
+    Cursor c_construire_bleu;
+    Cursor c_construire_rouge;
+    Cursor c_construire_gris;
     Cursor c_drapeau_bleu;
+    Cursor c_drapeau_rouge;
     Cursor c_drapeau_gris;
     Cursor c_defaut;
+
+    final static Point CENTRE = new Point(16, 16);
+    final static Point HAUT_GAUCHE = new Point(0, 0);
 
     public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg) {
         this.jg = jg;
         this.j = j;
-        creerCurseur();
+
+        creerCurseurGenerique("c_defaut", "pince_crabe", HAUT_GAUCHE);
+        creerCurseurGenerique("c_deplacer_bleu", "pas_bleu", CENTRE);
+        creerCurseurGenerique("c_deplacer_rouge", "pas_rouge", CENTRE);
+        creerCurseurGenerique("c_deplacer_gris", "pas_gris", CENTRE);
+        creerCurseurGenerique("c_construire_bleu", "outil_bleu", HAUT_GAUCHE);
+        creerCurseurGenerique("c_construire_rouge", "outil_rouge", HAUT_GAUCHE);
+        creerCurseurGenerique("c_construire_gris", "outil_gris", HAUT_GAUCHE);
+        creerCurseurGenerique("c_drapeau_bleu", "drapeau_bleu", CENTRE);
+        creerCurseurGenerique("c_drapeau_rouge", "drapeau_rouge", CENTRE);
+        creerCurseurGenerique("c_drapeau_gris", "drapeau_gris", CENTRE);
     }
 
-    private void creerCurseur() {
+    private void creerCurseurGenerique(String variable_nom, String fichier_nom, Point decallage) {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
+        try {
+            Image img = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/" + fichier_nom + ".png");
 
-        Image image_defaut = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/pince_crabe.png");
-        Image image_pas_bleu = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/pas_bleu.png");
-        Image image_pas_rouge = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/pas_rouge.png");
-        Image image_pas_gris = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/pas_gris.png");
-        Image image_outil_bleu = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/outil_bleu.png");
-        Image image_outil_rouge = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/outil_rouge.png");
-        Image image_outil_gris = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/outil_gris.png");
-        Image image_drapeau_bleu = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/drapeau_bleu.png");
-        Image image_drapeau_rouge = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/drapeau_rouge.png");
-        Image image_drapeau_gris = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/drapeau_gris.png");
-        Point p = new Point(0, 0);
-        c_defaut = toolkit.createCustomCursor(image_defaut, p, "c_defaut");
-        c_deplacer_bleu = toolkit.createCustomCursor(image_pas_bleu, p, "c_pas_bleu");
-        c_deplacer_rouge = toolkit.createCustomCursor(image_pas_rouge, p, "c_pas_rouge");
-        c_deplacer_gris = toolkit.createCustomCursor(image_pas_gris, p, "c_deplacer_gris");
-        c_construire_bleu = toolkit.createCustomCursor(image_outil_bleu, p, "c_outil_bleu");
-        c_construire_rouge = toolkit.createCustomCursor(image_outil_rouge, p, "c_outil_rouge");
-        c_construire_gris = toolkit.createCustomCursor(image_outil_gris, p, "c_construire_gris");
-        c_drapeau_rouge = toolkit.createCustomCursor(image_drapeau_rouge, p, "c_drapeau_rouge");
-        c_drapeau_bleu = toolkit.createCustomCursor(image_drapeau_bleu, p, "c_drapeau_bleu");
-        c_drapeau_gris = toolkit.createCustomCursor(image_drapeau_gris, p, "c_drapeau_gris");
+            Field curseur_champ = this.getClass().getDeclaredField(variable_nom);
+
+            curseur_champ.setAccessible(true);
+            curseur_champ.set(
+                    this,
+                    toolkit.createCustomCursor(img, decallage, variable_nom)
+            );
+        } catch (Exception ex) {
+            System.err.println(ex);
+        }
     }
 
     @Override
@@ -68,7 +73,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
             if (j.getSituation() == Constante.DEPLACEMENT) {
-                if(jg.getJeu().estAtteignable(pos_y, pos_x)) {
+                if (jg.getJeu().estAtteignable(pos_y, pos_x)) {
                     if (j.getJoueur_en_cours() == Constante.JOUEUR1) {
                         jg.setCursor(c_deplacer_bleu);
                     } else {
@@ -78,7 +83,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                     jg.setCursor(c_deplacer_gris);
                 }
             } else if (j.getSituation() == Constante.CONSTRUCTION) {
-                if(jg.getJeu().estAtteignable(pos_y, pos_x)) {
+                if (jg.getJeu().estAtteignable(pos_y, pos_x)) {
                     if (j.getJoueur_en_cours() == Constante.JOUEUR1) {
                         jg.setCursor(c_construire_bleu);
                     } else {
@@ -89,7 +94,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 }
 
             } else if (j.getSituation() == Constante.PLACEMENT) {
-                if(jg.getJeu().getPlateau().estLibre(pos_y, pos_x)) {
+                if (jg.getJeu().getPlateau().estLibre(pos_y, pos_x)) {
                     if (j.getJoueur_en_cours() == Constante.JOUEUR1) {
                         jg.setCursor(c_drapeau_bleu);
                     } else {
