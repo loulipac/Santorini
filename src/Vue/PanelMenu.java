@@ -15,6 +15,7 @@ class PanelMenu extends JPanel {
     private Bouton bJouer, bTutoriel, bRegles, bQuitter, bFullScreen, bParametres;
     private JLabel logo;
     private SoundPlayer son_bouton;
+    Image arriere_plan,colonnes;
 
     public PanelMenu(int largeur, int hauteur) {
         son_bouton = new SoundPlayer("menu_click.wav");
@@ -33,7 +34,8 @@ class PanelMenu extends JPanel {
         pSonEcran.setOpaque(false);*/
 
         /* Button */
-
+        arriere_plan = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/artwork/base.png");
+        colonnes = JeuGraphique.readImage((Constante.CHEMIN_RESSOURCE + "/artwork/columns.png"));
         bJouer = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/jouer.png", Constante.CHEMIN_RESSOURCE + "/bouton/jouer_hover.png", largeur / 4, largeur / 20);
         bTutoriel = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/tutoriel.png", Constante.CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png", largeur / 4, largeur / 20);
         bRegles = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", largeur / 4, largeur / 20);
@@ -143,22 +145,20 @@ class PanelMenu extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Chargement de l"image de fond
         try {
-            BufferedImage img = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/base.png"));
-            Dimension img_dim = new Dimension(img.getWidth(), img.getHeight());
+
+            Dimension img_dim = new Dimension(arriere_plan.getWidth(this), arriere_plan.getHeight(this));
             Dimension taille_max = new Dimension((int) (getWidth() * 0.8), (int) (getHeight() * 0.8));
             Dimension taille_redimensionnee = conserverRatio(img_dim, taille_max);
             g2d.drawImage(
-                    img,
+                    arriere_plan,
                     getWidth() / 2 - ((int) (taille_redimensionnee.getWidth() / 2)),
                     getHeight() / 2 - ((int) (taille_redimensionnee.getHeight() / 2)),
                     taille_redimensionnee.width,
                     taille_redimensionnee.height,
                     this
             );
-
-            BufferedImage img_colonnes = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/columns.png"));
             g2d.drawImage(
-                    img_colonnes,
+                    colonnes,
                     0,
                     0,
                     getWidth(),
