@@ -22,7 +22,9 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     Cursor c_drapeau_bleu;
     Cursor c_drapeau_rouge;
     Cursor c_drapeau_gris;
-    Cursor c_defaut;
+    Cursor c_defaut_gris;
+    Cursor c_defaut_rouge;
+    Cursor c_defaut_bleu;
 
     final static Point CENTRE = new Point(16, 16);
     final static Point HAUT_GAUCHE = new Point(0, 0);
@@ -30,8 +32,9 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg) {
         this.jg = jg;
         this.j = j;
-
-        creerCurseurGenerique("c_defaut", "pince_crabe", HAUT_GAUCHE);
+        creerCurseurGenerique("c_defaut_gris", "defaut_gris", HAUT_GAUCHE);
+        creerCurseurGenerique("c_defaut_rouge", "defaut_rouge", HAUT_GAUCHE);
+        creerCurseurGenerique("c_defaut_bleu", "defaut_bleu", HAUT_GAUCHE);
         creerCurseurGenerique("c_deplacer_bleu", "pas_bleu", CENTRE);
         creerCurseurGenerique("c_deplacer_rouge", "pas_rouge", CENTRE);
         creerCurseurGenerique("c_deplacer_gris", "pas_gris", CENTRE);
@@ -105,7 +108,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 }
 
             } else {
-                jg.setCursor(c_defaut);
+                jg.setCursor(c_defaut_gris);
             }
         }
     }
