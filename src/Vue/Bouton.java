@@ -27,6 +27,7 @@ public class Bouton extends JButton {
         setIcon(iconButton);
         ImageIcon iconButtonHover = ScaleImage(imageHover, hauteur, largeur);
         setRolloverIcon(iconButtonHover);
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
 
     private ImageIcon ScaleImage(String nomImage, int largeur, int hauteur){

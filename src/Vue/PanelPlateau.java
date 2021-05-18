@@ -56,11 +56,11 @@ public class PanelPlateau extends JPanel implements Observer {
 
         // setting position on the grid bag layout
         c.fill = GridBagConstraints.VERTICAL;
-        c.weighty = 0.22;
+        c.weighty = 0.21;
         c.gridy = 0;
         add(tp, c);
         c.fill = GridBagConstraints.VERTICAL;
-        c.weighty = 0.65;
+        c.weighty = 0.66;
         c.gridy = 1;
         add(jgame, c);
         c.fill = GridBagConstraints.BOTH;
@@ -128,6 +128,7 @@ public class PanelPlateau extends JPanel implements Observer {
             jeu = new Jeu(5, 5, PanelPlateau.this);
             jg = new JeuGraphique(jeu);
             jg.addMouseListener(new EcouteurDeSouris(jg));
+            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
             int taille_case = Math.min(
