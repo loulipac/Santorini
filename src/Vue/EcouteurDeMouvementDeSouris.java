@@ -21,6 +21,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     Cursor c_drapeau_rouge;
     Cursor c_drapeau_bleu;
     Cursor c_drapeau_gris;
+    Cursor c_defaut;
 
     public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg) {
         this.jg = jg;
@@ -31,6 +32,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     private void creerCurseur() {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
 
+        Image image_defaut = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/pince_crabe.png");
         Image image_pas_bleu = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/pas_bleu.png");
         Image image_pas_rouge = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/pas_rouge.png");
         Image image_pas_gris = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/pas_gris.png");
@@ -40,7 +42,8 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         Image image_drapeau_bleu = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/drapeau_bleu.png");
         Image image_drapeau_rouge = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/drapeau_rouge.png");
         Image image_drapeau_gris = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/drapeau_gris.png");
-        Point p = new Point(16, 16);
+        Point p = new Point(0, 0);
+        c_defaut = toolkit.createCustomCursor(image_defaut, p, "c_defaut");
         c_deplacer_bleu = toolkit.createCustomCursor(image_pas_bleu, p, "c_pas_bleu");
         c_deplacer_rouge = toolkit.createCustomCursor(image_pas_rouge, p, "c_pas_rouge");
         c_deplacer_gris = toolkit.createCustomCursor(image_pas_gris, p, "c_deplacer_gris");
@@ -97,7 +100,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 }
 
             } else {
-                jg.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+                jg.setCursor(c_defaut);
             }
         }
     }

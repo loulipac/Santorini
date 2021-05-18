@@ -31,7 +31,8 @@ public class JeuGraphique extends JComponent {
         batisseur_bleu_selectionne = readImage("src/Ressources/batisseur/batisseur_bleu_selectionne.png");
         pas_rouge = readImage("src/Ressources/icone/pas_rouge.png");
         pas_bleu = readImage("src/Ressources/icone/pas_bleu.png");
-        outil_bleu = readImage("src/Ressources/icone/outil_bleu.png");
+        outil_bleu = readImage("src/Ressources/icone/outil" +
+                "_bleu.png");
         outil_rouge = readImage("src/Ressources/icone/outil_rouge.png");
         plateau = j.getPlateau();
     }
