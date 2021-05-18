@@ -4,7 +4,6 @@ import Modele.Constante;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -16,9 +15,10 @@ class PanelMenu extends JPanel {
     private JLabel logo;
     private SoundPlayer son_bouton;
     Image arriere_plan,colonnes;
+    private LecteurSon son_bouton;
 
     public PanelMenu(int largeur, int hauteur) {
-        son_bouton = new SoundPlayer("menu_click.wav");
+        son_bouton = new LecteurSon("menu_click.wav");
         /* BoxLayout */
 
 /*        JPanel pListeMenu = new JPanel();
@@ -96,12 +96,12 @@ class PanelMenu extends JPanel {
     public void actionBoutonJouer(ActionEvent e) {
         son_bouton.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getCardLayout().show(f.mainPanel, "options");
+        f.getPileCarte().show(f.panelPrincipal, "options");
     }
     public void actionBoutonParametres(ActionEvent e) {
         son_bouton.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getCardLayout().show(f.mainPanel, "parametres");
+        f.getPileCarte().show(f.panelPrincipal, "parametres");
     }
 
 
@@ -113,7 +113,7 @@ class PanelMenu extends JPanel {
     public void actionBoutonTutoriel(ActionEvent e) {
         son_bouton.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getCardLayout().show(f.mainPanel, "plateau");
+        f.getPileCarte().show(f.panelPrincipal, "plateau");
     }
 
     /**
@@ -124,7 +124,7 @@ class PanelMenu extends JPanel {
     public void actionBoutonRegles(ActionEvent e) {
         son_bouton.playSound();
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getCardLayout().show(f.mainPanel, "regles");
+        f.getPileCarte().show(f.panelPrincipal, "regles");
     }
 
     /**
@@ -145,20 +145,22 @@ class PanelMenu extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Chargement de l"image de fond
         try {
-
-            Dimension img_dim = new Dimension(arriere_plan.getWidth(this), arriere_plan.getHeight(this));
+            BufferedImage img = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/base.png"));
+            Dimension img_dim = new Dimension(img.getWidth(), img.getHeight());
             Dimension taille_max = new Dimension((int) (getWidth() * 0.8), (int) (getHeight() * 0.8));
             Dimension taille_redimensionnee = conserverRatio(img_dim, taille_max);
             g2d.drawImage(
-                    arriere_plan,
+                    img,
                     getWidth() / 2 - ((int) (taille_redimensionnee.getWidth() / 2)),
                     getHeight() / 2 - ((int) (taille_redimensionnee.getHeight() / 2)),
                     taille_redimensionnee.width,
                     taille_redimensionnee.height,
                     this
             );
+
+            BufferedImage img_colonnes = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/columns.png"));
             g2d.drawImage(
-                    colonnes,
+                    img_colonnes,
                     0,
                     0,
                     getWidth(),

@@ -142,7 +142,7 @@ class PanelOptions extends JPanel {
      */
     public void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f2.getCardLayout().show(f2.mainPanel, "menu");
+        f2.getPileCarte().show(f2.panelPrincipal, "menu");
     }
 
 
@@ -225,4 +225,5 @@ class PanelOptions extends JPanel {
 
         return new Dimension(nouvelle_largeur, nouvelle_hauteur);
     }
+
 }

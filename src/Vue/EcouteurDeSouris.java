@@ -1,7 +1,11 @@
 package Vue;
 
+import Modele.Constante;
+
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 public class EcouteurDeSouris implements MouseListener {
     JeuGraphique jg;
@@ -33,6 +37,9 @@ public class EcouteurDeSouris implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image image = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/outil_rouge.png");
+        //jg.setCursor(toolkit.createCustomCursor(image , new Point(16, 16), "c_construire_rouge"));
     }
 
     @Override
