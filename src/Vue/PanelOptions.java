@@ -1,8 +1,6 @@
 package Vue;
 
 import Modele.Constante;
-import Modele.Plateau;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -40,15 +38,15 @@ class PanelOptions extends JPanel {
         setLayout(boxlayout);
 
         /* Label */
-        JLabel titre = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
+        JLabel logo = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
         JLabel versus_texte = new JLabel("Mode de jeu");
         JLabel IA_texte = new JLabel("Difficulté de l'IA");
 
         versus_texte.setFont(lilly_belle);
         IA_texte.setFont(lilly_belle);
 
-        titre.setAlignmentX(CENTER_ALIGNMENT);
-        titre.setMaximumSize(new Dimension(largeur/3, largeur/9));
+        logo.setAlignmentX(CENTER_ALIGNMENT);
+        logo.setMaximumSize(new Dimension(largeur/3, largeur/9));
 
         /* JPanel */
         OptionPanel contenu = new OptionPanel();
@@ -128,7 +126,7 @@ class PanelOptions extends JPanel {
 
         /* Adding */
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 15)));
-        add(titre);
+        add(logo);
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
         add(contenu);
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));

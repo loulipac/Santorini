@@ -1,7 +1,5 @@
 package Vue;
 
-import Modele.Constante;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +10,7 @@ import java.io.IOException;
 
 public class PanelRegles extends JPanel {
     private Bouton bRetour;
-    private JLabel titre;
+    private JLabel logo;
     Font lilly_belle;
 
     public PanelRegles(int largeur, int hauteur) {
@@ -45,11 +43,11 @@ public class PanelRegles extends JPanel {
         setLayout(boxlayout);
 
         /* Label */
-        titre = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
-        titre.setAlignmentX(CENTER_ALIGNMENT);
-        titre.setMaximumSize(new Dimension(415, 100));
+        logo = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
+        logo.setAlignmentX(CENTER_ALIGNMENT);
+        logo.setMaximumSize(new Dimension(415, 100));
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 10)));
-        add(titre);
+        add(logo);
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 20)));
 
 
@@ -90,7 +88,7 @@ public class PanelRegles extends JPanel {
         texteConstruction.setEditable(false);
 
         /* Boutons */
-        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour.png", 415, 90);
+        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour_hover.png", largeur / 4, largeur / 20);
         bRetour.addActionListener(this::actionBoutonRetourMenu);
 
         /* Images */

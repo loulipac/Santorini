@@ -13,7 +13,7 @@ import java.io.File;
 class PanelMenu extends JPanel {
 
     private Bouton bJouer, bTutoriel, bRegles, bQuitter, bFullScreen, bParametres;
-    private JLabel titre;
+    private JLabel logo;
     private SoundPlayer son_bouton;
 
     public PanelMenu(int largeur, int hauteur) {
@@ -43,9 +43,9 @@ class PanelMenu extends JPanel {
 //        bFullScreen.setAlignmentX(RIGHT_ALIGNMENT);
 
         /* Label */
-        titre = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
-        titre.setAlignmentX(CENTER_ALIGNMENT);
-        titre.setMaximumSize(new Dimension(415, 100));
+        logo = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
+        logo.setAlignmentX(CENTER_ALIGNMENT);
+        logo.setMaximumSize(new Dimension(415, 100));
 
         /* redirection */
         bJouer.addActionListener(this::actionBoutonJouer);
@@ -59,7 +59,7 @@ class PanelMenu extends JPanel {
 //        add(bParametres);
 /*        pSonEcran.add(bFullScreen);
 
-        pListeMenu.add(titre);
+        pListeMenu.add(logo);
         pListeMenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 9)));
         pListeMenu.add(bJouer);
         pListeMenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 45)));
@@ -73,7 +73,7 @@ class PanelMenu extends JPanel {
         add(pListeMenu);*/
 
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 9)));
-        add(titre);
+        add(logo);
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 9)));
         add(bJouer);
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 45)));
