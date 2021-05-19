@@ -10,6 +10,10 @@ public class Historique {
         future = new Pile<>();
     }
 
+    public void store(Commande cmd) {
+        past.insert(cmd);
+    }
+
     public boolean canUndo() {
         return !past.isEmpty();
     }
@@ -19,14 +23,14 @@ public class Historique {
     }
 
     public void undo() {
-        Commande comm = past.extract();
-        comm.unexecute();
-        future.insert(comm);
+        Commande cmd = past.extract();
+        cmd.unexecute();
+        future.insert(cmd);
     }
 
     public void redo() {
-        Commande comm = future.extract();
-        comm.execute();
-        past.insert(comm);
+        Commande cmd = future.extract();
+        cmd.execute();
+        past.insert(cmd);
     }
 }
