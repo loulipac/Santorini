@@ -10,6 +10,9 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * Classe générant la fenêtre de jeu.
+ */
 public class PanelPlateau extends JPanel implements Observer {
 
     private Jeu jeu;
@@ -19,10 +22,16 @@ public class PanelPlateau extends JPanel implements Observer {
     int largeur, hauteur;
     Image colonne_rouge, colonne_bleu, arriere_plan;
 
+    /**
+     * Initialise la fenêtre de jeu et charge la police et les images en mémoire.
+     *
+     * @param largeur
+     * @param hauteur
+     * @see PanelPlateau#initialiserPanel()
+     */
     public PanelPlateau(int largeur, int hauteur) {
         this.largeur = largeur;
         this.hauteur = hauteur;
-
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Ressources/font/LilyScriptOne.ttf")));
@@ -32,7 +41,6 @@ public class PanelPlateau extends JPanel implements Observer {
         }
         lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT, 40);
         initialiserPanel();
-        lancerJeu(largeur, hauteur);
 
         colonne_rouge = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
         colonne_bleu = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
@@ -40,99 +48,35 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     /**
-     * Ajoute tous les composants au panel
+     * Ajoute tous les composants au panel.
+     *
+     * @see TopPanel
+     * @see JGamePanel
      */
     public void initialiserPanel() {
-        BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
-        setLayout(boxlayout);
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         TopPanel tp = new TopPanel(0.25f);
         JGamePanel jgame = new JGamePanel(0.75f);
         add(tp);
         add(jgame);
-        setVisible(true);
     }
 
-    /*public void initialiserPanel1() {
-        // Initialisation des règles du grid bag layout
-        setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.gridx = 0;
-        c.weightx = .5;
-        c.anchor = GridBagConstraints.CENTER;
-
-        TopPanel tp = new TopPanel();
-        JGamePanel jgame = new JGamePanel();
-        //JButtonPanel panel_bouton = new JButtonPanel();
-
-        // setting position on the grid bag layout
-        c.fill = GridBagConstraints.VERTICAL;
-        c.weighty = 0.25;
-        c.gridy = 0;
-        add(tp, c);
-        c.fill = GridBagConstraints.VERTICAL;
-        c.weighty = 0.75;
-        c.gridy = 1;
-        add(jgame, c);
-    }*/
-
-    public class JButtonPanel extends JPanel {
-        public JButtonPanel() {
-            setOpaque(false);
-            setLayout(new GridLayout(1, 5));
-            Dimension bouton_taille = new Dimension(
-                    largeur / 5,
-                    hauteur / 19
-            );
-
-            JPanel cote = new JPanel();
-            cote.setOpaque(false);
-            //cote.setLayout(new GridLayout(2, 1));
-
-            Bouton bRetour = new Bouton(
-                    Constante.CHEMIN_RESSOURCE + "/bouton/quitter.png",
-                    Constante.CHEMIN_RESSOURCE + "/bouton/quitter_hover.png",
-                    bouton_taille.width,
-                    bouton_taille.height
-            );
-            bRetour.addActionListener(PanelPlateau.this::actionBoutonRetourMenu);
-
-            Bouton bNouvelle = new Bouton(
-                    Constante.CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png",
-                    Constante.CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png",
-                    bouton_taille.width,
-                    bouton_taille.height
-            );
-            bNouvelle.addActionListener(PanelPlateau.this::actionBoutonNouvellePartie);
-
-
-            Bouton bFin = new Bouton(
-                    Constante.CHEMIN_RESSOURCE + "/bouton/fin_tour.png",
-                    Constante.CHEMIN_RESSOURCE + "/bouton/fin_tour.png",
-                    bouton_taille.width,
-                    bouton_taille.height
-            );
-            bFin.addActionListener(PanelPlateau.this::actionBoutonFinDuTour);
-
-            Bouton bAnnuler = new Bouton(
-                    Constante.CHEMIN_RESSOURCE + "/bouton/annuler.png",
-                    Constante.CHEMIN_RESSOURCE + "/bouton/annuler.png",
-                    bouton_taille.width,
-                    bouton_taille.height
-            );
-            bAnnuler.addActionListener(PanelPlateau.this::actionBoutonAnnuler);
-
-
-            //add(bNouvelle);
-            add(bAnnuler);
-            add(bFin);
-            //add(bRetour);
-        }
-    }
-
+    /**
+     * Crée un JPanel modifié qui génère deux zones de boutons de 20% de la taille de la fenêtre.
+     * Génère la grille de jeu.
+     *
+     * @see JeuGraphique
+     * @see Jeu
+     */
     public class JGamePanel extends JPanel {
         int taille_margin;
         float taille_h;
 
+        /**
+         * Constructeur pour JGamePanel. Rajoute des components au JPanel.
+         *
+         * @param _taille_h
+         */
         public JGamePanel(float _taille_h) {
             this.taille_h = _taille_h - 0.1f;
 
@@ -196,6 +140,9 @@ public class PanelPlateau extends JPanel implements Observer {
             addMargin();
         }
 
+        /**
+         * Crée un JPanel servant de marge.
+         */
         private void addMargin() {
             JPanel j = new JPanel();
             j.setOpaque(false);
@@ -207,7 +154,15 @@ public class PanelPlateau extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Crée un JPanel modifié qui ajoute le logo et le texte designant quel joueur joue.
+     */
     public class TopPanel extends JPanel {
+        /**
+         * Constructeur de TopPanel. Ajoute les élements et définis les valeurs des propriétés de chacuns.
+         *
+         * @param taille_h
+         */
         public TopPanel(float taille_h) {
             BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
             setLayout(boxlayout);
@@ -230,7 +185,11 @@ public class PanelPlateau extends JPanel implements Observer {
         }
     }
 
-
+    /**
+     * Dessine l'image de fond et la bannière (colonne).
+     *
+     * @param g
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -253,7 +212,7 @@ public class PanelPlateau extends JPanel implements Observer {
             );
 
             Image colonne = (jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? colonne_bleu : colonne_rouge);
-//            float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre
+            // float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre
 
             g2d.drawImage(
                     colonne,
@@ -269,43 +228,20 @@ public class PanelPlateau extends JPanel implements Observer {
         }
     }
 
-    public void lancerJeu(int largeur, int hauteur) {
-        /*this.jeu = new Jeu(5, 5);
-
-        this.jg = new JeuGraphique(jeu);
-        jg.setAlignmentX(CENTER_ALIGNMENT);
-        jg.addMouseListener(new EcouteurDeSouris(jg));
-
-        int min = Math.min(largeur, hauteur);
-        jg.setMaximumSize(new Dimension(min/2,min/2));*/
-
-        //add(jg);
-    }
-
-    public void actionBoutonRetourMenu(ActionEvent e) {
-        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getPileCarte().show(f.panelPrincipal, "menu");
-    }
-
-    public void actionBoutonFinDuTour(ActionEvent e) {
-        // TODO : Changement joueur
-        System.out.println("NOT IMPLEMENTED");
-    }
-
-    public void actionBoutonAnnuler(ActionEvent e) {
-        // TODO : Redémarrer le tour pour le joueur en cours
-        System.out.println("NOT IMPLEMENTED");
-    }
-
-    public void actionBoutonNouvellePartie(ActionEvent e) {
-        // TODO : Reset la grille et tout ce qui va avec
-    }
-
+    /**
+     * Affiche le menu paramètre.
+     *
+     * @param e
+     * @see PanelParametres
+     */
     public void actionBoutonParametres(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getPileCarte().show(f.panelPrincipal, "parametres");
     }
 
+    /**
+     * Modifie le texte qui affiche quel joueur doit jouer.
+     */
     @Override
     public void miseAjour() {
         String annonce_tour_joueur;

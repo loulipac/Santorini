@@ -9,6 +9,9 @@ import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.FileInputStream;
 
+/**
+ * Classe dessinant les cases du plateau.
+ */
 public class JeuGraphique extends JComponent {
     private Plateau plateau;
     private Jeu jeu;
@@ -17,6 +20,11 @@ public class JeuGraphique extends JComponent {
     private int taille_case;
     private final Image case_claire, case_fonce, coupole, etage_1, etage_2, etage_3, batisseur_bleu, batisseur_rouge, batisseur_rouge_selectionne, batisseur_bleu_selectionne, pas_rouge, pas_bleu, outil_bleu, outil_rouge;
 
+    /**
+     * Constructeur de JeuGraphique, charge les images en mémoire.
+     *
+     * @param j
+     */
     public JeuGraphique(Jeu j) {
         this.jeu = j;
         case_claire = readImage("src/Ressources/cases/case_claire.png");
@@ -37,6 +45,12 @@ public class JeuGraphique extends JComponent {
         plateau = j.getPlateau();
     }
 
+    /**
+     * Change une image en mémoire depuis son nom.
+     *
+     * @param _name
+     * @return l'image chargé.
+     */
     public static Image readImage(String _name) {
         try {
             return ImageIO.read(new FileInputStream(_name));
