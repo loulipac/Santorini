@@ -12,9 +12,11 @@ import java.io.IOException;
 
 class PanelOptions extends JPanel {
     private Bouton bRetour, bCommencer;
+    private LecteurSon son_bouton;
     Font lilly_belle;
 
     public PanelOptions(int largeur, int hauteur) {
+        son_bouton = new LecteurSon("menu_click.wav");
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Ressources/font/LilyScriptOne.ttf")));
@@ -80,10 +82,17 @@ class PanelOptions extends JPanel {
 
         /* Evenements */
         bRetour.addActionListener(this::actionBoutonRetourMenu);
+        bCommencer.addActionListener(this::actionBoutonCommencer);
+
+        facile.addActionListener(this::actionBoutonRadio);
+        normale.addActionListener(this::actionBoutonRadio);
+        difficile.addActionListener(this::actionBoutonRadio);
+
 
         joueur_joueur.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                son_bouton.joueSon(false);
                 IA_texte.setVisible(false);
                 IA_panel.setVisible(false);
             }
@@ -92,6 +101,7 @@ class PanelOptions extends JPanel {
         joueur_ia.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                son_bouton.joueSon(false);
                 IA_texte.setVisible(true);
                 IA_panel.setVisible(true);
             }
@@ -141,10 +151,30 @@ class PanelOptions extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonRetourMenu(ActionEvent e) {
-        Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f2.getPileCarte().show(f2.panelPrincipal, "menu");
+        son_bouton.joueSon(false);
+        Fenetre fenetre = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        fenetre.getPileCarte().show(fenetre.panelPrincipal, "menu");
     }
 
+    /**
+     * Change l'affichage de la fenetre par le plateau
+     *
+     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     */
+    public void actionBoutonCommencer(ActionEvent e) {
+        son_bouton.joueSon(false);
+        Fenetre fenetre = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        fenetre.getPileCarte().show(fenetre.panelPrincipal, "plateau");
+    }
+
+    /**
+     * Joue un son lors du clique de la souris sur le bouton
+     *
+     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     */
+    public void actionBoutonRadio(ActionEvent e) {
+        son_bouton.joueSon(false);
+    }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
