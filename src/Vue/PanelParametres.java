@@ -60,7 +60,7 @@ class PanelParametres extends JPanel {
         bReprendre = new Bouton("src/Ressources/bouton/reprendre.png", "src/Ressources/bouton/reprendre_hover.png", largeur / 4, largeur / 20);
 
         /* Evenements */
-
+        bAbandonner.addActionListener(this::actionBoutonAbandonner);
         bReprendre.addActionListener(this::actionBoutonReprendre);
 
         /* Adding */
@@ -97,7 +97,25 @@ class PanelParametres extends JPanel {
         f2.getPileCarte().show(f2.panelPrincipal, "plateau");
     }
 
+    /**
+     * Fait gagner la partie à l'autre joueur et redirige au menu
+     *
+     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     */
+    public void actionBoutonAbandonner(ActionEvent e) {
+        // TODO : Reset la grille et tout ce qui va avec
 
+        son_bouton.joueSon(false);
+        Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f2.getPileCarte().show(f2.panelPrincipal, "menu");
+    }
+
+
+    /**
+     * Permet l'affichage des colonnes dans la fenetre
+     *
+     * @param g Graphics
+     */
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;

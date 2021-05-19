@@ -16,7 +16,7 @@ public class PanelPlateau extends JPanel implements Observer {
     Font lilly_belle;
     JLabel jt;
     int largeur, hauteur;
-    Image colonne_rouge,colonne_bleu,arriere_plan;
+    Image colonne_rouge, colonne_bleu, arriere_plan;
 
     public PanelPlateau(int largeur, int hauteur) {
         this.largeur = largeur;
@@ -40,7 +40,6 @@ public class PanelPlateau extends JPanel implements Observer {
 
     /**
      * Ajoute tous les composants au panel
-     *
      */
     public void initialiserPanel() {
         // Initialisation des règles du grid bag layout
@@ -125,6 +124,16 @@ public class PanelPlateau extends JPanel implements Observer {
 
     public class JGamePanel extends JPanel {
         public JGamePanel() {
+            Bouton bParametres = new Bouton(
+                    Constante.CHEMIN_RESSOURCE + "/bouton/parametres.png",
+                    Constante.CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
+                    hauteur / 19 ,
+                    hauteur / 19
+            );
+            bParametres.addActionListener(PanelPlateau.this::actionBoutonParametres);
+
+            add(bParametres);
+
             jeu = new Jeu(5, 5, PanelPlateau.this);
             jg = new JeuGraphique(jeu);
             jg.addMouseListener(new EcouteurDeSouris(jg));
@@ -233,6 +242,11 @@ public class PanelPlateau extends JPanel implements Observer {
 
     public void actionBoutonNouvellePartie(ActionEvent e) {
         // TODO : Reset la grille et tout ce qui va avec
+    }
+
+    public void actionBoutonParametres(ActionEvent e) {
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.getPileCarte().show(f.panelPrincipal, "parametres");
     }
 
     @Override
