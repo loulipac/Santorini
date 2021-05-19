@@ -52,12 +52,12 @@ public class JeuGraphique extends JComponent {
         // Graphics 2D est le vrai type de l'objet passé en paramètre
         // Le cast permet d'avoir acces a un peu plus de primitives de dessin
         Graphics2D drawable = (Graphics2D) g;
-        setBorder(new LineBorder(Color.GREEN));
+        //setBorder(new LineBorder(Color.RED));
 
-        largeur = getSize().width / plateau.getColonnes();
+        //largeur = getSize().width / plateau.getColonnes();
         hauteur = getSize().height / plateau.getLignes();
-
-        taille_case = Math.min(largeur, hauteur);
+        //taille_case = Math.min(largeur, hauteur);
+        taille_case = hauteur;
 
         // On efface tout
         //int nouvelle_origine = (getSize().width / 2) - (taille_case * plateau.getColonnes() / 2);

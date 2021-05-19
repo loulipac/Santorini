@@ -45,14 +45,14 @@ public class PanelPlateau extends JPanel implements Observer {
     public void initialiserPanel() {
         BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
         setLayout(boxlayout);
-        TopPanel tp = new TopPanel();
-        JGamePanel jgame = new JGamePanel();
+        TopPanel tp = new TopPanel(0.25f);
+        JGamePanel jgame = new JGamePanel(0.75f);
         add(tp);
         add(jgame);
         setVisible(true);
     }
 
-    public void initialiserPanel1() {
+    /*public void initialiserPanel1() {
         // Initialisation des règles du grid bag layout
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -73,11 +73,7 @@ public class PanelPlateau extends JPanel implements Observer {
         c.weighty = 0.75;
         c.gridy = 1;
         add(jgame, c);
-        /*c.fill = GridBagConstraints.BOTH;
-        c.weighty = 0.13;
-        c.gridy = 2;
-        add(panel_bouton, c);*/
-    }
+    }*/
 
     public class JButtonPanel extends JPanel {
         public JButtonPanel() {
@@ -134,16 +130,32 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     public class JGamePanel extends JPanel {
-        public JGamePanel() {
+        int taille_margin;
+        float taille_h;
+
+        public JGamePanel(float _taille_h) {
+            this.taille_h = _taille_h - 0.1f;
+
+            setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+            setOpaque(false);
+            setPreferredSize(new Dimension((int) (largeur), (int) (hauteur * taille_h)));
+
+            JPanel parametres = new JPanel();
+
+            Dimension size = new Dimension((int) (largeur * 0.2), (int) (hauteur * taille_h));
+            parametres.setOpaque(false);
+            parametres.setPreferredSize(size);
+            parametres.setMaximumSize(size);
+
+            //parametres.setBorder(new LineBorder(Color.GREEN));
             Bouton bParametres = new Bouton(
                     Constante.CHEMIN_RESSOURCE + "/bouton/parametres.png",
                     Constante.CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
-                    hauteur / 19 ,
+                    hauteur / 19,
                     hauteur / 19
             );
             bParametres.addActionListener(PanelPlateau.this::actionBoutonParametres);
-
-            add(bParametres);
+            parametres.add(bParametres);
 
             jeu = new Jeu(5, 5, PanelPlateau.this);
             jg = new JeuGraphique(jeu);
@@ -151,36 +163,67 @@ public class PanelPlateau extends JPanel implements Observer {
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
-            int taille_case = Math.min(
-                    largeur / jeu.getPlateau().getColonnes(),
-                    ((int) (hauteur * 0.65)) / jeu.getPlateau().getLignes()
-            );
+
+            //int taille_case_largeur = largeur / jeu.getPlateau().getColonnes();
+            int taille_case = ((int) (hauteur * taille_h)) / jeu.getPlateau().getLignes();
+
             jg.setPreferredSize(new Dimension(taille_case * jeu.getPlateau().getColonnes(), taille_case * jeu.getPlateau().getLignes()));
-            setPreferredSize(new Dimension(taille_case * jeu.getPlateau().getColonnes(), 0));
-            setOpaque(false);
+            jg.setMaximumSize(new Dimension(taille_case * jeu.getPlateau().getColonnes(), taille_case * jeu.getPlateau().getLignes()));
+
+            int taille = largeur;
+
+            // place de la grille
+            taille -= taille_case * jeu.getPlateau().getColonnes();
+
+            // place des menus
+            taille -= largeur * 0.4;
+
+            taille_margin = taille / 4;
+
+            addMargin();
+            add(parametres);
+            addMargin();
             add(jg);
+            addMargin();
+
+            // placeholder pour de futurs boutons
+            JPanel j_placeholder = new JPanel();
+            j_placeholder.setOpaque(false);
+            j_placeholder.setPreferredSize(size);
+            j_placeholder.setMaximumSize(size);
+            //j_placeholder.setBorder(new LineBorder(Color.GREEN));
+            add(j_placeholder);
+            addMargin();
+        }
+
+        private void addMargin() {
+            JPanel j = new JPanel();
+            j.setOpaque(false);
+            //j.setBorder(new LineBorder(Color.BLUE));
+            Dimension size = new Dimension(taille_margin, (int) (hauteur * taille_h));
+            j.setPreferredSize(size);
+            j.setMaximumSize(size);
+            add(j);
         }
     }
 
     public class TopPanel extends JPanel {
-        public TopPanel() {
+        public TopPanel(float taille_h) {
             BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
             setLayout(boxlayout);
 
-            setBorder(new LineBorder(Color.red));
-            Dimension size = new Dimension(largeur, (int) (hauteur * 0.25));
+            Dimension size = new Dimension(largeur, (int) (hauteur * taille_h));
             setPreferredSize(size);
             setMaximumSize(size);
             setOpaque(false);
 
             JLabel logo = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
             logo.setAlignmentX(CENTER_ALIGNMENT);
-            logo.setBorder(new LineBorder(Color.cyan));
             add(logo);
 
             jt = new JLabel("C'est au tour du Joueur 1");
+            jt.setAlignmentX(CENTER_ALIGNMENT);
             jt.setOpaque(false);
-            jt.setBorder(new LineBorder(Color.YELLOW));
             jt.setFont(lilly_belle);
             jt.setForeground(Color.WHITE);
             add(jt);
