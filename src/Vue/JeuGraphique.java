@@ -5,7 +5,6 @@ import Modele.Jeu;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.io.FileInputStream;
 
@@ -129,7 +128,7 @@ public class JeuGraphique extends JComponent {
         if (jeu.getSituation() == Jeu.DEPLACEMENT) {
             Image pas_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? pas_bleu : pas_rouge;
 
-            for (Point case_autour : plateau.getCasesAcessibles(jeu.getBatisseur_en_cours())) {
+            for (Point case_autour : plateau.getCasesAccessibles(jeu.getBatisseur_en_cours())) {
                 drawable.drawImage(pas_joueur, case_autour.y * taille_case, case_autour.x * taille_case, taille_case, taille_case, null);
             }
         } else if (jeu.getSituation() == Jeu.CONSTRUCTION && !jeu.estJeufini()) {
