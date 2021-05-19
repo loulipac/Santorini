@@ -21,7 +21,7 @@ public class PanelRegles extends JPanel {
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
         }
-        lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT , 28);
+        lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT, 26);
         initialiserPanel(largeur, hauteur);
     }
 
@@ -32,11 +32,6 @@ public class PanelRegles extends JPanel {
      * @param hauteur la hauteur de la fenetre
      */
     public void initialiserPanel(int largeur, int hauteur) {
-        int largeur_panel = largeur / 2;
-        int hauteur_panel = hauteur / 2;
-        int largeur_sous_panel = largeur_panel / 3;
-        int hauteur_sous_panel = hauteur_panel / 3;
-        int espacement_entre_texte = 0;
 
         setBackground(new Color(47, 112, 162));
         BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
@@ -46,12 +41,8 @@ public class PanelRegles extends JPanel {
         logo = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
         logo.setAlignmentX(CENTER_ALIGNMENT);
         logo.setMaximumSize(new Dimension(415, 100));
-        add(Box.createRigidArea(new Dimension(largeur, hauteur / 10)));
-        add(logo);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur / 20)));
 
-
-        JLabel titreCommentJouer = new JLabel("Comment jouer");
+        JLabel titreCommentJouer = new JLabel("Comment jouer ?");
         JLabel titreDeplacement = new JLabel("Déplacement");
         JLabel titreConstruction = new JLabel("Construction");
 
@@ -59,9 +50,9 @@ public class PanelRegles extends JPanel {
         titreDeplacement.setFont(lilly_belle);
         titreConstruction.setFont(lilly_belle);
 
-        titreCommentJouer.setForeground(new Color(82,60,43));
-        titreDeplacement.setForeground(new Color(82,60,43));
-        titreConstruction.setForeground(new Color(82,60,43));
+        titreCommentJouer.setForeground(new Color(82, 60, 43));
+        titreDeplacement.setForeground(new Color(82, 60, 43));
+        titreConstruction.setForeground(new Color(82, 60, 43));
 
 
         /* TextArea */
@@ -73,7 +64,8 @@ public class PanelRegles extends JPanel {
                 "et construire un étage dans les cases adjacentes.");
 
         JTextArea texteDeplacement = new JTextArea("Le bâtisseur choisi peut se déplacer sur un des emplacements proposés. \n" +
-                "Le bâtisseur ne peut monter que d'un étage à la fois et ne peut pas se déplacer sur un dôme.");
+                "Le bâtisseur ne peut monter que d'un étage à la fois et ne peut pas se\n" +
+                "déplacer sur un dôme.");
 
         JTextArea texteConstruction = new JTextArea("Un bâtisseur peut construire un étage sur les emplacements proposés.\n" +
                 "Le bâtisseur peut poser un dôme en haut de la tour pour bloquer son adversaire. \n" +
@@ -91,81 +83,71 @@ public class PanelRegles extends JPanel {
         bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour_hover.png", largeur / 4, largeur / 20);
         bRetour.addActionListener(this::actionBoutonRetourMenu);
 
-        /* Images */
-        JLabel image_jouer = creerImage("src/Ressources/artwork/comment_jouer.png", largeur_sous_panel, hauteur_sous_panel);
-        JLabel image_deplacement = creerImage("src/Ressources/artwork/deplacement.png", largeur_sous_panel, hauteur_sous_panel);
-        JLabel image_construction = creerImage("src/Ressources/artwork/construction.png", largeur_sous_panel, hauteur_sous_panel);
-
         /* Panel */
         ReglesPanel panel = new ReglesPanel();
-        JPanel sous_panel_1 = new JPanel(new BorderLayout());
-        JPanel sous_panel_2 = new JPanel(new BorderLayout());
-        JPanel sous_panel_3 = new JPanel(new BorderLayout());
-        JPanel panel_image_jouer = new JPanel();
-        JPanel panel_texte_jouer = new JPanel();
-        JPanel panel_texte_deplacement = new JPanel();
-        JPanel panel_image_deplacement = new JPanel();
-        JPanel panel_image_construction = new JPanel();
-        JPanel panel_texte_construction = new JPanel();
+        int largeur_panel = largeur * 5 / 8;
+        int hauteur_panel = hauteur * 5 / 8;
+        int largeur_sous_panel = (int) Math.round(largeur_panel * 0.9);
+        int hauteur_sous_panel = (int) Math.round(hauteur_panel /3.5);
 
         panel.setMaximumSize(new Dimension(largeur_panel, hauteur_panel));
-        sous_panel_1.setMaximumSize(new Dimension(largeur_panel, hauteur_sous_panel));
-        sous_panel_2.setMaximumSize(new Dimension(largeur_panel, hauteur_sous_panel));
-        sous_panel_3.setMaximumSize(new Dimension(largeur_panel, hauteur_sous_panel));
 
-        sous_panel_1.setOpaque(false);
-        sous_panel_2.setOpaque(false);
-        sous_panel_3.setOpaque(false);
-        panel_image_jouer.setOpaque(false);
-        panel_texte_jouer.setOpaque(false);
-        panel_texte_deplacement.setOpaque(false);
-        panel_image_deplacement.setOpaque(false);
-        panel_image_construction.setOpaque(false);
-        panel_texte_construction.setOpaque(false);
-
-        panel_image_jouer.add(image_jouer);
-        panel_image_jouer.setPreferredSize(new Dimension(largeur_sous_panel, hauteur_sous_panel));
-
-        panel_texte_jouer.add(titreCommentJouer);
-        panel_texte_jouer.add(Box.createRigidArea(new Dimension(largeur_sous_panel * 2, espacement_entre_texte)));
-        panel_texte_jouer.add(texteCommentJouer);
-        panel_texte_jouer.setPreferredSize(new Dimension(largeur_sous_panel * 2, hauteur_sous_panel));
-
-        panel_texte_deplacement.add(titreDeplacement);
-        panel_texte_deplacement.add(Box.createRigidArea(new Dimension(largeur_sous_panel * 2, espacement_entre_texte)));
-        panel_texte_deplacement.add(texteDeplacement);
-        panel_texte_deplacement.setPreferredSize(new Dimension(largeur_sous_panel * 2, hauteur_sous_panel));
-
-        panel_image_deplacement.add(image_deplacement);
-        panel_image_deplacement.setPreferredSize(new Dimension(largeur_sous_panel, hauteur_sous_panel));
-
-        panel_image_construction.add(image_construction);
-        panel_image_construction.setPreferredSize(new Dimension(largeur_sous_panel, hauteur_sous_panel));
-
-        panel_texte_construction.add(titreConstruction);
-        panel_texte_construction.add(Box.createRigidArea(new Dimension(largeur_sous_panel * 2, espacement_entre_texte)));
-        panel_texte_construction.add(texteConstruction);
-        panel_texte_construction.setPreferredSize(new Dimension(largeur_sous_panel * 2, hauteur_sous_panel));
+        LignePanel sous_panel_1 = new LignePanel(largeur_sous_panel, hauteur_sous_panel, "src/Ressources/artwork/comment_jouer.png", titreCommentJouer, texteCommentJouer);
+        LignePanel sous_panel_2 = new LignePanel(largeur_sous_panel, hauteur_sous_panel, "src/Ressources/artwork/deplacement.png", titreDeplacement, texteDeplacement);
+        LignePanel sous_panel_3 = new LignePanel(largeur_sous_panel, hauteur_sous_panel, "src/Ressources/artwork/construction.png", titreConstruction, texteConstruction);
 
         /* Adding */
-        sous_panel_1.add(panel_texte_jouer, BorderLayout.WEST);
-        sous_panel_1.add(panel_image_jouer, BorderLayout.EAST);
-
-        sous_panel_2.add(panel_image_deplacement, BorderLayout.WEST);
-        sous_panel_2.add(panel_texte_deplacement, BorderLayout.EAST);
-
-        sous_panel_3.add(panel_texte_construction, BorderLayout.WEST);
-        sous_panel_3.add(panel_image_construction, BorderLayout.EAST);
-
-
+        panel.add(Box.createRigidArea(new Dimension(largeur_sous_panel, hauteur_sous_panel / 10)));
         panel.add(sous_panel_1);
         panel.add(sous_panel_2);
         panel.add(sous_panel_3);
 
+        add(Box.createRigidArea(new Dimension(largeur, hauteur / 20)));
+        add(logo);
         add(panel);
-        add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
+        add(Box.createRigidArea(new Dimension(largeur, hauteur / 40)));
         add(bRetour);
         setVisible(true);
+    }
+
+    private class LignePanel extends JPanel {
+        public LignePanel(int largeur_panel, int hauteur_panel, String image_path, JLabel titre, JTextArea texte) {
+
+            int largeur_sous_panel = largeur_panel / 3;
+
+            /* Textes */
+            titre.setOpaque(false);
+
+            texte.setPreferredSize(new Dimension(largeur_sous_panel * 2, hauteur_panel));
+            texte.setFont(new Font("Arial", Font.PLAIN, 14));
+            texte.setEditable(false);
+            texte.setOpaque(false);
+
+            /* Images */
+            JLabel image = creerImage(image_path, largeur_sous_panel, hauteur_panel);
+
+            /* Panels*/
+            JPanel panel_image = new JPanel();
+            JPanel panel_texte = new JPanel();
+
+            setOpaque(false);
+            setMaximumSize(new Dimension(largeur_panel, hauteur_panel));
+
+            panel_image.setOpaque(false);
+            panel_texte.setOpaque(false);
+
+            /* Adding */
+            panel_image.add(image);
+            panel_image.setPreferredSize(new Dimension(largeur_sous_panel, hauteur_panel));
+
+            panel_texte.add(titre);
+            panel_texte.add(Box.createRigidArea(new Dimension(largeur_sous_panel * 2, 0)));
+            panel_texte.add(texte);
+            panel_texte.setPreferredSize(new Dimension(largeur_sous_panel * 2, hauteur_panel));
+
+            add(panel_image);
+            add(panel_texte);
+        }
     }
 
     private class ReglesPanel extends JPanel {
