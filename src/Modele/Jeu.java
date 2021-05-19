@@ -6,7 +6,9 @@ import Vue.LecteurSon;
 import java.awt.*;
 
 /**
+ * Classe permettant de gérer tout le processus d'une partie en éditant les valeurs du plateau.
  *
+ * @see Plateau
  */
 public class Jeu {
     private Plateau plateau;
@@ -30,8 +32,9 @@ public class Jeu {
     /**
      * Instantie une classe jeu.
      *
-     * @param l
-     * @param c
+     * @param l nombre de ligne
+     * @param c nombre de colonne
+     * @param o observateur
      */
     public Jeu(int l, int c, Observer o) {
         situation = PLACEMENT;
@@ -45,13 +48,14 @@ public class Jeu {
     }
 
     /**
+     * Effectue des actions selon la situation du jeu parmi placement des batisseurs, selection de batisseur, déplacement des batisseurs et construction des bâtiments.
+     *
      * @param l un indice de ligne sur la grille
      * @param c un indice de colonne sur la grille
-     * @return
      * @see Plateau#estLibre(int ligne, int colonne)
      * @see Plateau#ajouterJoueur(int ligne, int colonne, int type_joueur)
-     * @see #avancer(int ligne, int colonne, Point batisseur)
-     * @see #construire(int ligne, int colonne, Point batisseur)
+     * @see Jeu#avancer(int ligne, int colonne, Point batisseur)
+     * @see Jeu#construire(int ligne, int colonne, Point batisseur)
      */
     public void jouer(int l, int c) {
         // placement des batisseurs sur la grille
@@ -63,7 +67,7 @@ public class Jeu {
                     finTour();
                 }
             }
-            if(nombre_batisseurs >= 4) {
+            if (nombre_batisseurs >= 4) {
                 situation = SELECTION;
             }
         } else if (situation == SELECTION || (plateau.estBatisseur(l, c, joueur_en_cours) && situation == DEPLACEMENT)) {
@@ -86,23 +90,26 @@ public class Jeu {
                 situation = SELECTION;
             }
         }
-        printPlateau();
-
-        System.out.println("Tour joueur n°" + joueur_en_cours / JOUEUR1);
     }
 
-    public int getSituation() {
-        return situation;
-    }
-
-    public int getJoueur_en_cours() {
-        return joueur_en_cours;
-    }
-
+    /**
+     * Choisi le batisseur à la position (l, c).
+     *
+     * @param l un indice de ligne sur la grille
+     * @param c un indice de colonne sur la grille
+     * @return le batisseur du joueur s'il existe à cette position
+     */
     private Point choisirBatisseur(int l, int c) {
         return plateau.estBatisseur(l, c, joueur_en_cours) ? new Point(l, c) : null;
     }
 
+    /**
+     * Vérifie que la case (l, c) est atteignable sur la grille (selon la situation)
+     *
+     * @param l un indice de ligne sur la grille
+     * @param c un indice de colonne sur la grille
+     * @return vrai s'il on peut atteindre la case
+     */
     public boolean estAtteignable(int l, int c) {
         if (situation == DEPLACEMENT)
             return (batisseur_en_cours != null) && plateau.deplacementPossible(l, c, batisseur_en_cours);
@@ -161,10 +168,12 @@ public class Jeu {
         }
     }
 
+    /**
+     * Affiche les valeurs des cases du plateau.
+     */
     private void printPlateau() {
         for (int i = 0; i < plateau.getLignes(); i++) {
             for (int j = 0; j < plateau.getColonnes(); j++) {
-                // formatter permet de print un entier sur deux digit (ex : 1 -> 01)
                 System.out.print("| " + plateau.getTypeBatisseurs(i, j) / JOUEUR1 + " : " + plateau.getTypeBatiments(i, j) + " ");
             }
             System.out.println("");
@@ -172,14 +181,10 @@ public class Jeu {
         System.out.println("");
     }
 
-    public Plateau getPlateau() {
-        return plateau;
-    }
-
-    public Point getBatisseur_en_cours() {
-        return batisseur_en_cours;
-    }
-
+    /**
+     * Vérifie si le batisseur du joueur en cours est sur un bâtiment d'hauteur 3.
+     * Si c'est le cas, le jeu s'arrête et l'observateur est notifié de la victoire.
+     */
     public void victoireJoueur() {
         if (batisseur_en_cours != null && plateau.getTypeBatiments(batisseur_en_cours.x, batisseur_en_cours.y) == Plateau.TOIT) {
             System.out.println("cest fini");
@@ -190,5 +195,21 @@ public class Jeu {
 
     public boolean estJeufini() {
         return jeu_fini;
+    }
+
+    public Plateau getPlateau() {
+        return plateau;
+    }
+
+    public Point getBatisseur_en_cours() {
+        return batisseur_en_cours;
+    }
+
+    public int getSituation() {
+        return situation;
+    }
+
+    public int getJoueur_en_cours() {
+        return joueur_en_cours;
     }
 }
