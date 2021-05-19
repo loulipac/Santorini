@@ -11,7 +11,7 @@ public class EcouteurDeSouris implements MouseListener {
     JeuGraphique jg;
     int largeur_plateau, hauteur_plateau;
 
-    public EcouteurDeSouris( JeuGraphique jg) {
+    public EcouteurDeSouris(JeuGraphique jg) {
         this.jg = jg;
     }
 
@@ -19,7 +19,7 @@ public class EcouteurDeSouris implements MouseListener {
     public void mousePressed(MouseEvent e) {
         this.largeur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getColonnes();
         this.hauteur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getLignes();
-        if(e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
+        if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
             jg.getJeu().jouer(pos_y, pos_x);
@@ -37,9 +37,6 @@ public class EcouteurDeSouris implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Image image = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/outil_rouge.png");
-        //jg.setCursor(toolkit.createCustomCursor(image , new Point(16, 16), "c_construire_rouge"));
     }
 
     @Override

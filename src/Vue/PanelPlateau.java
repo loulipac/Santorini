@@ -4,6 +4,7 @@ import Modele.Constante;
 import Modele.Jeu;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -35,13 +36,23 @@ public class PanelPlateau extends JPanel implements Observer {
 
         colonne_rouge = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
         colonne_bleu = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
-        arriere_plan = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/artwork/background_in_game.png");
+        arriere_plan = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
     }
 
     /**
      * Ajoute tous les composants au panel
      */
     public void initialiserPanel() {
+        BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+        setLayout(boxlayout);
+        TopPanel tp = new TopPanel();
+        JGamePanel jgame = new JGamePanel();
+        add(tp);
+        add(jgame);
+        setVisible(true);
+    }
+
+    public void initialiserPanel1() {
         // Initialisation des règles du grid bag layout
         setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -51,21 +62,21 @@ public class PanelPlateau extends JPanel implements Observer {
 
         TopPanel tp = new TopPanel();
         JGamePanel jgame = new JGamePanel();
-        JButtonPanel panel_bouton = new JButtonPanel();
+        //JButtonPanel panel_bouton = new JButtonPanel();
 
         // setting position on the grid bag layout
         c.fill = GridBagConstraints.VERTICAL;
-        c.weighty = 0.21;
+        c.weighty = 0.25;
         c.gridy = 0;
         add(tp, c);
         c.fill = GridBagConstraints.VERTICAL;
-        c.weighty = 0.66;
+        c.weighty = 0.75;
         c.gridy = 1;
         add(jgame, c);
-        c.fill = GridBagConstraints.BOTH;
+        /*c.fill = GridBagConstraints.BOTH;
         c.weighty = 0.13;
         c.gridy = 2;
-        add(panel_bouton, c);
+        add(panel_bouton, c);*/
     }
 
     public class JButtonPanel extends JPanel {
@@ -115,10 +126,10 @@ public class PanelPlateau extends JPanel implements Observer {
             bAnnuler.addActionListener(PanelPlateau.this::actionBoutonAnnuler);
 
 
-            add(bNouvelle);
+            //add(bNouvelle);
             add(bAnnuler);
             add(bFin);
-            add(bRetour);
+            //add(bRetour);
         }
     }
 
@@ -142,7 +153,7 @@ public class PanelPlateau extends JPanel implements Observer {
             // Calcul de la taille de la grille selon la taille de la fenêtre
             int taille_case = Math.min(
                     largeur / jeu.getPlateau().getColonnes(),
-                    ((int) (hauteur * 0.55)) / jeu.getPlateau().getLignes()
+                    ((int) (hauteur * 0.65)) / jeu.getPlateau().getLignes()
             );
             jg.setPreferredSize(new Dimension(taille_case * jeu.getPlateau().getColonnes(), taille_case * jeu.getPlateau().getLignes()));
             setPreferredSize(new Dimension(taille_case * jeu.getPlateau().getColonnes(), 0));
@@ -153,23 +164,26 @@ public class PanelPlateau extends JPanel implements Observer {
 
     public class TopPanel extends JPanel {
         public TopPanel() {
-//            setBorder(new LineBorder(Color.red));
-            setOpaque(false);
-            setLayout(new BorderLayout());
+            BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+            setLayout(boxlayout);
 
-            /*JLabel logo = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
+            setBorder(new LineBorder(Color.red));
+            Dimension size = new Dimension(largeur, (int) (hauteur * 0.25));
+            setPreferredSize(size);
+            setMaximumSize(size);
+            setOpaque(false);
+
+            JLabel logo = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
             logo.setAlignmentX(CENTER_ALIGNMENT);
             logo.setBorder(new LineBorder(Color.cyan));
-            add(logo, BorderLayout.CENTER);*/
-            /* Texte de suivi du déroulement de la partie */
+            add(logo);
 
             jt = new JLabel("C'est au tour du Joueur 1");
-            jt.setAlignmentX(CENTER_ALIGNMENT);
             jt.setOpaque(false);
-            jt.setBorder(null);
+            jt.setBorder(new LineBorder(Color.YELLOW));
             jt.setFont(lilly_belle);
             jt.setForeground(Color.WHITE);
-            add(jt, BorderLayout.CENTER);
+            add(jt);
         }
     }
 
