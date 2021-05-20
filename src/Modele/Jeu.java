@@ -84,8 +84,9 @@ public class Jeu {
             }
         } else if (situation == DEPLACEMENT) { // déplace un batisseur aux coordonées l et c de la grille
             System.out.println("Déplacement du batisseur.");
+            Point prevPos = batisseur_en_cours;
             if (avancer(l, c, batisseur_en_cours)) {
-                cmd = new CoupDeplacer(joueur_en_cours, batisseur_en_cours, new Point(l, c));
+                cmd = new CoupDeplacer(joueur_en_cours, prevPos, batisseur_en_cours);
                 situation = CONSTRUCTION;
             }
             victoireJoueur();
@@ -99,9 +100,6 @@ public class Jeu {
             }
         }
         histo.store(cmd);
-        printPlateau();
-
-        System.out.println("Tour joueur n°" + joueur_en_cours / JOUEUR1);
     }
 
     /**
@@ -203,6 +201,14 @@ public class Jeu {
             jeu_fini = true;
             observateur.miseAjour();
         }
+    }
+
+    public void undo() {
+        if (histo.canUndo()) histo.undo();
+    }
+
+    public void redo() {
+        if (histo.canRedo()) histo.redo();
     }
 
     public boolean estJeufini() {

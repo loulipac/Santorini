@@ -247,15 +247,13 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     public void actionUndo(ActionEvent e) {
-        // jeu.undo();
-        System.out.println("NOT IMPLEMENTED");
-        System.out.println("undo...");
+        jeu.undo();
+        jg.repaint();
     }
 
     public void actionRedo(ActionEvent e) {
-        // jeu.redo();
-        System.out.println("NOT IMPLEMENTED");
-        System.out.println("redo...");
+         jeu.redo();
+         jg.repaint();
     }
 
     /**

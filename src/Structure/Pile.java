@@ -30,6 +30,6 @@ public class Pile<E> {
     }
 
     public boolean isEmpty() {
-        return nb_elem != 0;
+        return nb_elem == 0;
     }
 }
