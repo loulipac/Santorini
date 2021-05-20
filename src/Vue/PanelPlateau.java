@@ -106,6 +106,20 @@ public class PanelPlateau extends JPanel implements Observer {
             jg.addMouseListener(new EcouteurDeSouris(jg));
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 
+            JPanel histo_bouton = new JPanel();
+            histo_bouton.setOpaque(false);
+            histo_bouton.setPreferredSize(size);
+            histo_bouton.setMaximumSize(size);
+
+            //parametres.setBorder(new LineBorder(Color.GREEN));
+            JButton undo = new JButton("<-");
+            JButton redo = new JButton("->");
+
+            undo.addActionListener(PanelPlateau.this::actionUndo);
+            redo.addActionListener(PanelPlateau.this::actionRedo);
+            histo_bouton.add(undo);
+            histo_bouton.add(redo);
+
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
             //int taille_case_largeur = largeur / jeu.getPlateau().getColonnes();
@@ -129,14 +143,7 @@ public class PanelPlateau extends JPanel implements Observer {
             addMargin();
             add(jg);
             addMargin();
-
-            // placeholder pour de futurs boutons
-            JPanel j_placeholder = new JPanel();
-            j_placeholder.setOpaque(false);
-            j_placeholder.setPreferredSize(size);
-            j_placeholder.setMaximumSize(size);
-            //j_placeholder.setBorder(new LineBorder(Color.GREEN));
-            add(j_placeholder);
+            add(histo_bouton);
             addMargin();
         }
 
@@ -237,6 +244,18 @@ public class PanelPlateau extends JPanel implements Observer {
     public void actionBoutonParametres(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getPileCarte().show(f.panelPrincipal, "parametres");
+    }
+
+    public void actionUndo(ActionEvent e) {
+        // jeu.undo();
+        System.out.println("NOT IMPLEMENTED");
+        System.out.println("undo...");
+    }
+
+    public void actionRedo(ActionEvent e) {
+        // jeu.redo();
+        System.out.println("NOT IMPLEMENTED");
+        System.out.println("redo...");
     }
 
     /**
