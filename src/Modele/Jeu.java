@@ -5,6 +5,8 @@ import Vue.LecteurSon;
 
 import java.awt.*;
 
+import static Modele.Constante.*;
+
 /**
  * Classe permettant de gérer tout le processus d'une partie en éditant les valeurs du plateau.
  *
@@ -12,14 +14,6 @@ import java.awt.*;
  */
 public class Jeu {
     private Plateau plateau;
-
-    public static final int JOUEUR1 = Constante.JOUEUR1;
-    public static final int JOUEUR2 = Constante.JOUEUR2;
-
-    public static final int SELECTION = Constante.SELECTION;
-    public static final int DEPLACEMENT = Constante.DEPLACEMENT;
-    public static final int CONSTRUCTION = Constante.CONSTRUCTION;
-    public static final int PLACEMENT = Constante.PLACEMENT;
 
     private int joueur_en_cours;
     private int situation;

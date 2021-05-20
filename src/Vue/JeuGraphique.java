@@ -2,6 +2,7 @@ package Vue;
 
 import Modele.Plateau;
 import Modele.Jeu;
+import static Modele.Constante.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -115,7 +116,7 @@ public class JeuGraphique extends JComponent {
 
                     boolean batisseur_selectionne = (batisseurs_ligne == l && batisseurs_colonne == c);
 
-                    if (plateau.getTypeBatisseurs(l, c) == Jeu.JOUEUR1) {
+                    if (plateau.getTypeBatisseurs(l, c) == JOUEUR1) {
                         image_batisseurs = batisseur_selectionne ? batisseur_bleu_selectionne : batisseur_bleu;
                     } else {
                         image_batisseurs = batisseur_selectionne ? batisseur_rouge_selectionne : batisseur_rouge;
@@ -125,14 +126,14 @@ public class JeuGraphique extends JComponent {
                 }
             }
         }
-        if (jeu.getSituation() == Jeu.DEPLACEMENT) {
-            Image pas_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? pas_bleu : pas_rouge;
+        if (jeu.getSituation() == DEPLACEMENT) {
+            Image pas_joueur = jeu.getJoueur_en_cours() == JOUEUR1 ? pas_bleu : pas_rouge;
 
             for (Point case_autour : plateau.getCasesAccessibles(jeu.getBatisseur_en_cours())) {
                 drawable.drawImage(pas_joueur, case_autour.y * taille_case, case_autour.x * taille_case, taille_case, taille_case, null);
             }
-        } else if (jeu.getSituation() == Jeu.CONSTRUCTION && !jeu.estJeufini()) {
-            Image outil_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? outil_bleu : outil_rouge;
+        } else if (jeu.getSituation() == CONSTRUCTION && !jeu.estJeufini()) {
+            Image outil_joueur = jeu.getJoueur_en_cours() == JOUEUR1 ? outil_bleu : outil_rouge;
 
             for (Point constructions_autour : plateau.getConstructionsPossible(jeu.getBatisseur_en_cours())) {
                 drawable.drawImage(outil_joueur, constructions_autour.y * taille_case, constructions_autour.x * taille_case, taille_case, taille_case, null);

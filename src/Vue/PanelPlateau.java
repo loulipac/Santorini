@@ -2,6 +2,7 @@ package Vue;
 
 import Modele.Constante;
 import Modele.Jeu;
+import static Modele.Constante.*;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -218,7 +219,7 @@ public class PanelPlateau extends JPanel implements Observer {
                     this
             );
 
-            Image colonne = (jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? colonne_bleu : colonne_rouge);
+            Image colonne = (jeu.getJoueur_en_cours() == JOUEUR1 ? colonne_bleu : colonne_rouge);
             // float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre
 
             g2d.drawImage(
@@ -263,9 +264,9 @@ public class PanelPlateau extends JPanel implements Observer {
     public void miseAjour() {
         String annonce_tour_joueur;
         if (jeu.estJeufini())
-            annonce_tour_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? "Joueur 1 gagne" : "Joueur 2 gagne";
+            annonce_tour_joueur = jeu.getJoueur_en_cours() == JOUEUR1 ? "Joueur 1 gagne" : "Joueur 2 gagne";
         else {
-            annonce_tour_joueur = jeu.getJoueur_en_cours() == Jeu.JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2";
+            annonce_tour_joueur = jeu.getJoueur_en_cours() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2";
         }
         jt.setText(annonce_tour_joueur);
         repaint();
