@@ -16,9 +16,11 @@ class PanelMenu extends JPanel {
     private JLabel logo;
     private LecteurSon son_bouton;
     Image arriere_plan, colonnes;
+    boolean maximized = false;
+    Frame frame;
 
-    public PanelMenu(int largeur, int hauteur) {
-
+    public PanelMenu(int largeur, int hauteur, Frame frame) {
+        this.frame = frame;
         son_bouton = new LecteurSon("menu_click.wav");
         /* BoxLayout */
 
@@ -59,6 +61,7 @@ class PanelMenu extends JPanel {
         bRegles.addActionListener(this::actionBoutonRegles);
         bQuitter.addActionListener(this::actionBoutonQuitter);
         bParametres.addActionListener(this::actionBoutonParametres);
+        bFullScreen.addActionListener(this::actionFullscreen);
 
 
         /* Adding */
@@ -131,6 +134,23 @@ class PanelMenu extends JPanel {
     public void actionBoutonQuitter(ActionEvent e) {
         son_bouton.joueSon(false);
         System.exit(0);
+    }
+
+    /**
+     * Met la fenêtre en fullscreen ou non.
+     *
+     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     */
+    public void actionFullscreen(ActionEvent e) {
+        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice device = env.getDefaultScreenDevice();
+        if (maximized) {
+            device.setFullScreenWindow(null);
+            maximized = false;
+        } else {
+            device.setFullScreenWindow(frame);
+            maximized = true;
+        }
     }
 
     public void paintComponent(Graphics g) {
