@@ -192,6 +192,13 @@ public class Plateau {
         return cases[l][c] & (~7);
     }
 
+    public void removePlayer(int l, int c) {
+        cases[l][c] = getTypeBatiments(l, c);
+    }
+
+    public void setFloor(int l, int c, int value) {
+        cases[l][c] = value + getTypeBatisseurs(l, c);
+    }
 
     public ArrayList<Point> getCasesAcessibles(Point batisseurs){
         ArrayList<Point> cases_acessibles = new ArrayList<>();

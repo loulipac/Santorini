@@ -26,6 +26,7 @@ public class Jeu {
     private final LecteurSon construction_son;
     private Observer observateur;
     private boolean jeu_fini;
+    private Historique histo;
 
     /**
      * Instantie une classe jeu.
@@ -42,6 +43,7 @@ public class Jeu {
         construction_son = new LecteurSon("boulder_drop.wav");
         observateur = o;
         jeu_fini = false;
+        histo = new Historique(plateau);
     }
 
     /**
@@ -54,9 +56,11 @@ public class Jeu {
      * @see #construire(int ligne, int colonne, Point batisseur)
      */
     public void jouer(int l, int c) {
+        Commande cmd = null;
         // placement des batisseurs sur la grille
         if (situation == PLACEMENT) {
             if (plateau.estLibre(l, c)) {
+                cmd = new CoupDeplacer(joueur_en_cours, null, new Point(l, c));
                 plateau.ajouterJoueur(l, c, joueur_en_cours);
                 nombre_batisseurs++;
                 if (nombre_batisseurs % 2 == 0) {
@@ -76,16 +80,21 @@ public class Jeu {
             }
         } else if (situation == DEPLACEMENT) { // déplace un batisseur aux coordonées l et c de la grille
             System.out.println("Déplacement du batisseur.");
-            situation = avancer(l, c, batisseur_en_cours) ? CONSTRUCTION : DEPLACEMENT;
+            if (avancer(l, c, batisseur_en_cours)) {
+                cmd = new CoupDeplacer(joueur_en_cours, batisseur_en_cours, new Point(l, c));
+                situation = CONSTRUCTION;
+            }
             victoireJoueur();
         } else if (!jeu_fini && situation == CONSTRUCTION) { // construit un bâtiment aux coordonées l et c de la grille si possib
             System.out.println("Construction.");
             if (construire(l, c, batisseur_en_cours)) {
                 construction_son.joueSon(false);
+                cmd = new CoupConstruire(joueur_en_cours, new Point(l, c), plateau.getTypeBatiments(l, c));
                 finTour();
                 situation = SELECTION;
             }
         }
+        histo.store(cmd);
         printPlateau();
 
         System.out.println("Tour joueur n°" + joueur_en_cours / JOUEUR1);

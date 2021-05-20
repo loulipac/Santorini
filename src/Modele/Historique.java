@@ -3,14 +3,17 @@ package Modele;
 import Structure.Pile;
 
 public class Historique {
-    Pile<Commande> past, future;
+    private Pile<Commande> past, future;
+    private Plateau level;
 
-    public Historique() {
+    public Historique(Plateau level) {
         past = new Pile<>();
         future = new Pile<>();
+        this.level = level;
     }
 
     public void store(Commande cmd) {
+        if (cmd == null) return;
         past.insert(cmd);
     }
 
@@ -24,13 +27,13 @@ public class Historique {
 
     public void undo() {
         Commande cmd = past.extract();
-        cmd.unexecute();
+        cmd.unexecute(level);
         future.insert(cmd);
     }
 
     public void redo() {
         Commande cmd = future.extract();
-        cmd.execute();
+        cmd.execute(level);
         past.insert(cmd);
     }
 }
