@@ -326,6 +326,6 @@ public class Plateau {
     }
 
     public void setFloor(int l, int c, int value) {
-        cases[l][c] = value + getTypeBatisseurs(l, c);
+        cases[l][c] += value;
     }
 }

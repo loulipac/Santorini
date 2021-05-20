@@ -1,19 +1,28 @@
 package Modele;
 
+import java.awt.Point;
+
 public abstract class Commande {
     protected int player;
+    protected int type;
 
     protected Commande(int player) {
         this.player = player;
     }
 
-    public abstract void action(Plateau level, int type);
+    public abstract Commande action(Plateau level, int type);
 
-    public void execute(Plateau level) {
-        action(level, 0);
+    public abstract Point getBuilder();
+
+    public Commande execute(Plateau level) {
+        return action(level, 0);
     }
 
-    public void unexecute(Plateau level) {
-        action(level, 1);
+    public Commande unexecute(Plateau level) {
+        return action(level, 1);
+    }
+
+    public int getType() {
+        return type;
     }
 }

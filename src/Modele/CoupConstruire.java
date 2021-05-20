@@ -1,19 +1,28 @@
 package Modele;
 
+import static Modele.Constante.*;
+
 import java.awt.Point;
 
 public class CoupConstruire extends Commande {
-    private Point position;
+    private Point position, builder;
     private int floor;
 
-    public CoupConstruire(int player, Point position, int floor) {
+    public CoupConstruire(int player, Point position, Point builder) {
         super(player);
         this.position = position;
-        this.floor = floor;
+        this.builder = builder;
+        type = CONSTRUCTION;
     }
 
     @Override
-    public void action(Plateau level, int type) {
-        level.setFloor(position.x , position.y, floor - type);
+    public Commande action(Plateau level, int type) {
+        type = type == 0 ? 1 : -1;
+        level.setFloor(position.x , position.y, type);
+        return this;
+    }
+
+    public Point getBuilder() {
+        return builder;
     }
 }

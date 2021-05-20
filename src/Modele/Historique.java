@@ -15,6 +15,7 @@ public class Historique {
     public void store(Commande cmd) {
         if (cmd == null) return;
         past.insert(cmd);
+        future = new Pile<>();
     }
 
     public boolean canUndo() {
@@ -25,15 +26,15 @@ public class Historique {
         return !future.isEmpty();
     }
 
-    public void undo() {
+    public Commande undo() {
         Commande cmd = past.extract();
-        cmd.unexecute(level);
         future.insert(cmd);
+        return cmd.unexecute(level);
     }
 
-    public void redo() {
+    public Commande redo() {
         Commande cmd = future.extract();
-        cmd.execute(level);
         past.insert(cmd);
+        return cmd.execute(level);
     }
 }

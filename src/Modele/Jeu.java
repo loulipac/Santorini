@@ -88,7 +88,7 @@ public class Jeu {
             System.out.println("Construction.");
             if (construire(l, c, batisseur_en_cours)) {
                 construction_son.joueSon(false);
-                cmd = new CoupConstruire(joueur_en_cours, new Point(l, c), plateau.getTypeBatiments(l, c));
+                cmd = new CoupConstruire(joueur_en_cours, new Point(l, c), batisseur_en_cours);
                 finTour();
                 situation = SELECTION;
             }
@@ -127,7 +127,7 @@ public class Jeu {
      * Fini le tour pour le joueur en cours.
      */
     private void finTour() {
-        joueur_en_cours = joueur_en_cours == JOUEUR1 ? JOUEUR2 : JOUEUR1; // BOUTON "VALIDER"
+        joueur_en_cours = (joueur_en_cours % 16) + 8;
         batisseur_en_cours = null;
         observateur.miseAjour();
     }
@@ -198,11 +198,48 @@ public class Jeu {
     }
 
     public void undo() {
-        if (histo.canUndo()) histo.undo();
+        if (histo.canUndo()) {
+            Commande cmd = histo.undo();
+            situation = cmd.getType();
+            switch (situation) {
+                case PLACEMENT:
+                    nombre_batisseurs--;
+                    if (nombre_batisseurs % 2 == 1) {
+                        finTour();
+                    }
+                    break;
+                case DEPLACEMENT:
+                    situation = SELECTION;
+                    break;
+                case CONSTRUCTION:
+                    joueur_en_cours = (joueur_en_cours % 16) + 8;
+                    batisseur_en_cours = cmd.getBuilder();
+                    observateur.miseAjour();
+                    break;
+            }
+        }
     }
 
     public void redo() {
-        if (histo.canRedo()) histo.redo();
+        if (histo.canRedo()) {
+            Commande cmd = histo.redo();
+            switch (cmd.getType()) {
+                case PLACEMENT:
+                    nombre_batisseurs++;
+                    if (nombre_batisseurs % 2 == 0) {
+                        finTour();
+                    }
+                    if (nombre_batisseurs == 4) situation = SELECTION;
+                    break;
+                case DEPLACEMENT:
+                    batisseur_en_cours = cmd.getBuilder();
+                    situation = CONSTRUCTION;
+                    break;
+                case CONSTRUCTION:
+                    finTour();
+                    break;
+            }
+        }
     }
 
     public boolean estJeufini() {
