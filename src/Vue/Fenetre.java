@@ -1,7 +1,11 @@
 package Vue;
 
+import Modele.Constante;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 /**
  * Crée une fenêtre pour le menu principal du jeu.
@@ -21,7 +25,7 @@ public class Fenetre extends JFrame {
 
     public Fenetre() {
         setTitle("Santorini");
-        setMinimumSize(new Dimension(1600, 900));
+        setMinimumSize(Constante.DEFAULT_FENETRE_TAILLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
