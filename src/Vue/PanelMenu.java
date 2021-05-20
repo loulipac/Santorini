@@ -15,9 +15,10 @@ class PanelMenu extends JPanel {
     private Bouton bJouer, bTutoriel, bRegles, bQuitter, bFullScreen, bParametres;
     private JLabel logo;
     private LecteurSon son_bouton;
-    Image arriere_plan,colonnes;
+    Image arriere_plan, colonnes;
 
     public PanelMenu(int largeur, int hauteur) {
+
         son_bouton = new LecteurSon("menu_click.wav");
         /* BoxLayout */
 
@@ -27,15 +28,15 @@ class PanelMenu extends JPanel {
         JPanel pListeMenu = new JPanel();
         BoxLayout lListeMenu = new BoxLayout(pListeMenu, BoxLayout.Y_AXIS);
         pListeMenu.setLayout(lListeMenu);
-        pListeMenu.setBorder(new EmptyBorder(new Insets(largeur/15, 50, 30, 50)));
+        pListeMenu.setBorder(new EmptyBorder(new Insets(largeur / 15, 50, 30, 50)));
         pListeMenu.setOpaque(false);
 
         JPanel pSonEcran = new JPanel();
         BoxLayout lSonEcran = new BoxLayout(pSonEcran, BoxLayout.X_AXIS);
         pSonEcran.setLayout(lSonEcran);
-        pSonEcran.setBorder(new EmptyBorder(new Insets(largeur/30, largeur/5, 30, 50)));
+        pSonEcran.setBorder(new EmptyBorder(new Insets(largeur / 30, largeur / 5, 30, 50)));
         pSonEcran.setOpaque(false);
-        pSonEcran.setSize(new Dimension(largeur, largeur/20));
+        pSonEcran.setSize(new Dimension(largeur, largeur / 20));
 
         /* Button */
         arriere_plan = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/artwork/base.png");
@@ -45,7 +46,7 @@ class PanelMenu extends JPanel {
         bRegles = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", largeur / 4, largeur / 20);
         bQuitter = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/quitter.png", Constante.CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", largeur / 4, largeur / 20);
         bParametres = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/parametres.png", Constante.CHEMIN_RESSOURCE + "/bouton/parametres_hover.png", largeur / 20, largeur / 20);
-        bFullScreen = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", largeur/20, largeur/20);
+        bFullScreen = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", largeur / 20, largeur / 20);
 
         /* Label */
         logo = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
@@ -92,6 +93,7 @@ class PanelMenu extends JPanel {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getPileCarte().show(f.panelPrincipal, "options");
     }
+
     public void actionBoutonParametres(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
