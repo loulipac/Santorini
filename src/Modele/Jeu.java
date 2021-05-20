@@ -236,6 +236,7 @@ public class Jeu {
                     situation = CONSTRUCTION;
                     break;
                 case CONSTRUCTION:
+                    situation = SELECTION;
                     finTour();
                     break;
             }
