@@ -3,6 +3,7 @@ package Vue;
 import Modele.Constante;
 
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -10,7 +11,7 @@ import java.awt.image.BufferedImage;
 /**
  * Classe Listener de souris pour effectuer les actions sur la grille de jeu.
  */
-public class EcouteurDeSouris implements MouseListener {
+public class EcouteurDeSouris extends MouseAdapter {
     JeuGraphique jg;
     int largeur_plateau, hauteur_plateau;
 
@@ -40,41 +41,5 @@ public class EcouteurDeSouris implements MouseListener {
             jg.getJeu().jouer(pos_y, pos_x);
             jg.repaint();
         }
-    }
-
-    /**
-     * Not used
-     *
-     * @param e
-     */
-    @Override
-    public void mouseClicked(MouseEvent e) {
-    }
-
-    /**
-     * Not used
-     *
-     * @param e
-     */
-    @Override
-    public void mouseReleased(MouseEvent e) {
-    }
-
-    /**
-     * Not used
-     *
-     * @param e
-     */
-    @Override
-    public void mouseEntered(MouseEvent e) {
-    }
-
-    /**
-     * Not used
-     *
-     * @param e
-     */
-    @Override
-    public void mouseExited(MouseEvent e) {
     }
 }
