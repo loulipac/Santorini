@@ -37,4 +37,10 @@ public class Bouton extends JButton {
         return new ImageIcon(img);
     }
 
+    public void changeImage(String image) {
+        ImageIcon iconButton = ScaleImage(image, hauteur, largeur);
+        setIcon(iconButton);
+        setRolloverIcon(iconButton);
+    }
+
 }

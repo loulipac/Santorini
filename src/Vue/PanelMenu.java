@@ -3,6 +3,7 @@ package Vue;
 import Modele.Constante;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -12,11 +13,11 @@ import java.io.File;
 
 class PanelMenu extends JPanel {
 
-    private Bouton bJouer, bTutoriel, bRegles, bQuitter, bFullScreen, bParametres;
+    private Bouton bJouer, bTutoriel, bRegles, bQuitter, bFullScreen, bParametres, bSon;
     private JLabel logo;
     private LecteurSon son_bouton;
     Image arriere_plan, colonnes;
-    boolean maximized = false;
+    boolean maximized = false, muted = false;
     Frame frame;
 
     public PanelMenu(int largeur, int hauteur, Frame frame) {
@@ -49,6 +50,7 @@ class PanelMenu extends JPanel {
         bQuitter = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/quitter.png", Constante.CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", largeur / 4, largeur / 20);
         bParametres = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/parametres.png", Constante.CHEMIN_RESSOURCE + "/bouton/parametres_hover.png", largeur / 20, largeur / 20);
         bFullScreen = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", largeur / 20, largeur / 20);
+        bSon = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/son_on.png", Constante.CHEMIN_RESSOURCE + "/bouton/son_on.png", largeur / 20, largeur / 20);
 
         /* Label */
         logo = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
@@ -62,10 +64,13 @@ class PanelMenu extends JPanel {
         bQuitter.addActionListener(this::actionBoutonQuitter);
         bParametres.addActionListener(this::actionBoutonParametres);
         bFullScreen.addActionListener(this::actionFullscreen);
+        bSon.addActionListener(this::actionSon);
 
 
         /* Adding */
         bFullScreen.setAlignmentY(TOP_ALIGNMENT);
+        bSon.setAlignmentY(TOP_ALIGNMENT);
+        pSonEcran.add(bSon);
         pSonEcran.add(bFullScreen);
 
         pListeMenu.add(logo);
@@ -151,6 +156,33 @@ class PanelMenu extends JPanel {
             device.setFullScreenWindow(frame);
             maximized = true;
         }
+    }
+
+    /**
+     * Met la fenêtre en fullscreen ou non.
+     *
+     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     */
+    public void actionSon(ActionEvent e) {
+        if (muted) {
+            bSon.changeImage(Constante.CHEMIN_RESSOURCE + "/bouton/son_on.png");
+            muted = false;
+        } else {
+            bSon.changeImage(Constante.CHEMIN_RESSOURCE + "/bouton/son_off.png");
+            muted = true;
+        }
+        Mixer.Info[] infos = AudioSystem.getMixerInfo();
+        for (Mixer.Info info: infos) {
+            Mixer mixer = AudioSystem.getMixer(info);
+            Line[] lines = mixer.getSourceLines();
+            for(Line line : lines) {
+                BooleanControl bc = (BooleanControl) line.getControl(BooleanControl.Type.MUTE);
+                if (bc != null) {
+                    bc.setValue(muted);
+                }
+            }
+        }
+
     }
 
     public void paintComponent(Graphics g) {
