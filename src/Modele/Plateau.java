@@ -320,4 +320,12 @@ public class Plateau {
     public int getTypeBatisseurs(int l, int c) {
         return cases[l][c] & (~7);
     }
+
+    public void removePlayer(int l, int c) {
+        cases[l][c] = getTypeBatiments(l, c);
+    }
+
+    public void setFloor(int l, int c, int value) {
+        cases[l][c] = value + getTypeBatisseurs(l, c);
+    }
 }
