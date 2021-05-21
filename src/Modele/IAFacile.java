@@ -7,7 +7,7 @@ import java.util.Random;
 
 import static Modele.Constante.*;
 
-public class IAFacile {
+public class IAFacile implements IA{
     Jeu j;
     Random random;
     private ArrayList<Point> batisseurs;
@@ -19,8 +19,8 @@ public class IAFacile {
         random.setSeed(System.currentTimeMillis());
     }
 
-    public void joue(int situation) {
-        switch (situation) {
+    public void joue() {
+        switch (j.getSituation()) {
             case PLACEMENT:
                 jouePlacement();
                 break;
