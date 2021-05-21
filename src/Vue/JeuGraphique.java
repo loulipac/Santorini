@@ -1,7 +1,10 @@
 package Vue;
 
+import Modele.IA;
+import Modele.IAFacile;
 import Modele.Plateau;
 import Modele.Jeu;
+
 import static Modele.Constante.*;
 
 import javax.imageio.ImageIO;
@@ -19,6 +22,8 @@ public class JeuGraphique extends JComponent {
     private int hauteur;
     private int taille_case;
     private final Image case_claire, case_fonce, coupole, etage_1, etage_2, etage_3, batisseur_bleu, batisseur_rouge, batisseur_rouge_selectionne, batisseur_bleu_selectionne, pas_rouge, pas_bleu, outil_bleu, outil_rouge;
+    int ia_mode;
+    IA ia;
 
     /**
      * Constructeur de JeuGraphique, charge les images en mémoire.
@@ -43,6 +48,21 @@ public class JeuGraphique extends JComponent {
                 "_bleu.png");
         outil_rouge = readImage("src/Ressources/icone/outil_rouge.png");
         plateau = j.getPlateau();
+    }
+
+    public JeuGraphique(Jeu j, int IA_mode) {
+        this(j);
+        ia_mode = IA_mode;
+        setIA();
+    }
+
+    private void setIA() {
+        switch (ia_mode) {
+            case 1 -> ia = new IAFacile(this.jeu);
+            case 2 -> ia = new IAFacile(this.jeu);
+            case 3 -> ia = new IAFacile(this.jeu);
+            default -> ia = null;
+        }
     }
 
     /**
@@ -179,5 +199,9 @@ public class JeuGraphique extends JComponent {
 
     public void setJeu(Jeu jeu) {
         this.jeu = jeu;
+    }
+
+    public IA getIa() {
+        return ia;
     }
 }
