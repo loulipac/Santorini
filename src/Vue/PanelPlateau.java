@@ -91,7 +91,6 @@ public class PanelPlateau extends JPanel implements Observer {
             parametres.setPreferredSize(size);
             parametres.setMaximumSize(size);
 
-            //parametres.setBorder(new LineBorder(Color.GREEN));
             Bouton bParametres = new Bouton(
                     CHEMIN_RESSOURCE + "/bouton/parametres.png",
                     CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
@@ -111,17 +110,8 @@ public class PanelPlateau extends JPanel implements Observer {
             histo_bouton.setPreferredSize(size);
             histo_bouton.setMaximumSize(size);
 
-            //parametres.setBorder(new LineBorder(Color.GREEN));
-//            JButton undo = new JButton("<-");
-//            JButton redo = new JButton("->");
-//
-//            undo.addActionListener(PanelPlateau.this::actionUndo);
-//            redo.addActionListener(PanelPlateau.this::actionRedo);
-//            histo_bouton.add(undo);
-//            histo_bouton.add(redo);
-
-            Bouton histo_annuler = new Bouton("src/Ressources/bouton/arriere.png", "src/Ressources/bouton/arriere_hover.png", hauteur / 19, hauteur / 19);
-            Bouton histo_refaire = new Bouton("src/Ressources/bouton/avant.png", "src/Ressources/bouton/avant_hover.png", hauteur / 19, hauteur / 19);
+            Bouton histo_annuler = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png", hauteur / 19, hauteur / 19);
+            Bouton histo_refaire = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png", hauteur / 19, hauteur / 19);
             histo_annuler.addActionListener(PanelPlateau.this::actionUndo);
             histo_refaire.addActionListener(PanelPlateau.this::actionRedo);
             histo_bouton.add(histo_annuler);
