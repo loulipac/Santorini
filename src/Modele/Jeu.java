@@ -173,19 +173,6 @@ public class Jeu {
     }
 
     /**
-     * Affiche les valeurs des cases du plateau.
-     */
-    private void printPlateau() {
-        for (int i = 0; i < plateau.getLignes(); i++) {
-            for (int j = 0; j < plateau.getColonnes(); j++) {
-                System.out.print("| " + plateau.getTypeBatisseurs(i, j) / JOUEUR1 + " : " + plateau.getTypeBatiments(i, j) + " ");
-            }
-            System.out.println("");
-        }
-        System.out.println("");
-    }
-
-    /**
      * Vérifie si le batisseur du joueur en cours est sur un bâtiment d'hauteur 3.
      * Si c'est le cas, le jeu s'arrête et l'observateur est notifié de la victoire.
      */
