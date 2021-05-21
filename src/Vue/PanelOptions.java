@@ -14,6 +14,7 @@ class PanelOptions extends JPanel {
     private Bouton bRetour, bCommencer;
     private LecteurSon son_bouton;
     Font lilly_belle;
+    JRadioButton joueur_joueur, joueur_ia;
 
     public PanelOptions(int largeur, int hauteur) {
         son_bouton = new LecteurSon("menu_click.wav");
@@ -73,8 +74,8 @@ class PanelOptions extends JPanel {
         ButtonGroup adversaires_boutons = new ButtonGroup();
         ButtonGroup boutons_IA = new ButtonGroup();
 
-        JRadioButton joueur_joueur = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_joueur",largeur/6, largeur / 30, adversaires_boutons);
-        JRadioButton joueur_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia",largeur/6, largeur / 30, adversaires_boutons);
+        joueur_joueur = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_joueur",largeur/6, largeur / 30, adversaires_boutons);
+        joueur_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia",largeur/6, largeur / 30, adversaires_boutons);
 
         JRadioButton facile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile",largeur/6, largeur / 30, boutons_IA);
         JRadioButton normale = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale",largeur/6, largeur / 30, boutons_IA);
@@ -166,6 +167,17 @@ class PanelOptions extends JPanel {
     public void actionBoutonCommencer(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre fenetre = (Fenetre) SwingUtilities.getWindowAncestor(this);
+
+        PanelPlateau plateau = null;
+        if(joueur_joueur.isSelected()) {
+            plateau = new PanelPlateau(getSize().width, getSize().height, 0);
+            System.out.println("IA non choisi");
+        } else if(joueur_ia.isSelected()) {
+            plateau = new PanelPlateau(getSize().width, getSize().height, 1);
+            System.out.println("IA choisi");
+        }
+
+        fenetre.getPanelPrincipal().add(plateau, "plateau");
         fenetre.getPileCarte().show(fenetre.panelPrincipal, "plateau");
     }
 
