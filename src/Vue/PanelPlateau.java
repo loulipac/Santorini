@@ -1,5 +1,6 @@
 package Vue;
 
+import Modele.IAActionListener;
 import Modele.Jeu;
 import static Modele.Constante.*;
 
@@ -59,6 +60,7 @@ public class PanelPlateau extends JPanel implements Observer {
         JGamePanel jgame = new JGamePanel(0.75f);
         add(tp);
         add(jgame);
+        //if(jg.getIa() != null) addActionListener(new IAActionListener(jg.getIa()));
     }
 
     /**
