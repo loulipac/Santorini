@@ -33,28 +33,30 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     /**
      * Constructeur qui génère un ensemble de curseur.
+     *
      * @param j
      * @param jg
      */
     public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg) {
         this.jg = jg;
         this.j = j;
-        c_defaut_gris = creerCurseurGenerique( "defaut_gris", HAUT_GAUCHE);
+        c_defaut_gris = creerCurseurGenerique("defaut_gris", HAUT_GAUCHE);
         c_defaut_rouge = creerCurseurGenerique("defaut_rouge", HAUT_GAUCHE);
         c_defaut_bleu = creerCurseurGenerique("defaut_bleu", HAUT_GAUCHE);
         c_pas_bleu = creerCurseurGenerique("pas_bleu", CENTRE);
         c_pas_rouge = creerCurseurGenerique("pas_rouge", CENTRE);
-        c_pas_gris = creerCurseurGenerique( "pas_gris", CENTRE);
+        c_pas_gris = creerCurseurGenerique("pas_gris", CENTRE);
         c_outil_bleu = creerCurseurGenerique("outil_bleu", HAUT_GAUCHE);
         c_outil_rouge = creerCurseurGenerique("outil_rouge", HAUT_GAUCHE);
-        c_outil_gris = creerCurseurGenerique( "outil_gris", HAUT_GAUCHE);
+        c_outil_gris = creerCurseurGenerique("outil_gris", HAUT_GAUCHE);
         c_drapeau_bleu = creerCurseurGenerique("drapeau_bleu", CENTRE);
-        c_drapeau_rouge = creerCurseurGenerique( "drapeau_rouge", CENTRE);
-        c_drapeau_gris = creerCurseurGenerique( "drapeau_gris", CENTRE);
+        c_drapeau_rouge = creerCurseurGenerique("drapeau_rouge", CENTRE);
+        c_drapeau_gris = creerCurseurGenerique("drapeau_gris", CENTRE);
     }
 
     /**
      * Crée un objet de type Cursor depuis son nom de fichier.
+     *
      * @param fichier_nom
      * @param decallage
      * @return le curseur crée
@@ -77,6 +79,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     /**
      * Définis le curseur selon sa position sur la grille et la situation du jeu.
+     *
      * @param e
      * @see Jeu#getSituation()
      * @see Jeu#estAtteignable(int, int)
@@ -89,40 +92,42 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
-            if (j.getSituation() == Constante.DEPLACEMENT) {
-                if (jg.getJeu().estAtteignable(pos_y, pos_x)) {
-                    if (j.getJoueur_en_cours() == Constante.JOUEUR1) {
-                        jg.setCursor(c_pas_bleu);
+            if (pos_x < 5 && pos_y < 5) {
+                if (j.getSituation() == Constante.DEPLACEMENT) {
+                    if (jg.getJeu().estAtteignable(pos_y, pos_x)) {
+                        if (j.getJoueur_en_cours() == Constante.JOUEUR1) {
+                            jg.setCursor(c_pas_bleu);
+                        } else {
+                            jg.setCursor(c_pas_rouge);
+                        }
                     } else {
-                        jg.setCursor(c_pas_rouge);
+                        jg.setCursor(c_pas_gris);
                     }
-                } else {
-                    jg.setCursor(c_pas_gris);
-                }
-            } else if (j.getSituation() == Constante.CONSTRUCTION) {
-                if (jg.getJeu().estAtteignable(pos_y, pos_x)) {
-                    if (j.getJoueur_en_cours() == Constante.JOUEUR1) {
-                        jg.setCursor(c_outil_bleu);
+                } else if (j.getSituation() == Constante.CONSTRUCTION) {
+                    if (jg.getJeu().estAtteignable(pos_y, pos_x)) {
+                        if (j.getJoueur_en_cours() == Constante.JOUEUR1) {
+                            jg.setCursor(c_outil_bleu);
+                        } else {
+                            jg.setCursor(c_outil_rouge);
+                        }
                     } else {
-                        jg.setCursor(c_outil_rouge);
+                        jg.setCursor(c_outil_gris);
                     }
-                } else {
-                    jg.setCursor(c_outil_gris);
-                }
 
-            } else if (j.getSituation() == Constante.PLACEMENT) {
-                if (jg.getJeu().getPlateau().estLibre(pos_y, pos_x)) {
-                    if (j.getJoueur_en_cours() == Constante.JOUEUR1) {
-                        jg.setCursor(c_drapeau_bleu);
+                } else if (j.getSituation() == Constante.PLACEMENT) {
+                    if (jg.getJeu().getPlateau().estLibre(pos_y, pos_x)) {
+                        if (j.getJoueur_en_cours() == Constante.JOUEUR1) {
+                            jg.setCursor(c_drapeau_bleu);
+                        } else {
+                            jg.setCursor(c_drapeau_rouge);
+                        }
                     } else {
-                        jg.setCursor(c_drapeau_rouge);
+                        jg.setCursor(c_drapeau_gris);
                     }
-                } else {
-                    jg.setCursor(c_drapeau_gris);
-                }
 
-            } else {
-                jg.setCursor(c_defaut_gris);
+                } else {
+                    jg.setCursor(c_defaut_gris);
+                }
             }
         }
     }
