@@ -1,5 +1,5 @@
 package Modele;
 
 public interface IA {
-    public void joue();
+    public int joue();
 }
