@@ -1,6 +1,6 @@
 package Vue;
 
-import Modele.Constante;
+import static Modele.Constante.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -47,6 +47,9 @@ class PanelOptions extends JPanel {
         versus_texte.setFont(lilly_belle);
         IA_texte.setFont(lilly_belle);
 
+        versus_texte.setForeground(new Color(82, 60, 43));
+        IA_texte.setForeground(new Color(82, 60, 43));
+
         logo.setAlignmentX(CENTER_ALIGNMENT);
         logo.setMaximumSize(new Dimension(largeur/3, largeur/9));
 
@@ -70,15 +73,15 @@ class PanelOptions extends JPanel {
         ButtonGroup adversaires_boutons = new ButtonGroup();
         ButtonGroup boutons_IA = new ButtonGroup();
 
-        JRadioButton joueur_joueur = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/joueur_contre_joueur",largeur/6, largeur / 30, adversaires_boutons);
-        JRadioButton joueur_ia = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia",largeur/6, largeur / 30, adversaires_boutons);
+        JRadioButton joueur_joueur = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_joueur",largeur/6, largeur / 30, adversaires_boutons);
+        JRadioButton joueur_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia",largeur/6, largeur / 30, adversaires_boutons);
 
-        JRadioButton facile = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/facile",largeur/6, largeur / 30, boutons_IA);
-        JRadioButton normale = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/normale",largeur/6, largeur / 30, boutons_IA);
-        JRadioButton difficile = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/difficile",largeur/6, largeur / 30, boutons_IA);
+        JRadioButton facile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile",largeur/6, largeur / 30, boutons_IA);
+        JRadioButton normale = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale",largeur/6, largeur / 30, boutons_IA);
+        JRadioButton difficile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/difficile",largeur/6, largeur / 30, boutons_IA);
 
-        bCommencer = new Bouton("src/Ressources/bouton/commencer_la_partie.png", "src/Ressources/bouton/commencer_la_partie_hover.png", largeur / 4, largeur / 20);
-        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour_hover.png", largeur / 4, largeur / 20);
+        bCommencer = new Bouton(CHEMIN_RESSOURCE + "/bouton/commencer_la_partie.png", CHEMIN_RESSOURCE + "/bouton/commencer_la_partie_hover.png", largeur / 4, largeur / 20);
+        bRetour = new Bouton(CHEMIN_RESSOURCE + "/bouton/retour.png", CHEMIN_RESSOURCE + "/bouton/retour_hover.png", largeur / 4, largeur / 20);
 
         /* Evenements */
         bRetour.addActionListener(this::actionBoutonRetourMenu);
@@ -87,7 +90,6 @@ class PanelOptions extends JPanel {
         facile.addActionListener(this::actionBoutonRadio);
         normale.addActionListener(this::actionBoutonRadio);
         difficile.addActionListener(this::actionBoutonRadio);
-
 
         joueur_joueur.addActionListener(new ActionListener() {
             @Override
@@ -184,7 +186,7 @@ class PanelOptions extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Chargement de l"image de fond
         try {
-            BufferedImage img_colonnes = ImageIO.read(new File("src/Ressources/artwork/columns.png"));
+            BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
             g2d.drawImage(
                     img_colonnes,
                     0,
@@ -214,7 +216,7 @@ class PanelOptions extends JPanel {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             try {
-                BufferedImage bg_panel = ImageIO.read(new File("src/Ressources/artwork/bg_regles.png"));
+                BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/bg_regles.png"));
                 g2d.drawImage(
                         bg_panel,
                         0,
