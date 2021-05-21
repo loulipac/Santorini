@@ -1,6 +1,5 @@
 package Vue;
 
-import Modele.Constante;
 import Modele.Jeu;
 import static Modele.Constante.*;
 
@@ -35,7 +34,7 @@ public class PanelPlateau extends JPanel implements Observer {
         this.hauteur = hauteur;
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Ressources/font/LilyScriptOne.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
 
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
@@ -43,9 +42,9 @@ public class PanelPlateau extends JPanel implements Observer {
         lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT, 40);
         initialiserPanel();
 
-        colonne_rouge = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
-        colonne_bleu = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
-        arriere_plan = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
+        colonne_rouge = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
+        colonne_bleu = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
+        arriere_plan = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
     }
 
     /**
@@ -94,8 +93,8 @@ public class PanelPlateau extends JPanel implements Observer {
 
             //parametres.setBorder(new LineBorder(Color.GREEN));
             Bouton bParametres = new Bouton(
-                    Constante.CHEMIN_RESSOURCE + "/bouton/parametres.png",
-                    Constante.CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
+                    CHEMIN_RESSOURCE + "/bouton/parametres.png",
+                    CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
                     hauteur / 19,
                     hauteur / 19
             );
@@ -113,13 +112,20 @@ public class PanelPlateau extends JPanel implements Observer {
             histo_bouton.setMaximumSize(size);
 
             //parametres.setBorder(new LineBorder(Color.GREEN));
-            JButton undo = new JButton("<-");
-            JButton redo = new JButton("->");
+//            JButton undo = new JButton("<-");
+//            JButton redo = new JButton("->");
+//
+//            undo.addActionListener(PanelPlateau.this::actionUndo);
+//            redo.addActionListener(PanelPlateau.this::actionRedo);
+//            histo_bouton.add(undo);
+//            histo_bouton.add(redo);
 
-            undo.addActionListener(PanelPlateau.this::actionUndo);
-            redo.addActionListener(PanelPlateau.this::actionRedo);
-            histo_bouton.add(undo);
-            histo_bouton.add(redo);
+            Bouton histo_annuler = new Bouton("src/Ressources/bouton/arriere.png", "src/Ressources/bouton/arriere_hover.png", hauteur / 19, hauteur / 19);
+            Bouton histo_refaire = new Bouton("src/Ressources/bouton/avant.png", "src/Ressources/bouton/avant_hover.png", hauteur / 19, hauteur / 19);
+            histo_annuler.addActionListener(PanelPlateau.this::actionUndo);
+            histo_refaire.addActionListener(PanelPlateau.this::actionRedo);
+            histo_bouton.add(histo_annuler);
+            histo_bouton.add(histo_refaire);
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
@@ -180,7 +186,7 @@ public class PanelPlateau extends JPanel implements Observer {
             setMaximumSize(size);
             setOpaque(false);
 
-            JLabel logo = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
+            JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
             logo.setAlignmentX(CENTER_ALIGNMENT);
             add(logo);
 
