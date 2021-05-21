@@ -2,6 +2,7 @@ package Vue;
 
 import Modele.IAActionListener;
 import Modele.Jeu;
+
 import static Modele.Constante.*;
 
 import javax.swing.*;
@@ -20,7 +21,7 @@ public class PanelPlateau extends JPanel implements Observer {
     private JeuGraphique jg;
     Font lilly_belle;
     JLabel jt;
-    int largeur, hauteur;
+    int largeur, hauteur, ia_mode = 0;
     Image colonne_rouge, colonne_bleu, arriere_plan;
 
     /**
@@ -30,9 +31,10 @@ public class PanelPlateau extends JPanel implements Observer {
      * @param hauteur
      * @see PanelPlateau#initialiserPanel()
      */
-    public PanelPlateau(int largeur, int hauteur) {
+    public PanelPlateau(int largeur, int hauteur, int ia_mode) {
         this.largeur = largeur;
         this.hauteur = hauteur;
+        this.ia_mode = ia_mode;
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
@@ -60,7 +62,6 @@ public class PanelPlateau extends JPanel implements Observer {
         JGamePanel jgame = new JGamePanel(0.75f);
         add(tp);
         add(jgame);
-        //if(jg.getIa() != null) addActionListener(new IAActionListener(jg.getIa()));
     }
 
     /**
@@ -99,13 +100,22 @@ public class PanelPlateau extends JPanel implements Observer {
                     hauteur / 19,
                     hauteur / 19
             );
+
+            JButton ia_test = new JButton("Démarrer IA");
+
             bParametres.addActionListener(PanelPlateau.this::actionBoutonParametres);
             parametres.add(bParametres);
+            parametres.add(ia_test);
 
             jeu = new Jeu(5, 5, PanelPlateau.this);
-            jg = new JeuGraphique(jeu);
+            System.out.println("IA mode : " + ia_mode);
+            if (ia_mode != 0)
+                jg = new JeuGraphique(jeu, ia_mode);
+            else
+                jg = new JeuGraphique(jeu);
             jg.addMouseListener(new EcouteurDeSouris(jg));
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
+            if(jg.getIa() != null) ia_test.addActionListener(new IAActionListener(jg.getIa()));
 
             JPanel histo_bouton = new JPanel();
             histo_bouton.setOpaque(false);
@@ -251,8 +261,8 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     public void actionRedo(ActionEvent e) {
-         jeu.redo();
-         jg.repaint();
+        jeu.redo();
+        jg.repaint();
     }
 
     /**
