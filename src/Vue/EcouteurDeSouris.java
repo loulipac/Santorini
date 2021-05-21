@@ -40,6 +40,11 @@ public class EcouteurDeSouris extends MouseAdapter {
             int pos_y = e.getY() / jg.getTailleCase();
             jg.getJeu().jouer(pos_y, pos_x);
             jg.repaint();
+            if(jg.getIa() != null){
+                System.out.println("IA joue");
+                jg.getIa().joue();
+                jg.repaint();
+            }
         }
     }
 }
