@@ -34,14 +34,13 @@ public class Fenetre extends JFrame {
         menu = new PanelMenu(getSize().width, getSize().height, this);
         options = new PanelOptions(getSize().width, getSize().height);
         regles = new PanelRegles(getSize().width, getSize().height);
-        plateau = new PanelPlateau(getSize().width, getSize().height);
         parametres = new PanelParametres(getSize().width, getSize().height);
         musique = new LecteurSon("musiqueBGtest.wav");
 
         panelPrincipal.add(menu, "menu");
         panelPrincipal.add(options, "options");
         panelPrincipal.add(regles, "regles");
-        panelPrincipal.add(plateau, "plateau");
+        //panelPrincipal.add(plateau, "plateau");
         panelPrincipal.add(parametres, "parametres");
 
         add(panelPrincipal);
@@ -52,6 +51,9 @@ public class Fenetre extends JFrame {
 
     public CardLayout getPileCarte() {
         return pileCarte;
+    }
+    public JPanel getPanelPrincipal() {
+        return panelPrincipal;
     }
 
     public static void main(String[] args) {
