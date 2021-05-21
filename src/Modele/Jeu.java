@@ -239,4 +239,8 @@ public class Jeu {
     public void setNombre_batisseurs(int nombre_batisseurs) {
         this.nombre_batisseurs = nombre_batisseurs;
     }
+
+    public void setJeu_fini(boolean value) {
+        jeu_fini = value;
+    }
 }
