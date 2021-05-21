@@ -39,6 +39,8 @@ public class CoupDeplacer extends Commande {
             }
         } else {
             game.setBatisseur_en_cours(positions[type]);
+            if (type == UNDO && game.estJeufini()) game.setJeu_fini(false);
+            else if (type == REDO) game.victoireJoueur();
             int situation = type == REDO ? CONSTRUCTION : SELECTION;
             game.setSituation(situation);
             game.MAJObservateur();
