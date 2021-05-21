@@ -4,12 +4,12 @@ import Structure.Pile;
 
 public class Historique {
     private Pile<Commande> past, future;
-    private Plateau level;
+    private Jeu game;
 
-    public Historique(Plateau level) {
+    public Historique(Jeu game) {
         past = new Pile<>();
         future = new Pile<>();
-        this.level = level;
+        this.game = game;
     }
 
     public void store(Commande cmd) {
@@ -26,15 +26,15 @@ public class Historique {
         return !future.isEmpty();
     }
 
-    public Commande undo() {
+    public void undo() {
         Commande cmd = past.extract();
+        cmd.unexecute(game);
         future.insert(cmd);
-        return cmd.unexecute(level);
     }
 
-    public Commande redo() {
+    public void redo() {
         Commande cmd = future.extract();
+        cmd.execute(game);
         past.insert(cmd);
-        return cmd.execute(level);
     }
 }

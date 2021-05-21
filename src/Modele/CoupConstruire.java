@@ -6,23 +6,27 @@ import java.awt.Point;
 
 public class CoupConstruire extends Commande {
     private Point position, builder;
-    private int floor;
 
     public CoupConstruire(int player, Point position, Point builder) {
         super(player);
         this.position = position;
         this.builder = builder;
-        type = CONSTRUCTION;
     }
 
     @Override
-    public Commande action(Plateau level, int type) {
-        type = type == 0 ? 1 : -1;
-        level.setFloor(position.x , position.y, type);
-        return this;
-    }
+    public void action(Jeu game, int type) {
+        int value = type == REDO ? 1 : -1;
+        game.getPlateau().setFloor(position.x, position.y, value);
 
-    public Point getBuilder() {
-        return builder;
+        int situation = CONSTRUCTION;
+        Point selected_builder = builder;
+        if (type == REDO) {
+            situation = SELECTION;
+            selected_builder = null;
+        }
+        game.setSituation(situation);
+        game.switchPlayer();
+        game.setBatisseur_en_cours(selected_builder);
+        game.MAJObservateur();
     }
 }
