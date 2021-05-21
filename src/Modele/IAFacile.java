@@ -12,7 +12,7 @@ public class IAFacile implements IA{
     Jeu j;
     Random random;
     private ArrayList<Point> batisseurs;
-    Point batisseur_choisi;
+    int index_batisseur;
 
     public IAFacile(Jeu j) {
         this.j = j;
@@ -21,39 +21,57 @@ public class IAFacile implements IA{
         random.setSeed(System.currentTimeMillis());
     }
 
-    public void joue() {
+    public int joue() {
         if(j.getJoueur_en_cours() == NUM_JOUEUR) {
             switch (j.getSituation()) {
                 case PLACEMENT:
                     jouePlacement();
-                    break;
+                    return PLACEMENT;
                 case SELECTION:
                     joueSelection();
-                    break;
+                    return SELECTION;
                 case DEPLACEMENT:
-                    joueAction(j.getPlateau().getCasesAccessibles(batisseur_choisi));
-                    break;
+                    joueDeplacement();
+                    return DEPLACEMENT;
                 case CONSTRUCTION:
-                    joueAction(j.getPlateau().getConstructionsPossible(batisseur_choisi));
-                    break;
+                    joueConstruction();
+                    return CONSTRUCTION;
                 default:
                     break;
             }
         }
+        return -1;
     }
 
-    private void joueAction(ArrayList<Point> case_disponibles) {
-        System.out.println("Action");
-        Point case_random = case_disponibles.get(random.nextInt(case_disponibles.size()));
+    private void joueDeplacement() {
+        System.out.println("Déplacement");
+        index_batisseur = random.nextInt(2);
+        Point batisseur = batisseurs.get(index_batisseur);
+
+        ArrayList<Point> accessibles = j.getPlateau().getCasesAccessibles(batisseur);
+        Point case_random = accessibles.get(random.nextInt(accessibles.size()));
+
+        batisseurs.set(index_batisseur, case_random);
+        System.out.println("Batisseur déplacé : (" + case_random.x + ", " + case_random.y + ")");
+        j.jouer(case_random.y, case_random.x);
+    }
+
+    private void joueConstruction() {
+        System.out.println("Construction");
+        index_batisseur = random.nextInt(2);
+        Point batisseur = batisseurs.get(index_batisseur);
+
+        ArrayList<Point> construction_possible = j.getPlateau().getConstructionsPossible(batisseur);
+        Point case_random = construction_possible.get(random.nextInt(construction_possible.size()));
+
         j.jouer(case_random.x, case_random.y);
     }
 
     private void joueSelection() {
         System.out.println("Selectionne");
-        Point batisseur = batisseurs.get(random.nextInt(2));
+        index_batisseur = random.nextInt(2);
+        Point batisseur = batisseurs.get(index_batisseur);
         j.jouer(batisseur.y, batisseur.x);
-        batisseur_choisi = batisseur;
-        assert(j.getBatisseur_en_cours() == batisseur_choisi);
     }
 
     private void jouePlacement() {
@@ -67,6 +85,7 @@ public class IAFacile implements IA{
             );
         } while (!j.getPlateau().estLibre(case_alea.y, case_alea.x));
         batisseurs.add(case_alea);
+        System.out.println("Batisseur ajouté : (" + case_alea.x + ", " + case_alea.y + ")");
         j.jouer(case_alea.y, case_alea.x);
     }
 }
