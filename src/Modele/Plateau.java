@@ -3,6 +3,8 @@ package Modele;
 import java.awt.*;
 import java.util.ArrayList;
 
+import static Modele.Constante.JOUEUR1;
+
 /**
  * Classe gérant les cases de la grille dont les constructions de bâtiment et la pose de batisseurs.
  */
@@ -327,5 +329,17 @@ public class Plateau {
 
     public void setFloor(int l, int c, int value) {
         cases[l][c] += value;
+    }
+
+    @Override
+    public String toString() {
+        String value = "";
+        for (int i = 0; i < lignes; i++) {
+            for (int j = 0; j < colonnes; j++) {
+                value += "| " + getTypeBatisseurs(i, j) / JOUEUR1 + " : " + getTypeBatiments(i, j) + " ";
+            }
+            value += "\n";
+        }
+        return value;
     }
 }
