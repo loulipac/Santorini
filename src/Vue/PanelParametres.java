@@ -1,6 +1,6 @@
 package Vue;
 
-import Modele.Constante;
+import static Modele.Constante.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -19,7 +19,7 @@ class PanelParametres extends JPanel {
         son_bouton = new LecteurSon("menu_click.wav");
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(Constante.CHEMIN_RESSOURCE+"/font/LilyScriptOne.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE+"/font/LilyScriptOne.ttf")));
 
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
@@ -40,7 +40,7 @@ class PanelParametres extends JPanel {
         setLayout(boxlayout);
 
         /* Label */
-        JLabel logo = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE+"/logo/logo.png"));
+        JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE+"/logo/logo.png"));
         JLabel parametres_texte = new JLabel("Paramètres");
 
         logo.setAlignmentX(CENTER_ALIGNMENT);
@@ -56,10 +56,10 @@ class PanelParametres extends JPanel {
         contenu.setMaximumSize(new Dimension((int) (largeur * 0.55), hauteur * 2/3));
 
         /* Boutons*/
-        bAbandonner = new Bouton(Constante.CHEMIN_RESSOURCE+"/bouton/abandonner.png", Constante.CHEMIN_RESSOURCE+"/bouton/abandonner_hover.png", largeur / 6, largeur / 30);
-        bNouvellePartie = new Bouton(Constante.CHEMIN_RESSOURCE+"/bouton/nouvelle_partie.png", Constante.CHEMIN_RESSOURCE+"/bouton/nouvelle_partie_hover.png", largeur / 6, largeur / 30);
-        bSauvegarder = new Bouton(Constante.CHEMIN_RESSOURCE+"/bouton/sauvegarder.png", Constante.CHEMIN_RESSOURCE+"/bouton/sauvegarder_hover.png", largeur / 6, largeur / 30);
-        bReprendre = new Bouton(Constante.CHEMIN_RESSOURCE+"/bouton/reprendre.png", Constante.CHEMIN_RESSOURCE+"/bouton/reprendre_hover.png", largeur / 4, largeur / 20);
+        bAbandonner = new Bouton(CHEMIN_RESSOURCE+"/bouton/abandonner.png", CHEMIN_RESSOURCE+"/bouton/abandonner_hover.png", largeur / 6, largeur / 30);
+        bNouvellePartie = new Bouton(CHEMIN_RESSOURCE+"/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE+"/bouton/nouvelle_partie_hover.png", largeur / 6, largeur / 30);
+        bSauvegarder = new Bouton(CHEMIN_RESSOURCE+"/bouton/sauvegarder.png", CHEMIN_RESSOURCE+"/bouton/sauvegarder_hover.png", largeur / 6, largeur / 30);
+        bReprendre = new Bouton(CHEMIN_RESSOURCE+"/bouton/reprendre.png", CHEMIN_RESSOURCE+"/bouton/reprendre_hover.png", largeur / 4, largeur / 20);
 
         /* Evenements */
         bAbandonner.addActionListener(this::actionBoutonAbandonner);
@@ -126,7 +126,7 @@ class PanelParametres extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Chargement de l"image de fond
         try {
-            BufferedImage img_colonnes = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE+"/artwork/columns.png"));
+            BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE+"/artwork/columns.png"));
             g2d.drawImage(
                     img_colonnes,
                     0,
@@ -156,7 +156,7 @@ class PanelParametres extends JPanel {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             try {
-                BufferedImage bg_panel = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE+"/artwork/bg_regles.png"));
+                BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE+"/artwork/bg_regles.png"));
                 g2d.drawImage(
                         bg_panel,
                         0,

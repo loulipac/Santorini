@@ -1,6 +1,6 @@
 package Vue;
 
-import Modele.Constante;
+import static Modele.Constante.*;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

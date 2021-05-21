@@ -1,6 +1,6 @@
 package Vue;
 
-import Modele.Constante;
+import static Modele.Constante.*;
 import Modele.Plateau;
 import Modele.Jeu;
 import static Modele.Constante.*;
@@ -28,21 +28,21 @@ public class JeuGraphique extends JComponent {
      */
     public JeuGraphique(Jeu j) {
         this.jeu = j;
-        case_claire = readImage(Constante.CHEMIN_RESSOURCE+"/cases/case_claire.png");
-        case_fonce = readImage(Constante.CHEMIN_RESSOURCE+"/cases/case_fonce.png");
-        coupole = readImage(Constante.CHEMIN_RESSOURCE+"/Etages/coupole.png");
-        etage_1 = readImage(Constante.CHEMIN_RESSOURCE+"/Etages/etage_1.png");
-        etage_2 = readImage(Constante.CHEMIN_RESSOURCE+"/Etages/etage_2.png");
-        etage_3 = readImage(Constante.CHEMIN_RESSOURCE+"/Etages/etage_3.png");
-        batisseur_bleu = readImage(Constante.CHEMIN_RESSOURCE+"/batisseur/batisseur_bleu.png");
-        batisseur_rouge = readImage(Constante.CHEMIN_RESSOURCE+"/batisseur/batisseur_rouge.png");
-        batisseur_rouge_selectionne = readImage(Constante.CHEMIN_RESSOURCE+"/batisseur/batisseur_rouge_selectionne.png");
-        batisseur_bleu_selectionne = readImage(Constante.CHEMIN_RESSOURCE+"/batisseur/batisseur_bleu_selectionne.png");
-        pas_rouge = readImage(Constante.CHEMIN_RESSOURCE+"/icone/pas_rouge.png");
-        pas_bleu = readImage(Constante.CHEMIN_RESSOURCE+"/icone/pas_bleu.png");
-        outil_bleu = readImage(Constante.CHEMIN_RESSOURCE+"/icone/outil" +
+        case_claire = readImage(CHEMIN_RESSOURCE+"/cases/case_claire.png");
+        case_fonce = readImage(CHEMIN_RESSOURCE+"/cases/case_fonce.png");
+        coupole = readImage(CHEMIN_RESSOURCE+"/Etages/coupole.png");
+        etage_1 = readImage(CHEMIN_RESSOURCE+"/Etages/etage_1.png");
+        etage_2 = readImage(CHEMIN_RESSOURCE+"/Etages/etage_2.png");
+        etage_3 = readImage(CHEMIN_RESSOURCE+"/Etages/etage_3.png");
+        batisseur_bleu = readImage(CHEMIN_RESSOURCE+"/batisseur/batisseur_bleu.png");
+        batisseur_rouge = readImage(CHEMIN_RESSOURCE+"/batisseur/batisseur_rouge.png");
+        batisseur_rouge_selectionne = readImage(CHEMIN_RESSOURCE+"/batisseur/batisseur_rouge_selectionne.png");
+        batisseur_bleu_selectionne = readImage(CHEMIN_RESSOURCE+"/batisseur/batisseur_bleu_selectionne.png");
+        pas_rouge = readImage(CHEMIN_RESSOURCE+"/icone/pas_rouge.png");
+        pas_bleu = readImage(CHEMIN_RESSOURCE+"/icone/pas_bleu.png");
+        outil_bleu = readImage(CHEMIN_RESSOURCE+"/icone/outil" +
                 "_bleu.png");
-        outil_rouge = readImage(Constante.CHEMIN_RESSOURCE+"/icone/outil_rouge.png");
+        outil_rouge = readImage(CHEMIN_RESSOURCE+"/icone/outil_rouge.png");
         plateau = j.getPlateau();
     }
 

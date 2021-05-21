@@ -1,6 +1,6 @@
 package Vue;
 
-import Modele.Constante;
+import static Modele.Constante.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -25,7 +25,7 @@ public class Fenetre extends JFrame {
 
     public Fenetre() {
         setTitle("Santorini");
-        setMinimumSize(Constante.DEFAULT_FENETRE_TAILLE);
+        setMinimumSize(DEFAULT_FENETRE_TAILLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 

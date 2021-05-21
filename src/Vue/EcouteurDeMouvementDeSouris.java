@@ -1,6 +1,6 @@
 package Vue;
 
-import Modele.Constante;
+import static Modele.Constante.*;
 import Modele.Jeu;
 
 import java.awt.*;
@@ -62,7 +62,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     private Cursor creerCurseurGenerique(String fichier_nom, Point decallage) {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         try {
-            Image img = toolkit.getImage(Constante.CHEMIN_RESSOURCE + "/curseur/" + fichier_nom + ".png");
+            Image img = toolkit.getImage(CHEMIN_RESSOURCE + "/curseur/" + fichier_nom + ".png");
             return toolkit.createCustomCursor(img, decallage, "c_" + fichier_nom);
         } catch (Exception ex) {
             System.err.println(ex);
@@ -89,9 +89,9 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
-            if (j.getSituation() == Constante.DEPLACEMENT) {
+            if (j.getSituation() == DEPLACEMENT) {
                 if (jg.getJeu().estAtteignable(pos_y, pos_x)) {
-                    if (j.getJoueur_en_cours() == Constante.JOUEUR1) {
+                    if (j.getJoueur_en_cours() == JOUEUR1) {
                         jg.setCursor(c_pas_bleu);
                     } else {
                         jg.setCursor(c_pas_rouge);
@@ -99,9 +99,9 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 } else {
                     jg.setCursor(c_pas_gris);
                 }
-            } else if (j.getSituation() == Constante.CONSTRUCTION) {
+            } else if (j.getSituation() == CONSTRUCTION) {
                 if (jg.getJeu().estAtteignable(pos_y, pos_x)) {
-                    if (j.getJoueur_en_cours() == Constante.JOUEUR1) {
+                    if (j.getJoueur_en_cours() == JOUEUR1) {
                         jg.setCursor(c_outil_bleu);
                     } else {
                         jg.setCursor(c_outil_rouge);
@@ -110,9 +110,9 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                     jg.setCursor(c_outil_gris);
                 }
 
-            } else if (j.getSituation() == Constante.PLACEMENT) {
+            } else if (j.getSituation() == PLACEMENT) {
                 if (jg.getJeu().getPlateau().estLibre(pos_y, pos_x)) {
-                    if (j.getJoueur_en_cours() == Constante.JOUEUR1) {
+                    if (j.getJoueur_en_cours() == JOUEUR1) {
                         jg.setCursor(c_drapeau_bleu);
                     } else {
                         jg.setCursor(c_drapeau_rouge);

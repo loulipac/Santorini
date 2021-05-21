@@ -1,6 +1,6 @@
 package Vue;
 
-import Modele.Constante;
+import static Modele.Constante.*;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -19,7 +19,7 @@ public class LecteurSon {
      * @param sound
      */
     public LecteurSon(String sound) {
-        fichier = new File(Constante.CHEMIN_RESSOURCE+"/sons/" + sound);
+        fichier = new File(CHEMIN_RESSOURCE+"/sons/" + sound);
     }
 
     /**

@@ -1,6 +1,6 @@
 package Vue;
 
-import Modele.Constante;
+import static Modele.Constante.*;
 
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
@@ -42,18 +42,18 @@ class PanelMenu extends JPanel {
         pSonEcran.setSize(new Dimension(largeur, largeur / 20));
 
         /* Button */
-        arriere_plan = JeuGraphique.readImage(Constante.CHEMIN_RESSOURCE + "/artwork/base.png");
-        colonnes = JeuGraphique.readImage((Constante.CHEMIN_RESSOURCE + "/artwork/columns.png"));
-        bJouer = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/jouer.png", Constante.CHEMIN_RESSOURCE + "/bouton/jouer_hover.png", largeur / 4, largeur / 20);
-        bTutoriel = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/tutoriel.png", Constante.CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png", largeur / 4, largeur / 20);
-        bRegles = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", Constante.CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", largeur / 4, largeur / 20);
-        bQuitter = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/quitter.png", Constante.CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", largeur / 4, largeur / 20);
-        bParametres = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/parametres.png", Constante.CHEMIN_RESSOURCE + "/bouton/parametres_hover.png", largeur / 20, largeur / 20);
-        bFullScreen = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", Constante.CHEMIN_RESSOURCE + "/bouton/fullscreen.png", largeur / 20, largeur / 20);
-        bSon = new Bouton(Constante.CHEMIN_RESSOURCE + "/bouton/son_on.png", Constante.CHEMIN_RESSOURCE + "/bouton/son_on.png", largeur / 20, largeur / 20);
+        arriere_plan = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/artwork/base.png");
+        colonnes = JeuGraphique.readImage((CHEMIN_RESSOURCE + "/artwork/columns.png"));
+        bJouer = new Bouton(CHEMIN_RESSOURCE + "/bouton/jouer.png", CHEMIN_RESSOURCE + "/bouton/jouer_hover.png", largeur / 4, largeur / 20);
+        bTutoriel = new Bouton(CHEMIN_RESSOURCE + "/bouton/tutoriel.png", CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png", largeur / 4, largeur / 20);
+        bRegles = new Bouton(CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", largeur / 4, largeur / 20);
+        bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter.png", CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", largeur / 4, largeur / 20);
+        bParametres = new Bouton(CHEMIN_RESSOURCE + "/bouton/parametres.png", CHEMIN_RESSOURCE + "/bouton/parametres_hover.png", largeur / 20, largeur / 20);
+        bFullScreen = new Bouton(CHEMIN_RESSOURCE + "/bouton/fullscreen.png", CHEMIN_RESSOURCE + "/bouton/fullscreen.png", largeur / 20, largeur / 20);
+        bSon = new Bouton(CHEMIN_RESSOURCE + "/bouton/son_on.png", CHEMIN_RESSOURCE + "/bouton/son_on.png", largeur / 20, largeur / 20);
 
         /* Label */
-        logo = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE + "/logo/logo.png"));
+        logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
         logo.setAlignmentX(CENTER_ALIGNMENT);
         logo.setMaximumSize(new Dimension(415, 100));
 
@@ -165,10 +165,10 @@ class PanelMenu extends JPanel {
      */
     public void actionSon(ActionEvent e) {
         if (muted) {
-            bSon.changeImage(Constante.CHEMIN_RESSOURCE + "/bouton/son_on.png");
+            bSon.changeImage(CHEMIN_RESSOURCE + "/bouton/son_on.png");
             muted = false;
         } else {
-            bSon.changeImage(Constante.CHEMIN_RESSOURCE + "/bouton/son_off.png");
+            bSon.changeImage(CHEMIN_RESSOURCE + "/bouton/son_off.png");
             muted = true;
         }
         Mixer.Info[] infos = AudioSystem.getMixerInfo();
@@ -193,7 +193,7 @@ class PanelMenu extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Chargement de l"image de fond
         try {
-            BufferedImage img = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/base.png"));
+            BufferedImage img = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/base.png"));
             Dimension img_dim = new Dimension(img.getWidth(), img.getHeight());
             Dimension taille_max = new Dimension((int) (getWidth() * 0.8), (int) (getHeight() * 0.8));
             Dimension taille_redimensionnee = conserverRatio(img_dim, taille_max);
@@ -206,7 +206,7 @@ class PanelMenu extends JPanel {
                     this
             );
 
-            BufferedImage img_colonnes = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE + "/artwork/columns.png"));
+            BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
             g2d.drawImage(
                     img_colonnes,
                     0,
