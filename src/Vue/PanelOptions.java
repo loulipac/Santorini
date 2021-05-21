@@ -19,7 +19,7 @@ class PanelOptions extends JPanel {
         son_bouton = new LecteurSon("menu_click.wav");
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Ressources/font/LilyScriptOne.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(Constante.CHEMIN_RESSOURCE+"/font/LilyScriptOne.ttf")));
 
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
@@ -40,7 +40,7 @@ class PanelOptions extends JPanel {
         setLayout(boxlayout);
 
         /* Label */
-        JLabel logo = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
+        JLabel logo = new JLabel(new ImageIcon(Constante.CHEMIN_RESSOURCE+"/logo/logo.png"));
         JLabel versus_texte = new JLabel("Mode de jeu");
         JLabel IA_texte = new JLabel("Difficulté de l'IA");
 
@@ -77,8 +77,8 @@ class PanelOptions extends JPanel {
         JRadioButton normale = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/normale",largeur/6, largeur / 30, boutons_IA);
         JRadioButton difficile = new BoutonRadio(Constante.CHEMIN_RESSOURCE + "/bouton/difficile",largeur/6, largeur / 30, boutons_IA);
 
-        bCommencer = new Bouton("src/Ressources/bouton/commencer_la_partie.png", "src/Ressources/bouton/commencer_la_partie_hover.png", largeur / 4, largeur / 20);
-        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour_hover.png", largeur / 4, largeur / 20);
+        bCommencer = new Bouton(Constante.CHEMIN_RESSOURCE+"/bouton/commencer_la_partie.png", Constante.CHEMIN_RESSOURCE+"/bouton/commencer_la_partie_hover.png", largeur / 4, largeur / 20);
+        bRetour = new Bouton(Constante.CHEMIN_RESSOURCE+"/bouton/retour.png", Constante.CHEMIN_RESSOURCE+"/bouton/retour_hover.png", largeur / 4, largeur / 20);
 
         /* Evenements */
         bRetour.addActionListener(this::actionBoutonRetourMenu);
@@ -184,7 +184,7 @@ class PanelOptions extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Chargement de l"image de fond
         try {
-            BufferedImage img_colonnes = ImageIO.read(new File("src/Ressources/artwork/columns.png"));
+            BufferedImage img_colonnes = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE+"/artwork/columns.png"));
             g2d.drawImage(
                     img_colonnes,
                     0,
@@ -214,7 +214,7 @@ class PanelOptions extends JPanel {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             try {
-                BufferedImage bg_panel = ImageIO.read(new File("src/Ressources/artwork/bg_regles.png"));
+                BufferedImage bg_panel = ImageIO.read(new File(Constante.CHEMIN_RESSOURCE+"/artwork/bg_regles.png"));
                 g2d.drawImage(
                         bg_panel,
                         0,
