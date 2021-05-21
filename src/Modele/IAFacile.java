@@ -8,43 +8,49 @@ import java.util.Random;
 import static Modele.Constante.*;
 
 public class IAFacile implements IA{
+    static final int NUM_JOUEUR = JOUEUR2;
     Jeu j;
     Random random;
     private ArrayList<Point> batisseurs;
     Point batisseur_choisi;
 
     public IAFacile(Jeu j) {
+        this.j = j;
         batisseurs = new ArrayList<Point>();
         random = new Random();
         random.setSeed(System.currentTimeMillis());
     }
 
     public void joue() {
-        switch (j.getSituation()) {
-            case PLACEMENT:
-                jouePlacement();
-                break;
-            case SELECTION:
-                joueSelection();
-                break;
-            case DEPLACEMENT:
-                joueAction(j.getPlateau().getCasesAccessibles(batisseur_choisi));
-                break;
-            case CONSTRUCTION:
-                joueAction(j.getPlateau().getConstructionsPossible(batisseur_choisi));
-                break;
-            default:
-                break;
+        if(j.getJoueur_en_cours() == NUM_JOUEUR) {
+            switch (j.getSituation()) {
+                case PLACEMENT:
+                    jouePlacement();
+                    break;
+                case SELECTION:
+                    joueSelection();
+                    break;
+                case DEPLACEMENT:
+                    joueAction(j.getPlateau().getCasesAccessibles(batisseur_choisi));
+                    break;
+                case CONSTRUCTION:
+                    joueAction(j.getPlateau().getConstructionsPossible(batisseur_choisi));
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
     private void joueAction(ArrayList<Point> case_disponibles) {
+        System.out.println("Action");
         Point case_random = case_disponibles.get(random.nextInt(case_disponibles.size()));
         j.jouer(case_random.x, case_random.y);
     }
 
     private void joueSelection() {
-        Point batisseur = batisseurs.get( random.nextInt(2));
+        System.out.println("Selectionne");
+        Point batisseur = batisseurs.get(random.nextInt(2));
         j.jouer(batisseur.y, batisseur.x);
         batisseur_choisi = batisseur;
         assert(j.getBatisseur_en_cours() == batisseur_choisi);
