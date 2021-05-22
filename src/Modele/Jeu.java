@@ -40,7 +40,7 @@ public class Jeu {
         construction_son = new LecteurSon("boulder_drop.wav");
         observateur = o;
         jeu_fini = false;
-        histo = new Historique(plateau);
+        histo = new Historique(this);
     }
 
     /**
@@ -61,12 +61,7 @@ public class Jeu {
                 cmd = new CoupDeplacer(joueur_en_cours, null, new Point(l, c));
                 plateau.ajouterJoueur(l, c, joueur_en_cours);
                 nombre_batisseurs++;
-                if (nombre_batisseurs % 2 == 0) {
-                    finTour();
-                }
-            }
-            if (nombre_batisseurs >= 4) {
-                situation = SELECTION;
+                checkBuilderNumber();
             }
         } else if (situation == SELECTION || (plateau.estBatisseur(l, c, joueur_en_cours) && situation == DEPLACEMENT)) {
             System.out.println("Choix du batisseur.");
@@ -96,6 +91,15 @@ public class Jeu {
         histo.store(cmd);
     }
 
+    public void checkBuilderNumber() {
+        if (nombre_batisseurs % 2 == 0) {
+            finTour();
+        }
+        if (nombre_batisseurs >= 4) {
+            situation = SELECTION;
+        }
+    }
+
     /**
      * Choisi le batisseur à la position (l, c).
      *
@@ -123,13 +127,21 @@ public class Jeu {
         else return nombre_batisseurs < 4;
     }
 
+    public void switchPlayer() {
+        joueur_en_cours = (joueur_en_cours % 16) + 8;
+    }
+
+    public void MAJObservateur() {
+        observateur.miseAjour();
+    }
+
     /**
      * Fini le tour pour le joueur en cours.
      */
-    private void finTour() {
-        joueur_en_cours = (joueur_en_cours % 16) + 8;
+    public void finTour() {
+        switchPlayer();
         batisseur_en_cours = null;
-        observateur.miseAjour();
+        MAJObservateur();
     }
 
     /**
@@ -185,49 +197,11 @@ public class Jeu {
     }
 
     public void undo() {
-        if (histo.canUndo()) {
-            Commande cmd = histo.undo();
-            situation = cmd.getType();
-            switch (situation) {
-                case PLACEMENT:
-                    nombre_batisseurs--;
-                    if (nombre_batisseurs % 2 == 1) {
-                        finTour();
-                    }
-                    break;
-                case DEPLACEMENT:
-                    situation = SELECTION;
-                    break;
-                case CONSTRUCTION:
-                    joueur_en_cours = (joueur_en_cours % 16) + 8;
-                    batisseur_en_cours = cmd.getBuilder();
-                    observateur.miseAjour();
-                    break;
-            }
-        }
+        if (histo.canUndo()) histo.undo();
     }
 
     public void redo() {
-        if (histo.canRedo()) {
-            Commande cmd = histo.redo();
-            switch (cmd.getType()) {
-                case PLACEMENT:
-                    nombre_batisseurs++;
-                    if (nombre_batisseurs % 2 == 0) {
-                        finTour();
-                    }
-                    if (nombre_batisseurs == 4) situation = SELECTION;
-                    break;
-                case DEPLACEMENT:
-                    batisseur_en_cours = cmd.getBuilder();
-                    situation = CONSTRUCTION;
-                    break;
-                case CONSTRUCTION:
-                    situation = SELECTION;
-                    finTour();
-                    break;
-            }
-        }
+        if (histo.canRedo()) histo.redo();
     }
 
     public boolean estJeufini() {
@@ -248,5 +222,25 @@ public class Jeu {
 
     public int getJoueur_en_cours() {
         return joueur_en_cours;
+    }
+
+    public int getNombre_batisseurs() {
+        return nombre_batisseurs;
+    }
+
+    public void setSituation(int situation) {
+        this.situation = situation;
+    }
+
+    public void setBatisseur_en_cours(Point batisseur) {
+        this.batisseur_en_cours = batisseur;
+    }
+
+    public void setNombre_batisseurs(int nombre_batisseurs) {
+        this.nombre_batisseurs = nombre_batisseurs;
+    }
+
+    public void setJeu_fini(boolean value) {
+        jeu_fini = value;
     }
 }
