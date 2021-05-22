@@ -64,6 +64,7 @@ class PanelParametres extends JPanel {
         /* Evenements */
         bAbandonner.addActionListener(this::actionBoutonAbandonner);
         bReprendre.addActionListener(this::actionBoutonReprendre);
+        bNouvellePartie.addActionListener(this::actionBoutonNouvelle);
 
         /* Adding */
 
@@ -111,6 +112,20 @@ class PanelParametres extends JPanel {
         Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f2.removePlateau();
         f2.getPileCarte().show(f2.panelPrincipal, "menu");
+    }
+
+    /**
+     *
+     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     */
+    public void actionBoutonNouvelle(ActionEvent e) {
+        // TODO : Reset la grille et tout ce qui va avec
+
+        son_bouton.joueSon(false);
+        Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f2.removePlateau();
+        f2.setPlateau(new PanelPlateau(getSize().width, getSize().height));
+        f2.getPileCarte().show(f2.panelPrincipal, "plateau");
     }
 
 
