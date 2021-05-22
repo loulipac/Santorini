@@ -19,11 +19,11 @@ public class CoupDeplacer extends Commande {
     @Override
     public void action(Jeu game, int type) {
         if (positions[type] != null) {
-            game.getPlateau().ajouterJoueur(positions[type].x, positions[type].y, player);
+            game.getPlateau().ajouterJoueur(positions[type], player);
         }
         int i = (type + 1) % 2;
         if (positions[i] != null) {
-            game.getPlateau().removePlayer(positions[i].x, positions[i].y);
+            game.getPlateau().removePlayer(positions[i]);
         }
 
         if (move == PLACEMENT) {

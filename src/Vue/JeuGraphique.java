@@ -93,7 +93,7 @@ public class JeuGraphique extends JComponent {
 
         for (int l = 0; l < plateau.getLignes(); l++) {
             for (int c = 0; c < plateau.getColonnes(); c++) {
-
+                Point position = new Point(l, c);
                 Point position_case = new Point(
                         c * taille_case + nouvelle_origine,
                         l * taille_case
@@ -102,7 +102,7 @@ public class JeuGraphique extends JComponent {
                 drawable.drawImage(image_case, position_case.x, position_case.y, taille_case, taille_case, null);
 
 
-                switch (plateau.getTypeBatiments(l, c)) {
+                switch (plateau.getTypeBatiments(position)) {
                     case Plateau.RDC -> image_batiment = etage_1;
                     case Plateau.ETAGE -> image_batiment = etage_2;
                     case Plateau.TOIT -> image_batiment = etage_3;
@@ -113,11 +113,11 @@ public class JeuGraphique extends JComponent {
                 if (image_batiment != null)
                     drawable.drawImage(image_batiment, position_case.x, position_case.y, taille_case, taille_case, null);
 
-                if (plateau.getTypeBatisseurs(l, c) > 0) {
+                if (plateau.getTypeBatisseurs(position) > 0) {
 
                     boolean batisseur_selectionne = (batisseurs_ligne == l && batisseurs_colonne == c);
 
-                    if (plateau.getTypeBatisseurs(l, c) == JOUEUR1) {
+                    if (plateau.getTypeBatisseurs(position) == JOUEUR1) {
                         image_batisseurs = batisseur_selectionne ? batisseur_bleu_selectionne : batisseur_bleu;
                     } else {
                         image_batisseurs = batisseur_selectionne ? batisseur_rouge_selectionne : batisseur_rouge;

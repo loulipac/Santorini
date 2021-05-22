@@ -16,7 +16,7 @@ public class CoupConstruire extends Commande {
     @Override
     public void action(Jeu game, int type) {
         int value = type == REDO ? 1 : -1;
-        game.getPlateau().setFloor(position.x, position.y, value);
+        game.getPlateau().setFloor(position, value);
 
         int situation = CONSTRUCTION;
         Point selected_builder = builder;
