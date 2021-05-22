@@ -109,6 +109,7 @@ class PanelParametres extends JPanel {
 
         son_bouton.joueSon(false);
         Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f2.removePlateau();
         f2.getPileCarte().show(f2.panelPrincipal, "menu");
     }
 
