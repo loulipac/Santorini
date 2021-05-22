@@ -89,40 +89,42 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
-            if (j.getSituation() == DEPLACEMENT) {
-                if (jg.getJeu().estAtteignable(pos_y, pos_x)) {
-                    if (j.getJoueur_en_cours() == JOUEUR1) {
-                        jg.setCursor(c_pas_bleu);
+            if(pos_x < 5 && pos_y < 5) {
+                if (j.getSituation() == DEPLACEMENT) {
+                    if (jg.getJeu().estAtteignable(pos_y, pos_x)) {
+                        if (j.getJoueur_en_cours() == JOUEUR1) {
+                            jg.setCursor(c_pas_bleu);
+                        } else {
+                            jg.setCursor(c_pas_rouge);
+                        }
                     } else {
-                        jg.setCursor(c_pas_rouge);
+                        jg.setCursor(c_pas_gris);
                     }
-                } else {
-                    jg.setCursor(c_pas_gris);
-                }
-            } else if (j.getSituation() == CONSTRUCTION) {
-                if (jg.getJeu().estAtteignable(pos_y, pos_x)) {
-                    if (j.getJoueur_en_cours() == JOUEUR1) {
-                        jg.setCursor(c_outil_bleu);
+                } else if (j.getSituation() == CONSTRUCTION) {
+                    if (jg.getJeu().estAtteignable(pos_y, pos_x)) {
+                        if (j.getJoueur_en_cours() == JOUEUR1) {
+                            jg.setCursor(c_outil_bleu);
+                        } else {
+                            jg.setCursor(c_outil_rouge);
+                        }
                     } else {
-                        jg.setCursor(c_outil_rouge);
+                        jg.setCursor(c_outil_gris);
                     }
-                } else {
-                    jg.setCursor(c_outil_gris);
-                }
 
-            } else if (j.getSituation() == PLACEMENT) {
-                if (jg.getJeu().getPlateau().estLibre(pos_y, pos_x)) {
-                    if (j.getJoueur_en_cours() == JOUEUR1) {
-                        jg.setCursor(c_drapeau_bleu);
+                } else if (j.getSituation() == PLACEMENT) {
+                    if (jg.getJeu().getPlateau().estLibre(pos_y, pos_x)) {
+                        if (j.getJoueur_en_cours() == JOUEUR1) {
+                            jg.setCursor(c_drapeau_bleu);
+                        } else {
+                            jg.setCursor(c_drapeau_rouge);
+                        }
                     } else {
-                        jg.setCursor(c_drapeau_rouge);
+                        jg.setCursor(c_drapeau_gris);
                     }
-                } else {
-                    jg.setCursor(c_drapeau_gris);
-                }
 
-            } else {
-                jg.setCursor(c_defaut_gris);
+                } else {
+                    jg.setCursor(c_defaut_gris);
+                }
             }
         }
     }
