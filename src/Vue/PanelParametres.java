@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -62,8 +63,12 @@ class PanelParametres extends JPanel {
         bReprendre = new Bouton(CHEMIN_RESSOURCE+"/bouton/reprendre.png", CHEMIN_RESSOURCE+"/bouton/reprendre_hover.png", largeur / 4, largeur / 20);
 
         /* Evenements */
+        ActionEchap echap = new ActionEchap();
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
+        getActionMap().put("echap", echap);
+
         bAbandonner.addActionListener(this::actionBoutonAbandonner);
-        bReprendre.addActionListener(this::actionBoutonReprendre);
+        bReprendre.addActionListener(echap);
         bNouvellePartie.addActionListener(this::actionBoutonNouvelle);
 
         /* Adding */
@@ -87,6 +92,20 @@ class PanelParametres extends JPanel {
         add(bReprendre);
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
 
+    }
+
+    private class ActionEchap extends AbstractAction {
+        public ActionEchap() {
+            super();
+            putValue(SHORT_DESCRIPTION, "Afficher les paramètres");
+            putValue(MNEMONIC_KEY, KeyEvent.VK_ESCAPE);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(PanelParametres.this);
+            f.getPileCarte().show(f.panelPrincipal, "plateau");
+        }
     }
 
     /**
