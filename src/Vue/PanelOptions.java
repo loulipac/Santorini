@@ -20,12 +20,12 @@ class PanelOptions extends JPanel {
         son_bouton = new LecteurSon("menu_click.wav");
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Ressources/font/LilyScriptOne.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
 
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
         }
-        lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT , 20);
+        lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT, 20);
         initialiserPanel(largeur, hauteur);
     }
 
@@ -41,7 +41,7 @@ class PanelOptions extends JPanel {
         setLayout(boxlayout);
 
         /* Label */
-        JLabel logo = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
+        JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
         JLabel versus_texte = new JLabel("Mode de jeu");
         JLabel IA_texte = new JLabel("Difficulté de l'IA");
 
@@ -52,7 +52,7 @@ class PanelOptions extends JPanel {
         IA_texte.setForeground(new Color(82, 60, 43));
 
         logo.setAlignmentX(CENTER_ALIGNMENT);
-        logo.setMaximumSize(new Dimension(largeur/3, largeur/9));
+        logo.setMaximumSize(new Dimension(largeur / 3, largeur / 9));
 
         /* JPanel */
         OptionPanel contenu = new OptionPanel();
@@ -61,7 +61,7 @@ class PanelOptions extends JPanel {
         JPanel boutons_principaux_panel = new JPanel();
 
         contenu.setAlignmentX(CENTER_ALIGNMENT);
-        contenu.setMaximumSize(new Dimension((int) (largeur * 0.55), hauteur * 2/3));
+        contenu.setMaximumSize(new Dimension((int) (largeur * 0.55), hauteur * 2 / 3));
 
         versus_panel.setOpaque(false);
         IA_panel.setOpaque(false);
@@ -74,12 +74,12 @@ class PanelOptions extends JPanel {
         ButtonGroup adversaires_boutons = new ButtonGroup();
         ButtonGroup boutons_IA = new ButtonGroup();
 
-        joueur_joueur = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_joueur",largeur/6, largeur / 30, adversaires_boutons);
-        joueur_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia",largeur/6, largeur / 30, adversaires_boutons);
+        joueur_joueur = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_joueur", largeur / 6, largeur / 30, adversaires_boutons);
+        joueur_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia", largeur / 6, largeur / 30, adversaires_boutons);
 
-        JRadioButton facile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile",largeur/6, largeur / 30, boutons_IA);
-        JRadioButton normale = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale",largeur/6, largeur / 30, boutons_IA);
-        JRadioButton difficile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/difficile",largeur/6, largeur / 30, boutons_IA);
+        JRadioButton facile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile", largeur / 6, largeur / 30, boutons_IA);
+        JRadioButton normale = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale", largeur / 6, largeur / 30, boutons_IA);
+        JRadioButton difficile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/difficile", largeur / 6, largeur / 30, boutons_IA);
 
         bCommencer = new Bouton(CHEMIN_RESSOURCE + "/bouton/commencer_la_partie.png", CHEMIN_RESSOURCE + "/bouton/commencer_la_partie_hover.png", largeur / 4, largeur / 20);
         bRetour = new Bouton(CHEMIN_RESSOURCE + "/bouton/retour.png", CHEMIN_RESSOURCE + "/bouton/retour_hover.png", largeur / 4, largeur / 20);

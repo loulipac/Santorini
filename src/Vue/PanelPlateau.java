@@ -1,6 +1,7 @@
 package Vue;
 
 import Modele.IAActionListener;
+import static Modele.Constante.*;
 import Modele.Jeu;
 
 import static Modele.Constante.*;
@@ -9,6 +10,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -64,6 +66,20 @@ public class PanelPlateau extends JPanel implements Observer {
         add(jgame);
     }
 
+    private class ActionEchap extends AbstractAction {
+        public ActionEchap() {
+            super();
+            putValue(SHORT_DESCRIPTION, "Afficher les paramètres");
+            putValue(MNEMONIC_KEY, KeyEvent.VK_ESCAPE);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(PanelPlateau.this);
+            f.getPileCarte().show(f.panelPrincipal, "parametres");
+        }
+    }
+
     /**
      * Crée un JPanel modifié qui génère deux zones de boutons de 20% de la taille de la fenêtre.
      * Génère la grille de jeu.
@@ -104,6 +120,11 @@ public class PanelPlateau extends JPanel implements Observer {
             JButton ia_test = new JButton("Démarrer IA");
 
             bParametres.addActionListener(PanelPlateau.this::actionBoutonParametres);
+            ActionEchap echap = new ActionEchap();
+            PanelPlateau.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
+            PanelPlateau.this.getActionMap().put("echap", echap);
+
+            bParametres.addActionListener(echap);
             parametres.add(bParametres);
             parametres.add(ia_test);
 

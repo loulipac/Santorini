@@ -1,5 +1,7 @@
 package Vue;
 
+import static Modele.Constante.*;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +18,7 @@ public class PanelRegles extends JPanel {
     public PanelRegles(int largeur, int hauteur) {
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File("src/Ressources/font/LilyScriptOne.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE+"/font/LilyScriptOne.ttf")));
 
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
@@ -38,7 +40,7 @@ public class PanelRegles extends JPanel {
         setLayout(boxlayout);
 
         /* Label */
-        logo = new JLabel(new ImageIcon("src/Ressources/logo/logo.png"));
+        logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE+"/logo/logo.png"));
         logo.setAlignmentX(CENTER_ALIGNMENT);
         logo.setMaximumSize(new Dimension(415, 100));
 
@@ -80,7 +82,7 @@ public class PanelRegles extends JPanel {
         texteConstruction.setEditable(false);
 
         /* Boutons */
-        bRetour = new Bouton("src/Ressources/bouton/retour.png", "src/Ressources/bouton/retour_hover.png", largeur / 4, largeur / 20);
+        bRetour = new Bouton(CHEMIN_RESSOURCE+"/bouton/retour.png", CHEMIN_RESSOURCE+"/bouton/retour_hover.png", largeur / 4, largeur / 20);
         bRetour.addActionListener(this::actionBoutonRetourMenu);
 
         /* Panel */
@@ -92,9 +94,9 @@ public class PanelRegles extends JPanel {
 
         panel.setMaximumSize(new Dimension(largeur_panel, hauteur_panel));
 
-        LignePanel sous_panel_1 = new LignePanel(largeur_sous_panel, hauteur_sous_panel, "src/Ressources/artwork/comment_jouer.png", titreCommentJouer, texteCommentJouer);
-        LignePanel sous_panel_2 = new LignePanel(largeur_sous_panel, hauteur_sous_panel, "src/Ressources/artwork/deplacement.png", titreDeplacement, texteDeplacement);
-        LignePanel sous_panel_3 = new LignePanel(largeur_sous_panel, hauteur_sous_panel, "src/Ressources/artwork/construction.png", titreConstruction, texteConstruction);
+        LignePanel sous_panel_1 = new LignePanel(largeur_sous_panel, hauteur_sous_panel, CHEMIN_RESSOURCE+"/artwork/comment_jouer.png", titreCommentJouer, texteCommentJouer);
+        LignePanel sous_panel_2 = new LignePanel(largeur_sous_panel, hauteur_sous_panel, CHEMIN_RESSOURCE+"/artwork/deplacement.png", titreDeplacement, texteDeplacement);
+        LignePanel sous_panel_3 = new LignePanel(largeur_sous_panel, hauteur_sous_panel, CHEMIN_RESSOURCE+"/artwork/construction.png", titreConstruction, texteConstruction);
 
         /* Adding */
         panel.add(Box.createRigidArea(new Dimension(largeur_sous_panel, hauteur_sous_panel / 10)));
@@ -164,7 +166,7 @@ public class PanelRegles extends JPanel {
             g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             try {
-                BufferedImage bg_regles = ImageIO.read(new File("src/Ressources/artwork/bg_regles.png"));
+                BufferedImage bg_regles = ImageIO.read(new File(CHEMIN_RESSOURCE+"/artwork/bg_regles.png"));
                 g2d.drawImage(
                         bg_regles,
                         0,
@@ -201,7 +203,7 @@ public class PanelRegles extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Chargement de l"image de fond
         try {
-            BufferedImage img_colonnes = ImageIO.read(new File("src/Ressources/artwork/columns.png"));
+            BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE+"/artwork/columns.png"));
             g2d.drawImage(
                     img_colonnes,
                     0,
