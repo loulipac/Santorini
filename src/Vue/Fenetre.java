@@ -53,9 +53,6 @@ public class Fenetre extends JFrame {
     public CardLayout getPileCarte() {
         return pileCarte;
     }
-    public JPanel getPanelPrincipal() {
-        return panelPrincipal;
-    }
 
     public JPanel getPanelPrincipal() {
         return panelPrincipal;
