@@ -5,6 +5,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +19,7 @@ class PanelParametres extends JPanel {
         son_bouton = new LecteurSon("menu_click.wav");
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE+"/font/LilyScriptOne.ttf")));
 
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
@@ -39,7 +40,7 @@ class PanelParametres extends JPanel {
         setLayout(boxlayout);
 
         /* Label */
-        JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
+        JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE+"/logo/logo.png"));
         JLabel parametres_texte = new JLabel("Paramètres");
 
         logo.setAlignmentX(CENTER_ALIGNMENT);
@@ -55,14 +56,19 @@ class PanelParametres extends JPanel {
         contenu.setMaximumSize(new Dimension((int) (largeur * 0.55), hauteur * 2/3));
 
         /* Boutons*/
-        bAbandonner = new Bouton(CHEMIN_RESSOURCE + "/bouton/abandonner.png", CHEMIN_RESSOURCE + "/bouton/abandonner_hover.png", largeur / 6, largeur / 30);
-        bNouvellePartie = new Bouton(CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE + "/bouton/nouvelle_partie_hover.png", largeur / 6, largeur / 30);
-        bSauvegarder = new Bouton(CHEMIN_RESSOURCE + "/bouton/sauvegarder.png", CHEMIN_RESSOURCE + "/bouton/sauvegarder_hover.png", largeur / 6, largeur / 30);
-        bReprendre = new Bouton(CHEMIN_RESSOURCE + "/bouton/reprendre.png", CHEMIN_RESSOURCE + "/bouton/reprendre_hover.png", largeur / 4, largeur / 20);
+        bAbandonner = new Bouton(CHEMIN_RESSOURCE+"/bouton/abandonner.png", CHEMIN_RESSOURCE+"/bouton/abandonner_hover.png", largeur / 6, largeur / 30);
+        bNouvellePartie = new Bouton(CHEMIN_RESSOURCE+"/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE+"/bouton/nouvelle_partie_hover.png", largeur / 6, largeur / 30);
+        bSauvegarder = new Bouton(CHEMIN_RESSOURCE+"/bouton/sauvegarder.png", CHEMIN_RESSOURCE+"/bouton/sauvegarder_hover.png", largeur / 6, largeur / 30);
+        bReprendre = new Bouton(CHEMIN_RESSOURCE+"/bouton/reprendre.png", CHEMIN_RESSOURCE+"/bouton/reprendre_hover.png", largeur / 4, largeur / 20);
 
         /* Evenements */
+        ActionEchap echap = new ActionEchap();
+        getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
+        getActionMap().put("echap", echap);
+
         bAbandonner.addActionListener(this::actionBoutonAbandonner);
-        bReprendre.addActionListener(this::actionBoutonReprendre);
+        bReprendre.addActionListener(echap);
+        bNouvellePartie.addActionListener(this::actionBoutonNouvelle);
 
         /* Adding */
 
@@ -87,6 +93,20 @@ class PanelParametres extends JPanel {
 
     }
 
+    private class ActionEchap extends AbstractAction {
+        public ActionEchap() {
+            super();
+            putValue(SHORT_DESCRIPTION, "Afficher les paramètres");
+            putValue(MNEMONIC_KEY, KeyEvent.VK_ESCAPE);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(PanelParametres.this);
+            f.getPileCarte().show(f.panelPrincipal, "plateau");
+        }
+    }
+
     /**
      * Remet l'affichage du jeu
      *
@@ -108,7 +128,22 @@ class PanelParametres extends JPanel {
 
         son_bouton.joueSon(false);
         Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f2.removePlateau();
         f2.getPileCarte().show(f2.panelPrincipal, "menu");
+    }
+
+    /**
+     *
+     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     */
+    public void actionBoutonNouvelle(ActionEvent e) {
+        // TODO : Reset la grille et tout ce qui va avec
+
+        son_bouton.joueSon(false);
+        Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f2.removePlateau();
+        f2.setPlateau(new PanelPlateau(getSize().width, getSize().height));
+        f2.getPileCarte().show(f2.panelPrincipal, "plateau");
     }
 
 
@@ -125,7 +160,7 @@ class PanelParametres extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Chargement de l"image de fond
         try {
-            BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
+            BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE+"/artwork/columns.png"));
             g2d.drawImage(
                     img_colonnes,
                     0,
@@ -155,7 +190,7 @@ class PanelParametres extends JPanel {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             try {
-                BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/bg_regles.png"));
+                BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE+"/artwork/bg_regles.png"));
                 g2d.drawImage(
                         bg_panel,
                         0,

@@ -1,6 +1,6 @@
 package Vue;
 
-import Modele.Constante;
+import static Modele.Constante.*;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -36,9 +36,10 @@ public class EcouteurDeSouris extends MouseAdapter {
         this.largeur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getColonnes();
         this.hauteur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getLignes();
         if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
-            int pos_x = e.getX() / jg.getTailleCase();
-            int pos_y = e.getY() / jg.getTailleCase();
-            jg.getJeu().jouer(pos_y, pos_x);
+            jg.getJeu().joueurJoue(new Point(
+                    e.getX() / jg.getTailleCase(),
+                    e.getY() / jg.getTailleCase()
+            ));
             jg.repaint();
         }
     }

@@ -1,5 +1,6 @@
 package Vue;
 
+import static Modele.Constante.*;
 import Modele.Jeu;
 import static Modele.Constante.*;
 
@@ -7,6 +8,7 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -34,7 +36,7 @@ public class PanelPlateau extends JPanel implements Observer {
         this.hauteur = hauteur;
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE+"/font/LilyScriptOne.ttf")));
 
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
@@ -59,6 +61,20 @@ public class PanelPlateau extends JPanel implements Observer {
         JGamePanel jgame = new JGamePanel(0.75f);
         add(tp);
         add(jgame);
+    }
+
+    private class ActionEchap extends AbstractAction {
+        public ActionEchap() {
+            super();
+            putValue(SHORT_DESCRIPTION, "Afficher les paramètres");
+            putValue(MNEMONIC_KEY, KeyEvent.VK_ESCAPE);
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(PanelPlateau.this);
+            f.getPileCarte().show(f.panelPrincipal, "parametres");
+        }
     }
 
     /**
@@ -91,13 +107,20 @@ public class PanelPlateau extends JPanel implements Observer {
             parametres.setPreferredSize(size);
             parametres.setMaximumSize(size);
 
+
+
+            //parametres.setBorder(new LineBorder(Color.GREEN));
             Bouton bParametres = new Bouton(
                     CHEMIN_RESSOURCE + "/bouton/parametres.png",
                     CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
                     hauteur / 19,
                     hauteur / 19
             );
-            bParametres.addActionListener(PanelPlateau.this::actionBoutonParametres);
+            ActionEchap echap = new ActionEchap();
+            PanelPlateau.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
+            PanelPlateau.this.getActionMap().put("echap", echap);
+
+            bParametres.addActionListener(echap);
             parametres.add(bParametres);
 
             jeu = new Jeu(5, 5, PanelPlateau.this);

@@ -24,4 +24,7 @@ public class Constante {
     public static final int PLACEMENT = 3;
     public static final int JOUEUR1 = 8;
     public static final int JOUEUR2 = 16;
+
+    public static final int UNDO = 1;
+    public static final int REDO = 0;
 }

@@ -1,5 +1,7 @@
 package Modele;
 
+import static Modele.Constante.*;
+
 public abstract class Commande {
     protected int player;
 
@@ -7,13 +9,13 @@ public abstract class Commande {
         this.player = player;
     }
 
-    public abstract void action(Plateau level, int type);
+    public abstract void action(Jeu game, int type);
 
-    public void execute(Plateau level) {
-        action(level, 0);
+    public void execute(Jeu game) {
+        action(game, REDO);
     }
 
-    public void unexecute(Plateau level) {
-        action(level, 1);
+    public void unexecute(Jeu game) {
+        action(game, UNDO);
     }
 }
