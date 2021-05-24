@@ -13,10 +13,11 @@ public class JoueurHumain implements Joueur {
     }
 
     @Override
+    public void joue() { }
+
+    @Override
     public void joue(Point clic_position) {
-        if(jeu.getJoueur_en_cours() == num_joueur) {
-            jeu.jouer(clic_position);
-        }
+        jeu.jouer(clic_position);
     }
 
     public int getNum_joueur() {
