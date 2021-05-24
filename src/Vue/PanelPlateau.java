@@ -128,15 +128,18 @@ public class PanelPlateau extends JPanel implements Observer {
             parametres.add(bParametres);
             parametres.add(ia_test);
 
-            jeu = new Jeu(5, 5, PanelPlateau.this);
             System.out.println("IA mode : " + ia_mode);
-            if (ia_mode != 0)
+            if (ia_mode != 0){
+                jeu = new Jeu(5, 5, PanelPlateau.this, ia_mode);
                 jg = new JeuGraphique(jeu, ia_mode);
-            else
+            }
+            else {
+                jeu = new Jeu(5, 5, PanelPlateau.this, 0);
                 jg = new JeuGraphique(jeu);
-            jg.addMouseListener(new EcouteurDeSouris(jg));
+            }
+            jg.addMouseListener(new EcouteurDeSouris(jg, jeu));
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
-            if(jg.getIa() != null) ia_test.addActionListener(new IAActionListener(jg.getIa()));
+            if(jg.getIa() != null) ia_test.addActionListener(new IAActionListener(jeu));
 
             JPanel histo_bouton = new JPanel();
             histo_bouton.setOpaque(false);
