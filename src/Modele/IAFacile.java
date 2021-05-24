@@ -7,7 +7,7 @@ import java.util.Random;
 
 import static Modele.Constante.*;
 
-public class IAFacile implements IA{
+public class IAFacile implements IA {
     static final int NUM_JOUEUR = JOUEUR2;
     Jeu j;
     Random random;
@@ -21,60 +21,61 @@ public class IAFacile implements IA{
         random.setSeed(System.currentTimeMillis());
     }
 
-    public int joue() {
-        if(j.getJoueur_en_cours() == NUM_JOUEUR) {
+    public Point joue() {
+        if (j.getJoueur_en_cours() == NUM_JOUEUR) {
             switch (j.getSituation()) {
                 case PLACEMENT:
-                    jouePlacement();
-                    return PLACEMENT;
+                    return jouePlacement();
                 case SELECTION:
-                    joueSelection();
-                    return SELECTION;
+                    return joueSelection();
                 case DEPLACEMENT:
-                    joueDeplacement();
-                    return DEPLACEMENT;
+                    return joueDeplacement();
                 case CONSTRUCTION:
-                    joueConstruction();
-                    return CONSTRUCTION;
+                    return joueConstruction();
                 default:
                     break;
             }
         }
-        return -1;
+        return null;
     }
 
-    private void joueDeplacement() {
+    private Point joueDeplacement() {
         System.out.println("Déplacement");
-        index_batisseur = random.nextInt(2);
         Point batisseur = batisseurs.get(index_batisseur);
-
+        System.out.println("Batisseur à la position (" + batisseur.x + ", " + batisseur.y + ")");
         ArrayList<Point> accessibles = j.getPlateau().getCasesAccessibles(batisseur);
-        Point case_random = accessibles.get(random.nextInt(accessibles.size()));
-
+        Point case_random;
+        do {
+            case_random = accessibles.get(random.nextInt(accessibles.size()));
+        } while (!j.getPlateau().deplacementPossible(case_random, batisseur));
         batisseurs.set(index_batisseur, case_random);
-        System.out.println("Batisseur déplacé : (" + case_random.x + ", " + case_random.y + ")");
-        j.jouer(case_random);
+        System.out.println("Envoie position déplacement. Est libre ?" + j.getPlateau().estLibre(case_random));
+        //System.out.println("Batisseur déplacé : (" + case_random.x + ", " + case_random.y + ")");
+        return case_random;
     }
 
-    private void joueConstruction() {
+    private Point joueConstruction() {
         System.out.println("Construction");
-        index_batisseur = random.nextInt(2);
         Point batisseur = batisseurs.get(index_batisseur);
+        System.out.println("Batisseur à la position (" + batisseur.x + ", " + batisseur.y + ")");
 
         ArrayList<Point> construction_possible = j.getPlateau().getConstructionsPossible(batisseur);
-        Point case_random = construction_possible.get(random.nextInt(construction_possible.size()));
-
-        j.jouer(case_random);
+        Point case_random;
+        do {
+            case_random = construction_possible.get(random.nextInt(construction_possible.size()));
+        } while (!j.getPlateau().peutConstruire(case_random, batisseur));
+        System.out.println("Envoie position construction. Est libre ?" + j.getPlateau().estLibre(case_random));
+        return case_random;
     }
 
-    private void joueSelection() {
+    private Point joueSelection() {
         System.out.println("Selectionne");
         index_batisseur = random.nextInt(2);
         Point batisseur = batisseurs.get(index_batisseur);
-        j.jouer(batisseur);
+        return batisseur;
     }
 
-    private void jouePlacement() {
+    private Point jouePlacement() {
         int colonnes = j.getPlateau().getColonnes();
         int lignes = j.getPlateau().getLignes();
         Point case_alea = null;
@@ -86,6 +87,6 @@ public class IAFacile implements IA{
         } while (!j.getPlateau().estLibre(case_alea));
         batisseurs.add(case_alea);
         System.out.println("Batisseur ajouté : (" + case_alea.x + ", " + case_alea.y + ")");
-        j.jouer(case_alea);
+        return case_alea;
     }
 }

@@ -1,5 +1,7 @@
 package Modele;
 
+import java.awt.*;
+
 public interface IA {
-    public int joue();
+    public Point joue();
 }
