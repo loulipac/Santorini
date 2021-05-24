@@ -27,4 +27,8 @@ public class Constante {
 
     public static final int UNDO = 1;
     public static final int REDO = 0;
+
+    public static final int IA_FACILE = 1;
+    public static final int IA_NORMAL = 2;
+    public static final int IA_DIFFICILE = 3;
 }
