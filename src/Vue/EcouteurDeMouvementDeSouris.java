@@ -82,7 +82,6 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
      *
      * @param e
      * @see Jeu#getSituation()
-     * @see Jeu#estAtteignable(int, int)
      * @see Jeu#getJoueur_en_cours()
      */
     @Override
