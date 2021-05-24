@@ -33,9 +33,18 @@ public class Jeu {
      * @param c nombre de colonne
      * @param o observateur
      */
-    public Jeu(int l, int c, Observer o) {
-        j1 = new JoueurHumain(this, JOUEUR1);
-        j2 = new JoueurHumain(this, JOUEUR2);
+    public Jeu(int l, int c, Observer o, int nb_ia) {
+        if(nb_ia == 2) {
+            j1 = new JoueurIA(this, JOUEUR1, 1);
+            j2 = new JoueurIA(this, JOUEUR2, 1);
+        } else if(nb_ia == 1) {
+            j1 = new JoueurHumain(this, JOUEUR1);
+            j2 = new JoueurIA(this, JOUEUR2, 1);
+        } else if(nb_ia == 0) {
+            j1 = new JoueurHumain(this, JOUEUR1);
+            j2 = new JoueurHumain(this, JOUEUR2);
+        }
+
 
         situation = PLACEMENT;
         joueur_en_cours = JOUEUR1;
@@ -55,7 +64,6 @@ public class Jeu {
      *
      */
     public void jouer(Point position) {
-        position = new Point(position.y, position.x);
         cmd = null;
         switch (situation) {
             case PLACEMENT:
@@ -77,16 +85,6 @@ public class Jeu {
         histo.store(cmd);
     }
 
-    public void joueurJoue(Point position) {
-        if(joueur_en_cours == j1.getNum_joueur()) {
-            j1.joue(position);
-        } else if(joueur_en_cours == j2.getNum_joueur()) {
-            j2.joue(position);
-        } else {
-            System.err.println("Aucun joueur ne dois jouer.");
-        }
-    }
-
     private void jouePlacement(Point position) {
         if (plateau.estLibre(position)) {
             cmd = new CoupDeplacer(joueur_en_cours, null, position);
@@ -100,6 +98,7 @@ public class Jeu {
         System.out.println("Choix du batisseur.");
         batisseur_en_cours = choisirBatisseur(position);
         situation = batisseur_en_cours == null ? SELECTION : DEPLACEMENT;
+        ia_joue();
     }
 
     private void joueDeplacement(Point position) {
@@ -108,6 +107,7 @@ public class Jeu {
         if (avancer(position, batisseur_en_cours)) {
             cmd = new CoupDeplacer(joueur_en_cours, prevPos, batisseur_en_cours);
             situation = CONSTRUCTION;
+            ia_joue();
         }
         victoireJoueur();
     }
@@ -119,15 +119,25 @@ public class Jeu {
             cmd = new CoupConstruire(joueur_en_cours, position, batisseur_en_cours);
             finTour();
             situation = SELECTION;
+            ia_joue();
+        }
+    }
+
+    private void ia_joue() {
+        if(getJoueurType_en_cours().getClass() == JoueurIA.class) {
+            getJoueurType_en_cours().joue();
         }
     }
 
     public void checkBuilderNumber() {
         if (nombre_batisseurs % 2 == 0) {
             finTour();
+            ia_joue();
         }
         if (nombre_batisseurs >= 4) {
             situation = SELECTION;
+        } else {
+            ia_joue();
         }
     }
 
@@ -241,6 +251,16 @@ public class Jeu {
 
     public int getJoueur_en_cours() {
         return joueur_en_cours;
+    }
+
+    public Joueur getJoueurType_en_cours() {
+        if(joueur_en_cours == j1.getNum_joueur()) {
+            return j1;
+        } else if(joueur_en_cours == j2.getNum_joueur()) {
+            return j2;
+        } else {
+            return null;
+        }
     }
 
     public int getNombre_batisseurs() {
