@@ -44,6 +44,7 @@ public class CoupDeplacer extends Commande {
             int situation = type == REDO ? CONSTRUCTION : SELECTION;
             game.setSituation(situation);
             game.MAJObservateur();
+            game.iaJoue();
         }
     }
 }
