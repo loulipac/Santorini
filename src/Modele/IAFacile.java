@@ -8,7 +8,6 @@ import java.util.Random;
 import static Modele.Constante.*;
 
 public class IAFacile implements IA {
-    static final int NUM_JOUEUR = JOUEUR2;
     Jeu j;
     Random random;
     private ArrayList<Point> batisseurs;
@@ -22,21 +21,18 @@ public class IAFacile implements IA {
     }
 
     public Point joue() {
-        if (j.getJoueur_en_cours() == NUM_JOUEUR) {
-            switch (j.getSituation()) {
-                case PLACEMENT:
-                    return jouePlacement();
-                case SELECTION:
-                    return joueSelection();
-                case DEPLACEMENT:
-                    return joueDeplacement();
-                case CONSTRUCTION:
-                    return joueConstruction();
-                default:
-                    break;
-            }
+        switch (j.getSituation()) {
+            case PLACEMENT:
+                return jouePlacement();
+            case SELECTION:
+                return joueSelection();
+            case DEPLACEMENT:
+                return joueDeplacement();
+            case CONSTRUCTION:
+                return joueConstruction();
+            default:
+                return null;
         }
-        return null;
     }
 
     private Point joueDeplacement() {

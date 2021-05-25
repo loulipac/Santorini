@@ -13,9 +13,10 @@ public class JoueurIA implements Joueur {
     IA ia;
     Timer timer;
 
-    public JoueurIA(Jeu _jeu, int _num_joueur, int ia_type) {
+    public JoueurIA(Jeu _jeu, int _num_joueur, IA _ia) {
         jeu = _jeu;
         num_joueur = _num_joueur;
+        ia = _ia;
 
         timer = new Timer(500, new ActionListener(){
             @Override
@@ -23,16 +24,7 @@ public class JoueurIA implements Joueur {
                 joue();
             }
         });
-
-
-        creerIA(ia_type);
-    }
-
-    private void creerIA(int ia_type) {
-        switch (ia_type) {
-            case IA_FACILE -> ia = new IAFacile(jeu);
-            case IA_NORMAL, IA_DIFFICILE -> System.out.println("Non implémenté");
-        }
+        timer.stop();
     }
 
     public void timerIaSet(boolean statut) {

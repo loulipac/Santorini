@@ -51,21 +51,6 @@ public class JeuGraphique extends JComponent {
         plateau = j.getPlateau();
     }
 
-    public JeuGraphique(Jeu j, int IA_mode) {
-        this(j);
-        ia_mode = IA_mode;
-        setIA();
-    }
-
-    private void setIA() {
-        switch (ia_mode) {
-            case 1 -> ia = new IAFacile(this.jeu);
-            case 2 -> ia = new IAFacile(this.jeu);
-            case 3 -> ia = new IAFacile(this.jeu);
-            default -> ia = null;
-        }
-    }
-
     /**
      * Change une image en mémoire depuis son nom.
      *

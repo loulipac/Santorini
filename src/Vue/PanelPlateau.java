@@ -55,6 +55,7 @@ public class PanelPlateau extends JPanel implements Observer {
         colonne_bleu = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
         arriere_plan = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
     }
+
     /**
      * Ajoute tous les composants au panel.
      *
@@ -96,7 +97,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(pp.isVisible()) pp.setVisible(false);
+            if (pp.isVisible()) pp.setVisible(false);
             else pp.setVisible(true);
         }
     }
@@ -144,16 +145,18 @@ public class PanelPlateau extends JPanel implements Observer {
 
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
-
-            if (ia1_mode != 0){
-                jeu = new Jeu(5, 5, PanelPlateau.this, ia1_mode);
-                jg = new JeuGraphique(jeu, ia1_mode);
-            }
-            else {
-                jeu = new Jeu(5, 5, PanelPlateau.this, 0);
+            if (ia2_mode != 0) {
+                jeu = new Jeu(5, 5, PanelPlateau.this, ia1_mode, ia2_mode);
                 jg = new JeuGraphique(jeu);
+            } else if (ia1_mode != 0) {
+                jeu = new Jeu(5, 5, PanelPlateau.this, ia1_mode, 0);
+                jg = new JeuGraphique(jeu);
+                jg.addMouseListener(new EcouteurDeSouris(jg, jeu));
+            } else {
+                jeu = new Jeu(5, 5, PanelPlateau.this, 0, 0);
+                jg = new JeuGraphique(jeu);
+                jg.addMouseListener(new EcouteurDeSouris(jg, jeu));
             }
-            jg.addMouseListener(new EcouteurDeSouris(jg, jeu));
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 
             JPanel histo_bouton = new JPanel();
@@ -231,7 +234,7 @@ public class PanelPlateau extends JPanel implements Observer {
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
                 try {
-                    BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE+"/artwork/bg_regles.png"));
+                    BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/bg_regles.png"));
                     g2d.drawImage(
                             bg_panel,
                             0,
@@ -255,20 +258,20 @@ public class PanelPlateau extends JPanel implements Observer {
 
             JLabel parametres_texte = new JLabel("Paramètres");
 
-            parametres_texte.setForeground(new Color(82,60,43));
+            parametres_texte.setForeground(new Color(82, 60, 43));
             parametres_texte.setFont(lilly_belle);
 
             /* JPanel */
             BackgroundPanel contenu = new BackgroundPanel();
 
             contenu.setAlignmentX(CENTER_ALIGNMENT);
-            contenu.setMaximumSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2/3));
+            contenu.setMaximumSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3));
 
             /* Boutons*/
-            bAbandonner = new Bouton(CHEMIN_RESSOURCE+"/bouton/abandonner.png", CHEMIN_RESSOURCE+"/bouton/abandonner_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
-            bNouvellePartie = new Bouton(CHEMIN_RESSOURCE+"/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE+"/bouton/nouvelle_partie_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
-            bSauvegarder = new Bouton(CHEMIN_RESSOURCE+"/bouton/sauvegarder.png", CHEMIN_RESSOURCE+"/bouton/sauvegarder_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
-            bReprendre = new Bouton(CHEMIN_RESSOURCE+"/bouton/reprendre.png", CHEMIN_RESSOURCE+"/bouton/reprendre_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
+            bAbandonner = new Bouton(CHEMIN_RESSOURCE + "/bouton/abandonner.png", CHEMIN_RESSOURCE + "/bouton/abandonner_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
+            bNouvellePartie = new Bouton(CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE + "/bouton/nouvelle_partie_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
+            bSauvegarder = new Bouton(CHEMIN_RESSOURCE + "/bouton/sauvegarder.png", CHEMIN_RESSOURCE + "/bouton/sauvegarder_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
+            bReprendre = new Bouton(CHEMIN_RESSOURCE + "/bouton/reprendre.png", CHEMIN_RESSOURCE + "/bouton/reprendre_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
 
             /* Evenements */
             ActionEchap echap = new ActionEchap();
@@ -344,7 +347,7 @@ public class PanelPlateau extends JPanel implements Observer {
          */
         public TopPanel(float taille_h) {
             setOpaque(false);
-            
+
             BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
             setLayout(boxlayout);
 
@@ -361,7 +364,6 @@ public class PanelPlateau extends JPanel implements Observer {
             jt.setOpaque(false);
             jt.setFont(lilly_belle);
             jt.setForeground(Color.WHITE);
-            jt.setBorder(new LineBorder(Color.orange));
             add(jt);
         }
     }

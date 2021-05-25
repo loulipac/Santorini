@@ -35,19 +35,8 @@ public class Jeu {
      * @param c nombre de colonne
      * @param o observateur
      */
-    public Jeu(int l, int c, Observer o, int nb_ia) {
-        if (nb_ia == 2) {
-            j1 = new JoueurIA(this, JOUEUR1, 1);
-            j2 = new JoueurIA(this, JOUEUR2, 1);
-        } else if (nb_ia == 1) {
-            j1 = new JoueurHumain(this, JOUEUR1);
-            j2 = new JoueurIA(this, JOUEUR2, 1);
-        } else if (nb_ia == 0) {
-            j1 = new JoueurHumain(this, JOUEUR1);
-            j2 = new JoueurHumain(this, JOUEUR2);
-        }
+    public Jeu(int l, int c, Observer o, int ia1_mode, int ia2_mode) {
         ia_statut = true;
-
         situation = PLACEMENT;
         joueur_en_cours = JOUEUR1;
         plateau = new Plateau(l, c);
@@ -57,6 +46,35 @@ public class Jeu {
         observateur = o;
         jeu_fini = false;
         histo = new Historique(this);
+
+        if (ia2_mode != 0) {
+            j1 = new JoueurIA(this, JOUEUR1, setIA(ia1_mode));
+            j2 = new JoueurIA(this, JOUEUR2, setIA(ia2_mode));
+        } else if (ia1_mode != 0) {
+            j1 = new JoueurHumain(this, JOUEUR1);
+            j2 = new JoueurIA(this, JOUEUR2, setIA(ia1_mode));
+        } else {
+            j1 = new JoueurHumain(this, JOUEUR1);
+            j2 = new JoueurHumain(this, JOUEUR2);
+        }
+        iaJoue();
+    }
+
+    private IA setIA(int ia_mode) {
+        switch (ia_mode) {
+            case 1 -> {
+                return new IAFacile(this);
+            }
+            case 2 -> {
+                return new IAFacile(this);
+            }
+            case 3 -> {
+                return new IAFacile(this);
+            }
+            default -> {
+                return null;
+            }
+        }
     }
 
     Commande cmd;
