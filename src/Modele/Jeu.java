@@ -34,13 +34,13 @@ public class Jeu {
      * @param o observateur
      */
     public Jeu(int l, int c, Observer o, int nb_ia) {
-        if(nb_ia == 2) {
+        if (nb_ia == 2) {
             j1 = new JoueurIA(this, JOUEUR1, 1);
             j2 = new JoueurIA(this, JOUEUR2, 1);
-        } else if(nb_ia == 1) {
+        } else if (nb_ia == 1) {
             j1 = new JoueurHumain(this, JOUEUR1);
             j2 = new JoueurIA(this, JOUEUR2, 1);
-        } else if(nb_ia == 0) {
+        } else if (nb_ia == 0) {
             j1 = new JoueurHumain(this, JOUEUR1);
             j2 = new JoueurHumain(this, JOUEUR2);
         }
@@ -61,7 +61,6 @@ public class Jeu {
 
     /**
      * Effectue des actions selon la situation du jeu parmi placement des batisseurs, selection de batisseur, déplacement des batisseurs et construction des bâtiments.
-     *
      */
     public void jouer(Point position) {
         cmd = null;
@@ -98,7 +97,7 @@ public class Jeu {
         System.out.println("Choix du batisseur.");
         batisseur_en_cours = choisirBatisseur(position);
         situation = batisseur_en_cours == null ? SELECTION : DEPLACEMENT;
-        ia_joue();
+        iaJoue();
     }
 
     private void joueDeplacement(Point position) {
@@ -107,7 +106,7 @@ public class Jeu {
         if (avancer(position, batisseur_en_cours)) {
             cmd = new CoupDeplacer(joueur_en_cours, prevPos, batisseur_en_cours);
             situation = CONSTRUCTION;
-            ia_joue();
+            iaJoue();
         }
         victoireJoueur();
     }
@@ -119,25 +118,25 @@ public class Jeu {
             cmd = new CoupConstruire(joueur_en_cours, position, batisseur_en_cours);
             finTour();
             situation = SELECTION;
-            ia_joue();
+            iaJoue();
         }
     }
 
-    private void ia_joue() {
-        if(getJoueurType_en_cours().getClass() == JoueurIA.class) {
-            getJoueurType_en_cours().joue();
+    private void iaJoue() {
+        if (getJoueurType_en_cours().getClass() == JoueurIA.class) {
+            ((JoueurIA) getJoueurType_en_cours()).timerIaStart();
         }
     }
 
     public void checkBuilderNumber() {
         if (nombre_batisseurs % 2 == 0) {
             finTour();
-            ia_joue();
+            iaJoue();
         }
         if (nombre_batisseurs >= 4) {
             situation = SELECTION;
         } else {
-            ia_joue();
+            iaJoue();
         }
     }
 
@@ -254,9 +253,9 @@ public class Jeu {
     }
 
     public Joueur getJoueurType_en_cours() {
-        if(joueur_en_cours == j1.getNum_joueur()) {
+        if (joueur_en_cours == j1.getNum_joueur()) {
             return j1;
-        } else if(joueur_en_cours == j2.getNum_joueur()) {
+        } else if (joueur_en_cours == j2.getNum_joueur()) {
             return j2;
         } else {
             return null;

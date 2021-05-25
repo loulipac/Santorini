@@ -116,9 +116,6 @@ public class PanelPlateau extends JPanel implements Observer {
                     hauteur / 19,
                     hauteur / 19
             );
-
-            JButton ia_test = new JButton("Démarrer IA");
-
             bParametres.addActionListener(PanelPlateau.this::actionBoutonParametres);
             ActionEchap echap = new ActionEchap();
             PanelPlateau.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
@@ -126,7 +123,6 @@ public class PanelPlateau extends JPanel implements Observer {
 
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
-            parametres.add(ia_test);
 
             System.out.println("IA mode : " + ia_mode);
             if (ia_mode != 0){
@@ -139,7 +135,6 @@ public class PanelPlateau extends JPanel implements Observer {
             }
             jg.addMouseListener(new EcouteurDeSouris(jg, jeu));
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
-            if(jg.getIa() != null) ia_test.addActionListener(new IAActionListener(jeu));
 
             JPanel histo_bouton = new JPanel();
             histo_bouton.setOpaque(false);

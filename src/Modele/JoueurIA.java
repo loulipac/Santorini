@@ -1,6 +1,9 @@
 package Modele;
 
+import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import static Modele.Constante.*;
 
@@ -8,10 +11,20 @@ public class JoueurIA implements Joueur {
     private int num_joueur;
     Jeu jeu;
     IA ia;
+    Timer timer;
 
     public JoueurIA(Jeu _jeu, int _num_joueur, int ia_type) {
         jeu = _jeu;
         num_joueur = _num_joueur;
+
+        timer = new Timer(500, new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                joue();
+            }
+        });
+
+
         creerIA(ia_type);
     }
 
@@ -22,11 +35,17 @@ public class JoueurIA implements Joueur {
         }
     }
 
+    public void timerIaStart() {
+        timer.start();
+    }
+
     @Override
     public void joue() {
         Point jeu_ia = ia.joue();
         System.out.println("IA joue : " + jeu_ia);
         jeu.jouer(jeu_ia);
+        jeu.MAJObservateur();
+        if(jeu.getJoueur_en_cours() != num_joueur) timer.stop();
     }
 
     @Override
