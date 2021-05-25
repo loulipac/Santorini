@@ -46,8 +46,12 @@ public class Fenetre extends JFrame {
 
         add(panelPrincipal);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Change le curseur de la fenêtre
+        setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("sword", new Point(16, 16)));
+
         setVisible(true);
-        //musique.joueSon(true);
+//        musique.joueSon(true);
     }
 
     public CardLayout getPileCarte() {
