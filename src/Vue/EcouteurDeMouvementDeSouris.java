@@ -63,7 +63,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         try {
             Image img = toolkit.getImage(CHEMIN_RESSOURCE + "/curseur/" + fichier_nom + ".png");
-            return toolkit.createCustomCursor(img, decallage, "c_" + fichier_nom);
+            return toolkit.createCustomCursor(img.getScaledInstance(32,32, Image.SCALE_SMOOTH), decallage, "c_" + fichier_nom);
         } catch (Exception ex) {
             System.err.println(ex);
         }
