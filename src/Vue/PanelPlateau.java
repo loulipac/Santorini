@@ -1,16 +1,18 @@
 package Vue;
 
-import Modele.IAActionListener;
 import static Modele.Constante.*;
+
 import Modele.Jeu;
 
 import static Modele.Constante.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -23,21 +25,22 @@ public class PanelPlateau extends JPanel implements Observer {
     private JeuGraphique jg;
     Font lilly_belle;
     JLabel jt;
-    int largeur, hauteur, ia_mode = 0;
+    Dimension taille_fenetre;
+    int ia1_mode, ia2_mode;
     Image colonne_rouge, colonne_bleu, arriere_plan;
     JButton on_off_ia;
+    ParametrePanel pp;
 
     /**
      * Initialise la fenêtre de jeu et charge la police et les images en mémoire.
      *
-     * @param largeur
-     * @param hauteur
+     * @param _taille_fenetre
      * @see PanelPlateau#initialiserPanel()
      */
-    public PanelPlateau(int largeur, int hauteur, int ia_mode) {
-        this.largeur = largeur;
-        this.hauteur = hauteur;
-        this.ia_mode = ia_mode;
+    public PanelPlateau(Dimension _taille_fenetre, int ia1_mode, int ia2_mode) {
+        this.taille_fenetre = _taille_fenetre;
+        this.ia1_mode = ia1_mode;
+        this.ia2_mode = ia2_mode;
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
@@ -52,7 +55,6 @@ public class PanelPlateau extends JPanel implements Observer {
         colonne_bleu = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
         arriere_plan = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
     }
-
     /**
      * Ajoute tous les composants au panel.
      *
@@ -61,10 +63,28 @@ public class PanelPlateau extends JPanel implements Observer {
      */
     public void initialiserPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        // layered pane pour la superposition des panels
+        JLayeredPane main_panel = new JLayeredPane();
+        main_panel.setOpaque(false);
+        main_panel.setLayout(new OverlayLayout(main_panel));
+
+        // panel de base avec le jeu
+        JPanel game = new JPanel();
+        game.setOpaque(false);
+        game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
+        game.setMaximumSize(taille_fenetre);
+
         TopPanel tp = new TopPanel(0.25f);
         JGamePanel jgame = new JGamePanel(0.75f);
-        add(tp);
-        add(jgame);
+        game.add(tp);
+        game.add(jgame);
+
+        pp = new ParametrePanel();
+        pp.setVisible(false);
+        main_panel.add(game, JLayeredPane.DEFAULT_LAYER);
+        main_panel.add(pp, JLayeredPane.POPUP_LAYER);
+        add(main_panel);
     }
 
     private class ActionEchap extends AbstractAction {
@@ -76,8 +96,8 @@ public class PanelPlateau extends JPanel implements Observer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(PanelPlateau.this);
-            f.getPileCarte().show(f.panelPrincipal, "parametres");
+            if(pp.isVisible()) pp.setVisible(false);
+            else pp.setVisible(true);
         }
     }
 
@@ -98,15 +118,15 @@ public class PanelPlateau extends JPanel implements Observer {
          * @param _taille_h
          */
         public JGamePanel(float _taille_h) {
-            this.taille_h = _taille_h - 0.1f;
+            this.taille_h = _taille_h - 0.05f;
 
             setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
             setOpaque(false);
-            setPreferredSize(new Dimension((int) (largeur), (int) (hauteur * taille_h)));
+            setPreferredSize(new Dimension((int) (taille_fenetre.width), (int) (taille_fenetre.height * taille_h)));
 
             JPanel parametres = new JPanel();
 
-            Dimension size = new Dimension((int) (largeur * 0.2), (int) (hauteur * taille_h));
+            Dimension size = new Dimension((int) (taille_fenetre.width * 0.2), (int) (taille_fenetre.height * taille_h));
             parametres.setOpaque(false);
             parametres.setPreferredSize(size);
             parametres.setMaximumSize(size);
@@ -114,8 +134,8 @@ public class PanelPlateau extends JPanel implements Observer {
             Bouton bParametres = new Bouton(
                     CHEMIN_RESSOURCE + "/bouton/parametres.png",
                     CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
-                    hauteur / 19,
-                    hauteur / 19
+                    taille_fenetre.height / 19,
+                    taille_fenetre.height / 19
             );
             bParametres.addActionListener(PanelPlateau.this::actionBoutonParametres);
             ActionEchap echap = new ActionEchap();
@@ -125,10 +145,9 @@ public class PanelPlateau extends JPanel implements Observer {
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
 
-            System.out.println("IA mode : " + ia_mode);
-            if (ia_mode != 0){
-                jeu = new Jeu(5, 5, PanelPlateau.this, ia_mode);
-                jg = new JeuGraphique(jeu, ia_mode);
+            if (ia1_mode != 0){
+                jeu = new Jeu(5, 5, PanelPlateau.this, ia1_mode);
+                jg = new JeuGraphique(jeu, ia1_mode);
             }
             else {
                 jeu = new Jeu(5, 5, PanelPlateau.this, 0);
@@ -142,9 +161,9 @@ public class PanelPlateau extends JPanel implements Observer {
             histo_bouton.setPreferredSize(size);
             histo_bouton.setMaximumSize(size);
 
-            Bouton histo_annuler = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png", hauteur / 19, hauteur / 19);
+            Bouton histo_annuler = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
             on_off_ia = new JButton("ON");
-            Bouton histo_refaire = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png", hauteur / 19, hauteur / 19);
+            Bouton histo_refaire = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
             histo_annuler.addActionListener(PanelPlateau.this::actionUndo);
             histo_refaire.addActionListener(PanelPlateau.this::actionRedo);
             on_off_ia.addActionListener(PanelPlateau.this::switchOnOffIA);
@@ -155,18 +174,18 @@ public class PanelPlateau extends JPanel implements Observer {
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
             //int taille_case_largeur = largeur / jeu.getPlateau().getColonnes();
-            int taille_case = ((int) (hauteur * taille_h)) / jeu.getPlateau().getLignes();
+            int taille_case = ((int) (taille_fenetre.height * taille_h)) / jeu.getPlateau().getLignes();
 
             jg.setPreferredSize(new Dimension(taille_case * jeu.getPlateau().getColonnes(), taille_case * jeu.getPlateau().getLignes()));
             jg.setMaximumSize(new Dimension(taille_case * jeu.getPlateau().getColonnes(), taille_case * jeu.getPlateau().getLignes()));
 
-            int taille = largeur;
+            int taille = taille_fenetre.width;
 
             // place de la grille
             taille -= taille_case * jeu.getPlateau().getColonnes();
 
             // place des menus
-            taille -= largeur * 0.4;
+            taille -= taille_fenetre.width * 0.4;
 
             taille_margin = taille / 4;
 
@@ -186,10 +205,131 @@ public class PanelPlateau extends JPanel implements Observer {
             JPanel j = new JPanel();
             j.setOpaque(false);
             //j.setBorder(new LineBorder(Color.BLUE));
-            Dimension size = new Dimension(taille_margin, (int) (hauteur * taille_h));
+            Dimension size = new Dimension(taille_margin, (int) (taille_fenetre.height * taille_h));
             j.setPreferredSize(size);
             j.setMaximumSize(size);
             add(j);
+        }
+    }
+
+    private class ParametrePanel extends JPanel {
+        private Bouton bAbandonner, bNouvellePartie, bSauvegarder, bReprendre;
+        private LecteurSon son_bouton;
+
+        private class BackgroundPanel extends JPanel {
+            public BackgroundPanel() {
+                super();
+                setOpaque(false);
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                try {
+                    BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE+"/artwork/bg_regles.png"));
+                    g2d.drawImage(
+                            bg_panel,
+                            0,
+                            0,
+                            getWidth(),
+                            getHeight(),
+                            this
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println("Erreur image de fond: " + e.getMessage());
+                }
+            }
+        }
+
+        public ParametrePanel() {
+            setOpaque(false);
+            BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+            setLayout(boxlayout);
+
+
+            JLabel parametres_texte = new JLabel("Paramètres");
+
+            parametres_texte.setForeground(new Color(82,60,43));
+            parametres_texte.setFont(lilly_belle);
+
+            /* JPanel */
+            BackgroundPanel contenu = new BackgroundPanel();
+
+            contenu.setAlignmentX(CENTER_ALIGNMENT);
+            contenu.setMaximumSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2/3));
+
+            /* Boutons*/
+            bAbandonner = new Bouton(CHEMIN_RESSOURCE+"/bouton/abandonner.png", CHEMIN_RESSOURCE+"/bouton/abandonner_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
+            bNouvellePartie = new Bouton(CHEMIN_RESSOURCE+"/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE+"/bouton/nouvelle_partie_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
+            bSauvegarder = new Bouton(CHEMIN_RESSOURCE+"/bouton/sauvegarder.png", CHEMIN_RESSOURCE+"/bouton/sauvegarder_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
+            bReprendre = new Bouton(CHEMIN_RESSOURCE+"/bouton/reprendre.png", CHEMIN_RESSOURCE+"/bouton/reprendre_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
+
+            /* Evenements */
+            ActionEchap echap = new ActionEchap();
+            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
+            getActionMap().put("echap", echap);
+
+            bAbandonner.addActionListener(this::actionBoutonAbandonner);
+            bReprendre.addActionListener(echap);
+            bNouvellePartie.addActionListener(this::actionBoutonNouvelle);
+
+            /* Adding */
+            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
+            contenu.add(parametres_texte);
+            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
+            contenu.add(bAbandonner);
+            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
+            contenu.add(bNouvellePartie);
+            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
+            contenu.add(bSauvegarder);
+            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
+            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
+            contenu.add(bReprendre);
+            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
+            add(contenu);
+        }
+
+        public void actionBoutonAbandonner(ActionEvent e) {
+            Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
+            f2.removePlateau();
+            f2.getPileCarte().show(f2.panelPrincipal, "menu");
+        }
+
+        public void actionBoutonNouvelle(ActionEvent e) {
+            Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
+            f2.removePlateau();
+            f2.setPlateau(new PanelPlateau(taille_fenetre, ia1_mode, ia2_mode));
+            f2.getPileCarte().show(f2.panelPrincipal, "plateau");
+        }
+
+        @Override
+        public void paintComponents(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            //Chargement de l"image de fond
+            try {
+                BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
+                g2d.drawImage(
+                        img_colonnes,
+                        0,
+                        0,
+                        (int) (taille_fenetre.width * 0.55),
+                        taille_fenetre.height * 2 / 3,
+                        this
+                );
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.err.println("Erreur image de fond: " + e.getMessage());
+            }
         }
     }
 
@@ -203,13 +343,14 @@ public class PanelPlateau extends JPanel implements Observer {
          * @param taille_h
          */
         public TopPanel(float taille_h) {
+            setOpaque(false);
+            
             BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
             setLayout(boxlayout);
 
-            Dimension size = new Dimension(largeur, (int) (hauteur * taille_h));
+            Dimension size = new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * taille_h));
             setPreferredSize(size);
             setMaximumSize(size);
-            setOpaque(false);
 
             JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
             logo.setAlignmentX(CENTER_ALIGNMENT);
@@ -220,6 +361,7 @@ public class PanelPlateau extends JPanel implements Observer {
             jt.setOpaque(false);
             jt.setFont(lilly_belle);
             jt.setForeground(Color.WHITE);
+            jt.setBorder(new LineBorder(Color.orange));
             add(jt);
         }
     }
@@ -237,8 +379,6 @@ public class PanelPlateau extends JPanel implements Observer {
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        largeur = getWidth();
-        hauteur = getHeight();
         try {
 
             g2d.drawImage(
@@ -274,8 +414,9 @@ public class PanelPlateau extends JPanel implements Observer {
      * @see PanelParametres
      */
     public void actionBoutonParametres(ActionEvent e) {
-        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getPileCarte().show(f.panelPrincipal, "parametres");
+        pp.setVisible(true);
+        /*Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.getPileCarte().show(f.panelPrincipal, "parametres");*/
     }
 
     public void switchOnOffIA(ActionEvent e) {
