@@ -1,7 +1,6 @@
 package Vue;
 
 import static Modele.Constante.*;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -143,7 +142,7 @@ class PanelParametres extends JPanel {
         son_bouton.joueSon(false);
         Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f2.removePlateau();
-        f2.setPlateau(new PanelPlateau(getSize().width, getSize().height));
+        f2.setPlateau(new PanelPlateau(getSize()));
         f2.getPileCarte().show(f2.panelPrincipal, "plateau");
     }
 

@@ -55,7 +55,7 @@ class PanelMenu extends JPanel {
         /* Label */
         logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
         logo.setAlignmentX(CENTER_ALIGNMENT);
-        logo.setMaximumSize(new Dimension(415, 100));
+        logo.setMaximumSize(new Dimension(largeur / 3, largeur / 9));
 
         /* redirection */
         bJouer.addActionListener(this::actionBoutonJouer);
@@ -117,7 +117,7 @@ class PanelMenu extends JPanel {
     public void actionBoutonTutoriel(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre fenetre = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        fenetre.setPlateau(new PanelPlateau(getSize().width, getSize().height));
+        fenetre.setPlateau(new PanelPlateau(getSize()));
         fenetre.getPileCarte().show(fenetre.panelPrincipal, "plateau");
     }
 

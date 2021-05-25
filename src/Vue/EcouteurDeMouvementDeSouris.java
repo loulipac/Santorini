@@ -59,7 +59,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
      * @param decallage
      * @return le curseur crée
      */
-    private Cursor creerCurseurGenerique(String fichier_nom, Point decallage) {
+    public static Cursor creerCurseurGenerique(String fichier_nom, Point decallage) {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         try {
             Image img = toolkit.getImage(CHEMIN_RESSOURCE + "/curseur/" + fichier_nom + ".png");

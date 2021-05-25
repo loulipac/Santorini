@@ -15,7 +15,7 @@ class PanelOptions extends JPanel {
     private Bouton bRetour, bCommencer;
     private LecteurSon son_bouton;
     Font lilly_belle;
-    JRadioButton joueur_joueur, joueur_ia;
+    JRadioButton joueur_joueur, joueur_ia, ia_ia;
 
     public PanelOptions(int largeur, int hauteur) {
         son_bouton = new LecteurSon("menu_click.wav");
@@ -45,9 +45,15 @@ class PanelOptions extends JPanel {
         JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
         JLabel versus_texte = new JLabel("Mode de jeu");
         JLabel IA_texte = new JLabel("Difficulté de l'IA");
+        JLabel IA_IA_texte = new JLabel("Difficulté de l'IA 2");
 
         versus_texte.setFont(lilly_belle);
         IA_texte.setFont(lilly_belle);
+        IA_IA_texte.setFont(lilly_belle);
+
+        versus_texte.setForeground(new Color(82, 60, 43));
+        IA_texte.setForeground(new Color(82, 60, 43));
+        IA_IA_texte.setForeground(new Color(82, 60, 43));
 
         logo.setAlignmentX(CENTER_ALIGNMENT);
         logo.setMaximumSize(new Dimension(largeur / 3, largeur / 9));
@@ -56,6 +62,7 @@ class PanelOptions extends JPanel {
         OptionPanel contenu = new OptionPanel();
         JPanel versus_panel = new JPanel();
         JPanel IA_panel = new JPanel();
+        JPanel IA_IA_panel = new JPanel();
         JPanel boutons_principaux_panel = new JPanel();
 
         contenu.setAlignmentX(CENTER_ALIGNMENT);
@@ -63,6 +70,7 @@ class PanelOptions extends JPanel {
 
         versus_panel.setOpaque(false);
         IA_panel.setOpaque(false);
+        IA_IA_panel.setOpaque(false);
         boutons_principaux_panel.setOpaque(false);
 
         boutons_principaux_panel.setMaximumSize(new Dimension(largeur, hauteur / 10));
@@ -71,13 +79,20 @@ class PanelOptions extends JPanel {
         /* Boutons*/
         ButtonGroup adversaires_boutons = new ButtonGroup();
         ButtonGroup boutons_IA = new ButtonGroup();
+        ButtonGroup boutons_IA_IA = new ButtonGroup();
 
         joueur_joueur = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_joueur", largeur / 6, largeur / 30, adversaires_boutons);
         joueur_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia", largeur / 6, largeur / 30, adversaires_boutons);
+        ia_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia", largeur / 6, largeur / 30, adversaires_boutons);
+
 
         JRadioButton facile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile", largeur / 6, largeur / 30, boutons_IA);
         JRadioButton normale = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale", largeur / 6, largeur / 30, boutons_IA);
         JRadioButton difficile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/difficile", largeur / 6, largeur / 30, boutons_IA);
+
+        JRadioButton facile2 = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile", largeur / 6, largeur / 30, boutons_IA_IA);
+        JRadioButton normale2 = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale", largeur / 6, largeur / 30, boutons_IA_IA);
+        JRadioButton difficile2 = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/difficile", largeur / 6, largeur / 30, boutons_IA_IA);
 
         bCommencer = new Bouton(CHEMIN_RESSOURCE + "/bouton/commencer_la_partie.png", CHEMIN_RESSOURCE + "/bouton/commencer_la_partie_hover.png", largeur / 4, largeur / 20);
         bRetour = new Bouton(CHEMIN_RESSOURCE + "/bouton/retour.png", CHEMIN_RESSOURCE + "/bouton/retour_hover.png", largeur / 4, largeur / 20);
@@ -96,7 +111,9 @@ class PanelOptions extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 son_bouton.joueSon(false);
                 IA_texte.setVisible(false);
+                IA_IA_texte.setVisible(false);
                 IA_panel.setVisible(false);
+                IA_IA_panel.setVisible(false);
             }
         });
 
@@ -105,17 +122,38 @@ class PanelOptions extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 son_bouton.joueSon(false);
                 IA_texte.setVisible(true);
+                IA_IA_texte.setVisible(false);
                 IA_panel.setVisible(true);
+                IA_IA_panel.setVisible(false);
+                IA_texte.setText("Difficulté de l'IA");
+            }
+        });
+
+        ia_ia.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                son_bouton.joueSon(false);
+                IA_texte.setVisible(true);
+                IA_IA_texte.setVisible(true);
+                IA_panel.setVisible(true);
+                IA_IA_panel.setVisible(true);
+                IA_texte.setText("Difficulté de l'IA 1");
             }
         });
 
         /* Add dans les sous-panel */
         versus_panel.add(joueur_joueur);
         versus_panel.add(joueur_ia);
+        versus_panel.add(ia_ia);
 
         IA_panel.add(facile);
         IA_panel.add(normale);
         IA_panel.add(difficile);
+
+        IA_IA_panel.add(facile2);
+        IA_IA_panel.add(normale2);
+        IA_IA_panel.add(difficile2);
+
 
         contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
         contenu.add(versus_texte);
@@ -126,6 +164,10 @@ class PanelOptions extends JPanel {
         contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
         contenu.add(IA_panel);
         contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
+        contenu.add(IA_IA_texte);
+        contenu.add(Box.createRigidArea(new Dimension(largeur, 0)));
+        contenu.add(IA_IA_panel);
+        contenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 30)));
 
         boutons_principaux_panel.add(bRetour);
         boutons_principaux_panel.add(bCommencer);
@@ -133,8 +175,11 @@ class PanelOptions extends JPanel {
         /* Selection par défaut des boutons radio*/
         joueur_joueur.setSelected(true);
         facile.setSelected(true);
+        facile2.setSelected(true);
         IA_panel.setVisible(false);
         IA_texte.setVisible(false);
+        IA_IA_panel.setVisible(false);
+        IA_IA_texte.setVisible(false);
 
         /* Adding */
         add(Box.createRigidArea(new Dimension(largeur, hauteur / 15)));
@@ -169,13 +214,15 @@ class PanelOptions extends JPanel {
 
         PanelPlateau plateau = null;
         if(joueur_joueur.isSelected()) {
-            plateau = new PanelPlateau(getSize().width, getSize().height);
+            plateau = new PanelPlateau(getSize());
             System.out.println("IA non choisi");
         } else if(joueur_ia.isSelected()) {
             System.out.println("NOT IMPLEMENTED");
             System.out.println("IA choisi");
+        } else if(ia_ia.isSelected()) {
+            System.out.println("NOT IMPLEMENTED");
+            System.out.println("IA vs IA choisi");
         }
-
         fenetre.setPlateau(plateau);
         fenetre.getPileCarte().show(fenetre.panelPrincipal, "plateau");
     }
