@@ -351,7 +351,6 @@ public class PanelPlateau extends JPanel implements Observer {
             jt.setOpaque(false);
             jt.setFont(lilly_belle);
             jt.setForeground(Color.WHITE);
-            jt.setBorder(new LineBorder(Color.orange));
             add(jt);
         }
     }
@@ -401,12 +400,9 @@ public class PanelPlateau extends JPanel implements Observer {
      * Affiche le menu paramètre.
      *
      * @param e
-     * @see PanelParametres
      */
     public void actionBoutonParametres(ActionEvent e) {
         pp.setVisible(true);
-        /*Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getPileCarte().show(f.panelPrincipal, "parametres");*/
     }
 
     public void actionUndo(ActionEvent e) {
