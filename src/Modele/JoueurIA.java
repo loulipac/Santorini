@@ -35,8 +35,12 @@ public class JoueurIA implements Joueur {
         }
     }
 
-    public void timerIaStart() {
-        timer.start();
+    public void timerIaSet(boolean statut) {
+        if (statut) {
+            timer.start();
+        } else {
+            timer.stop();
+        }
     }
 
     @Override

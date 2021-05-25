@@ -24,6 +24,8 @@ public class Jeu {
     private boolean jeu_fini;
     private Historique histo;
 
+    private boolean ia_statut;
+
     Joueur j1, j2;
 
     /**
@@ -44,7 +46,7 @@ public class Jeu {
             j1 = new JoueurHumain(this, JOUEUR1);
             j2 = new JoueurHumain(this, JOUEUR2);
         }
-
+        ia_statut = true;
 
         situation = PLACEMENT;
         joueur_en_cours = JOUEUR1;
@@ -97,7 +99,6 @@ public class Jeu {
         System.out.println("Choix du batisseur.");
         batisseur_en_cours = choisirBatisseur(position);
         situation = batisseur_en_cours == null ? SELECTION : DEPLACEMENT;
-        iaJoue();
     }
 
     private void joueDeplacement(Point position) {
@@ -106,7 +107,6 @@ public class Jeu {
         if (avancer(position, batisseur_en_cours)) {
             cmd = new CoupDeplacer(joueur_en_cours, prevPos, batisseur_en_cours);
             situation = CONSTRUCTION;
-            iaJoue();
         }
         victoireJoueur();
     }
@@ -118,25 +118,21 @@ public class Jeu {
             cmd = new CoupConstruire(joueur_en_cours, position, batisseur_en_cours);
             finTour();
             situation = SELECTION;
-            iaJoue();
         }
     }
 
-    private void iaJoue() {
+    public void iaJoue() {
         if (getJoueurType_en_cours().getClass() == JoueurIA.class) {
-            ((JoueurIA) getJoueurType_en_cours()).timerIaStart();
+            ((JoueurIA) getJoueurType_en_cours()).timerIaSet(ia_statut);
         }
     }
 
     public void checkBuilderNumber() {
         if (nombre_batisseurs % 2 == 0) {
             finTour();
-            iaJoue();
         }
         if (nombre_batisseurs >= 4) {
             situation = SELECTION;
-        } else {
-            iaJoue();
         }
     }
 
@@ -178,6 +174,7 @@ public class Jeu {
         switchPlayer();
         batisseur_en_cours = null;
         MAJObservateur();
+        iaJoue();
     }
 
     /**
@@ -280,5 +277,16 @@ public class Jeu {
 
     public void setJeu_fini(boolean value) {
         jeu_fini = value;
+    }
+
+    public void iaSwitch() {
+        this.ia_statut = !ia_statut;
+        if (getJoueurType_en_cours().getClass() == JoueurIA.class) {
+            ((JoueurIA) getJoueurType_en_cours()).timerIaSet(ia_statut);
+        }
+    }
+
+    public boolean getIa_statut() {
+        return ia_statut;
     }
 }

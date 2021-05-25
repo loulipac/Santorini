@@ -25,6 +25,7 @@ public class PanelPlateau extends JPanel implements Observer {
     JLabel jt;
     int largeur, hauteur, ia_mode = 0;
     Image colonne_rouge, colonne_bleu, arriere_plan;
+    JButton on_off_ia;
 
     /**
      * Initialise la fenêtre de jeu et charge la police et les images en mémoire.
@@ -142,10 +143,13 @@ public class PanelPlateau extends JPanel implements Observer {
             histo_bouton.setMaximumSize(size);
 
             Bouton histo_annuler = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png", hauteur / 19, hauteur / 19);
+            on_off_ia = new JButton("ON");
             Bouton histo_refaire = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png", hauteur / 19, hauteur / 19);
             histo_annuler.addActionListener(PanelPlateau.this::actionUndo);
             histo_refaire.addActionListener(PanelPlateau.this::actionRedo);
+            on_off_ia.addActionListener(PanelPlateau.this::switchOnOffIA);
             histo_bouton.add(histo_annuler);
+            histo_bouton.add(on_off_ia);
             histo_bouton.add(histo_refaire);
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
@@ -272,6 +276,15 @@ public class PanelPlateau extends JPanel implements Observer {
     public void actionBoutonParametres(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.getPileCarte().show(f.panelPrincipal, "parametres");
+    }
+
+    public void switchOnOffIA(ActionEvent e) {
+        jeu.iaSwitch();
+        if (jeu.getIa_statut()) {
+            on_off_ia.setText("ON");
+        } else {
+            on_off_ia.setText("OFF");
+        }
     }
 
     public void actionUndo(ActionEvent e) {
