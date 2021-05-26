@@ -340,16 +340,18 @@ public class PanelPlateau extends JPanel implements Observer {
         public TopPanel(float taille_h) {
             setOpaque(false);
             
-            BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
-            setLayout(boxlayout);
+            //BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+            //setLayout(boxlayout);
+            setLayout(new GridBagLayout());
 
             Dimension size = new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * taille_h));
             setPreferredSize(size);
             setMaximumSize(size);
+            setMinimumSize(size);
 
-            JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
+            /*JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
             logo.setAlignmentX(CENTER_ALIGNMENT);
-            add(logo);
+            add(logo);*/
 
             jt = new JLabel("C'est au tour du Joueur 1");
             jt.setAlignmentX(CENTER_ALIGNMENT);
@@ -357,13 +359,7 @@ public class PanelPlateau extends JPanel implements Observer {
             jt.setOpaque(false);
             jt.setFont(lilly_belle);
             jt.setForeground(Color.WHITE);
-
-            Box box_texte = Box.createVerticalBox();
-            //box_texte.setBorder(new LineBorder(Color.blue));
-            box_texte.setMaximumSize(new Dimension((int) taille_fenetre.width * 2/3 ,(int) (taille_fenetre.height * taille_h / 2)));
-            box_texte.setAlignmentY(CENTER_ALIGNMENT);
-            box_texte.add(jt);
-            add(box_texte);
+            add(jt);
         }
     }
 
