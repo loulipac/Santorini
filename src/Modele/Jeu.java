@@ -24,7 +24,6 @@ public class Jeu {
     private Observer observateur;
     private boolean jeu_fini;
     private Historique histo;
-    private ArrayList<Point> batisseurs_j1,batisseurs_j2;
 
     private boolean ia_statut;
 
@@ -48,8 +47,6 @@ public class Jeu {
         observateur = o;
         jeu_fini = false;
         histo = new Historique(this);
-        batisseurs_j1 = new ArrayList<>();
-        batisseurs_j2 = new ArrayList<>();
 
         if (ia2_mode != 0) {
             j1 = new JoueurIA(this, JOUEUR1, setIA(ia1_mode));
@@ -112,17 +109,12 @@ public class Jeu {
         if (plateau.estLibre(position)) {
             cmd = new CoupDeplacer(joueur_en_cours, null, position);
             plateau.ajouterJoueur(position, joueur_en_cours);
-            if(joueur_en_cours == JOUEUR1){
-                batisseurs_j1.add(position);
-            }
-            else{
-                batisseurs_j2.add(position);
-            }
-
+            getJoueurType_en_cours().addBatisseur(position);
             nombre_batisseurs++;
             checkBuilderNumber();
         }
     }
+
 
     private void joueSelection(Point position) {
         System.out.println("Choix du batisseur.");
@@ -134,8 +126,8 @@ public class Jeu {
         System.out.println("Déplacement du batisseur.");
         Point prevPos = batisseur_en_cours;
         if (avancer(position, batisseur_en_cours)) {
-            ArrayList<Point> batisseurs_en_cours = joueur_en_cours == JOUEUR1 ? batisseurs_j1:batisseurs_j2;
-            batisseurs_en_cours.set(batisseurs_en_cours.indexOf(prevPos),position);
+            ArrayList<Point> batisseurs_en_cours = getJoueurType_en_cours().getBatisseurs();
+            batisseurs_en_cours.set(batisseurs_en_cours.indexOf(prevPos), position);
 
             cmd = new CoupDeplacer(joueur_en_cours, prevPos, batisseur_en_cours);
             situation = CONSTRUCTION;
@@ -318,8 +310,8 @@ public class Jeu {
         }
     }
 
-    public ArrayList<Point> getBatisseurs(int joueur){
-        return joueur == JOUEUR1 ? batisseurs_j1 : batisseurs_j2;
+    public ArrayList<Point> getBatisseurs(int joueur) {
+        return getJoueurType_en_cours().getBatisseurs();
     }
 
     public boolean getIa_statut() {
