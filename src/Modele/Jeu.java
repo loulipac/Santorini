@@ -215,6 +215,10 @@ public class Jeu {
         }
     }
 
+    public void sauvegarder() {
+        System.out.println("Sauvegarde...");
+    }
+
     public void undo() {
         if (histo.canUndo()) histo.undo();
     }

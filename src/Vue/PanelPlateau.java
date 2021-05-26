@@ -268,6 +268,7 @@ public class PanelPlateau extends JPanel implements Observer {
             bAbandonner.addActionListener(this::actionBoutonAbandonner);
             bReprendre.addActionListener(echap);
             bNouvellePartie.addActionListener(this::actionBoutonNouvelle);
+            bSauvegarder.addActionListener(this::actionBoutonSauvergarder);
 
             /* Adding */
             contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
@@ -289,6 +290,11 @@ public class PanelPlateau extends JPanel implements Observer {
             Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
             f2.removePlateau();
             f2.getPileCarte().show(f2.panelPrincipal, "menu");
+        }
+
+        public void actionBoutonSauvergarder(ActionEvent e) {
+            jeu.sauvegarder();
+            pp.setVisible(false);
         }
 
         public void actionBoutonNouvelle(ActionEvent e) {
