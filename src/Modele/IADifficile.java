@@ -30,7 +30,7 @@ public class IADifficile implements IA {
                     }
                 }
 
-                value = Math.max(value, alphabeta(child, (depth-1), a, b, (maximizingPlayer % 16) + 8 )));
+                //value = Math.max(value, alphabeta(child, (depth-1), a, b, (maximizingPlayer % 16) + 8 )));
                 a = Math.max(a, value);
                 if (a >= b)
                     break;
@@ -39,7 +39,7 @@ public class IADifficile implements IA {
         } else { //beta
             value = Float.POSITIVE_INFINITY;
             for (Point p : coup) {
-                value = Math.min(value, alphabeta(child, (depth-1), a, b, (maximizingPlayer % 16) + 8));
+                //value = Math.min(value, alphabeta(child, (depth-1), a, b, (maximizingPlayer % 16) + 8));
                 b = Math.min(b, value);
                 if (b <= a)
                     break;
