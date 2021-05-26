@@ -45,7 +45,7 @@ public class PanelPlateau extends JPanel implements Observer {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
         }
         lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT, 40);
-        initialiserPanel(taille_fenetre);
+        initialiserPanel();
 
         colonne_rouge = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
         colonne_bleu = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
@@ -56,9 +56,8 @@ public class PanelPlateau extends JPanel implements Observer {
      *
      * @see TopPanel
      * @see JGamePanel
-     * @param taille_fenetre
      */
-    public void initialiserPanel(Dimension taille_fenetre) {
+    public void initialiserPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // layered pane pour la superposition des panels
@@ -72,7 +71,7 @@ public class PanelPlateau extends JPanel implements Observer {
         game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
         game.setMaximumSize(taille_fenetre);
 
-        TopPanel tp = new TopPanel( taille_fenetre, 0.25f);
+        TopPanel tp = new TopPanel(0.25f);
         JGamePanel jgame = new JGamePanel(0.75f);
         game.add(tp);
         game.add(jgame);
@@ -336,10 +335,9 @@ public class PanelPlateau extends JPanel implements Observer {
         /**
          * Constructeur de TopPanel. Ajoute les élements et définis les valeurs des propriétés de chacuns.
          *
-         * @param taille_fenetre
          * @param taille_h
          */
-        public TopPanel(Dimension taille_fenetre, float taille_h) {
+        public TopPanel(float taille_h) {
             setOpaque(false);
             
             BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
