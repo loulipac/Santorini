@@ -1,21 +1,21 @@
 package Modele;
 
-import Structure.Pile;
+import java.util.Stack;
 
 public class Historique {
-    private Pile<Commande> past, future;
+    private Stack<Commande> past, future;
     private Jeu game;
 
     public Historique(Jeu game) {
-        past = new Pile<>();
-        future = new Pile<>();
+        past = new Stack<>();
+        future = new Stack<>();
         this.game = game;
     }
 
     public void store(Commande cmd) {
         if (cmd == null) return;
-        past.insert(cmd);
-        future = new Pile<>();
+        past.push(cmd);
+        future = new Stack<>();
     }
 
     public boolean canUndo() {
@@ -27,14 +27,14 @@ public class Historique {
     }
 
     public void undo() {
-        Commande cmd = past.extract();
+        Commande cmd = past.pop();
         cmd.unexecute(game);
-        future.insert(cmd);
+        future.push(cmd);
     }
 
     public void redo() {
-        Commande cmd = future.extract();
+        Commande cmd = future.pop();
         cmd.execute(game);
-        past.insert(cmd);
+        past.push(cmd);
     }
 }
