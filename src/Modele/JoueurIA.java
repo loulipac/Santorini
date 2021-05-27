@@ -33,7 +33,6 @@ public class JoueurIA extends Joueur {
     @Override
     public void joue() {
         Point jeu_ia = ia.joue();
-        System.out.println("IA joue : " + jeu_ia);
         jeu.jouer(jeu_ia);
         jeu.MAJObservateur();
         if(jeu.getJoueur_en_cours() != num_joueur) timer.stop();

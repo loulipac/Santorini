@@ -119,16 +119,19 @@ public class Jeu {
 
 
     private void joueSelection(Point position) {
-        System.out.println("Choix du batisseur.");
         batisseur_en_cours = choisirBatisseur(position);
         situation = batisseur_en_cours == null ? SELECTION : DEPLACEMENT;
     }
 
     private void joueDeplacement(Point position) {
-        System.out.println("Déplacement du batisseur.");
         Point prevPos = batisseur_en_cours;
         if (avancer(position, batisseur_en_cours)) {
             ArrayList<Point> batisseurs_en_cours = getJoueurType_en_cours().getBatisseurs();
+            System.out.println(
+                    "BATISSEURS\n"+
+                    "Liste : " + batisseurs_en_cours + "\n" +
+                    "prevPost : " + prevPos + "\n" +
+                    "FIN BATISSEURS");
             batisseurs_en_cours.set(batisseurs_en_cours.indexOf(prevPos), position);
 
             cmd = new CoupDeplacer(joueur_en_cours, prevPos, batisseur_en_cours);
@@ -138,7 +141,6 @@ public class Jeu {
     }
 
     private void joueConstruction(Point position) {
-        System.out.println("Construction.");
         if (!jeu_fini && construire(position, batisseur_en_cours)) {
             construction_son.joueSon(false);
             cmd = new CoupConstruire(joueur_en_cours, position, batisseur_en_cours);
@@ -168,7 +170,11 @@ public class Jeu {
      * @return le batisseur du joueur s'il existe à cette position
      */
     private Point choisirBatisseur(Point position) {
-        return plateau.estBatisseur(position, joueur_en_cours) ? position : null;
+        int index = getJoueurType_en_cours().getBatisseurs().indexOf(position);
+        if(index == -1) return null;
+        return getJoueurType_en_cours().getBatisseurs().get(index);
+        //return plateau.estBatisseur(position, joueur_en_cours) ? position : null;
+
     }
 
     /**
