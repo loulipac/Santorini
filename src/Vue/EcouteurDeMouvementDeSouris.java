@@ -89,7 +89,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
-            Point position = new Point(pos_x, pos_y);
+            Point position = new Point(pos_y, pos_x);
             if(pos_x < 5 && pos_y < 5) {
                 if (j.getSituation() == DEPLACEMENT) {
                     if (jg.getJeu().estAtteignable(position)) {

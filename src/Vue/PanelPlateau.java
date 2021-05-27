@@ -26,7 +26,7 @@ public class PanelPlateau extends JPanel implements Observer {
     Font lilly_belle;
     JLabel jt;
     Dimension taille_fenetre;
-    Image colonne_rouge, colonne_bleu, arriere_plan;
+    Image colonne_rouge, colonne_bleu, arriere_plan, colonne_fin;
     ParametrePanel pp;
 
     /**
@@ -49,6 +49,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
         colonne_rouge = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
         colonne_bleu = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
+        colonne_fin = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_berger.png");
         arriere_plan = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
     }
 
@@ -72,8 +73,8 @@ public class PanelPlateau extends JPanel implements Observer {
         game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
         game.setMaximumSize(taille_fenetre);
 
-        TopPanel tp = new TopPanel(0.25f);
-        JGamePanel jgame = new JGamePanel(0.75f);
+        TopPanel tp = new TopPanel(0.20f);
+        JGamePanel jgame = new JGamePanel(0.80f);
         game.add(tp);
         game.add(jgame);
 
@@ -118,8 +119,12 @@ public class PanelPlateau extends JPanel implements Observer {
          */
         public JGamePanel(float _taille_h) {
             this.taille_h = _taille_h - 0.05f;
+            setLayout(new GridBagLayout());
 
-            setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+            JPanel container = new JPanel();
+
+            container.setLayout(new BoxLayout(container, BoxLayout.LINE_AXIS));
+            container.setOpaque(false);
             setOpaque(false);
             setPreferredSize(new Dimension((int) (taille_fenetre.width), (int) (taille_fenetre.height * taille_h)));
 
@@ -180,25 +185,26 @@ public class PanelPlateau extends JPanel implements Observer {
 
             taille_margin = taille / 4;
 
-            addMargin();
-            add(parametres);
-            addMargin();
-            add(jg);
-            addMargin();
-            add(histo_bouton);
-            addMargin();
+            addMargin(container);
+            container.add(parametres);
+            addMargin(container);
+            container.add(jg);
+            addMargin(container);
+            container.add(histo_bouton);
+            addMargin(container);
+            add(container);
         }
 
         /**
          * Crée un JPanel servant de marge.
          */
-        private void addMargin() {
+        private void addMargin(JPanel c) {
             JPanel j = new JPanel();
             j.setOpaque(false);
             Dimension size = new Dimension(taille_margin, (int) (taille_fenetre.height * taille_h));
             j.setPreferredSize(size);
             j.setMaximumSize(size);
-            add(j);
+            c.add(j);
         }
     }
 
@@ -378,15 +384,20 @@ public class PanelPlateau extends JPanel implements Observer {
                     getHeight(),
                     this
             );
+            Image colonne = null;
+            if(jeu.estJeufini()) {
+                colonne = colonne_fin;
+            } else {
+                colonne = (jeu.getJoueur_en_cours() == JOUEUR1 ? colonne_bleu : colonne_rouge);
+            }
 
-            Image colonne = (jeu.getJoueur_en_cours() == JOUEUR1 ? colonne_bleu : colonne_rouge);
             // float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre
 
             g2d.drawImage(
                     colonne,
                     0,
                     0,
-                    getWidth(), (int) (getHeight() * 0.25),
+                    getWidth(), (int) (getHeight() * 0.20),
                     this
             );
 
@@ -394,15 +405,6 @@ public class PanelPlateau extends JPanel implements Observer {
             e.printStackTrace();
             System.out.println("Erreur image de fond: " + e.getMessage());
         }
-    }
-
-    /**
-     * Affiche le menu paramètre.
-     *
-     * @param e
-     */
-    public void actionBoutonParametres(ActionEvent e) {
-        pp.setVisible(true);
     }
 
     public void actionUndo(ActionEvent e) {
@@ -415,18 +417,21 @@ public class PanelPlateau extends JPanel implements Observer {
         jg.repaint();
     }
 
+    private void changeVictory() {
+        String annonce_tour_joueur = jeu.getJoueur_en_cours() == JOUEUR1 ? "Joueur 1 gagne" : "Joueur 2 gagne";
+        jt.setText(annonce_tour_joueur);
+    }
+
     /**
      * Modifie le texte qui affiche quel joueur doit jouer.
      */
     @Override
     public void miseAjour() {
-        String annonce_tour_joueur;
-        if (jeu.estJeufini())
-            annonce_tour_joueur = jeu.getJoueur_en_cours() == JOUEUR1 ? "Joueur 1 gagne" : "Joueur 2 gagne";
-        else {
-            annonce_tour_joueur = jeu.getJoueur_en_cours() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2";
+        if (jeu.estJeufini()) {
+            changeVictory();
+        } else {
+            jt.setText(jeu.getJoueur_en_cours() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
         }
-        jt.setText(annonce_tour_joueur);
         repaint();
     }
 }
