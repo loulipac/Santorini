@@ -77,12 +77,20 @@ public class Jeu {
     }
 
     private IA setIA(int ia_mode) {
-        return switch (ia_mode) {
-            case 1 -> new IAFacile(this);
-            case 2 -> new IAFacile(this);
-            case 3 -> new IAFacile(this);
-            default -> null;
-        };
+        switch (ia_mode) {
+            case 1 -> {
+                return new IAFacile(this);
+            }
+            case 2 -> {
+                return new IANormale(this);
+            }
+            case 3 -> {
+                return new IADifficile(this);
+            }
+            default -> {
+                return null;
+            }
+        }
     }
 
     /**
