@@ -3,6 +3,7 @@ package Vue;
 import static Modele.Constante.*;
 
 import Modele.Jeu;
+import Modele.Joueur;
 
 import static Modele.Constante.*;
 
@@ -15,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Classe générant la fenêtre de jeu.
@@ -27,8 +29,8 @@ public class PanelPlateau extends JPanel implements Observer {
     JLabel jt;
     Dimension taille_fenetre;
     int ia1_mode, ia2_mode;
-    Image colonne_rouge, colonne_bleu, arriere_plan;
     JButton on_off_ia;
+    Image colonne_rouge, colonne_bleu, arriere_plan, colonne_fin;
     ParametrePanel pp;
 
     /**
@@ -53,6 +55,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
         colonne_rouge = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
         colonne_bleu = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
+        colonne_fin = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_berger.png");
         arriere_plan = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
     }
 
@@ -76,8 +79,8 @@ public class PanelPlateau extends JPanel implements Observer {
         game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
         game.setMaximumSize(taille_fenetre);
 
-        TopPanel tp = new TopPanel(0.25f);
-        JGamePanel jgame = new JGamePanel(0.75f);
+        TopPanel tp = new TopPanel(0.20f);
+        JGamePanel jgame = new JGamePanel(0.80f);
         game.add(tp);
         game.add(jgame);
 
@@ -112,6 +115,9 @@ public class PanelPlateau extends JPanel implements Observer {
     public class JGamePanel extends JPanel {
         int taille_margin;
         float taille_h;
+        JButton acceleration;
+        ArrayList<Integer> niveauAcceleration;
+        int index_acceleration;
 
         /**
          * Constructeur pour JGamePanel. Rajoute des components au JPanel.
@@ -120,8 +126,12 @@ public class PanelPlateau extends JPanel implements Observer {
          */
         public JGamePanel(float _taille_h) {
             this.taille_h = _taille_h - 0.05f;
+            setLayout(new GridBagLayout());
 
-            setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+            JPanel container = new JPanel();
+
+            container.setLayout(new BoxLayout(container, BoxLayout.LINE_AXIS));
+            container.setOpaque(false);
             setOpaque(false);
             setPreferredSize(new Dimension((int) (taille_fenetre.width), (int) (taille_fenetre.height * taille_h)));
 
@@ -138,7 +148,8 @@ public class PanelPlateau extends JPanel implements Observer {
                     taille_fenetre.height / 19,
                     taille_fenetre.height / 19
             );
-            bParametres.addActionListener(PanelPlateau.this::actionBoutonParametres);
+
+
             ActionEchap echap = new ActionEchap();
             PanelPlateau.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
             PanelPlateau.this.getActionMap().put("echap", echap);
@@ -167,12 +178,26 @@ public class PanelPlateau extends JPanel implements Observer {
             Bouton histo_annuler = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
             on_off_ia = new JButton("ON");
             Bouton histo_refaire = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
+            index_acceleration = 0;
+            niveauAcceleration = new ArrayList<>();
+            niveauAcceleration.add(1);
+            niveauAcceleration.add(2);
+            niveauAcceleration.add(4);
+            niveauAcceleration.add(8);
+            niveauAcceleration.add(16);
+            niveauAcceleration.add(32);
+            niveauAcceleration.add(64);
+            acceleration = new JButton("x" + niveauAcceleration.get(index_acceleration));
+
+
             histo_annuler.addActionListener(PanelPlateau.this::actionUndo);
             histo_refaire.addActionListener(PanelPlateau.this::actionRedo);
             on_off_ia.addActionListener(PanelPlateau.this::switchOnOffIA);
+            acceleration.addActionListener(this::accelerationIA);
             histo_bouton.add(histo_annuler);
             histo_bouton.add(on_off_ia);
             histo_bouton.add(histo_refaire);
+            histo_bouton.add(acceleration);
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
@@ -192,27 +217,37 @@ public class PanelPlateau extends JPanel implements Observer {
 
             taille_margin = taille / 4;
 
-            addMargin();
-            add(parametres);
-            addMargin();
-            add(jg);
-            addMargin();
-            add(histo_bouton);
-            addMargin();
+            addMargin(container);
+            container.add(parametres);
+            addMargin(container);
+            container.add(jg);
+            addMargin(container);
+            container.add(histo_bouton);
+            addMargin(container);
+            add(container);
         }
 
         /**
          * Crée un JPanel servant de marge.
          */
-        private void addMargin() {
+        private void addMargin(JPanel c) {
             JPanel j = new JPanel();
             j.setOpaque(false);
-            //j.setBorder(new LineBorder(Color.BLUE));
             Dimension size = new Dimension(taille_margin, (int) (taille_fenetre.height * taille_h));
             j.setPreferredSize(size);
             j.setMaximumSize(size);
-            add(j);
+            c.add(j);
         }
+
+        public void accelerationIA(ActionEvent e) {
+            index_acceleration++;
+            if (index_acceleration >= niveauAcceleration.size()) {
+                index_acceleration = 0;
+            }
+            acceleration.setText("x" + niveauAcceleration.get(index_acceleration));
+            jeu.accelererIA(niveauAcceleration.get(index_acceleration));
+        }
+
     }
 
     private class ParametrePanel extends JPanel {
@@ -251,21 +286,24 @@ public class PanelPlateau extends JPanel implements Observer {
         }
 
         public ParametrePanel() {
+            super();
             setOpaque(false);
-            BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
-            setLayout(boxlayout);
+            setLayout(new GridBagLayout());
+            setMaximumSize(taille_fenetre);
 
-
-            JLabel parametres_texte = new JLabel("Paramètres");
-
-            parametres_texte.setForeground(new Color(82, 60, 43));
-            parametres_texte.setFont(lilly_belle);
 
             /* JPanel */
             BackgroundPanel contenu = new BackgroundPanel();
+            contenu.setLayout(new BoxLayout(contenu, BoxLayout.Y_AXIS));
 
             contenu.setAlignmentX(CENTER_ALIGNMENT);
             contenu.setMaximumSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3));
+            contenu.setPreferredSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3));
+
+            JLabel parametres_texte = new JLabel("Paramètres");
+            parametres_texte.setForeground(new Color(82, 60, 43));
+            parametres_texte.setFont(lilly_belle);
+            parametres_texte.setAlignmentX(CENTER_ALIGNMENT);
 
             /* Boutons*/
             bAbandonner = new Bouton(CHEMIN_RESSOURCE + "/bouton/abandonner.png", CHEMIN_RESSOURCE + "/bouton/abandonner_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
@@ -281,6 +319,7 @@ public class PanelPlateau extends JPanel implements Observer {
             bAbandonner.addActionListener(this::actionBoutonAbandonner);
             bReprendre.addActionListener(echap);
             bNouvellePartie.addActionListener(this::actionBoutonNouvelle);
+            bSauvegarder.addActionListener(this::actionBoutonSauvergarder);
 
             /* Adding */
             contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
@@ -304,6 +343,11 @@ public class PanelPlateau extends JPanel implements Observer {
             f2.getPileCarte().show(f2.panelPrincipal, "menu");
         }
 
+        public void actionBoutonSauvergarder(ActionEvent e) {
+            jeu.sauvegarder();
+            pp.setVisible(false);
+        }
+
         public void actionBoutonNouvelle(ActionEvent e) {
             Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
             f2.removePlateau();
@@ -312,28 +356,16 @@ public class PanelPlateau extends JPanel implements Observer {
         }
 
         @Override
-        public void paintComponents(Graphics g) {
+        protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            //Chargement de l"image de fond
-            try {
-                BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
-                g2d.drawImage(
-                        img_colonnes,
-                        0,
-                        0,
-                        (int) (taille_fenetre.width * 0.55),
-                        taille_fenetre.height * 2 / 3,
-                        this
-                );
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Erreur image de fond: " + e.getMessage());
-            }
+            Color transparentColor = new Color(0, 0, 0, 0.4f);
+            g2d.setColor(transparentColor);
+            g2d.fillRect(0, 0, taille_fenetre.width, taille_fenetre.height);
+            g2d.setComposite(AlphaComposite.SrcOver);
         }
+
+
     }
 
     /**
@@ -348,19 +380,22 @@ public class PanelPlateau extends JPanel implements Observer {
         public TopPanel(float taille_h) {
             setOpaque(false);
 
-            BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
-            setLayout(boxlayout);
+            //BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+            //setLayout(boxlayout);
+            setLayout(new GridBagLayout());
 
             Dimension size = new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * taille_h));
             setPreferredSize(size);
             setMaximumSize(size);
+            setMinimumSize(size);
 
-            JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
+            /*JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
             logo.setAlignmentX(CENTER_ALIGNMENT);
-            add(logo);
+            add(logo);*/
 
             jt = new JLabel("C'est au tour du Joueur 1");
             jt.setAlignmentX(CENTER_ALIGNMENT);
+            jt.setAlignmentY(CENTER_ALIGNMENT);
             jt.setOpaque(false);
             jt.setFont(lilly_belle);
             jt.setForeground(Color.WHITE);
@@ -391,15 +426,20 @@ public class PanelPlateau extends JPanel implements Observer {
                     getHeight(),
                     this
             );
+            Image colonne = null;
+            if (jeu.estJeufini()) {
+                colonne = colonne_fin;
+            } else {
+                colonne = (jeu.getJoueur_en_cours() == JOUEUR1 ? colonne_bleu : colonne_rouge);
+            }
 
-            Image colonne = (jeu.getJoueur_en_cours() == JOUEUR1 ? colonne_bleu : colonne_rouge);
             // float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre
 
             g2d.drawImage(
                     colonne,
                     0,
                     0,
-                    getWidth(), (int) (getHeight() * 0.25),
+                    getWidth(), (int) (getHeight() * 0.20),
                     this
             );
 
@@ -407,18 +447,6 @@ public class PanelPlateau extends JPanel implements Observer {
             e.printStackTrace();
             System.out.println("Erreur image de fond: " + e.getMessage());
         }
-    }
-
-    /**
-     * Affiche le menu paramètre.
-     *
-     * @param e
-     * @see PanelParametres
-     */
-    public void actionBoutonParametres(ActionEvent e) {
-        pp.setVisible(true);
-        /*Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getPileCarte().show(f.panelPrincipal, "parametres");*/
     }
 
     public void switchOnOffIA(ActionEvent e) {
@@ -440,18 +468,20 @@ public class PanelPlateau extends JPanel implements Observer {
         jg.repaint();
     }
 
+    private void changeVictory() {
+        jt.setText("Joueur " + (jeu.getGagnant().getNum_joueur() / JOUEUR1) + " gagne");
+    }
+
     /**
      * Modifie le texte qui affiche quel joueur doit jouer.
      */
     @Override
     public void miseAjour() {
-        String annonce_tour_joueur;
-        if (jeu.estJeufini())
-            annonce_tour_joueur = jeu.getJoueur_en_cours() == JOUEUR1 ? "Joueur 1 gagne" : "Joueur 2 gagne";
-        else {
-            annonce_tour_joueur = jeu.getJoueur_en_cours() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2";
+        if (jeu.estJeufini()) {
+            changeVictory();
+        } else {
+            jt.setText(jeu.getJoueur_en_cours() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
         }
-        jt.setText(annonce_tour_joueur);
         repaint();
     }
 }

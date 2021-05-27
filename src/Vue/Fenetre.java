@@ -20,7 +20,6 @@ public class Fenetre extends JFrame {
     PanelOptions options;
     PanelRegles regles;
     PanelPlateau plateau;
-    PanelParametres parametres;
     LecteurSon musique;
 
     public Fenetre() {
@@ -35,14 +34,12 @@ public class Fenetre extends JFrame {
         options = new PanelOptions(getSize().width, getSize().height);
         regles = new PanelRegles(getSize().width, getSize().height);
         //plateau = new PanelPlateau(getSize().width, getSize().height);
-        parametres = new PanelParametres(getSize().width, getSize().height);
         musique = new LecteurSon("musiqueBGtest.wav");
 
         panelPrincipal.add(menu, "menu");
         panelPrincipal.add(options, "options");
         panelPrincipal.add(regles, "regles");
         //panelPrincipal.add(plateau, "plateau");
-        panelPrincipal.add(parametres, "parametres");
 
         add(panelPrincipal);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

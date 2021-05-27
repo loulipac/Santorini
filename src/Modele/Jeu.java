@@ -24,8 +24,9 @@ public class Jeu {
     private Observer observateur;
     private boolean jeu_fini;
     private Historique histo;
-
+    private Joueur gagnant;
     private boolean ia_statut;
+    int vitesse_ia;
 
     Joueur j1, j2;
 
@@ -37,6 +38,7 @@ public class Jeu {
      * @param o observateur
      */
     public Jeu(int l, int c, Observer o, int ia1_mode, int ia2_mode) {
+        vitesse_ia = 1;
         ia_statut = true;
         situation = PLACEMENT;
         joueur_en_cours = JOUEUR1;
@@ -47,13 +49,14 @@ public class Jeu {
         observateur = o;
         jeu_fini = false;
         histo = new Historique(this);
+        gagnant = null;
 
         if (ia2_mode != 0) {
-            j1 = new JoueurIA(this, JOUEUR1, setIA(ia1_mode));
-            j2 = new JoueurIA(this, JOUEUR2, setIA(ia2_mode));
+            j1 = new JoueurIA(this, JOUEUR1, setIA(ia1_mode), vitesse_ia);
+            j2 = new JoueurIA(this, JOUEUR2, setIA(ia2_mode), vitesse_ia);
         } else if (ia1_mode != 0) {
             j1 = new JoueurHumain(this, JOUEUR1);
-            j2 = new JoueurIA(this, JOUEUR2, setIA(ia1_mode));
+            j2 = new JoueurIA(this, JOUEUR2, setIA(ia1_mode), vitesse_ia);
         } else {
             j1 = new JoueurHumain(this, JOUEUR1);
             j2 = new JoueurHumain(this, JOUEUR2);
@@ -240,9 +243,24 @@ public class Jeu {
     public void victoireJoueur() {
         if (batisseur_en_cours != null && plateau.getTypeBatiments(batisseur_en_cours) == Plateau.TOIT) {
             System.out.println("cest fini");
+            gagnant = getJoueurType_en_cours();
             jeu_fini = true;
             observateur.miseAjour();
         }
+    }
+
+    public void accelererIA(double index_acceleration) {
+        vitesse_ia = (int) index_acceleration;
+        if (j1.getClass() == JoueurIA.class) {
+            ((JoueurIA) j1).setVitesseIA(vitesse_ia);
+        }
+        if (j2.getClass() == JoueurIA.class) {
+            ((JoueurIA) j2).setVitesseIA(vitesse_ia);
+        }
+    }
+
+    public void sauvegarder() {
+        System.out.println("Sauvegarde...");
     }
 
     public void undo() {
@@ -308,6 +326,10 @@ public class Jeu {
         if (getJoueurType_en_cours().getClass() == JoueurIA.class) {
             ((JoueurIA) getJoueurType_en_cours()).timerIaSet(ia_statut);
         }
+    }
+
+    public Joueur getGagnant() {
+        return gagnant;
     }
 
     public ArrayList<Point> getBatisseurs(int joueur) {
