@@ -46,29 +46,28 @@ public class IADifficile implements IA {
                         jouer(jeu, batisseur, deplacement, construction);
                         value = Math.max(value, alphabeta(jeu, depth - 1, a, b, (maximizingPlayer % 16) + 8));
                         dejouer(jeu);
+                        if(b <= value) return value;
                         if(value >= a) {
                             coup = new Coup(batisseur, deplacement, construction);
-                            a = value;
                         }
-                        if(b <= value) return value;
+                        a = Math.max(a, value);
                     }
                 }
             }
             return value;
         } else {
             value = Float.POSITIVE_INFINITY;
-            ArrayList<Point> batisseur_copy = new ArrayList<>(jeu.getBatisseurs(maximizingPlayer));
-            for (Point batisseur : batisseur_copy) {
+            for (Point batisseur : jeu.getBatisseurs(maximizingPlayer)) {
                 for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
                     for (Point construction : plateau.getConstructionsPossible(deplacement)) {
                         jouer(jeu, batisseur, deplacement, construction);
                         value = Math.min(value, alphabeta(jeu, depth - 1, a, b, (maximizingPlayer % 16) + 8));
                         dejouer(jeu);
+                        if(a >= value) return value;
                         if(value <= b) {
                             coup = new Coup(batisseur, deplacement, construction);
-                            b = value;
                         }
-                        if(a >= value) return value;
+                        b = Math.min(b, value);
                     }
                 }
             }
@@ -82,16 +81,11 @@ public class IADifficile implements IA {
      */
     private void jouer(Jeu _jeu, Point batisseur, Point deplacement, Point construire) {
         // Selection
-        System.out.println("Début tour");
-        System.out.println(DEPLACEMENT + " == " + _jeu.getSituation());
         _jeu.jouer(batisseur);
         // Déplacement
-        System.out.println(DEPLACEMENT + " == " + _jeu.getSituation());
         _jeu.jouer(deplacement);
         // Construction
-        System.out.println(CONSTRUCTION + " == " + _jeu.getSituation());
         _jeu.jouer(construire);
-        System.out.println("Fin tour");
     }
 
     /**
@@ -235,6 +229,7 @@ public class IADifficile implements IA {
                     random.nextInt(lignes)
             );
         } while (!jeu.getPlateau().estLibre(case_alea));
+        System.out.println("Batisseur ajouté : (" + case_alea.x + ", " + case_alea.y + ")");
         return case_alea;
     }
 }
