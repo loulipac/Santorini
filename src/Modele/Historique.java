@@ -44,7 +44,7 @@ public class Historique {
         past.push(cmd);
     }
 
-    public void save() {
+    public String save() {
         try {
             String pastStr = past.toString();
             pastStr = pastStr.substring(1, pastStr.length() - 1);
@@ -55,12 +55,15 @@ public class Historique {
             futureStr = futureStr.substring(1, futureStr.length() - 1);
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-            FileWriter file = new FileWriter(SAVES_PATH + "save_" + formatter.format(new Date()) + ".sav");
+            String filename = "save_" + formatter.format(new Date()) + ".sav";
+            FileWriter file = new FileWriter(SAVES_PATH + filename);
             file.write(pastStr + ", " + futureStr + "\n" + future.size());
             file.close();
+            return filename;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     public void load(String filename) {
@@ -80,5 +83,14 @@ public class Historique {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Historique)) return false;
+
+        Historique h = (Historique) o;
+
+        return past.equals(h.past) && future.equals(h.future);
     }
 }
