@@ -26,6 +26,8 @@ public class PanelPlateau extends JPanel implements Observer {
     Font lilly_belle;
     JLabel jt;
     Dimension taille_fenetre;
+    int ia1_mode, ia2_mode;
+    JButton on_off_ia;
     Image colonne_rouge, colonne_bleu, arriere_plan, colonne_fin;
     ParametrePanel pp;
 
@@ -35,8 +37,10 @@ public class PanelPlateau extends JPanel implements Observer {
      * @param _taille_fenetre
      * @see PanelPlateau#initialiserPanel()
      */
-    public PanelPlateau(Dimension _taille_fenetre) {
+    public PanelPlateau(Dimension _taille_fenetre, int ia1_mode, int ia2_mode) {
         this.taille_fenetre = _taille_fenetre;
+        this.ia1_mode = ia1_mode;
+        this.ia2_mode = ia2_mode;
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
@@ -96,8 +100,6 @@ public class PanelPlateau extends JPanel implements Observer {
         public void actionPerformed(ActionEvent e) {
             if (pp.isVisible()) pp.setVisible(false);
             else pp.setVisible(true);
-            /*Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(PanelPlateau.this);
-            f.getPileCarte().show(f.panelPrincipal, "parametres");*/
         }
     }
 
@@ -135,24 +137,31 @@ public class PanelPlateau extends JPanel implements Observer {
             parametres.setPreferredSize(size);
             parametres.setMaximumSize(size);
 
-
-            //parametres.setBorder(new LineBorder(Color.GREEN));
             Bouton bParametres = new Bouton(
                     CHEMIN_RESSOURCE + "/bouton/parametres.png",
                     CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
                     taille_fenetre.height / 19,
                     taille_fenetre.height / 19
             );
+            bParametres.addActionListener(PanelPlateau.this::actionBoutonParametres);
             ActionEchap echap = new ActionEchap();
             PanelPlateau.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
             PanelPlateau.this.getActionMap().put("echap", echap);
 
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
-
-            jeu = new Jeu(5, 5, PanelPlateau.this);
-            jg = new JeuGraphique(jeu);
-            jg.addMouseListener(new EcouteurDeSouris(jg));
+            if (ia2_mode != 0) {
+                jeu = new Jeu(5, 5, PanelPlateau.this, ia1_mode, ia2_mode);
+                jg = new JeuGraphique(jeu);
+            } else if (ia1_mode != 0) {
+                jeu = new Jeu(5, 5, PanelPlateau.this, ia1_mode, 0);
+                jg = new JeuGraphique(jeu);
+                jg.addMouseListener(new EcouteurDeSouris(jg, jeu));
+            } else {
+                jeu = new Jeu(5, 5, PanelPlateau.this, 0, 0);
+                jg = new JeuGraphique(jeu);
+                jg.addMouseListener(new EcouteurDeSouris(jg, jeu));
+            }
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 
             JPanel histo_bouton = new JPanel();
@@ -161,10 +170,13 @@ public class PanelPlateau extends JPanel implements Observer {
             histo_bouton.setMaximumSize(size);
 
             Bouton histo_annuler = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
+            on_off_ia = new JButton("ON");
             Bouton histo_refaire = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
             histo_annuler.addActionListener(PanelPlateau.this::actionUndo);
             histo_refaire.addActionListener(PanelPlateau.this::actionRedo);
+            on_off_ia.addActionListener(PanelPlateau.this::switchOnOffIA);
             histo_bouton.add(histo_annuler);
+            histo_bouton.add(on_off_ia);
             histo_bouton.add(histo_refaire);
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
@@ -309,7 +321,7 @@ public class PanelPlateau extends JPanel implements Observer {
         public void actionBoutonNouvelle(ActionEvent e) {
             Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
             f2.removePlateau();
-            f2.setPlateau(new PanelPlateau(taille_fenetre));
+            f2.setPlateau(new PanelPlateau(taille_fenetre, ia1_mode, ia2_mode));
             f2.getPileCarte().show(f2.panelPrincipal, "plateau");
         }
 

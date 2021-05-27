@@ -1,18 +1,19 @@
 package Vue;
 
-import static Modele.Constante.*;
+import Modele.Jeu;
+import Modele.Joueur;
+import Modele.JoueurIA;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 
 /**
  * Classe Listener de souris pour effectuer les actions sur la grille de jeu.
  */
 public class EcouteurDeSouris extends MouseAdapter {
     JeuGraphique jg;
+    Jeu jeu;
     int largeur_plateau, hauteur_plateau;
 
     /**
@@ -21,8 +22,9 @@ public class EcouteurDeSouris extends MouseAdapter {
      * @param jg
      * @see JeuGraphique
      */
-    public EcouteurDeSouris(JeuGraphique jg) {
+    public EcouteurDeSouris(JeuGraphique jg, Jeu _jeu) {
         this.jg = jg;
+        jeu = _jeu;
     }
 
     /**
@@ -33,14 +35,18 @@ public class EcouteurDeSouris extends MouseAdapter {
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        this.largeur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getColonnes();
-        this.hauteur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getLignes();
-        if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
-            jg.getJeu().joueurJoue(new Point(
-                    e.getX() / jg.getTailleCase(),
-                    e.getY() / jg.getTailleCase()
-            ));
-            jg.repaint();
+        Joueur joueur_en_cours = jeu.getJoueurType_en_cours();
+        if(joueur_en_cours.getClass() != JoueurIA.class) {
+            this.largeur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getColonnes();
+            this.hauteur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getLignes();
+            if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
+                joueur_en_cours.joue(new Point(
+                        e.getY() / jg.getTailleCase(),
+                        e.getX() / jg.getTailleCase()
+                ));
+                jg.repaint();
+            }
         }
+
     }
 }

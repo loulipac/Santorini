@@ -4,6 +4,7 @@ import Vue.Observer;
 import Vue.LecteurSon;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 import static Modele.Constante.*;
 
@@ -24,6 +25,8 @@ public class Jeu {
     private boolean jeu_fini;
     private Historique histo;
 
+    private boolean ia_statut;
+
     Joueur j1, j2;
 
     /**
@@ -33,10 +36,8 @@ public class Jeu {
      * @param c nombre de colonne
      * @param o observateur
      */
-    public Jeu(int l, int c, Observer o) {
-        j1 = new JoueurHumain(this, JOUEUR1);
-        j2 = new JoueurHumain(this, JOUEUR2);
-
+    public Jeu(int l, int c, Observer o, int ia1_mode, int ia2_mode) {
+        ia_statut = true;
         situation = PLACEMENT;
         joueur_en_cours = JOUEUR1;
         plateau = new Plateau(l, c);
@@ -46,16 +47,43 @@ public class Jeu {
         observateur = o;
         jeu_fini = false;
         histo = new Historique(this);
+
+        if (ia2_mode != 0) {
+            j1 = new JoueurIA(this, JOUEUR1, setIA(ia1_mode));
+            j2 = new JoueurIA(this, JOUEUR2, setIA(ia2_mode));
+        } else if (ia1_mode != 0) {
+            j1 = new JoueurHumain(this, JOUEUR1);
+            j2 = new JoueurIA(this, JOUEUR2, setIA(ia1_mode));
+        } else {
+            j1 = new JoueurHumain(this, JOUEUR1);
+            j2 = new JoueurHumain(this, JOUEUR2);
+        }
+        iaJoue();
+    }
+
+    private IA setIA(int ia_mode) {
+        switch (ia_mode) {
+            case 1 -> {
+                return new IAFacile(this);
+            }
+            case 2 -> {
+                return new IAFacile(this);
+            }
+            case 3 -> {
+                return new IAFacile(this);
+            }
+            default -> {
+                return null;
+            }
+        }
     }
 
     Commande cmd;
 
     /**
      * Effectue des actions selon la situation du jeu parmi placement des batisseurs, selection de batisseur, déplacement des batisseurs et construction des bâtiments.
-     *
      */
     public void jouer(Point position) {
-        position = new Point(position.y, position.x);
         cmd = null;
         switch (situation) {
             case PLACEMENT:
@@ -77,24 +105,16 @@ public class Jeu {
         histo.store(cmd);
     }
 
-    public void joueurJoue(Point position) {
-        if(joueur_en_cours == j1.getNum_joueur()) {
-            j1.joue(position);
-        } else if(joueur_en_cours == j2.getNum_joueur()) {
-            j2.joue(position);
-        } else {
-            System.err.println("Aucun joueur ne dois jouer.");
-        }
-    }
-
     private void jouePlacement(Point position) {
         if (plateau.estLibre(position)) {
             cmd = new CoupDeplacer(joueur_en_cours, null, position);
             plateau.ajouterJoueur(position, joueur_en_cours);
+            getJoueurType_en_cours().addBatisseur(position);
             nombre_batisseurs++;
             checkBuilderNumber();
         }
     }
+
 
     private void joueSelection(Point position) {
         System.out.println("Choix du batisseur.");
@@ -106,6 +126,9 @@ public class Jeu {
         System.out.println("Déplacement du batisseur.");
         Point prevPos = batisseur_en_cours;
         if (avancer(position, batisseur_en_cours)) {
+            ArrayList<Point> batisseurs_en_cours = getJoueurType_en_cours().getBatisseurs();
+            batisseurs_en_cours.set(batisseurs_en_cours.indexOf(prevPos), position);
+
             cmd = new CoupDeplacer(joueur_en_cours, prevPos, batisseur_en_cours);
             situation = CONSTRUCTION;
         }
@@ -119,6 +142,12 @@ public class Jeu {
             cmd = new CoupConstruire(joueur_en_cours, position, batisseur_en_cours);
             finTour();
             situation = SELECTION;
+        }
+    }
+
+    public void iaJoue() {
+        if (getJoueurType_en_cours().getClass() == JoueurIA.class) {
+            ((JoueurIA) getJoueurType_en_cours()).timerIaSet(ia_statut);
         }
     }
 
@@ -169,6 +198,7 @@ public class Jeu {
         switchPlayer();
         batisseur_en_cours = null;
         MAJObservateur();
+        iaJoue();
     }
 
     /**
@@ -247,6 +277,16 @@ public class Jeu {
         return joueur_en_cours;
     }
 
+    public Joueur getJoueurType_en_cours() {
+        if (joueur_en_cours == j1.getNum_joueur()) {
+            return j1;
+        } else if (joueur_en_cours == j2.getNum_joueur()) {
+            return j2;
+        } else {
+            return null;
+        }
+    }
+
     public int getNombre_batisseurs() {
         return nombre_batisseurs;
     }
@@ -265,5 +305,20 @@ public class Jeu {
 
     public void setJeu_fini(boolean value) {
         jeu_fini = value;
+    }
+
+    public void iaSwitch() {
+        this.ia_statut = !ia_statut;
+        if (getJoueurType_en_cours().getClass() == JoueurIA.class) {
+            ((JoueurIA) getJoueurType_en_cours()).timerIaSet(ia_statut);
+        }
+    }
+
+    public ArrayList<Point> getBatisseurs(int joueur) {
+        return getJoueurType_en_cours().getBatisseurs();
+    }
+
+    public boolean getIa_statut() {
+        return ia_statut;
     }
 }
