@@ -29,4 +29,10 @@ public class CoupConstruire extends Commande {
         game.setBatisseur_en_cours(selected_builder);
         game.MAJObservateur();
     }
+
+    @Override
+    public String toString() {
+        String str = position.x + " " + position.y;
+        return str;
+    }
 }

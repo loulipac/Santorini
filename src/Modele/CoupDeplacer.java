@@ -46,4 +46,10 @@ public class CoupDeplacer extends Commande {
             game.MAJObservateur();
         }
     }
+
+    @Override
+    public String toString() {
+        String str = positions[0].x + " " + positions[0].y;
+        return str;
+    }
 }

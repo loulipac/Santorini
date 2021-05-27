@@ -37,8 +37,8 @@ public class EcouteurDeSouris extends MouseAdapter {
         this.hauteur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getLignes();
         if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
             jg.getJeu().joueurJoue(new Point(
-                    e.getX() / jg.getTailleCase(),
-                    e.getY() / jg.getTailleCase()
+                    e.getY() / jg.getTailleCase(),
+                    e.getX() / jg.getTailleCase()
             ));
             jg.repaint();
         }

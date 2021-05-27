@@ -55,7 +55,6 @@ public class Jeu {
      *
      */
     public void jouer(Point position) {
-        position = new Point(position.y, position.x);
         cmd = null;
         switch (situation) {
             case PLACEMENT:
@@ -216,7 +215,7 @@ public class Jeu {
     }
 
     public void sauvegarder() {
-        System.out.println("Sauvegarde...");
+        histo.save();
     }
 
     public void undo() {
