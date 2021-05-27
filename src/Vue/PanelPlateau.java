@@ -143,7 +143,8 @@ public class PanelPlateau extends JPanel implements Observer {
                     taille_fenetre.height / 19,
                     taille_fenetre.height / 19
             );
-            bParametres.addActionListener(PanelPlateau.this::actionBoutonParametres);
+
+
             ActionEchap echap = new ActionEchap();
             PanelPlateau.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
             PanelPlateau.this.getActionMap().put("echap", echap);
@@ -416,6 +417,15 @@ public class PanelPlateau extends JPanel implements Observer {
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Erreur image de fond: " + e.getMessage());
+        }
+    }
+
+    public void switchOnOffIA(ActionEvent e) {
+        jeu.iaSwitch();
+        if (jeu.getIa_statut()) {
+            on_off_ia.setText("ON");
+        } else {
+            on_off_ia.setText("OFF");
         }
     }
 
