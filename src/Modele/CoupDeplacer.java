@@ -3,6 +3,7 @@ package Modele;
 import static Modele.Constante.*;
 
 import java.awt.Point;
+import java.util.Objects;
 
 public class CoupDeplacer extends Commande {
     private Point[] positions;
@@ -54,5 +55,16 @@ public class CoupDeplacer extends Commande {
         if (positions[1] != null) str += positions[1].x + " " + positions[1].y + ", ";
         str += positions[0].x + " " + positions[0].y;
         return str;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof CoupDeplacer)) return false;
+
+        CoupDeplacer c = (CoupDeplacer) o;
+
+        return player == c.player &&
+                positions[0].equals(c.positions[0]) &&
+                Objects.equals(positions[1], c.positions[1]);
     }
 }
