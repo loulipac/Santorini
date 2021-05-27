@@ -36,4 +36,15 @@ public class CoupConstruire extends Commande {
         String str = position.x + " " + position.y;
         return str;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof CoupConstruire)) return false;
+
+        CoupConstruire c = (CoupConstruire) o;
+
+        return player == c.player &&
+                position.equals(c.position) &&
+                builder.equals(c.builder);
+    }
 }

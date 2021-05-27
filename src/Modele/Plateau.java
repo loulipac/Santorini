@@ -290,7 +290,7 @@ public class Plateau {
         cases[position.x][position.y] = valeur;
     }
 
-    private int getCase(Point position) {
+    public int getCase(Point position) {
         return cases[position.x][position.y];
     }
 
@@ -334,5 +334,21 @@ public class Plateau {
             value += "\n";
         }
         return value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Plateau)) return false;
+
+        Plateau pl = (Plateau) o;
+
+        for (int i = 0; i < lignes; i++) {
+            for (int j = 0; j < colonnes; j++) {
+                Point p = new Point(i, j);
+                if (this.getCase(p) != pl.getCase(p)) return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -5,6 +5,7 @@ import Vue.LecteurSon;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static Modele.Constante.*;
 
@@ -255,8 +256,8 @@ public class Jeu {
         }
     }
 
-    public void sauvegarder() {
-        histo.save();
+    public String sauvegarder() {
+        return histo.save();
     }
 
     public void charger(String filename) {
@@ -347,5 +348,22 @@ public class Jeu {
 
     public boolean getIa_statut() {
         return ia_statut;
+    }
+
+    public Historique getHistorique() {
+        return histo;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Jeu)) return false;
+
+        Jeu j = (Jeu) o;
+
+        return joueur_en_cours == j.joueur_en_cours &&
+                situation == j.situation &&
+                nombre_batisseurs == j.nombre_batisseurs &&
+                Objects.equals(batisseur_en_cours, j.batisseur_en_cours) &&
+                plateau.equals(j.plateau);
     }
 }
