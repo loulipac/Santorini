@@ -16,6 +16,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Classe générant la fenêtre de jeu.
@@ -114,6 +115,9 @@ public class PanelPlateau extends JPanel implements Observer {
     public class JGamePanel extends JPanel {
         int taille_margin;
         float taille_h;
+        JButton acceleration;
+        ArrayList<Integer> niveauAcceleration;
+        int index_acceleration;
 
         /**
          * Constructeur pour JGamePanel. Rajoute des components au JPanel.
@@ -174,12 +178,26 @@ public class PanelPlateau extends JPanel implements Observer {
             Bouton histo_annuler = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
             on_off_ia = new JButton("ON");
             Bouton histo_refaire = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
+            index_acceleration = 0;
+            niveauAcceleration = new ArrayList<>();
+            niveauAcceleration.add(1);
+            niveauAcceleration.add(2);
+            niveauAcceleration.add(4);
+            niveauAcceleration.add(8);
+            niveauAcceleration.add(16);
+            niveauAcceleration.add(32);
+            niveauAcceleration.add(64);
+            acceleration = new JButton("x" + niveauAcceleration.get(index_acceleration));
+
+
             histo_annuler.addActionListener(PanelPlateau.this::actionUndo);
             histo_refaire.addActionListener(PanelPlateau.this::actionRedo);
             on_off_ia.addActionListener(PanelPlateau.this::switchOnOffIA);
+            acceleration.addActionListener(this::accelerationIA);
             histo_bouton.add(histo_annuler);
             histo_bouton.add(on_off_ia);
             histo_bouton.add(histo_refaire);
+            histo_bouton.add(acceleration);
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
@@ -220,6 +238,16 @@ public class PanelPlateau extends JPanel implements Observer {
             j.setMaximumSize(size);
             c.add(j);
         }
+
+        public void accelerationIA(ActionEvent e) {
+            index_acceleration++;
+            if (index_acceleration >= niveauAcceleration.size()) {
+                index_acceleration = 0;
+            }
+            acceleration.setText("x" + niveauAcceleration.get(index_acceleration));
+            jeu.accelererIA(niveauAcceleration.get(index_acceleration));
+        }
+
     }
 
     private class ParametrePanel extends JPanel {
@@ -399,7 +427,7 @@ public class PanelPlateau extends JPanel implements Observer {
                     this
             );
             Image colonne = null;
-            if(jeu.estJeufini()) {
+            if (jeu.estJeufini()) {
                 colonne = colonne_fin;
             } else {
                 colonne = (jeu.getJoueur_en_cours() == JOUEUR1 ? colonne_bleu : colonne_rouge);
@@ -441,7 +469,7 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     private void changeVictory() {
-        jt.setText("Joueur " + (jeu.getGagnant().getNum_joueur() / JOUEUR1)  + " gagne");
+        jt.setText("Joueur " + (jeu.getGagnant().getNum_joueur() / JOUEUR1) + " gagne");
     }
 
     /**

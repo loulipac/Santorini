@@ -11,18 +11,23 @@ import static Modele.Constante.*;
 public class JoueurIA extends Joueur {
     IA ia;
     Timer timer;
+    final int VITESSE_BASE = 1000;
 
-    public JoueurIA(Jeu _jeu, int _num_joueur, IA _ia) {
+    public JoueurIA(Jeu _jeu, int _num_joueur, IA _ia, int vitesse_ia) {
         super(_jeu, _num_joueur);
         ia = _ia;
 
-        timer = new Timer(500, new ActionListener(){
+        timer = new Timer(VITESSE_BASE / vitesse_ia, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 joue();
             }
         });
         timer.stop();
+    }
+
+    public void setVitesseIA(int new_vitesse) {
+        timer.setDelay(VITESSE_BASE / new_vitesse);
     }
 
     @Override
