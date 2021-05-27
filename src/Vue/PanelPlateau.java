@@ -194,7 +194,6 @@ public class PanelPlateau extends JPanel implements Observer {
         private void addMargin() {
             JPanel j = new JPanel();
             j.setOpaque(false);
-            //j.setBorder(new LineBorder(Color.BLUE));
             Dimension size = new Dimension(taille_margin, (int) (taille_fenetre.height * taille_h));
             j.setPreferredSize(size);
             j.setMaximumSize(size);
@@ -268,6 +267,7 @@ public class PanelPlateau extends JPanel implements Observer {
             bAbandonner.addActionListener(this::actionBoutonAbandonner);
             bReprendre.addActionListener(echap);
             bNouvellePartie.addActionListener(this::actionBoutonNouvelle);
+            bSauvegarder.addActionListener(this::actionBoutonSauvergarder);
 
             /* Adding */
             contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
@@ -289,6 +289,11 @@ public class PanelPlateau extends JPanel implements Observer {
             Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
             f2.removePlateau();
             f2.getPileCarte().show(f2.panelPrincipal, "menu");
+        }
+
+        public void actionBoutonSauvergarder(ActionEvent e) {
+            jeu.sauvegarder();
+            pp.setVisible(false);
         }
 
         public void actionBoutonNouvelle(ActionEvent e) {
@@ -335,23 +340,25 @@ public class PanelPlateau extends JPanel implements Observer {
         public TopPanel(float taille_h) {
             setOpaque(false);
             
-            BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
-            setLayout(boxlayout);
+            //BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
+            //setLayout(boxlayout);
+            setLayout(new GridBagLayout());
 
             Dimension size = new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * taille_h));
             setPreferredSize(size);
             setMaximumSize(size);
+            setMinimumSize(size);
 
-            JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
+            /*JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
             logo.setAlignmentX(CENTER_ALIGNMENT);
-            add(logo);
+            add(logo);*/
 
             jt = new JLabel("C'est au tour du Joueur 1");
             jt.setAlignmentX(CENTER_ALIGNMENT);
+            jt.setAlignmentY(CENTER_ALIGNMENT);
             jt.setOpaque(false);
             jt.setFont(lilly_belle);
             jt.setForeground(Color.WHITE);
-            jt.setBorder(new LineBorder(Color.orange));
             add(jt);
         }
     }
@@ -401,12 +408,9 @@ public class PanelPlateau extends JPanel implements Observer {
      * Affiche le menu paramètre.
      *
      * @param e
-     * @see PanelParametres
      */
     public void actionBoutonParametres(ActionEvent e) {
         pp.setVisible(true);
-        /*Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getPileCarte().show(f.panelPrincipal, "parametres");*/
     }
 
     public void actionUndo(ActionEvent e) {
