@@ -251,13 +251,14 @@ public class PanelPlateau extends JPanel implements Observer {
             BackgroundPanel contenu = new BackgroundPanel();
 
             contenu.setAlignmentX(CENTER_ALIGNMENT);
-            contenu.setMaximumSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2/3));
+            contenu.setMaximumSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 4/5));
 
             /* Boutons*/
             bAbandonner = new Bouton(CHEMIN_RESSOURCE+"/bouton/abandonner.png", CHEMIN_RESSOURCE+"/bouton/abandonner_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
             bNouvellePartie = new Bouton(CHEMIN_RESSOURCE+"/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE+"/bouton/nouvelle_partie_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
             bSauvegarder = new Bouton(CHEMIN_RESSOURCE+"/bouton/sauvegarder.png", CHEMIN_RESSOURCE+"/bouton/sauvegarder_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
             bReprendre = new Bouton(CHEMIN_RESSOURCE+"/bouton/reprendre.png", CHEMIN_RESSOURCE+"/bouton/reprendre_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
+            JButton bCharger = new JButton("CHARGER");
 
             /* Evenements */
             ActionEchap echap = new ActionEchap();
@@ -268,6 +269,7 @@ public class PanelPlateau extends JPanel implements Observer {
             bReprendre.addActionListener(echap);
             bNouvellePartie.addActionListener(this::actionBoutonNouvelle);
             bSauvegarder.addActionListener(this::actionBoutonSauvergarder);
+            bCharger.addActionListener(this::actionCharger);
 
             /* Adding */
             contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
@@ -278,6 +280,8 @@ public class PanelPlateau extends JPanel implements Observer {
             contenu.add(bNouvellePartie);
             contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
             contenu.add(bSauvegarder);
+            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
+            contenu.add(bCharger);
             contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
             contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
             contenu.add(bReprendre);
@@ -302,6 +306,13 @@ public class PanelPlateau extends JPanel implements Observer {
             f2.setPlateau(new PanelPlateau(taille_fenetre));
             f2.getPileCarte().show(f2.panelPrincipal, "plateau");
         }
+
+
+        public void actionCharger(ActionEvent e) {
+            //jeu.charger();
+            pp.setVisible(false);
+        }
+
 
         @Override
         public void paintComponents(Graphics g) {
