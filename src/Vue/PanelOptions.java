@@ -15,7 +15,8 @@ class PanelOptions extends JPanel {
     private Bouton bRetour, bCommencer;
     private LecteurSon son_bouton;
     Font lilly_belle;
-    JRadioButton joueur_joueur, joueur_ia, ia_ia;
+    JRadioButton joueur_joueur, joueur_ia, ia_ia, difficile, facile, normale, facile2, difficile2, normale2;
+
 
     public PanelOptions(int largeur, int hauteur) {
         son_bouton = new LecteurSon("menu_click.wav");
@@ -86,13 +87,13 @@ class PanelOptions extends JPanel {
         ia_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia", largeur / 6, largeur / 30, adversaires_boutons);
 
 
-        JRadioButton facile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile", largeur / 6, largeur / 30, boutons_IA);
-        JRadioButton normale = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale", largeur / 6, largeur / 30, boutons_IA);
-        JRadioButton difficile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/difficile", largeur / 6, largeur / 30, boutons_IA);
+        facile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile", largeur / 6, largeur / 30, boutons_IA);
+        normale = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale", largeur / 6, largeur / 30, boutons_IA);
+        difficile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/difficile", largeur / 6, largeur / 30, boutons_IA);
 
-        JRadioButton facile2 = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile", largeur / 6, largeur / 30, boutons_IA_IA);
-        JRadioButton normale2 = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale", largeur / 6, largeur / 30, boutons_IA_IA);
-        JRadioButton difficile2 = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/difficile", largeur / 6, largeur / 30, boutons_IA_IA);
+        facile2 = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile", largeur / 6, largeur / 30, boutons_IA_IA);
+        normale2 = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale", largeur / 6, largeur / 30, boutons_IA_IA);
+        difficile2 = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/difficile", largeur / 6, largeur / 30, boutons_IA_IA);
 
         bCommencer = new Bouton(CHEMIN_RESSOURCE + "/bouton/commencer_la_partie.png", CHEMIN_RESSOURCE + "/bouton/commencer_la_partie_hover.png", largeur / 4, largeur / 20);
         bRetour = new Bouton(CHEMIN_RESSOURCE + "/bouton/retour.png", CHEMIN_RESSOURCE + "/bouton/retour_hover.png", largeur / 4, largeur / 20);
@@ -217,10 +218,32 @@ class PanelOptions extends JPanel {
             plateau = new PanelPlateau(getSize(), 0, 0);
             System.out.println("IA non choisi");
         } else if(joueur_ia.isSelected()) {
-            plateau = new PanelPlateau(getSize(), 1, 0);
+            if(facile.isSelected()) {
+                plateau = new PanelPlateau(getSize(), 1, 0);
+            } else if(normale.isSelected()) {
+                plateau = new PanelPlateau(getSize(), 2, 0);
+            } else if(difficile.isSelected()) {
+                plateau = new PanelPlateau(getSize(), 3, 0);
+            }
             System.out.println("IA choisi");
         } else if(ia_ia.isSelected()) {
-            plateau = new PanelPlateau(getSize(), 1, 1);
+            int ia_mode1 = 0, ia_mode2 = 0;
+            if(facile.isSelected()) {
+                ia_mode1 = 1;
+            } else if(normale.isSelected()) {
+                ia_mode1 = 2;
+            } else if(difficile.isSelected()) {
+                ia_mode1 = 3;
+            }
+
+            if(facile2.isSelected()) {
+                ia_mode2 = 1;
+            } else if(normale2.isSelected()) {
+                ia_mode2 = 2;
+            } else if(difficile2.isSelected()) {
+                ia_mode2 = 3;
+            }
+            plateau = new PanelPlateau(getSize(), ia_mode1, ia_mode2);
             System.out.println("IA vs IA choisi");
         }
         fenetre.setPlateau(plateau);
