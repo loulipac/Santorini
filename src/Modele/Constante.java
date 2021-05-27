@@ -31,4 +31,13 @@ public class Constante {
     public static final int IA_FACILE = 1;
     public static final int IA_NORMAL = 2;
     public static final int IA_DIFFICILE = 3;
+
+    public static final int VIDE = 0;
+    public static final int RDC = 1;
+    public static final int ETAGE = 2;
+    public static final int TOIT = 3;
+    public static final int COUPOLE = 4;
+
+    final static Point CASE_CENTRALE = new Point(2, 2);
+    final static int POIDS_BASE = 1;
 }
