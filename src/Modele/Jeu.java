@@ -27,6 +27,7 @@ public class Jeu {
     private Joueur gagnant;
     private boolean ia_statut;
     int vitesse_ia;
+    Commande cmd;
 
     Joueur j1, j2;
 
@@ -70,18 +71,16 @@ public class Jeu {
                 return new IAFacile(this);
             }
             case 2 -> {
-                return new IAFacile(this);
+                return new IANormale(this);
             }
             case 3 -> {
-                return new IAFacile(this);
+                return new IADifficile(this);
             }
             default -> {
                 return null;
             }
         }
     }
-
-    Commande cmd;
 
     /**
      * Effectue des actions selon la situation du jeu parmi placement des batisseurs, selection de batisseur, déplacement des batisseurs et construction des bâtiments.
