@@ -3,6 +3,8 @@ import org.junit.jupiter.api.Test;
 
 import Modele.Plateau;
 
+import java.awt.*;
+
 public class TestPlateau {
 
     @Test
@@ -15,11 +17,12 @@ public class TestPlateau {
         Assertions.assertEquals(colonnes, plateau.getColonnes(), "Le nombre de colonnes du plateau devrait être égal à " + colonnes);
         for (int i = 0; i < plateau.getLignes(); i++) {
             for (int j = 0; j < plateau.getColonnes(); j++) {
-                Assertions.assertTrue(plateau.estVide(i, j), "La case (" + i + "," + j +") devrait être vide! (=" + Plateau.VIDE + ")");
-                Assertions.assertFalse(plateau.estRDC(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de RDC!");
-                Assertions.assertFalse(plateau.estEtage(i, j), "La case (" + i + "," + j +") ne devrait pas avoir d'étage!");
-                Assertions.assertFalse(plateau.estToit(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de toit!");
-                Assertions.assertFalse(plateau.estCoupole(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de coupole!");
+                Point p = new Point(i, j);
+                Assertions.assertTrue(plateau.estVide(p), "La case (" + i + "," + j +") devrait être vide! (=" + Plateau.VIDE + ")");
+                Assertions.assertFalse(plateau.estRDC(p), "La case (" + i + "," + j +") ne devrait pas avoir de RDC!");
+                Assertions.assertFalse(plateau.estEtage(p), "La case (" + i + "," + j +") ne devrait pas avoir d'étage!");
+                Assertions.assertFalse(plateau.estToit(p), "La case (" + i + "," + j +") ne devrait pas avoir de toit!");
+                Assertions.assertFalse(plateau.estCoupole(p), "La case (" + i + "," + j +") ne devrait pas avoir de coupole!");
             }
         }
     }
@@ -33,26 +36,25 @@ public class TestPlateau {
         Assertions.assertEquals(lignes, plateau.getLignes(), "Le nombre de lignes du plateau devrait être égal à " + lignes);
         Assertions.assertEquals(colonnes, plateau.getColonnes(), "Le nombre de colonnes du plateau devrait être égal à " + colonnes);
 
-        int ligne_ajout1 = 0;
-        int colonne_ajout1 = 0;
-        plateau.ajouterRDC(ligne_ajout1, colonne_ajout1);
+        Point p1 = new Point(0, 0);
+        plateau.ajouterRDC(p1);
 
-        int ligne_ajout2 = 3;
-        int colonne_ajout2 = 2;
-        plateau.ajouterRDC(ligne_ajout2, colonne_ajout2);
+        Point p2 = new Point(3, 2);
+        plateau.ajouterRDC(p2);
 
         for (int i = 0; i < plateau.getLignes(); i++) {
             for (int j = 0; j < plateau.getColonnes(); j++) {
-                if ((i == ligne_ajout1 && j == colonne_ajout1) || (i == ligne_ajout2 && j == colonne_ajout2)) {
-                    Assertions.assertFalse(plateau.estVide(i, j), "La case (" + i + "," + j +") ne devrait pas être vide! (=" + Plateau.VIDE + ")");
-                    Assertions.assertTrue(plateau.estRDC(i, j), "La case (" + i + "," + j +") devrait avoir un RDC!");
+                Point p = new Point(i, j);
+                if (p.equals(p1) || p.equals(p2)) {
+                    Assertions.assertFalse(plateau.estVide(p), "La case (" + i + "," + j +") ne devrait pas être vide! (=" + Plateau.VIDE + ")");
+                    Assertions.assertTrue(plateau.estRDC(p), "La case (" + i + "," + j +") devrait avoir un RDC!");
                 } else {
-                    Assertions.assertFalse(plateau.estRDC(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de RDC!");
-                    Assertions.assertTrue(plateau.estVide(i, j), "La case (" + i + "," + j +") devrait être vide! (=" + Plateau.VIDE + ")");
+                    Assertions.assertFalse(plateau.estRDC(p), "La case (" + i + "," + j +") ne devrait pas avoir de RDC!");
+                    Assertions.assertTrue(plateau.estVide(p), "La case (" + i + "," + j +") devrait être vide! (=" + Plateau.VIDE + ")");
                 }
-                Assertions.assertFalse(plateau.estEtage(i, j), "La case (" + i + "," + j +") ne devrait pas avoir d'étage!");
-                Assertions.assertFalse(plateau.estToit(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de toit!");
-                Assertions.assertFalse(plateau.estCoupole(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de coupole!");
+                Assertions.assertFalse(plateau.estEtage(p), "La case (" + i + "," + j +") ne devrait pas avoir d'étage!");
+                Assertions.assertFalse(plateau.estToit(p), "La case (" + i + "," + j +") ne devrait pas avoir de toit!");
+                Assertions.assertFalse(plateau.estCoupole(p), "La case (" + i + "," + j +") ne devrait pas avoir de coupole!");
             }
         }
     }
@@ -66,26 +68,25 @@ public class TestPlateau {
         Assertions.assertEquals(lignes, plateau.getLignes(), "Le nombre de lignes du plateau devrait être égal à " + lignes);
         Assertions.assertEquals(colonnes, plateau.getColonnes(), "Le nombre de colonnes du plateau devrait être égal à " + colonnes);
 
-        int ligne_ajout1 = 1;
-        int colonne_ajout1 = 4;
-        plateau.ajouterEtage(ligne_ajout1, colonne_ajout1);
+        Point p1 = new Point(1, 4);
+        plateau.ajouterEtage(p1);
 
-        int ligne_ajout2 = 4;
-        int colonne_ajout2 = 0;
-        plateau.ajouterEtage(ligne_ajout2, colonne_ajout2);
+        Point p2 = new Point(4, 0);
+        plateau.ajouterEtage(p2);
 
         for (int i = 0; i < plateau.getLignes(); i++) {
             for (int j = 0; j < plateau.getColonnes(); j++) {
-                if ((i == ligne_ajout1 && j == colonne_ajout1) || (i == ligne_ajout2 && j == colonne_ajout2)) {
-                    Assertions.assertFalse(plateau.estVide(i, j), "La case (" + i + "," + j +") ne devrait pas être vide! (=" + Plateau.VIDE + ")");
-                    Assertions.assertTrue(plateau.estEtage(i, j), "La case (" + i + "," + j +") devrait avoir un étage!");
+                Point p = new Point(i, j);
+                if (p.equals(p1) || p.equals(p2)) {
+                    Assertions.assertFalse(plateau.estVide(p), "La case (" + i + "," + j +") ne devrait pas être vide! (=" + Plateau.VIDE + ")");
+                    Assertions.assertTrue(plateau.estEtage(p), "La case (" + i + "," + j +") devrait avoir un étage!");
                 } else {
-                    Assertions.assertFalse(plateau.estEtage(i, j), "La case (" + i + "," + j +") ne devrait pas avoir d'étage!");
-                    Assertions.assertTrue(plateau.estVide(i, j), "La case (" + i + "," + j +") devrait être vide! (=" + Plateau.VIDE + ")");
+                    Assertions.assertFalse(plateau.estEtage(p), "La case (" + i + "," + j +") ne devrait pas avoir d'étage!");
+                    Assertions.assertTrue(plateau.estVide(p), "La case (" + i + "," + j +") devrait être vide! (=" + Plateau.VIDE + ")");
                 }
-                Assertions.assertFalse(plateau.estRDC(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de RDC!");
-                Assertions.assertFalse(plateau.estToit(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de toit!");
-                Assertions.assertFalse(plateau.estCoupole(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de coupole!");
+                Assertions.assertFalse(plateau.estRDC(p), "La case (" + i + "," + j +") ne devrait pas avoir de RDC!");
+                Assertions.assertFalse(plateau.estToit(p), "La case (" + i + "," + j +") ne devrait pas avoir de toit!");
+                Assertions.assertFalse(plateau.estCoupole(p), "La case (" + i + "," + j +") ne devrait pas avoir de coupole!");
             }
         }
     }
@@ -99,26 +100,25 @@ public class TestPlateau {
         Assertions.assertEquals(lignes, plateau.getLignes(), "Le nombre de lignes du plateau devrait être égal à " + lignes);
         Assertions.assertEquals(colonnes, plateau.getColonnes(), "Le nombre de colonnes du plateau devrait être égal à " + colonnes);
 
-        int ligne_ajout1 = 4;
-        int colonne_ajout1 = 4;
-        plateau.ajouterToit(ligne_ajout1, colonne_ajout1);
+        Point p1 = new Point(4, 4);
+        plateau.ajouterToit(p1);
 
-        int ligne_ajout2 = 2;
-        int colonne_ajout2 = 0;
-        plateau.ajouterToit(ligne_ajout2, colonne_ajout2);
+        Point p2 = new Point(2, 0);
+        plateau.ajouterToit(p2);
 
         for (int i = 0; i < plateau.getLignes(); i++) {
             for (int j = 0; j < plateau.getColonnes(); j++) {
-                if ((i == ligne_ajout1 && j == colonne_ajout1) || (i == ligne_ajout2 && j == colonne_ajout2)) {
-                    Assertions.assertFalse(plateau.estVide(i, j), "La case (" + i + "," + j +") ne devrait pas être vide! (=" + Plateau.VIDE + ")");
-                    Assertions.assertTrue(plateau.estToit(i, j), "La case (" + i + "," + j +") devrait avoir un toit!");
+                Point p = new Point(i, j);
+                if (p.equals(p1) || p.equals(p2)) {
+                    Assertions.assertFalse(plateau.estVide(p), "La case (" + i + "," + j +") ne devrait pas être vide! (=" + Plateau.VIDE + ")");
+                    Assertions.assertTrue(plateau.estToit(p), "La case (" + i + "," + j +") devrait avoir un toit!");
                 } else {
-                    Assertions.assertFalse(plateau.estToit(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de toit!");
-                    Assertions.assertTrue(plateau.estVide(i, j), "La case (" + i + "," + j +") devrait être vide! (=" + Plateau.VIDE + ")");
+                    Assertions.assertFalse(plateau.estToit(p), "La case (" + i + "," + j +") ne devrait pas avoir de toit!");
+                    Assertions.assertTrue(plateau.estVide(p), "La case (" + i + "," + j +") devrait être vide! (=" + Plateau.VIDE + ")");
                 }
-                Assertions.assertFalse(plateau.estRDC(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de RDC!");
-                Assertions.assertFalse(plateau.estEtage(i, j), "La case (" + i + "," + j +") ne devrait pas avoir d'étage!");
-                Assertions.assertFalse(plateau.estCoupole(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de coupole!");
+                Assertions.assertFalse(plateau.estRDC(p), "La case (" + i + "," + j +") ne devrait pas avoir de RDC!");
+                Assertions.assertFalse(plateau.estEtage(p), "La case (" + i + "," + j +") ne devrait pas avoir d'étage!");
+                Assertions.assertFalse(plateau.estCoupole(p), "La case (" + i + "," + j +") ne devrait pas avoir de coupole!");
             }
         }
     }
@@ -132,26 +132,25 @@ public class TestPlateau {
         Assertions.assertEquals(lignes, plateau.getLignes(), "Le nombre de lignes du plateau devrait être égal à " + lignes);
         Assertions.assertEquals(colonnes, plateau.getColonnes(), "Le nombre de colonnes du plateau devrait être égal à " + colonnes);
 
-        int ligne_ajout1 = 3;
-        int colonne_ajout1 = 1;
-        plateau.ajouterCoupole(ligne_ajout1, colonne_ajout1);
+        Point p1 = new Point(3, 1);
+        plateau.ajouterCoupole(p1);
 
-        int ligne_ajout2 = 0;
-        int colonne_ajout2 = 4;
-        plateau.ajouterCoupole(ligne_ajout2, colonne_ajout2);
+        Point p2 = new Point(0, 4);
+        plateau.ajouterCoupole(p2);
 
         for (int i = 0; i < plateau.getLignes(); i++) {
             for (int j = 0; j < plateau.getColonnes(); j++) {
-                if ((i == ligne_ajout1 && j == colonne_ajout1) || (i == ligne_ajout2 && j == colonne_ajout2)) {
-                    Assertions.assertFalse(plateau.estVide(i, j), "La case (" + i + "," + j +") ne devrait pas être vide! (=" + Plateau.VIDE + ")");
-                    Assertions.assertTrue(plateau.estCoupole(i, j), "La case (" + i + "," + j +") devrait avoir une coupole!");
+                Point p = new Point(i, j);
+                if (p.equals(p1) || p.equals(p2)) {
+                    Assertions.assertFalse(plateau.estVide(p), "La case (" + i + "," + j +") ne devrait pas être vide! (=" + Plateau.VIDE + ")");
+                    Assertions.assertTrue(plateau.estCoupole(p), "La case (" + i + "," + j +") devrait avoir une coupole!");
                 } else {
-                    Assertions.assertFalse(plateau.estCoupole(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de coupole!");
-                    Assertions.assertTrue(plateau.estVide(i, j), "La case (" + i + "," + j +") devrait être vide! (=" + Plateau.VIDE + ")");
+                    Assertions.assertFalse(plateau.estCoupole(p), "La case (" + i + "," + j +") ne devrait pas avoir de coupole!");
+                    Assertions.assertTrue(plateau.estVide(p), "La case (" + i + "," + j +") devrait être vide! (=" + Plateau.VIDE + ")");
                 }
-                Assertions.assertFalse(plateau.estRDC(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de RDC!");
-                Assertions.assertFalse(plateau.estEtage(i, j), "La case (" + i + "," + j +") ne devrait pas avoir d'étage!");
-                Assertions.assertFalse(plateau.estToit(i, j), "La case (" + i + "," + j +") ne devrait pas avoir de toit!");
+                Assertions.assertFalse(plateau.estRDC(p), "La case (" + i + "," + j +") ne devrait pas avoir de RDC!");
+                Assertions.assertFalse(plateau.estEtage(p), "La case (" + i + "," + j +") ne devrait pas avoir d'étage!");
+                Assertions.assertFalse(plateau.estToit(p), "La case (" + i + "," + j +") ne devrait pas avoir de toit!");
             }
         }
     }
