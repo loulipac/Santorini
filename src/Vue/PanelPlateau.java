@@ -9,6 +9,7 @@ import static Modele.Constante.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -309,8 +310,15 @@ public class PanelPlateau extends JPanel implements Observer {
 
 
         public void actionCharger(ActionEvent e) {
-            jeu.charger();
-            pp.setVisible(false);
+            JFileChooser chooser = new JFileChooser(SAVES_PATH);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Sauvegardes", "sav");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(this);
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+                jeu.charger(chooser.getSelectedFile().getName());
+                pp.setVisible(false);
+            }
         }
 
 

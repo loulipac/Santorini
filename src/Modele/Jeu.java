@@ -25,6 +25,7 @@ public class Jeu {
     private Historique histo;
 
     Joueur j1, j2;
+    Commande cmd;
 
     /**
      * Instantie une classe jeu.
@@ -47,8 +48,6 @@ public class Jeu {
         jeu_fini = false;
         histo = new Historique(this);
     }
-
-    Commande cmd;
 
     /**
      * Effectue des actions selon la situation du jeu parmi placement des batisseurs, selection de batisseur, déplacement des batisseurs et construction des bâtiments.
@@ -215,8 +214,17 @@ public class Jeu {
         histo.save();
     }
 
-    public void charger() {
-        histo.load();
+    public void charger(String filename) {
+        RAZ();
+        histo.load(filename);
+    }
+
+    public void RAZ() {
+        plateau.RAZ();
+        situation = PLACEMENT;
+        batisseur_en_cours = null;
+        nombre_batisseurs = 0;
+        joueur_en_cours = JOUEUR1;
     }
 
     public void undo() {

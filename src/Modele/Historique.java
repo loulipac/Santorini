@@ -3,6 +3,7 @@ package Modele;
 import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static Modele.Constante.*;
@@ -53,7 +54,8 @@ public class Historique {
             String futureStr = futureArray.toString();
             futureStr = futureStr.substring(1, futureStr.length() - 1);
 
-            FileWriter file = new FileWriter(SAVES_PATH + "save.txt");
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+            FileWriter file = new FileWriter(SAVES_PATH + "save_" + formatter.format(new Date()) + ".sav");
             file.write(pastStr + ", " + futureStr + "\n" + future.size());
             file.close();
         } catch (Exception e) {
@@ -61,22 +63,20 @@ public class Historique {
         }
     }
 
-    public void load() {
+    public void load(String filename) {
         try {
-            File file = new File(SAVES_PATH + "save.txt");
+            File file = new File(SAVES_PATH + filename);
             Scanner reader = new Scanner(file);
 
-            String line = reader.nextLine();
-            String[] points = line.split(", ");
+            String[] points = reader.nextLine().split(", ");
             for (int i = 0; i < points.length; i++) {
                 String[] coord = points[i].split(" ");
                 game.jouer(new Point(Integer.parseInt(coord[0]), Integer.parseInt(coord[1])));
             }
 
-            line = reader.nextLine();
-            for (int i = 0; i < Integer.parseInt(line); i++) {
-                undo();
-            }
+            int nbUndo = Integer.parseInt(reader.nextLine());
+            for (int i = 0; i < nbUndo; i++) undo();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
