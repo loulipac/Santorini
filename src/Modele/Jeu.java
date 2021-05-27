@@ -24,7 +24,7 @@ public class Jeu {
     private Observer observateur;
     private boolean jeu_fini;
     private Historique histo;
-
+    private Joueur gagnant;
     private boolean ia_statut;
 
     Joueur j1, j2;
@@ -47,6 +47,7 @@ public class Jeu {
         observateur = o;
         jeu_fini = false;
         histo = new Historique(this);
+        gagnant = null;
 
         if (ia2_mode != 0) {
             j1 = new JoueurIA(this, JOUEUR1, setIA(ia1_mode));
@@ -240,6 +241,7 @@ public class Jeu {
     public void victoireJoueur() {
         if (batisseur_en_cours != null && plateau.getTypeBatiments(batisseur_en_cours) == Plateau.TOIT) {
             System.out.println("cest fini");
+            gagnant = getJoueurType_en_cours();
             jeu_fini = true;
             observateur.miseAjour();
         }
@@ -312,6 +314,10 @@ public class Jeu {
         if (getJoueurType_en_cours().getClass() == JoueurIA.class) {
             ((JoueurIA) getJoueurType_en_cours()).timerIaSet(ia_statut);
         }
+    }
+
+    public Joueur getGagnant() {
+        return gagnant;
     }
 
     public ArrayList<Point> getBatisseurs(int joueur) {

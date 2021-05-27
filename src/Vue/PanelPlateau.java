@@ -3,6 +3,7 @@ package Vue;
 import static Modele.Constante.*;
 
 import Modele.Jeu;
+import Modele.Joueur;
 
 import static Modele.Constante.*;
 
@@ -440,8 +441,7 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     private void changeVictory() {
-        String annonce_tour_joueur = jeu.getJoueur_en_cours() == JOUEUR1 ? "Joueur 1 gagne" : "Joueur 2 gagne";
-        jt.setText(annonce_tour_joueur);
+        jt.setText("Joueur " + (jeu.getGagnant().getNum_joueur() / JOUEUR1)  + " gagne");
     }
 
     /**
