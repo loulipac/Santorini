@@ -2,25 +2,38 @@ package Modele;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 import static Modele.Constante.*;
 
 public class IADifficile implements IA {
 
     private Jeu jeu;
-    private Point[] coup;
+    private Coup coup;
     private Plateau plateau;
     private float meilleurHeuristique;
+    private Random random;
 
     public IADifficile(Jeu _jeu) {
-        coup = new Point[3];
         jeu = _jeu;
         plateau = jeu.getPlateau();
+        random = new Random();
+    }
+
+    private class Coup {
+        Point batisseur;
+        Point deplacement;
+        Point construction;
+
+        public Coup(Point batisseur, Point deplacement, Point construction) {
+            this.batisseur = batisseur;
+            this.deplacement = deplacement;
+            this.construction = construction;
+        }
     }
 
     public float alphabeta(Jeu jeu, int depth, float a, float b, int maximizingPlayer) {
         float value;
-
         if (depth == 0 || jeu.estJeufini()) {
             return heuristique(jeu);
         }
@@ -29,26 +42,59 @@ public class IADifficile implements IA {
             for (Point batisseur : jeu.getBatisseurs()) {
                 for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
                     for (Point construction : plateau.getConstructionsPossible(deplacement)) {
-
+                        jouer(jeu, batisseur, deplacement, construction);
+                        value = Math.max(value, alphabeta(jeu, depth - 1, a, b, (maximizingPlayer % 16) + 8));
+                        dejouer(jeu);
+                        if(b <= value) return value;
+                        if(value >= a) {
+                            coup = new Coup(batisseur, deplacement, construction);
+                        }
+                        a = Math.max(a, value);
                     }
                 }
-
-                //value = Math.max(value, alphabeta(child, (depth-1), a, b, (maximizingPlayer % 16) + 8 )));
-                a = Math.max(a, value);
-                if (a >= b)
-                    break;
             }
             return value;
-        } else { //beta
+        } else {
             value = Float.POSITIVE_INFINITY;
-            for (Point p : coup) {
-                //value = Math.min(value, alphabeta(child, (depth-1), a, b, (maximizingPlayer % 16) + 8));
-                b = Math.min(b, value);
-                if (b <= a)
-                    break;
+            for (Point batisseur : jeu.getBatisseurs(maximizingPlayer)) {
+                for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
+                    for (Point construction : plateau.getConstructionsPossible(deplacement)) {
+                        jouer(jeu, batisseur, deplacement, construction);
+                        value = Math.min(value, alphabeta(jeu, depth - 1, a, b, (maximizingPlayer % 16) + 8));
+                        dejouer(jeu);
+                        if(a >= value) return value;
+                        if(value <= b) {
+                            coup = new Coup(batisseur, deplacement, construction);
+                        }
+                        b = Math.min(b, value);
+                    }
+                }
             }
             return value;
         }
+    }
+
+    /**
+     * Joue un tour complet
+     * TODO: SIMULER LE COUP ET PAS LE JOUER
+     */
+    private void jouer(Jeu _jeu, Point batisseur, Point deplacement, Point construire) {
+        // Selection
+        _jeu.jouer(batisseur);
+        // Déplacement
+        _jeu.jouer(deplacement);
+        // Construction
+        _jeu.jouer(construire);
+    }
+
+    /**
+     * Déjoue un tour complet (soit 2 undo)
+     */
+    private void dejouer(Jeu _jeu) {
+        // Undo construction
+        _jeu.undo();
+        // Undo déplacement
+        _jeu.undo();
     }
 
     public static float clamp(float val, float min, float max) {
@@ -138,8 +184,6 @@ public class IADifficile implements IA {
                     int etageCase = _jeu.getPlateau().getTypeBatiments(_case);
                     if (etageCase == etageBatisseur + 1) {
                         heuristique += index;
-                    } else if (etageCase > etageBatisseur + 1) {
-                        // TODO:  niveau + 2 et niveau + 3 indésirable ? Que faire ?
                     }
                 }
             }
@@ -156,6 +200,35 @@ public class IADifficile implements IA {
 
     @Override
     public Point joue() {
+        switch (jeu.getSituation()) {
+            case PLACEMENT:
+                return jouePlacement();
+            case SELECTION:
+                alphabeta(jeu, 1, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, jeu.getJoueur_en_cours());
+                return coup.batisseur;
+            case DEPLACEMENT:
+                return coup.deplacement;
+            case CONSTRUCTION:
+                return coup.construction;
+            default:
+                break;
+        }
         return null;
+    }
+
+
+
+    private Point jouePlacement() {
+        int colonnes = jeu.getPlateau().getColonnes();
+        int lignes = jeu.getPlateau().getLignes();
+        Point case_alea = null;
+        do {
+            case_alea = new Point(
+                    random.nextInt(colonnes),
+                    random.nextInt(lignes)
+            );
+        } while (!jeu.getPlateau().estLibre(case_alea));
+        System.out.println("Batisseur ajouté : (" + case_alea.x + ", " + case_alea.y + ")");
+        return case_alea;
     }
 }
