@@ -309,7 +309,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
 
         public void actionCharger(ActionEvent e) {
-            //jeu.charger();
+            jeu.charger();
             pp.setVisible(false);
         }
 

@@ -49,7 +49,9 @@ public class CoupDeplacer extends Commande {
 
     @Override
     public String toString() {
-        String str = positions[0].x + " " + positions[0].y;
+        String str = new String();
+        if (positions[1] != null) str += positions[1].x + " " + positions[1].y + ", ";
+        str += positions[0].x + " " + positions[0].y;
         return str;
     }
 }
