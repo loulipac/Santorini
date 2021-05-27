@@ -27,6 +27,7 @@ public class Jeu {
     private Joueur gagnant;
     private boolean ia_statut;
     int vitesse_ia;
+    Commande cmd;
 
     Joueur j1, j2;
     Commande cmd;
@@ -71,10 +72,10 @@ public class Jeu {
                 return new IAFacile(this);
             }
             case 2 -> {
-                return new IAFacile(this);
+                return new IANormale(this);
             }
             case 3 -> {
-                return new IAFacile(this);
+                return new IADifficile(this);
             }
             default -> {
                 return null;
