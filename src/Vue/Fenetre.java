@@ -22,6 +22,7 @@ public class Fenetre extends JFrame {
     PanelPlateau plateau;
     PanelTutoriel tutoriel;
     LecteurSon musique;
+    JPanel shown;
 
     public Fenetre() {
         setTitle("Santorini");
@@ -31,46 +32,26 @@ public class Fenetre extends JFrame {
 
         pileCarte = new CardLayout();
         panelPrincipal = new JPanel(pileCarte);
-        menu = new PanelMenu(getSize());
-        options = new PanelOptions(getSize());
-        regles = new PanelRegles(getSize());
-        tutoriel = new PanelTutoriel(getSize(), 0, 0);
+
         musique = new LecteurSon("musiqueBGtest.wav");
 
-        panelPrincipal.add(menu, "menu");
-        panelPrincipal.add(options, "options");
-        panelPrincipal.add(regles, "regles");
-        panelPrincipal.add(tutoriel, "tutoriel");
-        //panelPrincipal.add(plateau, "plateau");
-
-        // Pour borderless window
-        //setUndecorated(true);
+        setPanel(new PanelMenu(getSize()));
 
         add(panelPrincipal);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Change le curseur de la fenêtre
-        setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("sword", new Point(16, 16)));
+        setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("sword", new Point(0, 0)));
 
         setVisible(true);
 //        musique.joueSon(true);
     }
-
-    public CardLayout getPileCarte() {
-        return pileCarte;
-    }
-
-    public JPanel getPanelPrincipal() {
-        return panelPrincipal;
-    }
-
-    public void setPlateau(PanelPlateau p) {
-        this.plateau = p;
-        panelPrincipal.add(p, "plateau");
-    }
-
-    public void removePlateau() {
-        panelPrincipal.remove(plateau);
+    public void setPanel(JPanel p) {
+        JPanel tmp_shown = shown;
+        shown = p;
+        panelPrincipal.add(p);
+        pileCarte.show(panelPrincipal, "");
+        if(tmp_shown != null) panelPrincipal.remove(tmp_shown);
     }
 
     public static void main(String[] args) {

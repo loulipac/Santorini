@@ -42,7 +42,6 @@ class PanelMenu extends JPanel {
         bTutoriel = new Bouton(CHEMIN_RESSOURCE + "/bouton/tutoriel.png", CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
         bRegles = new Bouton(CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
         bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter.png", CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
-        bParametres = new Bouton(CHEMIN_RESSOURCE + "/bouton/parametres.png", CHEMIN_RESSOURCE + "/bouton/parametres_hover.png", taille_fenetre.width / 20, taille_fenetre.width / 20);
         bFullScreen = new Bouton(CHEMIN_RESSOURCE + "/bouton/fullscreen.png", CHEMIN_RESSOURCE + "/bouton/fullscreen_hover.png", taille_fenetre.width / 20, taille_fenetre.width / 20);
         bSon = new Bouton(CHEMIN_RESSOURCE + "/bouton/son_on.png", CHEMIN_RESSOURCE + "/bouton/son_on_hover.png", taille_fenetre.width / 20, taille_fenetre.width / 20);
 
@@ -56,7 +55,6 @@ class PanelMenu extends JPanel {
         bTutoriel.addActionListener(this::actionBoutonTutoriel);
         bRegles.addActionListener(this::actionBoutonRegles);
         bQuitter.addActionListener(this::actionBoutonQuitter);
-        bParametres.addActionListener(this::actionBoutonParametres);
         bFullScreen.addActionListener(this::actionFullscreen);
         bSon.addActionListener(this::actionSon);
 
@@ -92,15 +90,8 @@ class PanelMenu extends JPanel {
     public void actionBoutonJouer(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getPileCarte().show(f.panelPrincipal, "options");
+        f.setPanel(new PanelOptions(taille_fenetre));
     }
-
-    public void actionBoutonParametres(ActionEvent e) {
-        son_bouton.joueSon(false);
-        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getPileCarte().show(f.panelPrincipal, "parametres");
-    }
-
 
     /**
      * Remplace le contenu de la fenetre par le plateau du jeu
@@ -109,8 +100,8 @@ class PanelMenu extends JPanel {
      */
     public void actionBoutonTutoriel(ActionEvent e) {
         son_bouton.joueSon(false);
-        Fenetre fenetre = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        fenetre.getPileCarte().show(fenetre.panelPrincipal, "tutoriel");
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.setPanel(new PanelTutoriel(taille_fenetre));
     }
 
     /**
@@ -121,7 +112,7 @@ class PanelMenu extends JPanel {
     public void actionBoutonRegles(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.getPileCarte().show(f.panelPrincipal, "regles");
+        f.setPanel(new PanelRegles(taille_fenetre));
     }
 
     /**

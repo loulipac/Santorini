@@ -34,10 +34,8 @@ public class PanelTutoriel extends JPanel implements Observer {
      * @param _taille_fenetre
      * @see PanelTutoriel#initialiserPanel()
      */
-    public PanelTutoriel(Dimension _taille_fenetre, int ia1_mode, int ia2_mode) {
+    public PanelTutoriel(Dimension _taille_fenetre) {
         this.taille_fenetre = _taille_fenetre;
-        this.ia1_mode = ia1_mode;
-        this.ia2_mode = ia2_mode;
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));

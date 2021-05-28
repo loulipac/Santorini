@@ -155,8 +155,8 @@ public class PanelRegles extends JPanel {
     }
 
     public void actionBoutonRetourMenu(ActionEvent e) {
-        Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f2.getPileCarte().show(f2.panelPrincipal, "menu");
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.setPanel(new PanelMenu(taille_fenetre));
     }
 
     private JLabel creerTitre(String titre) {
