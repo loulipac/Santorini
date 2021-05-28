@@ -30,6 +30,7 @@ public class Jeu {
     private boolean ia_statut;
     private int vitesse_ia;
     private int nb_tours;
+    boolean in_simulation;
 
     private Joueur[] joueurs;
     private int i_joueurs;
@@ -109,7 +110,7 @@ public class Jeu {
         histo.stocker(cmd);
     }
 
-    private void jouePlacement(Point position) {
+    public void jouePlacement(Point position) {
         if (plateau.estLibre(position)) {
             cmd = new CoupDeplacer(joueurs[i_joueurs], null, position);
             plateau.ajouterJoueur(position, joueurs[i_joueurs]);
@@ -120,14 +121,19 @@ public class Jeu {
         }
     }
 
+    public void setBatisseursJoueur(ArrayList<Point> batisseursJoueur) {
+        getJoueurType_en_cours().batisseurs = batisseursJoueur;
+    }
 
-    private void joueSelection(Point position) {
+
+
+    public void joueSelection(Point position) {
         batisseur_en_cours = choisirBatisseur(position);
         situation = batisseur_en_cours == null ? SELECTION : DEPLACEMENT;
         sendMove(position);
     }
 
-    private void joueDeplacement(Point position) {
+    public void joueDeplacement(Point position) {
         Point prevPos = batisseur_en_cours;
         if (avancer(position, batisseur_en_cours)) {
             ArrayList<Point> batisseurs_en_cours = getJoueur_en_cours().getBatisseurs();
@@ -140,7 +146,7 @@ public class Jeu {
         victoireJoueur();
     }
 
-    private void joueConstruction(Point position) {
+    public void joueConstruction(Point position) {
         if (!jeu_fini && construire(position, batisseur_en_cours)) {
             construction_son.joueSon(false);
             cmd = new CoupConstruire(joueurs[i_joueurs], position, batisseur_en_cours);
@@ -193,6 +199,7 @@ public class Jeu {
     }
 
     public void MAJObservateur() {
+        if(in_simulation) return;
         observateur.miseAjour();
     }
 
@@ -261,9 +268,8 @@ public class Jeu {
      * Si c'est le cas, le jeu s'arrête et l'observateur est notifié de la victoire.
      */
     public void victoireJoueur() {
-        if (batisseur_en_cours != null && plateau.getTypeBatiments(batisseur_en_cours) == TOIT) {
-            System.out.println("cest fini");
-            gagnant = getJoueur_en_cours();
+        if (batisseur_en_cours != null && plateau.getTypeBatiments(batisseur_en_cours) == Plateau.TOIT) {
+            gagnant = getJoueurType_en_cours();
             jeu_fini = true;
             observateur.miseAjour();
         }
@@ -329,13 +335,30 @@ public class Jeu {
     public Point getBatisseur_en_cours() {
         return batisseur_en_cours;
     }
-
     public int getSituation() {
         return situation;
     }
 
     public Joueur getJoueur_en_cours() {
         return joueurs[i_joueurs];
+    }
+
+    public Joueur getJoueurType_en_cours() {
+        if (joueur_en_cours == j1.getNum_joueur()) {
+            return j1;
+        } else if (joueur_en_cours == j2.getNum_joueur()) {
+            return j2;
+        } else {
+            return null;
+        }
+    }
+
+    public void updateBatisseur(int index_batisseur, Point newPos, int joueur) {
+        if (joueur == j1.getNum_joueur()) {
+            j1.getBatisseurs().set(index_batisseur, newPos);
+        } else if (joueur_en_cours == j2.getNum_joueur()) {
+            j2.getBatisseurs().set(index_batisseur, newPos);
+        }
     }
 
     public int getNombre_batisseurs() {
