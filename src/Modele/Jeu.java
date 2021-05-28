@@ -30,7 +30,6 @@ public class Jeu {
     Commande cmd;
 
     Joueur j1, j2;
-    Commande cmd;
 
     /**
      * Instantie une classe jeu.
