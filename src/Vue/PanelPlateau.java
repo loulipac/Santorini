@@ -163,11 +163,11 @@ public class PanelPlateau extends JPanel implements Observer {
             } else if (ia1_mode != 0) {
                 jeu = new Jeu(5, 5, PanelPlateau.this, ia1_mode, 0);
                 jg = new JeuGraphique(jeu);
-                jg.addMouseListener(new EcouteurDeSouris(jg, jeu));
+                jg.addMouseListener(new EcouteurDeSouris(jg, jeu, PanelPlateau.this));
             } else {
                 jeu = new Jeu(5, 5, PanelPlateau.this, 0, 0);
                 jg = new JeuGraphique(jeu);
-                jg.addMouseListener(new EcouteurDeSouris(jg, jeu));
+                jg.addMouseListener(new EcouteurDeSouris(jg, jeu, PanelPlateau.this));
             }
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 
@@ -256,6 +256,10 @@ public class PanelPlateau extends JPanel implements Observer {
             jeu.accelererIA(niveauAcceleration.get(index_acceleration));
         }
 
+    }
+
+    public boolean isParametreVisible() {
+        return pp.isVisible();
     }
 
     private class ParametrePanel extends JPanel {

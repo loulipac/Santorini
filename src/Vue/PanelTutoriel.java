@@ -157,11 +157,11 @@ public class PanelTutoriel extends JPanel implements Observer {
             } else if (ia1_mode != 0) {
                 jeu = new Jeu(5, 5, PanelTutoriel.this, ia1_mode, 0);
                 jg = new JeuGraphique(jeu);
-                jg.addMouseListener(new EcouteurDeSouris(jg, jeu));
+                jg.addMouseListener(new EcouteurDeSouris(jg, jeu, null));
             } else {
                 jeu = new Jeu(5, 5, PanelTutoriel.this, 0, 0);
                 jg = new JeuGraphique(jeu);
-                jg.addMouseListener(new EcouteurDeSouris(jg, jeu));
+                jg.addMouseListener(new EcouteurDeSouris(jg, jeu, null));
             }
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 

@@ -15,6 +15,7 @@ public class EcouteurDeSouris extends MouseAdapter {
     JeuGraphique jg;
     Jeu jeu;
     int largeur_plateau, hauteur_plateau;
+    PanelPlateau pp;
 
     /**
      * Constructeur de EcouteurDeSouris. Utilise un JeuGraphique.
@@ -22,8 +23,9 @@ public class EcouteurDeSouris extends MouseAdapter {
      * @param jg
      * @see JeuGraphique
      */
-    public EcouteurDeSouris(JeuGraphique jg, Jeu _jeu) {
+    public EcouteurDeSouris(JeuGraphique jg, Jeu _jeu, PanelPlateau _pp) {
         this.jg = jg;
+        this.pp = _pp;
         jeu = _jeu;
     }
 
@@ -35,6 +37,7 @@ public class EcouteurDeSouris extends MouseAdapter {
      */
     @Override
     public void mousePressed(MouseEvent e) {
+        if(pp.isParametreVisible()) return;
         Joueur joueur_en_cours = jeu.getJoueurType_en_cours();
         if(joueur_en_cours.getClass() != JoueurIA.class) {
             this.largeur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getColonnes();
