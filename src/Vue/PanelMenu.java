@@ -49,8 +49,8 @@ class PanelMenu extends JPanel {
         bRegles = new Bouton(CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", largeur / 4, largeur / 20);
         bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter.png", CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", largeur / 4, largeur / 20);
         bParametres = new Bouton(CHEMIN_RESSOURCE + "/bouton/parametres.png", CHEMIN_RESSOURCE + "/bouton/parametres_hover.png", largeur / 20, largeur / 20);
-        bFullScreen = new Bouton(CHEMIN_RESSOURCE + "/bouton/fullscreen.png", CHEMIN_RESSOURCE + "/bouton/fullscreen.png", largeur / 20, largeur / 20);
-        bSon = new Bouton(CHEMIN_RESSOURCE + "/bouton/son_on.png", CHEMIN_RESSOURCE + "/bouton/son_on.png", largeur / 20, largeur / 20);
+        bFullScreen = new Bouton(CHEMIN_RESSOURCE + "/bouton/fullscreen.png", CHEMIN_RESSOURCE + "/bouton/fullscreen_hover.png", largeur / 20, largeur / 20);
+        bSon = new Bouton(CHEMIN_RESSOURCE + "/bouton/son_on.png", CHEMIN_RESSOURCE + "/bouton/son_on_hover.png", largeur / 20, largeur / 20);
 
         /* Label */
         logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
@@ -117,8 +117,7 @@ class PanelMenu extends JPanel {
     public void actionBoutonTutoriel(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre fenetre = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        fenetre.setPlateau(new PanelPlateau(getSize()));
-        fenetre.getPileCarte().show(fenetre.panelPrincipal, "plateau");
+        fenetre.getPileCarte().show(fenetre.panelPrincipal, "tutoriel");
     }
 
     /**
@@ -148,15 +147,22 @@ class PanelMenu extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionFullscreen(ActionEvent e) {
-        GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice device = env.getDefaultScreenDevice();
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.dispose();
         if (maximized) {
-            device.setFullScreenWindow(null);
+            bFullScreen.changeImage(CHEMIN_RESSOURCE + "/bouton/fullscreen.png", CHEMIN_RESSOURCE + "/bouton/fullscreen_hover.png");
             maximized = false;
+            f.setUndecorated(false);
+            f.setMinimumSize(DEFAULT_FENETRE_TAILLE);
+            f.setSize(DEFAULT_FENETRE_TAILLE);
         } else {
-            device.setFullScreenWindow(frame);
+            bFullScreen.changeImage(CHEMIN_RESSOURCE + "/bouton/unfullscreen.png", CHEMIN_RESSOURCE + "/bouton/unfullscreen_hover.png");
             maximized = true;
+            f.setUndecorated(true);
+            f.setMinimumSize(Toolkit.getDefaultToolkit().getScreenSize());
         }
+        f.setLocationRelativeTo(null);
+        f.setVisible(true);
     }
 
     /**
@@ -166,10 +172,10 @@ class PanelMenu extends JPanel {
      */
     public void actionSon(ActionEvent e) {
         if (muted) {
-            bSon.changeImage(CHEMIN_RESSOURCE + "/bouton/son_on.png");
+            bSon.changeImage(CHEMIN_RESSOURCE + "/bouton/son_on.png", CHEMIN_RESSOURCE + "/bouton/son_on_hover.png");
             muted = false;
         } else {
-            bSon.changeImage(CHEMIN_RESSOURCE + "/bouton/son_off.png");
+            bSon.changeImage(CHEMIN_RESSOURCE + "/bouton/son_off.png", CHEMIN_RESSOURCE + "/bouton/son_off_hover.png");
             muted = true;
         }
         Mixer.Info[] infos = AudioSystem.getMixerInfo();

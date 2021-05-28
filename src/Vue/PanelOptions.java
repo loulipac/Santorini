@@ -214,13 +214,13 @@ class PanelOptions extends JPanel {
 
         PanelPlateau plateau = null;
         if(joueur_joueur.isSelected()) {
-            plateau = new PanelPlateau(getSize());
+            plateau = new PanelPlateau(getSize(), 0, 0);
             System.out.println("IA non choisi");
         } else if(joueur_ia.isSelected()) {
-            System.out.println("NOT IMPLEMENTED");
+            plateau = new PanelPlateau(getSize(), 1, 0);
             System.out.println("IA choisi");
         } else if(ia_ia.isSelected()) {
-            System.out.println("NOT IMPLEMENTED");
+            plateau = new PanelPlateau(getSize(), 1, 1);
             System.out.println("IA vs IA choisi");
         }
         fenetre.setPlateau(plateau);

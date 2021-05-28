@@ -28,6 +28,7 @@ public class CoupConstruire extends Commande {
         game.switchPlayer();
         game.setBatisseur_en_cours(selected_builder);
         game.MAJObservateur();
+        game.iaJoue();
     }
 
     @Override

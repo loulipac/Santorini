@@ -33,28 +33,30 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     /**
      * Constructeur qui génère un ensemble de curseur.
+     *
      * @param j
      * @param jg
      */
     public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg) {
         this.jg = jg;
         this.j = j;
-        c_defaut_gris = creerCurseurGenerique( "defaut_gris", HAUT_GAUCHE);
+        c_defaut_gris = creerCurseurGenerique("defaut_gris", HAUT_GAUCHE);
         c_defaut_rouge = creerCurseurGenerique("defaut_rouge", HAUT_GAUCHE);
         c_defaut_bleu = creerCurseurGenerique("defaut_bleu", HAUT_GAUCHE);
         c_pas_bleu = creerCurseurGenerique("pas_bleu", CENTRE);
         c_pas_rouge = creerCurseurGenerique("pas_rouge", CENTRE);
-        c_pas_gris = creerCurseurGenerique( "pas_gris", CENTRE);
+        c_pas_gris = creerCurseurGenerique("pas_gris", CENTRE);
         c_outil_bleu = creerCurseurGenerique("outil_bleu", HAUT_GAUCHE);
         c_outil_rouge = creerCurseurGenerique("outil_rouge", HAUT_GAUCHE);
-        c_outil_gris = creerCurseurGenerique( "outil_gris", HAUT_GAUCHE);
+        c_outil_gris = creerCurseurGenerique("outil_gris", HAUT_GAUCHE);
         c_drapeau_bleu = creerCurseurGenerique("drapeau_bleu", CENTRE);
-        c_drapeau_rouge = creerCurseurGenerique( "drapeau_rouge", CENTRE);
-        c_drapeau_gris = creerCurseurGenerique( "drapeau_gris", CENTRE);
+        c_drapeau_rouge = creerCurseurGenerique("drapeau_rouge", CENTRE);
+        c_drapeau_gris = creerCurseurGenerique("drapeau_gris", CENTRE);
     }
 
     /**
      * Crée un objet de type Cursor depuis son nom de fichier.
+     *
      * @param fichier_nom
      * @param decallage
      * @return le curseur crée
@@ -77,9 +79,9 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     /**
      * Définis le curseur selon sa position sur la grille et la situation du jeu.
+     *
      * @param e
      * @see Jeu#getSituation()
-     * @see Jeu#estAtteignable(int, int)
      * @see Jeu#getJoueur_en_cours()
      */
     @Override
@@ -89,7 +91,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
-            Point position = new Point(pos_x, pos_y);
+            Point position = new Point(pos_y, pos_x);
             if(pos_x < 5 && pos_y < 5) {
                 if (j.getSituation() == DEPLACEMENT) {
                     if (jg.getJeu().estAtteignable(position)) {
