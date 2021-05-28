@@ -29,7 +29,7 @@ public class PanelPlateau extends JPanel implements Observer {
     JLabel jt;
     Dimension taille_fenetre;
     int ia1_mode, ia2_mode;
-    JButton on_off_ia;
+    Bouton on_off_ia;
     Image colonne_rouge, colonne_bleu, arriere_plan, colonne_fin;
     ParametrePanel pp;
 
@@ -115,7 +115,7 @@ public class PanelPlateau extends JPanel implements Observer {
     public class JGamePanel extends JPanel {
         int taille_margin;
         float taille_h;
-        JButton acceleration;
+        Bouton acceleration;
         ArrayList<Integer> niveauAcceleration;
         int index_acceleration;
 
@@ -176,28 +176,35 @@ public class PanelPlateau extends JPanel implements Observer {
             histo_bouton.setMaximumSize(size);
 
             Bouton histo_annuler = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
-            on_off_ia = new JButton("ON");
+
             Bouton histo_refaire = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
-            index_acceleration = 0;
-            niveauAcceleration = new ArrayList<>();
-            niveauAcceleration.add(1);
-            niveauAcceleration.add(2);
-            niveauAcceleration.add(4);
-            niveauAcceleration.add(8);
-            niveauAcceleration.add(16);
-            niveauAcceleration.add(32);
-            niveauAcceleration.add(64);
-            acceleration = new JButton("x" + niveauAcceleration.get(index_acceleration));
+
+            if(ia1_mode != 0) {
+                on_off_ia = new Bouton(CHEMIN_RESSOURCE + "/bouton/running.png", CHEMIN_RESSOURCE + "/bouton/running_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
+                index_acceleration = 0;
+                niveauAcceleration = new ArrayList<>();
+                niveauAcceleration.add(1);
+                niveauAcceleration.add(2);
+                niveauAcceleration.add(4);
+                niveauAcceleration.add(8);
+                niveauAcceleration.add(16);
+                niveauAcceleration.add(32);
+                niveauAcceleration.add(64);
+                acceleration = new Bouton(CHEMIN_RESSOURCE + "/bouton/vide.png", CHEMIN_RESSOURCE + "/bouton/vide.png", taille_fenetre.height / 20, taille_fenetre.height / 20);
+                acceleration.setText("x" + niveauAcceleration.get(index_acceleration));
+                Font lilli_belle_tmp = new Font("Lily Script One", Font.TRUETYPE_FONT, 20);
+                acceleration.setFont(lilli_belle_tmp);
+                on_off_ia.addActionListener(PanelPlateau.this::switchOnOffIA);
+                acceleration.addActionListener(this::accelerationIA);
+            }
 
 
             histo_annuler.addActionListener(PanelPlateau.this::actionUndo);
             histo_refaire.addActionListener(PanelPlateau.this::actionRedo);
-            on_off_ia.addActionListener(PanelPlateau.this::switchOnOffIA);
-            acceleration.addActionListener(this::accelerationIA);
             histo_bouton.add(histo_annuler);
-            histo_bouton.add(on_off_ia);
+            if(ia1_mode != 0) histo_bouton.add(on_off_ia);
             histo_bouton.add(histo_refaire);
-            histo_bouton.add(acceleration);
+            if(ia1_mode != 0) histo_bouton.add(acceleration);
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
@@ -452,9 +459,9 @@ public class PanelPlateau extends JPanel implements Observer {
     public void switchOnOffIA(ActionEvent e) {
         jeu.iaSwitch();
         if (jeu.getIa_statut()) {
-            on_off_ia.setText("ON");
+            on_off_ia.changeImage(CHEMIN_RESSOURCE + "/bouton/running.png", CHEMIN_RESSOURCE + "/bouton/running_hover.png");
         } else {
-            on_off_ia.setText("OFF");
+            on_off_ia.changeImage(CHEMIN_RESSOURCE + "/bouton/stop.png", CHEMIN_RESSOURCE + "/bouton/stop_hover.png");
         }
     }
 
