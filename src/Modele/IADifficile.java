@@ -58,10 +58,9 @@ public class IADifficile implements IA {
                     for (Point construction : plateau.getConstructionsPossible(deplacement)) {
                         jeu.setSimulation(true);
                         int index_batisseur = batisseur_copy.indexOf(batisseur);
-                        jouer(jeu, batisseur, deplacement, construction);
+                        CoupHisto c = jouer(jeu, batisseur, deplacement, construction, maximizingPlayer);
                         value = Math.max(value, alphabeta(jeu, depth - 1, a, b, (maximizingPlayer % 16) + 8));
-                        dejouer(jeu, maximizingPlayer, index_batisseur);
-                        jeu.setBatisseursJoueur(batisseur_copy);
+                        dejouer(jeu, maximizingPlayer, index_batisseur, c);
                         jeu.setSimulation(false);
                         if (value > a) {
                             coups_liste.clear();
@@ -82,9 +81,9 @@ public class IADifficile implements IA {
                     for (Point construction : plateau.getConstructionsPossible(deplacement)) {
                         jeu.setSimulation(true);
                         int index_batisseur = batisseur_copy.indexOf(batisseur);
-                        jouer(jeu, batisseur, deplacement, construction);
+                        CoupHisto c = jouer(jeu, batisseur, deplacement, construction, maximizingPlayer);
                         value = Math.min(value, alphabeta(jeu, depth - 1, a, b, (maximizingPlayer % 16) + 8));
-                        dejouer(jeu, maximizingPlayer, index_batisseur);
+                        dejouer(jeu, maximizingPlayer, index_batisseur, c);
                         jeu.setSimulation(false);
                         if (value < b) {
                             coups_liste.clear();
@@ -103,33 +102,42 @@ public class IADifficile implements IA {
 
     /**
      * Joue un tour complet
+     * TODO: joueur en cours bizarre 
      */
-    private void jouer(Jeu _jeu, Point batisseur, Point deplacement, Point construire) {
+    private CoupHisto jouer(Jeu _jeu, Point batisseur, Point deplacement, Point construire, int p) {
         // Selection
-        prevPos = batisseur;
         _jeu.joueSelection(batisseur);
         // Déplacement
-        this.batisseur = deplacement;
         _jeu.joueDeplacement(deplacement);
         // Construction
-        prevHaut = _jeu.getPlateau().getTypeBatiments(construire);
-        construction = construire;
+        int prevHaut = _jeu.getPlateau().getTypeBatiments(construire);
         _jeu.joueConstruction(construire);
+        return new CoupHisto(deplacement, batisseur, construire, prevHaut);
     }
 
-    Point batisseur;
-    Point prevPos;
-    Point construction;
-    int prevHaut;
+    private class CoupHisto {
+        Point batisseur;
+        Point prevPos;
+        Point construction;
+        int prevHaut;
+
+        public CoupHisto(Point batisseur, Point prevPos, Point construction, int prevHaut) {
+            this.batisseur = batisseur;
+            this.prevPos = prevPos;
+            this.construction = construction;
+            this.prevHaut = prevHaut;
+        }
+    }
+
 
     /**
      * Déjoue un tour complet (soit 2 undo)
      */
-    private void dejouer(Jeu _jeu, int num_joueur, int index_batisseur) {
-        _jeu.getPlateau().setFloorBis(construction, prevHaut);
-        _jeu.getPlateau().removePlayer(batisseur);
-        _jeu.getPlateau().ajouterJoueur(prevPos, num_joueur);
-        _jeu.updateBatisseur(index_batisseur, prevPos, num_joueur);
+    private void dejouer(Jeu _jeu, int num_joueur, int index_batisseur, CoupHisto c) {
+        _jeu.getPlateau().setFloorBis(c.construction, c.prevHaut);
+        _jeu.getPlateau().removePlayer(c.batisseur);
+        _jeu.getPlateau().ajouterJoueur(c.prevPos, num_joueur);
+        _jeu.updateBatisseur(index_batisseur, c.prevPos, num_joueur);
     }
 
     public static float clamp(float val, float min, float max) {

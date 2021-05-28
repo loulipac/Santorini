@@ -197,7 +197,6 @@ public class Jeu {
     }
 
     public void switchPlayer() {
-        if (in_simulation) return;
         joueur_en_cours = (joueur_en_cours % 16) + 8;
     }
 
