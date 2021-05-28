@@ -6,6 +6,7 @@ import Modele.Jeu;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -176,7 +177,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
             Bouton histo_refaire = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
 
-            if(ia1_mode != 0) {
+            if (ia1_mode != 0) {
                 on_off_ia = new Bouton(CHEMIN_RESSOURCE + "/bouton/running.png", CHEMIN_RESSOURCE + "/bouton/running_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
                 index_acceleration = 0;
                 niveauAcceleration = new ArrayList<>();
@@ -199,9 +200,9 @@ public class PanelPlateau extends JPanel implements Observer {
             histo_annuler.addActionListener(PanelPlateau.this::actionUndo);
             histo_refaire.addActionListener(PanelPlateau.this::actionRedo);
             histo_bouton.add(histo_annuler);
-            if(ia1_mode != 0) histo_bouton.add(on_off_ia);
+            if (ia1_mode != 0) histo_bouton.add(on_off_ia);
             histo_bouton.add(histo_refaire);
-            if(ia1_mode != 0) histo_bouton.add(acceleration);
+            if (ia1_mode != 0) histo_bouton.add(acceleration);
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
@@ -263,12 +264,12 @@ public class PanelPlateau extends JPanel implements Observer {
         private LecteurSon son_bouton;
 
         private class BackgroundPanel extends JPanel {
-            public BackgroundPanel() {
+            public BackgroundPanel(Dimension taille) {
                 super();
                 setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
                 setAlignmentX(CENTER_ALIGNMENT);
-                setMaximumSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3));
-                setPreferredSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3));
+                setMaximumSize(taille);
+                setPreferredSize(taille);
                 setOpaque(false);
             }
 
@@ -305,19 +306,50 @@ public class PanelPlateau extends JPanel implements Observer {
         }
 
         private void initialiserComposant() {
-            BackgroundPanel contenu = new BackgroundPanel();
+            Dimension taille_panel = new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3);
+            BackgroundPanel contenu = new BackgroundPanel(taille_panel);
 
             JLabel parametres_texte = new JLabel("Paramètres");
             parametres_texte.setForeground(new Color(82, 60, 43));
             parametres_texte.setFont(lilly_belle);
             parametres_texte.setAlignmentX(CENTER_ALIGNMENT);
 
+            double ratio_marge = 0.03;
+            double taille_restante = taille_panel.height - (taille_panel.height * ratio_marge) * 9;
+            double height = taille_restante / 6;
+
+            // TODO: Créer la constante RATIO_BOUTON_CLASSIQUE = 508/95
+            double ratio = 508/95;
+            Dimension taille_bouton = new Dimension((int) (height * ratio), (int) (height));
+
             /* Boutons*/
-            bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter_partie.png", CHEMIN_RESSOURCE + "/bouton/quitter_partie_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
-            bNouvellePartie = new Bouton(CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE + "/bouton/nouvelle_partie_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
-            bSauvegarder = new Bouton(CHEMIN_RESSOURCE + "/bouton/sauvegarder.png", CHEMIN_RESSOURCE + "/bouton/sauvegarder_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
-            bReprendre = new Bouton(CHEMIN_RESSOURCE + "/bouton/reprendre.png", CHEMIN_RESSOURCE + "/bouton/reprendre_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
-            bCharger = new Bouton(CHEMIN_RESSOURCE + "/bouton/charger.png", CHEMIN_RESSOURCE + "/bouton/charger_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
+            bReprendre = new Bouton(CHEMIN_RESSOURCE + "/bouton/reprendre.png", CHEMIN_RESSOURCE + "/bouton/reprendre_hover.png",
+                    taille_bouton.width,
+                    taille_bouton.height);
+
+            bNouvellePartie = new Bouton(CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE + "/bouton/nouvelle_partie_hover.png",
+                    taille_bouton.width,
+                    taille_bouton.height);
+
+            JPanel charger_sauvegarder = new JPanel();
+            charger_sauvegarder.setOpaque(false);
+            charger_sauvegarder.setPreferredSize(taille_bouton);
+            charger_sauvegarder.setMaximumSize(taille_bouton);
+            charger_sauvegarder.setLayout(new GridLayout(1, 2));
+            bSauvegarder = new Bouton(CHEMIN_RESSOURCE + "/bouton/sauvegarder.png", CHEMIN_RESSOURCE + "/bouton/sauvegarder_hover.png",
+                    taille_bouton.width / 2,
+                    taille_bouton.height);
+            bCharger = new Bouton(CHEMIN_RESSOURCE + "/bouton/charger.png", CHEMIN_RESSOURCE + "/bouton/charger_hover.png",
+                    taille_bouton.width / 2,
+                    taille_bouton.height);
+
+            charger_sauvegarder.add(bSauvegarder);
+            charger_sauvegarder.add(bCharger);
+
+            bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter_partie.png", CHEMIN_RESSOURCE + "/bouton/quitter_partie_hover.png",
+                    taille_bouton.width,
+                    taille_bouton.height);
+
 
             /* Evenements */
             ActionEchap echap = new ActionEchap();
@@ -331,18 +363,19 @@ public class PanelPlateau extends JPanel implements Observer {
             bCharger.addActionListener(this::actionCharger);
 
             /* Adding */
-            Dimension margin_taille = new Dimension(taille_fenetre.width, taille_fenetre.height / 30);
+            Dimension margin_taille = new Dimension(taille_panel.width, (int) (taille_panel.height * ratio_marge));
+            addMargin(contenu, margin_taille);
             addMargin(contenu, margin_taille);
             contenu.add(parametres_texte);
+            addMargin(contenu, margin_taille);
             addMargin(contenu, margin_taille);
             contenu.add(bReprendre);
             addMargin(contenu, margin_taille);
             contenu.add(bNouvellePartie);
             addMargin(contenu, margin_taille);
-            contenu.add(bSauvegarder);
+            contenu.add(charger_sauvegarder);
             addMargin(contenu, margin_taille);
-            contenu.add(bCharger);
-            addMargin(contenu, margin_taille);
+            addMargin(contenu, taille_bouton);
             addMargin(contenu, margin_taille);
             contenu.add(bQuitter);
             addMargin(contenu, margin_taille);
@@ -378,7 +411,7 @@ public class PanelPlateau extends JPanel implements Observer {
                     "Sauvegardes", "sav");
             chooser.setFileFilter(filter);
             int returnVal = chooser.showOpenDialog(this);
-            if(returnVal == JFileChooser.APPROVE_OPTION) {
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
                 jeu.charger(chooser.getSelectedFile().getName());
                 pp.setVisible(false);
             }
