@@ -148,7 +148,7 @@ public class Jeu {
 
     public void joueConstruction(Point position) {
         if (!jeu_fini && construire(position, batisseur_en_cours)) {
-            construction_son.joueSon(false);
+            if(!in_simulation) construction_son.joueSon(false);
             cmd = new CoupConstruire(joueurs[i_joueurs], position, batisseur_en_cours);
             finTour();
             situation = SELECTION;
