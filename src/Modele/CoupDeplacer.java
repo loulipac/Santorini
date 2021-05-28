@@ -3,6 +3,7 @@ package Modele;
 import static Modele.Constante.*;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class CoupDeplacer extends Commande {
     private Point[] positions;

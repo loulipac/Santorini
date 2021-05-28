@@ -30,6 +30,15 @@ public class IADifficile implements IA {
             this.deplacement = deplacement;
             this.construction = construction;
         }
+
+        @Override
+        public String toString() {
+            return "Coup{" +
+                    "batisseur=" + batisseur +
+                    ", deplacement=" + deplacement +
+                    ", construction=" + construction +
+                    '}';
+        }
     }
 
     public float alphabeta(Jeu jeu, int depth, float a, float b, int maximizingPlayer) {
@@ -37,15 +46,19 @@ public class IADifficile implements IA {
         if (depth == 0 || jeu.estJeufini()) {
             return heuristique(jeu);
         }
+        ArrayList<Point> batisseur_copy = new ArrayList<>(jeu.getBatisseurs(maximizingPlayer));
         if (maximizingPlayer == Constante.JOUEUR2) { // alpha
             value = Float.NEGATIVE_INFINITY;
-            ArrayList<Point> batisseur_copy = new ArrayList<>(jeu.getBatisseurs(maximizingPlayer));
             for (Point batisseur : batisseur_copy) {
                 for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
                     for (Point construction : plateau.getConstructionsPossible(deplacement)) {
+                        jeu.setSimulation(true);
+                        int index_batisseur = batisseur_copy.indexOf(batisseur);
                         jouer(jeu, batisseur, deplacement, construction);
                         value = Math.max(value, alphabeta(jeu, depth - 1, a, b, (maximizingPlayer % 16) + 8));
-                        dejouer(jeu);
+                        dejouer(jeu, maximizingPlayer, index_batisseur);
+                        jeu.setBatisseursJoueur(batisseur_copy);
+                        jeu.setSimulation(false);
                         if(value >= a) {
                             coup = new Coup(batisseur, deplacement, construction);
                             a = value;
@@ -57,13 +70,15 @@ public class IADifficile implements IA {
             return value;
         } else {
             value = Float.POSITIVE_INFINITY;
-            ArrayList<Point> batisseur_copy = new ArrayList<>(jeu.getBatisseurs(maximizingPlayer));
             for (Point batisseur : batisseur_copy) {
                 for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
                     for (Point construction : plateau.getConstructionsPossible(deplacement)) {
+                        jeu.setSimulation(true);
+                        int index_batisseur = batisseur_copy.indexOf(batisseur);
                         jouer(jeu, batisseur, deplacement, construction);
                         value = Math.min(value, alphabeta(jeu, depth - 1, a, b, (maximizingPlayer % 16) + 8));
-                        dejouer(jeu);
+                        dejouer(jeu, maximizingPlayer, index_batisseur);
+                        jeu.setSimulation(false);
                         if(value <= b) {
                             coup = new Coup(batisseur, deplacement, construction);
                             b = value;
@@ -82,26 +97,33 @@ public class IADifficile implements IA {
      */
     private void jouer(Jeu _jeu, Point batisseur, Point deplacement, Point construire) {
         // Selection
-        System.out.println("Début tour");
-        System.out.println(DEPLACEMENT + " == " + _jeu.getSituation());
-        _jeu.jouer(batisseur);
+//        System.out.println("===============DEBUT TOUR===============");
+        prevPos = batisseur;
+        _jeu.joueSelection(batisseur);
         // Déplacement
-        System.out.println(DEPLACEMENT + " == " + _jeu.getSituation());
-        _jeu.jouer(deplacement);
+        this.batisseur = deplacement;
+        _jeu.joueDeplacement(deplacement);
         // Construction
-        System.out.println(CONSTRUCTION + " == " + _jeu.getSituation());
-        _jeu.jouer(construire);
-        System.out.println("Fin tour");
+        prevHaut = _jeu.getPlateau().getTypeBatiments(construire);
+        construction = construire;
+        _jeu.joueConstruction(construire);
+
+//        System.out.println("================FIN TOUR================\n");
     }
+
+    Point batisseur;
+    Point prevPos;
+    Point construction;
+    int prevHaut;
 
     /**
      * Déjoue un tour complet (soit 2 undo)
      */
-    private void dejouer(Jeu _jeu) {
-        // Undo construction
-        _jeu.undo();
-        // Undo déplacement
-        _jeu.undo();
+    private void dejouer(Jeu _jeu, int num_joueur, int index_batisseur) {
+        _jeu.getPlateau().setFloorBis(construction, prevHaut);
+        _jeu.getPlateau().removePlayer(batisseur);
+        _jeu.getPlateau().ajouterJoueur(prevPos, num_joueur);
+        _jeu.updateBatisseur(index_batisseur, prevPos, num_joueur);
     }
 
     public static float clamp(float val, float min, float max) {
@@ -212,6 +234,7 @@ public class IADifficile implements IA {
                 return jouePlacement();
             case SELECTION:
                 alphabeta(jeu, 1, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, jeu.getJoueur_en_cours());
+                System.out.println(coup);
                 return coup.batisseur;
             case DEPLACEMENT:
                 return coup.deplacement;

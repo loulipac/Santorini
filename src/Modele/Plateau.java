@@ -319,6 +319,10 @@ public class Plateau {
         setCase(position, getCase(position) + value);
     }
 
+    public void setFloorBis(Point position, int value) {
+        setCase(position, value);
+    }
+
     public void RAZ() {
         cases = new int[lignes][colonnes];
     }
