@@ -117,7 +117,9 @@ class PanelMenu extends JPanel {
     public void actionBoutonTutoriel(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre fenetre = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        fenetre.getPileCarte().show(fenetre.panelPrincipal, "tutoriel");
+        PanelPlateau plateau = new PanelPlateau(getSize(), 2, 2);
+        fenetre.setPlateau(plateau);
+        fenetre.getPileCarte().show(fenetre.panelPrincipal, "plateau");
     }
 
     /**

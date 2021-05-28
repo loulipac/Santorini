@@ -11,7 +11,7 @@ import static Modele.Constante.*;
 public class JoueurIA extends Joueur {
     IA ia;
     Timer timer;
-    final int VITESSE_BASE = 1000;
+    final int VITESSE_BASE = 1;
 
     public JoueurIA(Jeu _jeu, int _num_joueur, IA _ia, int vitesse_ia) {
         super(_jeu, _num_joueur);

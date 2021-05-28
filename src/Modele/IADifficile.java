@@ -9,23 +9,25 @@ import static Modele.Constante.*;
 public class IADifficile implements IA {
 
     private Jeu jeu;
-    private Coup coup;
+    private ArrayList<Coups> coups_liste;
+    private Coups coups;
     private Plateau plateau;
     private float meilleurHeuristique;
     private Random random;
 
     public IADifficile(Jeu _jeu) {
+        coups_liste = new ArrayList<>();
         jeu = _jeu;
         plateau = jeu.getPlateau();
         random = new Random();
     }
 
-    private class Coup {
+    private class Coups {
         Point batisseur;
         Point deplacement;
         Point construction;
 
-        public Coup(Point batisseur, Point deplacement, Point construction) {
+        public Coups(Point batisseur, Point deplacement, Point construction) {
             this.batisseur = batisseur;
             this.deplacement = deplacement;
             this.construction = construction;
@@ -46,7 +48,9 @@ public class IADifficile implements IA {
         if (depth == 0 || jeu.estJeufini()) {
             return heuristique(jeu);
         }
-        ArrayList<Point> batisseur_copy = new ArrayList<>(jeu.getBatisseurs(maximizingPlayer));
+
+        ArrayList<Point> batisseur_copy = null;
+        batisseur_copy = new ArrayList<>(jeu.getBatisseurs(maximizingPlayer));
         if (maximizingPlayer == Constante.JOUEUR2) { // alpha
             value = Float.NEGATIVE_INFINITY;
             for (Point batisseur : batisseur_copy) {
@@ -59,11 +63,14 @@ public class IADifficile implements IA {
                         dejouer(jeu, maximizingPlayer, index_batisseur);
                         jeu.setBatisseursJoueur(batisseur_copy);
                         jeu.setSimulation(false);
-                        if(value >= a) {
-                            coup = new Coup(batisseur, deplacement, construction);
+                        if (value > a) {
+                            coups_liste.clear();
+                            coups_liste.add(new Coups(batisseur, deplacement, construction));
                             a = value;
+                        } else if (value == a) {
+                            coups_liste.add(new Coups(batisseur, deplacement, construction));
                         }
-                        if(b <= value) return value;
+                        if (b <= value) return value;
                     }
                 }
             }
@@ -79,11 +86,14 @@ public class IADifficile implements IA {
                         value = Math.min(value, alphabeta(jeu, depth - 1, a, b, (maximizingPlayer % 16) + 8));
                         dejouer(jeu, maximizingPlayer, index_batisseur);
                         jeu.setSimulation(false);
-                        if(value <= b) {
-                            coup = new Coup(batisseur, deplacement, construction);
+                        if (value < b) {
+                            coups_liste.clear();
+                            coups_liste.add(new Coups(batisseur, deplacement, construction));
                             b = value;
+                        } else if (value == b) {
+                            coups_liste.add(new Coups(batisseur, deplacement, construction));
                         }
-                        if(a >= value) return value;
+                        if (a >= value) return value;
                     }
                 }
             }
@@ -93,11 +103,9 @@ public class IADifficile implements IA {
 
     /**
      * Joue un tour complet
-     * TODO: SIMULER LE COUP ET PAS LE JOUER
      */
     private void jouer(Jeu _jeu, Point batisseur, Point deplacement, Point construire) {
         // Selection
-//        System.out.println("===============DEBUT TOUR===============");
         prevPos = batisseur;
         _jeu.joueSelection(batisseur);
         // Déplacement
@@ -107,8 +115,6 @@ public class IADifficile implements IA {
         prevHaut = _jeu.getPlateau().getTypeBatiments(construire);
         construction = construire;
         _jeu.joueConstruction(construire);
-
-//        System.out.println("================FIN TOUR================\n");
     }
 
     Point batisseur;
@@ -233,19 +239,18 @@ public class IADifficile implements IA {
             case PLACEMENT:
                 return jouePlacement();
             case SELECTION:
-                alphabeta(jeu, 1, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, jeu.getJoueur_en_cours());
-                System.out.println(coup);
-                return coup.batisseur;
+                alphabeta(jeu, 2, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, jeu.getJoueur_en_cours());
+                coups = coups_liste.get(random.nextInt(coups_liste.size()));
+                return coups.batisseur;
             case DEPLACEMENT:
-                return coup.deplacement;
+                return coups.deplacement;
             case CONSTRUCTION:
-                return coup.construction;
+                return coups.construction;
             default:
                 break;
         }
         return null;
     }
-
 
 
     private Point jouePlacement() {

@@ -147,7 +147,7 @@ public class Jeu {
 
     public void joueConstruction(Point position) {
         if (!jeu_fini && construire(position, batisseur_en_cours)) {
-            construction_son.joueSon(false);
+            if(!in_simulation) construction_son.joueSon(false);
             cmd = new CoupConstruire(joueur_en_cours, position, batisseur_en_cours);
             finTour();
             situation = SELECTION;
@@ -366,7 +366,7 @@ public class Jeu {
     public ArrayList<Point> getBatisseurs(int joueur) {
         if (joueur == j1.getNum_joueur()) {
             return j1.getBatisseurs();
-        } else if (joueur_en_cours == j2.getNum_joueur()) {
+        } else if (joueur == j2.getNum_joueur()) {
             return j2.getBatisseurs();
         } else {
             return null;
