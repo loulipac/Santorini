@@ -11,6 +11,7 @@ public class Constante {
      * Chemin vers le dossier de ressource ({@value #CHEMIN_RESSOURCE})
      */
     public static final String CHEMIN_RESSOURCE = "./src/Ressources";
+    public static final String SAVES_PATH = "./saves/";
 
     public static final Dimension FENETRE_1920x1080 = new Dimension(1920, 1080);
     public static final Dimension FENETRE_1600x900 = new Dimension(1600, 900);

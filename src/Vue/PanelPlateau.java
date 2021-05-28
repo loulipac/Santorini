@@ -10,6 +10,7 @@ import static Modele.Constante.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -313,6 +314,7 @@ public class PanelPlateau extends JPanel implements Observer {
             parametres_texte.setAlignmentX(CENTER_ALIGNMENT);
 
             /* Boutons*/
+            JButton bCharger = new JButton("CHARGER");
             bAbandonner = new Bouton(CHEMIN_RESSOURCE + "/bouton/abandonner.png", CHEMIN_RESSOURCE + "/bouton/abandonner_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
             bNouvellePartie = new Bouton(CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE + "/bouton/nouvelle_partie_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
             bSauvegarder = new Bouton(CHEMIN_RESSOURCE + "/bouton/sauvegarder.png", CHEMIN_RESSOURCE + "/bouton/sauvegarder_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
@@ -327,6 +329,7 @@ public class PanelPlateau extends JPanel implements Observer {
             bReprendre.addActionListener(echap);
             bNouvellePartie.addActionListener(this::actionBoutonNouvelle);
             bSauvegarder.addActionListener(this::actionBoutonSauvergarder);
+            bCharger.addActionListener(this::actionCharger);
 
             /* Adding */
             contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
@@ -337,6 +340,8 @@ public class PanelPlateau extends JPanel implements Observer {
             contenu.add(bNouvellePartie);
             contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
             contenu.add(bSauvegarder);
+            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
+            contenu.add(bCharger);
             contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
             contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
             contenu.add(bReprendre);
@@ -361,6 +366,20 @@ public class PanelPlateau extends JPanel implements Observer {
             f2.setPlateau(new PanelPlateau(taille_fenetre, ia1_mode, ia2_mode));
             f2.getPileCarte().show(f2.panelPrincipal, "plateau");
         }
+
+
+        public void actionCharger(ActionEvent e) {
+            JFileChooser chooser = new JFileChooser(SAVES_PATH);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Sauvegardes", "sav");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(this);
+            if(returnVal == JFileChooser.APPROVE_OPTION) {
+                jeu.charger(chooser.getSelectedFile().getName());
+                pp.setVisible(false);
+            }
+        }
+
 
         @Override
         protected void paintComponent(Graphics g) {

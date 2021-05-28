@@ -29,6 +29,7 @@ public class Jeu {
     int vitesse_ia;
 
     Joueur j1, j2;
+    Commande cmd;
 
     /**
      * Instantie une classe jeu.
@@ -81,8 +82,6 @@ public class Jeu {
         }
     }
 
-    Commande cmd;
-
     /**
      * Effectue des actions selon la situation du jeu parmi placement des batisseurs, selection de batisseur, déplacement des batisseurs et construction des bâtiments.
      */
@@ -120,13 +119,11 @@ public class Jeu {
 
 
     private void joueSelection(Point position) {
-        System.out.println("Choix du batisseur.");
         batisseur_en_cours = choisirBatisseur(position);
         situation = batisseur_en_cours == null ? SELECTION : DEPLACEMENT;
     }
 
     private void joueDeplacement(Point position) {
-        System.out.println("Déplacement du batisseur.");
         Point prevPos = batisseur_en_cours;
         if (avancer(position, batisseur_en_cours)) {
             ArrayList<Point> batisseurs_en_cours = getJoueurType_en_cours().getBatisseurs();
@@ -139,7 +136,6 @@ public class Jeu {
     }
 
     private void joueConstruction(Point position) {
-        System.out.println("Construction.");
         if (!jeu_fini && construire(position, batisseur_en_cours)) {
             construction_son.joueSon(false);
             cmd = new CoupConstruire(joueur_en_cours, position, batisseur_en_cours);
@@ -260,7 +256,20 @@ public class Jeu {
     }
 
     public void sauvegarder() {
-        System.out.println("Sauvegarde...");
+        histo.save();
+    }
+
+    public void charger(String filename) {
+        RAZ();
+        histo.load(filename);
+    }
+
+    public void RAZ() {
+        plateau.RAZ();
+        situation = PLACEMENT;
+        batisseur_en_cours = null;
+        nombre_batisseurs = 0;
+        joueur_en_cours = JOUEUR1;
     }
 
     public void undo() {

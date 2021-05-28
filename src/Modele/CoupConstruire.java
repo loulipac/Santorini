@@ -30,4 +30,10 @@ public class CoupConstruire extends Commande {
         game.MAJObservateur();
         game.iaJoue();
     }
+
+    @Override
+    public String toString() {
+        String str = position.x + " " + position.y;
+        return str;
+    }
 }

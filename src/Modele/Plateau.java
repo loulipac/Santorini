@@ -319,6 +319,10 @@ public class Plateau {
         setCase(position, getCase(position) + value);
     }
 
+    public void RAZ() {
+        cases = new int[lignes][colonnes];
+    }
+
     @Override
     public String toString() {
         String value = "";
