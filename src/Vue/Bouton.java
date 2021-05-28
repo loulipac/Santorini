@@ -2,10 +2,16 @@ package Vue;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 public class Bouton extends JButton {
     int largeur, hauteur;
     String image;
+
+    public Bouton(String image, String imageHover, int largeur, int hauteur, ActionListener action) {
+        this(image, imageHover, largeur, hauteur);
+        addActionListener(action);
+    }
 
     public Bouton(String image, String imageHover, int largeur, int hauteur) {
         this.largeur = largeur;
