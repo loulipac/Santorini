@@ -18,44 +18,38 @@ class PanelMenu extends JPanel {
     private LecteurSon son_bouton;
     Image arriere_plan, colonnes;
     boolean maximized = false, muted = false;
-    Frame frame;
+    Dimension taille_fenetre;
 
-    public PanelMenu(int largeur, int hauteur, Frame frame) {
-        this.frame = frame;
+    public PanelMenu(Dimension _taille_fenetre) {
+        taille_fenetre = _taille_fenetre;
         son_bouton = new LecteurSon("menu_click.wav");
-        /* BoxLayout */
-
-        GridLayout gridlayout = new GridLayout(1, 3);
-        setLayout(gridlayout);
+        setLayout(new GridLayout(1, 3));
 
         JPanel pListeMenu = new JPanel();
-        BoxLayout lListeMenu = new BoxLayout(pListeMenu, BoxLayout.Y_AXIS);
-        pListeMenu.setLayout(lListeMenu);
-        pListeMenu.setBorder(new EmptyBorder(new Insets(largeur / 15, 50, 30, 50)));
+        pListeMenu.setLayout(new BoxLayout(pListeMenu, BoxLayout.Y_AXIS));
         pListeMenu.setOpaque(false);
+        pListeMenu.setBorder(new EmptyBorder(new Insets(taille_fenetre.width / 15, 50, 30, 50)));
 
         JPanel pSonEcran = new JPanel();
-        BoxLayout lSonEcran = new BoxLayout(pSonEcran, BoxLayout.X_AXIS);
-        pSonEcran.setLayout(lSonEcran);
-        pSonEcran.setBorder(new EmptyBorder(new Insets(largeur / 30, largeur / 5, 30, 50)));
+        pSonEcran.setLayout(new BoxLayout(pSonEcran, BoxLayout.X_AXIS));
+        pSonEcran.setBorder(new EmptyBorder(new Insets(taille_fenetre.width / 30, taille_fenetre.width / 5, 30, 50)));
         pSonEcran.setOpaque(false);
-        pSonEcran.setSize(new Dimension(largeur, largeur / 20));
 
         /* Button */
         arriere_plan = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/artwork/base.png");
         colonnes = JeuGraphique.readImage((CHEMIN_RESSOURCE + "/artwork/columns.png"));
-        bJouer = new Bouton(CHEMIN_RESSOURCE + "/bouton/jouer.png", CHEMIN_RESSOURCE + "/bouton/jouer_hover.png", largeur / 4, largeur / 20);
-        bTutoriel = new Bouton(CHEMIN_RESSOURCE + "/bouton/tutoriel.png", CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png", largeur / 4, largeur / 20);
-        bRegles = new Bouton(CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", largeur / 4, largeur / 20);
-        bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter.png", CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", largeur / 4, largeur / 20);
-        bParametres = new Bouton(CHEMIN_RESSOURCE + "/bouton/parametres.png", CHEMIN_RESSOURCE + "/bouton/parametres_hover.png", largeur / 20, largeur / 20);
-        bFullScreen = new Bouton(CHEMIN_RESSOURCE + "/bouton/fullscreen.png", CHEMIN_RESSOURCE + "/bouton/fullscreen_hover.png", largeur / 20, largeur / 20);
-        bSon = new Bouton(CHEMIN_RESSOURCE + "/bouton/son_on.png", CHEMIN_RESSOURCE + "/bouton/son_on_hover.png", largeur / 20, largeur / 20);
+        bJouer = new Bouton(CHEMIN_RESSOURCE + "/bouton/jouer.png", CHEMIN_RESSOURCE + "/bouton/jouer_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
+        bTutoriel = new Bouton(CHEMIN_RESSOURCE + "/bouton/tutoriel.png", CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
+        bRegles = new Bouton(CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
+        bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter.png", CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
+        bParametres = new Bouton(CHEMIN_RESSOURCE + "/bouton/parametres.png", CHEMIN_RESSOURCE + "/bouton/parametres_hover.png", taille_fenetre.width / 20, taille_fenetre.width / 20);
+        bFullScreen = new Bouton(CHEMIN_RESSOURCE + "/bouton/fullscreen.png", CHEMIN_RESSOURCE + "/bouton/fullscreen_hover.png", taille_fenetre.width / 20, taille_fenetre.width / 20);
+        bSon = new Bouton(CHEMIN_RESSOURCE + "/bouton/son_on.png", CHEMIN_RESSOURCE + "/bouton/son_on_hover.png", taille_fenetre.width / 20, taille_fenetre.width / 20);
 
         /* Label */
         logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
         logo.setAlignmentX(CENTER_ALIGNMENT);
-        logo.setMaximumSize(new Dimension(largeur / 3, largeur / 9));
+        logo.setMaximumSize(new Dimension(taille_fenetre.width / 3, taille_fenetre.width / 9));
 
         /* redirection */
         bJouer.addActionListener(this::actionBoutonJouer);
@@ -74,17 +68,16 @@ class PanelMenu extends JPanel {
         pSonEcran.add(bFullScreen);
 
         pListeMenu.add(logo);
-        pListeMenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 9)));
+        pListeMenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 9)));
         pListeMenu.add(bJouer);
-        pListeMenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 45)));
+        pListeMenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 45)));
         pListeMenu.add(bTutoriel);
-        pListeMenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 45)));
+        pListeMenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 45)));
         pListeMenu.add(bRegles);
-        pListeMenu.add(Box.createRigidArea(new Dimension(largeur, hauteur / 45)));
+        pListeMenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 45)));
         pListeMenu.add(bQuitter);
 
-
-        add(Box.createRigidArea(new Dimension(largeur, hauteur / 45)));
+        add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 45)));
         add(pListeMenu);
         add(pSonEcran);
 

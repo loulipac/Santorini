@@ -30,7 +30,7 @@ public class PanelRegles extends JPanel {
     Font lilly_belle;
     Dimension taille_fenetre;
 
-    public PanelRegles(int largeur, int hauteur) {
+    public PanelRegles(Dimension _taille_fenetre) {
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
@@ -39,7 +39,7 @@ public class PanelRegles extends JPanel {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
         }
         lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT, 26);
-        taille_fenetre = new Dimension(largeur, hauteur);
+        taille_fenetre = _taille_fenetre;
         initialiserPanel();
     }
 
