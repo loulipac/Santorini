@@ -289,11 +289,11 @@ public class Plateau {
         return getCase(position) & (~7);
     }
 
-    public void removePlayer(Point position) {
+    public void enleverJoueur(Point position) {
         setCase(position, getTypeBatiments(position));
     }
 
-    public void setFloor(Point position, int value) {
+    public void MAJEtage(Point position, int value) {
         setCase(position, getCase(position) + value);
     }
 

@@ -5,30 +5,30 @@ import static Modele.Constante.*;
 import java.awt.Point;
 
 public class CoupConstruire extends Commande {
-    private Point position, builder;
+    private Point position, batisseur;
 
-    public CoupConstruire(int player, Point position, Point builder) {
-        super(player);
+    public CoupConstruire(int joueur, Point position, Point batisseur) {
+        super(joueur);
         this.position = position;
-        this.builder = builder;
+        this.batisseur = batisseur;
     }
 
     @Override
-    public void action(Jeu game, int type) {
-        int value = type == REDO ? 1 : -1;
-        game.getPlateau().setFloor(position, value);
+    public void action(Jeu jeu, int type) {
+        int valeur = type == REDO ? 1 : -1;
+        jeu.getPlateau().MAJEtage(position, valeur);
 
         int situation = CONSTRUCTION;
-        Point selected_builder = builder;
+        Point batisseur_en_cours = batisseur;
         if (type == REDO) {
             situation = SELECTION;
-            selected_builder = null;
+            batisseur_en_cours = null;
         }
-        game.setSituation(situation);
-        game.switchPlayer();
-        game.setBatisseur_en_cours(selected_builder);
-        game.MAJObservateur();
-        game.iaJoue();
+        jeu.setSituation(situation);
+        jeu.changerJoueur();
+        jeu.setBatisseur_en_cours(batisseur_en_cours);
+        jeu.MAJObservateur();
+        jeu.iaJoue();
     }
 
     @Override
@@ -43,8 +43,8 @@ public class CoupConstruire extends Commande {
 
         CoupConstruire c = (CoupConstruire) o;
 
-        return player == c.player &&
+        return joueur == c.joueur &&
                 position.equals(c.position) &&
-                builder.equals(c.builder);
+                batisseur.equals(c.batisseur);
     }
 }

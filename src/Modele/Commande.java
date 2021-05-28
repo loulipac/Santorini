@@ -3,19 +3,19 @@ package Modele;
 import static Modele.Constante.*;
 
 public abstract class Commande {
-    protected int player;
+    protected int joueur;
 
-    protected Commande(int player) {
-        this.player = player;
+    protected Commande(int joueur) {
+        this.joueur = joueur;
     }
 
-    public abstract void action(Jeu game, int type);
+    public abstract void action(Jeu jeu, int type);
 
-    public void execute(Jeu game) {
-        action(game, REDO);
+    public void execute(Jeu jeu) {
+        action(jeu, REDO);
     }
 
-    public void unexecute(Jeu game) {
-        action(game, UNDO);
+    public void desexecute(Jeu jeu) {
+        action(jeu, UNDO);
     }
 }

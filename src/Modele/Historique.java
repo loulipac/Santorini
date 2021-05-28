@@ -9,76 +9,76 @@ import java.util.*;
 import static Modele.Constante.*;
 
 public class Historique {
-    private Stack<Commande> past, future;
-    private Jeu game;
+    private Stack<Commande> passe, futur;
+    private Jeu jeu;
 
-    public Historique(Jeu game) {
-        past = new Stack<>();
-        future = new Stack<>();
-        this.game = game;
+    public Historique(Jeu jeu) {
+        passe = new Stack<>();
+        futur = new Stack<>();
+        this.jeu = jeu;
     }
 
-    public void store(Commande cmd) {
+    public void stocker(Commande cmd) {
         if (cmd == null) return;
-        past.push(cmd);
-        future = new Stack<>();
+        passe.push(cmd);
+        futur = new Stack<>();
     }
 
-    public boolean canUndo() {
-        return !past.isEmpty();
+    public boolean peutAnnuler() {
+        return !passe.isEmpty();
     }
 
-    public boolean canRedo() {
-        return !future.isEmpty();
+    public boolean peutRefaire() {
+        return !futur.isEmpty();
     }
 
-    public void undo() {
-        Commande cmd = past.pop();
-        cmd.unexecute(game);
-        future.push(cmd);
+    public void annuler() {
+        Commande cmd = passe.pop();
+        cmd.desexecute(jeu);
+        futur.push(cmd);
     }
 
-    public void redo() {
-        Commande cmd = future.pop();
-        cmd.execute(game);
-        past.push(cmd);
+    public void refaire() {
+        Commande cmd = futur.pop();
+        cmd.execute(jeu);
+        passe.push(cmd);
     }
 
-    public String save() {
+    public String sauvegarder() {
         try {
-            String pastStr = past.toString();
-            pastStr = pastStr.substring(1, pastStr.length() - 1);
+            String passeStr = passe.toString();
+            passeStr = passeStr.substring(1, passeStr.length() - 1);
 
-            ArrayList<Commande> futureArray = new ArrayList<>(future);
-            Collections.reverse(futureArray);
-            String futureStr = futureArray.toString();
-            futureStr = futureStr.substring(1, futureStr.length() - 1);
+            ArrayList<Commande> futurArray = new ArrayList<>(futur);
+            Collections.reverse(futurArray);
+            String futurStr = futurArray.toString();
+            futurStr = futurStr.substring(1, futurStr.length() - 1);
 
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-            String filename = "save_" + formatter.format(new Date()) + ".sav";
-            FileWriter file = new FileWriter(SAVES_PATH + filename);
-            file.write(pastStr + ", " + futureStr + "\n" + future.size());
-            file.close();
-            return filename;
+            String nom_fichier = "save_" + formatter.format(new Date()) + ".sav";
+            FileWriter fichier = new FileWriter(SAVES_PATH + nom_fichier);
+            fichier.write(passeStr + ", " + futurStr + "\n" + futur.size());
+            fichier.close();
+            return nom_fichier;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void load(String filename) {
+    public void charger(String nom_fichier) {
         try {
-            File file = new File(SAVES_PATH + filename);
-            Scanner reader = new Scanner(file);
+            File fichier = new File(SAVES_PATH + nom_fichier);
+            Scanner lecteur = new Scanner(fichier);
 
-            String[] points = reader.nextLine().split(", ");
+            String[] points = lecteur.nextLine().split(", ");
             for (int i = 0; i < points.length; i++) {
                 String[] coord = points[i].split(" ");
-                game.jouer(new Point(Integer.parseInt(coord[0]), Integer.parseInt(coord[1])));
+                jeu.jouer(new Point(Integer.parseInt(coord[0]), Integer.parseInt(coord[1])));
             }
 
-            int nbUndo = Integer.parseInt(reader.nextLine());
-            for (int i = 0; i < nbUndo; i++) undo();
+            int nbAnnuler = Integer.parseInt(lecteur.nextLine());
+            for (int i = 0; i < nbAnnuler; i++) annuler();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,6 +91,6 @@ public class Historique {
 
         Historique h = (Historique) o;
 
-        return past.equals(h.past) && future.equals(h.future);
+        return passe.equals(h.passe) && futur.equals(h.futur);
     }
 }

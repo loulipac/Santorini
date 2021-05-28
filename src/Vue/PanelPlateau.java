@@ -6,7 +6,6 @@ import Modele.Jeu;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -522,12 +521,12 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     public void actionUndo(ActionEvent e) {
-        jeu.undo();
+        jeu.annuler();
         jg.repaint();
     }
 
     public void actionRedo(ActionEvent e) {
-        jeu.redo();
+        jeu.refaire();
         jg.repaint();
     }
 

@@ -7,45 +7,45 @@ import java.util.Objects;
 
 public class CoupDeplacer extends Commande {
     private Point[] positions;
-    private int move;
+    private int coup;
 
-    public CoupDeplacer(int player, Point prevPos, Point newPos) {
-        super(player);
+    public CoupDeplacer(int joueur, Point pPos, Point nPos) {
+        super(joueur);
         positions = new Point[2];
-        positions[1] = prevPos;
-        positions[0] = newPos;
-        move = prevPos == null ? PLACEMENT : DEPLACEMENT;
+        positions[1] = pPos;
+        positions[0] = nPos;
+        coup = pPos == null ? PLACEMENT : DEPLACEMENT;
     }
 
     @Override
-    public void action(Jeu game, int type) {
+    public void action(Jeu jeu, int type) {
         if (positions[type] != null) {
-            game.getPlateau().ajouterJoueur(positions[type], player);
+            jeu.getPlateau().ajouterJoueur(positions[type], joueur);
         }
         int i = (type + 1) % 2;
         if (positions[i] != null) {
-            game.getPlateau().removePlayer(positions[i]);
+            jeu.getPlateau().enleverJoueur(positions[i]);
         }
 
-        if (move == PLACEMENT) {
-            game.setSituation(PLACEMENT);
+        if (coup == PLACEMENT) {
+            jeu.setSituation(PLACEMENT);
             int value = type == REDO ? 1 : -1;
-            game.setNombre_batisseurs(game.getNombre_batisseurs() + value);
+            jeu.setNombre_batisseurs(jeu.getNombre_batisseurs() + value);
             if (type == REDO) {
-                game.checkBuilderNumber();
+                jeu.verificationNbBatisseur();
             } else { // UNDO
-                if (game.getNombre_batisseurs() % 2 == 1) {
-                    game.finTour();
+                if (jeu.getNombre_batisseurs() % 2 == 1) {
+                    jeu.finTour();
                 }
             }
         } else {
-            game.setBatisseur_en_cours(positions[type]);
-            if (type == UNDO && game.estJeufini()) game.setJeu_fini(false);
-            else if (type == REDO) game.victoireJoueur();
+            jeu.setBatisseur_en_cours(positions[type]);
+            if (type == UNDO && jeu.estJeufini()) jeu.setJeu_fini(false);
+            else if (type == REDO) jeu.victoireJoueur();
             int situation = type == REDO ? CONSTRUCTION : SELECTION;
-            game.setSituation(situation);
-            game.MAJObservateur();
-            game.iaJoue();
+            jeu.setSituation(situation);
+            jeu.MAJObservateur();
+            jeu.iaJoue();
         }
     }
 
@@ -63,7 +63,7 @@ public class CoupDeplacer extends Commande {
 
         CoupDeplacer c = (CoupDeplacer) o;
 
-        return player == c.player &&
+        return joueur == c.joueur &&
                 positions[0].equals(c.positions[0]) &&
                 Objects.equals(positions[1], c.positions[1]);
     }
