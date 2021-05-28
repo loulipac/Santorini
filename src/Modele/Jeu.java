@@ -105,7 +105,7 @@ public class Jeu {
                 System.err.println("Unknown situation");
                 break;
         }
-        histo.store(cmd);
+        histo.stocker(cmd);
     }
 
     private void jouePlacement(Point position) {
@@ -114,7 +114,7 @@ public class Jeu {
             plateau.ajouterJoueur(position, joueur_en_cours);
             getJoueurType_en_cours().addBatisseur(position);
             nombre_batisseurs++;
-            checkBuilderNumber();
+            verificationNbBatisseur();
         }
     }
 
@@ -151,7 +151,7 @@ public class Jeu {
         }
     }
 
-    public void checkBuilderNumber() {
+    public void verificationNbBatisseur() {
         if (nombre_batisseurs % 2 == 0) {
             finTour();
         }
@@ -183,7 +183,7 @@ public class Jeu {
         else return nombre_batisseurs < 4;
     }
 
-    public void switchPlayer() {
+    public void changerJoueur() {
         joueur_en_cours = (joueur_en_cours % 16) + 8;
     }
 
@@ -195,7 +195,7 @@ public class Jeu {
      * Fini le tour pour le joueur en cours.
      */
     public void finTour() {
-        switchPlayer();
+        changerJoueur();
         batisseur_en_cours = null;
         MAJObservateur();
         iaJoue();
@@ -257,12 +257,12 @@ public class Jeu {
     }
 
     public String sauvegarder() {
-        return histo.save();
+        return histo.sauvegarder();
     }
 
     public void charger(String filename) {
         RAZ();
-        histo.load(filename);
+        histo.charger(filename);
     }
 
     public void RAZ() {
@@ -273,12 +273,12 @@ public class Jeu {
         joueur_en_cours = JOUEUR1;
     }
 
-    public void undo() {
-        if (histo.canUndo()) histo.undo();
+    public void annuler() {
+        if (histo.peutAnnuler()) histo.annuler();
     }
 
-    public void redo() {
-        if (histo.canRedo()) histo.redo();
+    public void refaire() {
+        if (histo.peutRefaire()) histo.refaire();
     }
 
     public boolean estJeufini() {

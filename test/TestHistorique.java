@@ -27,8 +27,8 @@ public class TestHistorique implements Observer {
     public void testHistoriqueVide() {
         Jeu game = new Jeu(5, 5, this, 0, 0);
 
-        Assertions.assertFalse(game.getHistorique().canRedo());
-        Assertions.assertFalse(game.getHistorique().canUndo());
+        Assertions.assertFalse(game.getHistorique().peutRefaire());
+        Assertions.assertFalse(game.getHistorique().peutAnnuler());
     }
 
     @Test
@@ -37,10 +37,10 @@ public class TestHistorique implements Observer {
 
         for (Point move : moves) game.jouer(move);
         Assertions.assertFalse(game.equals(new Jeu(5, 5, this, 0, 0)));
-        for (Point move : moves) game.undo();
+        for (Point move : moves) game.annuler();
         Assertions.assertTrue(game.equals(new Jeu(5, 5, this, 0, 0)));
-        Assertions.assertTrue(game.getHistorique().canRedo());
-        Assertions.assertFalse(game.getHistorique().canUndo());
+        Assertions.assertTrue(game.getHistorique().peutRefaire());
+        Assertions.assertFalse(game.getHistorique().peutAnnuler());
     }
 
     @Test
@@ -53,13 +53,13 @@ public class TestHistorique implements Observer {
             g2.jouer(move);
         }
 
-        for (int i = 0; i < 3; i++) g1.undo();
+        for (int i = 0; i < 3; i++) g1.annuler();
         Assertions.assertFalse(g1.equals(g2));
-        for (int i = 0; i < 3; i++) g1.redo();
+        for (int i = 0; i < 3; i++) g1.refaire();
         Assertions.assertTrue(g1.equals(g2));
         Assertions.assertTrue(g1.getHistorique().equals(g2.getHistorique()));
-        Assertions.assertTrue(g1.getHistorique().canUndo());
-        Assertions.assertFalse(g1.getHistorique().canRedo());
+        Assertions.assertTrue(g1.getHistorique().peutAnnuler());
+        Assertions.assertFalse(g1.getHistorique().peutRefaire());
     }
 
     @Test
@@ -70,9 +70,9 @@ public class TestHistorique implements Observer {
         for (Point move : moves) {
             g1.jouer(move);
         }
-        g1.undo();
-        g1.undo();
-        g1.undo();
+        g1.annuler();
+        g1.annuler();
+        g1.annuler();
 
         String filename = g1.sauvegarder();
 

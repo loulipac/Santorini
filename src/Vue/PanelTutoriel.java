@@ -438,12 +438,12 @@ public class PanelTutoriel extends JPanel implements Observer {
     }
 
     public void actionUndo(ActionEvent e) {
-        jeu.undo();
+        jeu.annuler();
         jg.repaint();
     }
 
     public void actionRedo(ActionEvent e) {
-        jeu.redo();
+        jeu.refaire();
         jg.repaint();
     }
 

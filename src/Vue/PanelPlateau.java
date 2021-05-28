@@ -3,13 +3,9 @@ package Vue;
 import static Modele.Constante.*;
 
 import Modele.Jeu;
-import Modele.Joueur;
-
-import static Modele.Constante.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -485,12 +481,12 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     public void actionUndo(ActionEvent e) {
-        jeu.undo();
+        jeu.annuler();
         jg.repaint();
     }
 
     public void actionRedo(ActionEvent e) {
-        jeu.redo();
+        jeu.refaire();
         jg.repaint();
     }
 
