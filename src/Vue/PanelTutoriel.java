@@ -424,7 +424,7 @@ public class PanelTutoriel extends JPanel implements Observer {
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Erreur image de fond: " + e.getMessage());
+            System.err.println("Erreur image de fond: " + e.getMessage());
         }
     }
 

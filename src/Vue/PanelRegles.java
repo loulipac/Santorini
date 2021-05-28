@@ -177,7 +177,7 @@ public class PanelRegles extends JPanel {
                 );
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Erreur image de fond: " + e.getMessage());
+                System.err.println("Erreur image de fond: " + e.getMessage());
             }
         }
     }
@@ -214,7 +214,7 @@ public class PanelRegles extends JPanel {
             );
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Erreur image de fond: " + e.getMessage());
+            System.err.println("Erreur image de fond: " + e.getMessage());
         }
     }
 

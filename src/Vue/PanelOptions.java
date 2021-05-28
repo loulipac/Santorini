@@ -216,7 +216,6 @@ class PanelOptions extends JPanel {
         PanelPlateau plateau = null;
         if(joueur_joueur.isSelected()) {
             plateau = new PanelPlateau(getSize(), 0, 0);
-            System.out.println("IA non choisi");
         } else if(joueur_ia.isSelected()) {
             if(facile.isSelected()) {
                 plateau = new PanelPlateau(getSize(), 1, 0);
@@ -225,7 +224,6 @@ class PanelOptions extends JPanel {
             } else if(difficile.isSelected()) {
                 plateau = new PanelPlateau(getSize(), 3, 0);
             }
-            System.out.println("IA choisi");
         } else if(ia_ia.isSelected()) {
             int ia_mode1 = 0, ia_mode2 = 0;
             if(facile.isSelected()) {
@@ -244,7 +242,6 @@ class PanelOptions extends JPanel {
                 ia_mode2 = 3;
             }
             plateau = new PanelPlateau(getSize(), ia_mode1, ia_mode2);
-            System.out.println("IA vs IA choisi");
         }
         fenetre.setPlateau(plateau);
         fenetre.getPileCarte().show(fenetre.panelPrincipal, "plateau");
