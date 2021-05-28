@@ -3,6 +3,7 @@ package Vue;
 import Modele.Jeu;
 import Modele.Joueur;
 import Modele.JoueurIA;
+import static Modele.Constante.*;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -40,8 +41,8 @@ public class EcouteurDeSouris extends MouseAdapter {
         if(pp.isParametreVisible()) return;
         Joueur joueur_en_cours = jeu.getJoueurType_en_cours();
         if(joueur_en_cours.getClass() != JoueurIA.class) {
-            this.largeur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getColonnes();
-            this.hauteur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getLignes();
+            this.largeur_plateau = jg.getTailleCase() * PLATEAU_COLONNES;
+            this.hauteur_plateau = jg.getTailleCase() * PLATEAU_LIGNES;
             if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
                 joueur_en_cours.joue(new Point(
                         e.getY() / jg.getTailleCase(),

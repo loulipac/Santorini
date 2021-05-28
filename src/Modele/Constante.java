@@ -39,6 +39,9 @@ public class Constante {
     public static final int TOIT = 3;
     public static final int COUPOLE = 4;
 
+    public static final int PLATEAU_LIGNES = 5;
+    public static final int PLATEAU_COLONNES = 5;
+
     final static Point CASE_CENTRALE = new Point(2, 2);
     final static int POIDS_BASE = 1;
 }

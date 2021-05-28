@@ -86,8 +86,8 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
      */
     @Override
     public void mouseMoved(MouseEvent e) {
-        this.largeur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getColonnes();
-        this.hauteur_plateau = jg.getTailleCase() * jg.getJeu().getPlateau().getLignes();
+        this.largeur_plateau = jg.getTailleCase() * PLATEAU_COLONNES;
+        this.hauteur_plateau = jg.getTailleCase() * PLATEAU_LIGNES;
         if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
