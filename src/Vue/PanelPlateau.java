@@ -3,13 +3,9 @@ package Vue;
 import static Modele.Constante.*;
 
 import Modele.Jeu;
-import Modele.Joueur;
-
-import static Modele.Constante.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -263,12 +259,16 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     private class ParametrePanel extends JPanel {
-        private Bouton bAbandonner, bNouvellePartie, bSauvegarder, bReprendre;
+        private Bouton bQuitter, bNouvellePartie, bSauvegarder, bReprendre, bCharger;
         private LecteurSon son_bouton;
 
         private class BackgroundPanel extends JPanel {
             public BackgroundPanel() {
                 super();
+                setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+                setAlignmentX(CENTER_ALIGNMENT);
+                setMaximumSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3));
+                setPreferredSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3));
                 setOpaque(false);
             }
 
@@ -298,19 +298,14 @@ public class PanelPlateau extends JPanel implements Observer {
         }
 
         public ParametrePanel() {
-            super();
+            initialiserComposant();
             setOpaque(false);
             setLayout(new GridBagLayout());
             setMaximumSize(taille_fenetre);
+        }
 
-
-            /* JPanel */
+        private void initialiserComposant() {
             BackgroundPanel contenu = new BackgroundPanel();
-            contenu.setLayout(new BoxLayout(contenu, BoxLayout.Y_AXIS));
-
-            contenu.setAlignmentX(CENTER_ALIGNMENT);
-            contenu.setMaximumSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3));
-            contenu.setPreferredSize(new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3));
 
             JLabel parametres_texte = new JLabel("Paramètres");
             parametres_texte.setForeground(new Color(82, 60, 43));
@@ -318,39 +313,44 @@ public class PanelPlateau extends JPanel implements Observer {
             parametres_texte.setAlignmentX(CENTER_ALIGNMENT);
 
             /* Boutons*/
-            JButton bCharger = new JButton("CHARGER");
-            bAbandonner = new Bouton(CHEMIN_RESSOURCE + "/bouton/abandonner.png", CHEMIN_RESSOURCE + "/bouton/abandonner_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
+            bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter_partie.png", CHEMIN_RESSOURCE + "/bouton/quitter_partie_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
             bNouvellePartie = new Bouton(CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE + "/bouton/nouvelle_partie_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
             bSauvegarder = new Bouton(CHEMIN_RESSOURCE + "/bouton/sauvegarder.png", CHEMIN_RESSOURCE + "/bouton/sauvegarder_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
-            bReprendre = new Bouton(CHEMIN_RESSOURCE + "/bouton/reprendre.png", CHEMIN_RESSOURCE + "/bouton/reprendre_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
+            bReprendre = new Bouton(CHEMIN_RESSOURCE + "/bouton/reprendre.png", CHEMIN_RESSOURCE + "/bouton/reprendre_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
+            bCharger = new Bouton(CHEMIN_RESSOURCE + "/bouton/charger.png", CHEMIN_RESSOURCE + "/bouton/charger_hover.png", taille_fenetre.width / 6, taille_fenetre.width / 30);
 
             /* Evenements */
             ActionEchap echap = new ActionEchap();
             getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
             getActionMap().put("echap", echap);
 
-            bAbandonner.addActionListener(this::actionBoutonAbandonner);
+            bQuitter.addActionListener(this::actionBoutonAbandonner);
             bReprendre.addActionListener(echap);
             bNouvellePartie.addActionListener(this::actionBoutonNouvelle);
             bSauvegarder.addActionListener(this::actionBoutonSauvergarder);
             bCharger.addActionListener(this::actionCharger);
 
             /* Adding */
-            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
+            Dimension margin_taille = new Dimension(taille_fenetre.width, taille_fenetre.height / 30);
+            addMargin(contenu, margin_taille);
             contenu.add(parametres_texte);
-            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
-            contenu.add(bAbandonner);
-            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
-            contenu.add(bNouvellePartie);
-            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
-            contenu.add(bSauvegarder);
-            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
-            contenu.add(bCharger);
-            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
-            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
+            addMargin(contenu, margin_taille);
             contenu.add(bReprendre);
-            contenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 30)));
+            addMargin(contenu, margin_taille);
+            contenu.add(bNouvellePartie);
+            addMargin(contenu, margin_taille);
+            contenu.add(bSauvegarder);
+            addMargin(contenu, margin_taille);
+            contenu.add(bCharger);
+            addMargin(contenu, margin_taille);
+            addMargin(contenu, margin_taille);
+            contenu.add(bQuitter);
+            addMargin(contenu, margin_taille);
             add(contenu);
+        }
+
+        private void addMargin(JPanel parent, Dimension taille) {
+            parent.add(Box.createRigidArea(taille));
         }
 
         public void actionBoutonAbandonner(ActionEvent e) {
