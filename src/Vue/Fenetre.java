@@ -32,7 +32,7 @@ public class Fenetre extends JFrame {
         pileCarte = new CardLayout();
         panelPrincipal = new JPanel(pileCarte);
         menu = new PanelMenu(getSize().width, getSize().height, this);
-        options = new PanelOptions(getSize().width, getSize().height);
+        options = new PanelOptions(getSize());
         regles = new PanelRegles(getSize().width, getSize().height);
         tutoriel = new PanelTutoriel(getSize(), 0, 0);
         //plateau = new PanelPlateau(getSize().width, getSize().height);
