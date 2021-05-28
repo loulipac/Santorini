@@ -196,16 +196,16 @@ public class PanelTutoriel extends JPanel implements Observer {
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
-            //int taille_case_largeur = largeur / jeu.getPlateau().getColonnes();
-            int taille_case = ((int) (taille_fenetre.height * taille_h)) / jeu.getPlateau().getLignes();
+            //int taille_case_largeur = largeur / PLATEAU_COLONNES;
+            int taille_case = ((int) (taille_fenetre.height * taille_h)) / PLATEAU_LIGNES;
 
-            jg.setPreferredSize(new Dimension(taille_case * jeu.getPlateau().getColonnes(), taille_case * jeu.getPlateau().getLignes()));
-            jg.setMaximumSize(new Dimension(taille_case * jeu.getPlateau().getColonnes(), taille_case * jeu.getPlateau().getLignes()));
+            jg.setPreferredSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
+            jg.setMaximumSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
 
             int taille = taille_fenetre.width;
 
             // place de la grille
-            taille -= taille_case * jeu.getPlateau().getColonnes();
+            taille -= taille_case * PLATEAU_COLONNES;
 
             // place des menus
             taille -= taille_fenetre.width * 0.4;

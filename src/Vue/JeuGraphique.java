@@ -74,19 +74,19 @@ public class JeuGraphique extends JComponent {
         Graphics2D drawable = (Graphics2D) g;
         //setBorder(new LineBorder(Color.RED));
 
-        //largeur = getSize().width / plateau.getColonnes();
-        hauteur = getSize().height / plateau.getLignes();
+        //largeur = getSize().width / PLATEAU_COLONNES;
+        hauteur = getSize().height / PLATEAU_LIGNES;
         //taille_case = Math.min(largeur, hauteur);
         taille_case = hauteur;
 
         // On efface tout
-        //int nouvelle_origine = (getSize().width / 2) - (taille_case * plateau.getColonnes() / 2);
+        //int nouvelle_origine = (getSize().width / 2) - (taille_case * PLATEAU_COLONNES / 2);
         int nouvelle_origine = 0;
         drawable.clearRect(
                 nouvelle_origine,
                 0,
-                taille_case * plateau.getColonnes(),
-                taille_case * plateau.getLignes() + nouvelle_origine
+                taille_case * PLATEAU_COLONNES,
+                taille_case * PLATEAU_LIGNES + nouvelle_origine
         );
 
 
@@ -96,8 +96,8 @@ public class JeuGraphique extends JComponent {
 
         Image image_batisseurs, image_case, image_batiment;
 
-        for (int l = 0; l < plateau.getLignes(); l++) {
-            for (int c = 0; c < plateau.getColonnes(); c++) {
+        for (int l = 0; l < PLATEAU_LIGNES; l++) {
+            for (int c = 0; c < PLATEAU_COLONNES; c++) {
                 Point position = new Point(l, c);
                 Point position_case = new Point(
                         c * taille_case + nouvelle_origine,
@@ -108,10 +108,10 @@ public class JeuGraphique extends JComponent {
 
 
                 switch (plateau.getTypeBatiments(position)) {
-                    case Plateau.RDC -> image_batiment = etage_1;
-                    case Plateau.ETAGE -> image_batiment = etage_2;
-                    case Plateau.TOIT -> image_batiment = etage_3;
-                    case Plateau.COUPOLE -> image_batiment = coupole;
+                    case RDC -> image_batiment = etage_1;
+                    case ETAGE -> image_batiment = etage_2;
+                    case TOIT -> image_batiment = etage_3;
+                    case COUPOLE -> image_batiment = coupole;
                     default -> image_batiment = null;
                 }
 

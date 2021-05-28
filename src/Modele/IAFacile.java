@@ -66,13 +66,11 @@ public class IAFacile implements IA {
     }
 
     private Point jouePlacement() {
-        int colonnes = j.getPlateau().getColonnes();
-        int lignes = j.getPlateau().getLignes();
         Point case_alea = null;
         do {
             case_alea = new Point(
-                    random.nextInt(colonnes),
-                    random.nextInt(lignes)
+                    random.nextInt(PLATEAU_COLONNES),
+                    random.nextInt(PLATEAU_LIGNES)
             );
         } while (!j.getPlateau().estLibre(case_alea));
         batisseurs.add(case_alea);
