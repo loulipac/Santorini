@@ -2,6 +2,7 @@ package Modele;
 
 import java.awt.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -80,7 +81,11 @@ public class Historique {
             int nbAnnuler = Integer.parseInt(lecteur.nextLine());
             for (int i = 0; i < nbAnnuler; i++) annuler();
 
+        } catch (FileNotFoundException e) {
+            System.out.println("Le fichier " + nom_fichier + " n'existe pas");
+            e.printStackTrace();
         } catch (Exception e) {
+            System.out.println("Le fichier n'a pas le bon format");
             e.printStackTrace();
         }
     }
