@@ -44,6 +44,9 @@ public class Fenetre extends JFrame {
         panelPrincipal.add(tutoriel, "tutoriel");
         //panelPrincipal.add(plateau, "plateau");
 
+        // Pour borderless window
+        //setUndecorated(true);
+
         add(panelPrincipal);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
