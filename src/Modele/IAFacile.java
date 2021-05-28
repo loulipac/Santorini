@@ -88,7 +88,6 @@ public class IAFacile implements IA {
             );
         } while (!j.getPlateau().estLibre(case_alea));
         batisseurs.add(case_alea);
-        System.out.println("Batisseur ajouté : (" + case_alea.x + ", " + case_alea.y + ")");
         return case_alea;
     }
 }
