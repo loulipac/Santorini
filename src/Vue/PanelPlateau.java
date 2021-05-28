@@ -346,9 +346,8 @@ public class PanelPlateau extends JPanel implements Observer {
         }
 
         public void actionBoutonAbandonner(ActionEvent e) {
-            Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
-            f2.removePlateau();
-            f2.getPileCarte().show(f2.panelPrincipal, "menu");
+            Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+            f.setPanel(new PanelMenu(taille_fenetre));
         }
 
         public void actionBoutonSauvergarder(ActionEvent e) {
@@ -357,10 +356,8 @@ public class PanelPlateau extends JPanel implements Observer {
         }
 
         public void actionBoutonNouvelle(ActionEvent e) {
-            Fenetre f2 = (Fenetre) SwingUtilities.getWindowAncestor(this);
-            f2.removePlateau();
-            f2.setPlateau(new PanelPlateau(taille_fenetre, ia1_mode, ia2_mode));
-            f2.getPileCarte().show(f2.panelPrincipal, "plateau");
+            Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+            f.setPanel(new PanelPlateau(taille_fenetre, ia1_mode, ia2_mode));
         }
 
 

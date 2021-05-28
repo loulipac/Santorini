@@ -237,8 +237,8 @@ class PanelOptions extends JPanel {
      */
     public void actionBoutonRetourMenu(ActionEvent e) {
         son_bouton.joueSon(false);
-        Fenetre fenetre = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        fenetre.getPileCarte().show(fenetre.panelPrincipal, "menu");
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.setPanel(new PanelMenu(taille_fenetre));
     }
 
 
@@ -248,7 +248,7 @@ class PanelOptions extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonCommencer(ActionEvent e) {
-        Fenetre fenetre = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
 
         PanelPlateau plateau = null;
         int ia_mode2 = 0, ia_mode1 = 0;
@@ -266,8 +266,7 @@ class PanelOptions extends JPanel {
         }
 
         plateau = new PanelPlateau(getSize(), ia_mode1, ia_mode2);
-        fenetre.setPlateau(plateau);
-        fenetre.getPileCarte().show(fenetre.panelPrincipal, "plateau");
+        f.setPanel(plateau);
     }
 
     /**
