@@ -3,32 +3,19 @@ package Modele;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static Modele.Constante.JOUEUR1;
+import static Modele.Constante.*;
 
 /**
  * Classe gérant les cases de la grille dont les constructions de bâtiment et la pose de batisseurs.
  */
 public class Plateau {
     private int[][] cases;
-    private int lignes;
-    private int colonnes;
-
-    public static final int VIDE = 0;
-    public static final int RDC = 1;
-    public static final int ETAGE = 2;
-    public static final int TOIT = 3;
-    public static final int COUPOLE = 4;
 
     /**
-     * Instantie une classe Plateau depuis une taille de grille passé en paramètre du constructeur.
-     *
-     * @param nombre_lignes
-     * @param nombre_colonnes
+     * Instantie un objet Plateau.
      */
-    public Plateau(int nombre_lignes, int nombre_colonnes) {
-        cases = new int[nombre_lignes][nombre_colonnes];
-        lignes = nombre_lignes;
-        colonnes = nombre_colonnes;
+    public Plateau() {
+        cases = new int[PLATEAU_LIGNES][PLATEAU_COLONNES];
     }
 
     /**
@@ -196,8 +183,8 @@ public class Plateau {
         int c = batisseurs.y;
 
         boolean case_existe_haut = l - 1 >= 0;
-        boolean case_existe_bas = l + 1 < lignes;
-        boolean case_existe_droite = c + 1 < colonnes;
+        boolean case_existe_bas = l + 1 < PLATEAU_LIGNES;
+        boolean case_existe_droite = c + 1 < PLATEAU_COLONNES;
         boolean case_existe_gauche = c - 1 >= 0;
 
         if (case_existe_haut) {
@@ -242,8 +229,8 @@ public class Plateau {
         int c = batisseurs.y;
 
         boolean case_existe_haut = l - 1 >= 0;
-        boolean case_existe_bas = l + 1 < lignes;
-        boolean case_existe_droite = c + 1 < colonnes;
+        boolean case_existe_bas = l + 1 < PLATEAU_LIGNES;
+        boolean case_existe_droite = c + 1 < PLATEAU_COLONNES;
         boolean case_existe_gauche = c - 1 >= 0;
 
         if (case_existe_haut) {
@@ -294,15 +281,6 @@ public class Plateau {
         return cases[position.x][position.y];
     }
 
-
-    public int getLignes() {
-        return lignes;
-    }
-
-    public int getColonnes() {
-        return colonnes;
-    }
-
     public int getTypeBatiments(Point position) {
         return getCase(position) & 7;
     }
@@ -320,14 +298,14 @@ public class Plateau {
     }
 
     public void RAZ() {
-        cases = new int[lignes][colonnes];
+        cases = new int[PLATEAU_LIGNES][PLATEAU_COLONNES];
     }
 
     @Override
     public String toString() {
         String value = "";
-        for (int i = 0; i < lignes; i++) {
-            for (int j = 0; j < colonnes; j++) {
+        for (int i = 0; i < PLATEAU_LIGNES; i++) {
+            for (int j = 0; j < PLATEAU_COLONNES; j++) {
                 Point pos = new Point(i, j);
                 value += "| " + getTypeBatisseurs(pos) / JOUEUR1 + " : " + getTypeBatiments(pos) + " ";
             }
@@ -342,8 +320,8 @@ public class Plateau {
 
         Plateau pl = (Plateau) o;
 
-        for (int i = 0; i < lignes; i++) {
-            for (int j = 0; j < colonnes; j++) {
+        for (int i = 0; i < PLATEAU_LIGNES; i++) {
+            for (int j = 0; j < PLATEAU_COLONNES; j++) {
                 Point p = new Point(i, j);
                 if (this.getCase(p) != pl.getCase(p)) return false;
             }

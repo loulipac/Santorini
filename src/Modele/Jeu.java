@@ -44,7 +44,7 @@ public class Jeu {
         ia_statut = true;
         situation = PLACEMENT;
         joueur_en_cours = JOUEUR1;
-        plateau = new Plateau(l, c);
+        plateau = new Plateau();
         nombre_batisseurs = 0;
         batisseur_en_cours = null;
         construction_son = new LecteurSon("boulder_drop.wav");
@@ -238,7 +238,7 @@ public class Jeu {
      * Si c'est le cas, le jeu s'arrête et l'observateur est notifié de la victoire.
      */
     public void victoireJoueur() {
-        if (batisseur_en_cours != null && plateau.getTypeBatiments(batisseur_en_cours) == Plateau.TOIT) {
+        if (batisseur_en_cours != null && plateau.getTypeBatiments(batisseur_en_cours) == TOIT) {
             System.out.println("cest fini");
             gagnant = getJoueurType_en_cours();
             jeu_fini = true;
