@@ -5,7 +5,6 @@ import static Modele.Constante.*;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
@@ -13,42 +12,84 @@ import java.io.File;
 
 class PanelMenu extends JPanel {
 
-    private Bouton bJouer, bTutoriel, bRegles, bQuitter, bFullScreen, bParametres, bSon;
+    private Bouton bJouer;
+    private Bouton bTutoriel;
+    private Bouton bRegles;
+    private Bouton bQuitter;
+    private Bouton bFullScreen;
+    private Bouton bSon;
     private JLabel logo;
-    private LecteurSon son_bouton;
-    Image arriere_plan, colonnes;
-    boolean maximized = false, muted = false;
-    Dimension taille_fenetre;
+    private final LecteurSon son_bouton;
+    boolean maximized = false;
+    boolean muted = false;
+    private final Dimension taille_fenetre;
 
     public PanelMenu(Dimension _taille_fenetre) {
         taille_fenetre = _taille_fenetre;
         son_bouton = new LecteurSon("menu_click.wav");
-        setLayout(new GridLayout(1, 3));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        JPanel pListeMenu = new JPanel();
-        pListeMenu.setLayout(new BoxLayout(pListeMenu, BoxLayout.Y_AXIS));
-        pListeMenu.setOpaque(false);
-        pListeMenu.setBorder(new EmptyBorder(new Insets(taille_fenetre.width / 15, 50, 30, 50)));
+        JLayeredPane main_panel = new JLayeredPane();
+        main_panel.setOpaque(false);
+        main_panel.setLayout(new OverlayLayout(main_panel));
 
-        JPanel pSonEcran = new JPanel();
-        pSonEcran.setLayout(new BoxLayout(pSonEcran, BoxLayout.X_AXIS));
-        pSonEcran.setBorder(new EmptyBorder(new Insets(taille_fenetre.width / 30, taille_fenetre.width / 5, 30, 50)));
-        pSonEcran.setOpaque(false);
+        JPanel main_contenu = new JPanel();
+        main_contenu.setOpaque(false);
+        main_contenu.setLayout(new BoxLayout(main_contenu, BoxLayout.Y_AXIS));
+        main_contenu.setMaximumSize(taille_fenetre);
 
-        /* Button */
-        arriere_plan = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/artwork/base.png");
-        colonnes = JeuGraphique.readImage((CHEMIN_RESSOURCE + "/artwork/columns.png"));
-        bJouer = new Bouton(CHEMIN_RESSOURCE + "/bouton/jouer.png", CHEMIN_RESSOURCE + "/bouton/jouer_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
-        bTutoriel = new Bouton(CHEMIN_RESSOURCE + "/bouton/tutoriel.png", CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
-        bRegles = new Bouton(CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
-        bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter.png", CHEMIN_RESSOURCE + "/bouton/quitter_hover.png", taille_fenetre.width / 4, taille_fenetre.width / 20);
-        bFullScreen = new Bouton(CHEMIN_RESSOURCE + "/bouton/fullscreen.png", CHEMIN_RESSOURCE + "/bouton/fullscreen_hover.png", taille_fenetre.width / 20, taille_fenetre.width / 20);
-        bSon = new Bouton(CHEMIN_RESSOURCE + "/bouton/son_on.png", CHEMIN_RESSOURCE + "/bouton/son_on_hover.png", taille_fenetre.width / 20, taille_fenetre.width / 20);
+        JPanel floating_button = new JPanel();
+        floating_button.setLayout(new BorderLayout());
+        floating_button.setOpaque(false);
+        floating_button.setMaximumSize(new Dimension((int) (taille_fenetre.width - taille_fenetre.height * 0.15), (int) (taille_fenetre.height - taille_fenetre.height * 0.15)));
+        JPanel constraint = new JPanel();
+        constraint.setOpaque(false);
+        floating_button.setLayout(new BorderLayout());
+
+        double ratio_marge = 0.02;
+        double ratio_logo = 0.35;
+        double ratio_footer = 0.15;
+        double taille_restante = taille_fenetre.height - taille_fenetre.height * (ratio_logo + ratio_footer) - (taille_fenetre.height * ratio_marge) * 5;
+        double height = taille_restante / 4;
+
+        Dimension taille_bouton = new Dimension(
+                (int) (height * RATIO_BOUTON_CLASSIQUE),
+                (int) (height)
+        );
+
+        Dimension taille_petit_bouton = new Dimension(
+                (int) (height * RATIO_BOUTON_PETIT),
+                (int) (height)
+        );
+
+        bJouer = new Bouton(CHEMIN_RESSOURCE + "/bouton/jouer.png", CHEMIN_RESSOURCE + "/bouton/jouer_hover.png",
+                taille_bouton.width, taille_bouton.height);
+        bTutoriel = new Bouton(CHEMIN_RESSOURCE + "/bouton/tutoriel.png", CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png",
+                taille_bouton.width, taille_bouton.height);
+        bRegles = new Bouton(CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png",
+                taille_bouton.width, taille_bouton.height);
+        bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter.png", CHEMIN_RESSOURCE + "/bouton/quitter_hover.png",
+                taille_bouton.width, taille_bouton.height);
+
+        bFullScreen = new Bouton(CHEMIN_RESSOURCE + "/bouton/fullscreen.png", CHEMIN_RESSOURCE + "/bouton/fullscreen_hover.png",
+                taille_petit_bouton.width, taille_bouton.height);
+        bSon = new Bouton(CHEMIN_RESSOURCE + "/bouton/son_on.png", CHEMIN_RESSOURCE + "/bouton/son_on_hover.png",
+                taille_petit_bouton.width, taille_bouton.height);
 
         /* Label */
-        logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
+        JPanel logoPanel = new JPanel();
+        logoPanel.setOpaque(false);
+        logoPanel.setLayout(new GridBagLayout());
+        ImageIcon logo_img = new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo_hd.png");
+        double ratio_logo_img = (double) logo_img.getIconWidth() / logo_img.getIconHeight();
+        double taille_logo = taille_fenetre.height * 0.15;
+        ImageIcon logo_resize = new ImageIcon(logo_img.getImage().getScaledInstance((int) (taille_logo * ratio_logo_img), (int) (taille_logo), Image.SCALE_SMOOTH));
+        logo = new JLabel(logo_resize);
         logo.setAlignmentX(CENTER_ALIGNMENT);
-        logo.setMaximumSize(new Dimension(taille_fenetre.width / 3, taille_fenetre.width / 9));
+        Dimension logoPanel_taille = new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * ratio_logo));
+        logoPanel.setMaximumSize(logoPanel_taille);
+        logoPanel.setPreferredSize(logoPanel_taille);
+        logoPanel.add(logo);
 
         /* redirection */
         bJouer.addActionListener(this::actionBoutonJouer);
@@ -62,24 +103,33 @@ class PanelMenu extends JPanel {
         /* Adding */
         bFullScreen.setAlignmentY(TOP_ALIGNMENT);
         bSon.setAlignmentY(TOP_ALIGNMENT);
-        pSonEcran.add(bSon);
-        pSonEcran.add(bFullScreen);
+        constraint.setBorder(BorderFactory.createEmptyBorder((int) (taille_bouton.height * 0.1), (int) (taille_bouton.height * 0.1), 5, 5));
+        constraint.add(bSon, BorderLayout.NORTH);
+        constraint.add(bFullScreen, BorderLayout.NORTH);
+        floating_button.add(constraint, BorderLayout.EAST);
 
-        pListeMenu.add(logo);
-        pListeMenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 9)));
-        pListeMenu.add(bJouer);
-        pListeMenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 45)));
-        pListeMenu.add(bTutoriel);
-        pListeMenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 45)));
-        pListeMenu.add(bRegles);
-        pListeMenu.add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 45)));
-        pListeMenu.add(bQuitter);
+        Dimension taille_margin = new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * ratio_marge));
 
-        add(Box.createRigidArea(new Dimension(taille_fenetre.width, taille_fenetre.height / 45)));
-        add(pListeMenu);
-        add(pSonEcran);
+        main_contenu.add(logoPanel);
+        addMargin(main_contenu, taille_margin);
+        main_contenu.add(bJouer);
+        addMargin(main_contenu, taille_margin);
+        main_contenu.add(bTutoriel);
+        addMargin(main_contenu, taille_margin);
+        main_contenu.add(bRegles);
+        addMargin(main_contenu, taille_margin);
+        main_contenu.add(bQuitter);
+        addMargin(main_contenu, new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * ratio_footer)));
+
+        main_panel.add(main_contenu, JLayeredPane.DEFAULT_LAYER);
+        main_panel.add(floating_button, JLayeredPane.POPUP_LAYER);
+        add(main_panel);
 
         setBackground(new Color(47, 112, 162));
+    }
+
+    private void addMargin(JPanel parent, Dimension taille) {
+        parent.add(Box.createRigidArea(taille));
     }
 
     /**
@@ -163,10 +213,10 @@ class PanelMenu extends JPanel {
             muted = true;
         }
         Mixer.Info[] infos = AudioSystem.getMixerInfo();
-        for (Mixer.Info info: infos) {
+        for (Mixer.Info info : infos) {
             Mixer mixer = AudioSystem.getMixer(info);
             Line[] lines = mixer.getSourceLines();
-            for(Line line : lines) {
+            for (Line line : lines) {
                 BooleanControl bc = (BooleanControl) line.getControl(BooleanControl.Type.MUTE);
                 if (bc != null) {
                     bc.setValue(muted);
@@ -176,6 +226,7 @@ class PanelMenu extends JPanel {
 
     }
 
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
@@ -186,8 +237,9 @@ class PanelMenu extends JPanel {
         try {
             BufferedImage img = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/base.png"));
             Dimension img_dim = new Dimension(img.getWidth(), img.getHeight());
-            Dimension taille_max = new Dimension((int) (getWidth() * 0.8), (int) (getHeight() * 0.8));
+            Dimension taille_max = new Dimension((int) (taille_fenetre.width * 0.7), (int) (taille_fenetre.height * 0.7));
             Dimension taille_redimensionnee = conserverRatio(img_dim, taille_max);
+
             g2d.drawImage(
                     img,
                     getWidth() / 2 - ((int) (taille_redimensionnee.getWidth() / 2)),
@@ -208,33 +260,17 @@ class PanelMenu extends JPanel {
             );
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Erreur image de fond: " + e.getMessage());
+            System.err.println("Erreur image de fond: " + e.getMessage());
         }
     }
 
-    public Dimension conserverRatio(Dimension imgSize, Dimension boundary) {
-        int largeur_original = imgSize.width;
-        int hauteur_original = imgSize.height;
-        int largeur_max = boundary.width;
-        int hauteur_max = boundary.height;
-        int nouvelle_largeur = largeur_original;
-        int nouvelle_hauteur = hauteur_original;
+    private Dimension conserverRatio(Dimension imageSize, Dimension boundary) {
 
-        // first check if we need to scale width
-        if (largeur_original > largeur_max) {
-            //scale width to fit
-            nouvelle_largeur = largeur_max;
-            //scale height to maintain aspect ratio
-            nouvelle_hauteur = (nouvelle_largeur * hauteur_original) / largeur_original;
-        }
-        // then check if we need to scale even with the new height
-        if (nouvelle_hauteur > hauteur_max) {
-            //scale height to fit instead
-            nouvelle_hauteur = hauteur_max;
-            //scale width to maintain aspect ratio
-            nouvelle_largeur = (nouvelle_hauteur * largeur_original) / hauteur_original;
-        }
+        double widthRatio = boundary.getWidth() / imageSize.getWidth();
+        double heightRatio = boundary.getHeight() / imageSize.getHeight();
+        double ratio = Math.min(widthRatio, heightRatio);
 
-        return new Dimension(nouvelle_largeur, nouvelle_hauteur);
+        return new Dimension((int) (imageSize.width * ratio),
+                (int) (imageSize.height * ratio));
     }
 }
