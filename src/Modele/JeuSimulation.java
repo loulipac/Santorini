@@ -79,8 +79,6 @@ public class JeuSimulation {
     }
 
     public JoueurLambda createCloneJoueur(Joueur _j) {
-        System.out.println(_j.getBatisseurs());
-        System.out.println(_j.getNum_joueur());
         JoueurLambda j = new JoueurLambda(_j.getNum_joueur());
         for(Point batisseur : _j.getBatisseurs()) {
             j.addBatisseur(batisseur);
