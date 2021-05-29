@@ -39,6 +39,13 @@ public class Constante {
     public static final int TOIT = 3;
     public static final int COUPOLE = 4;
 
+    final static int[][] POIDS_CASES = {
+            {100, 50, 25, 12, 0},
+            {0, 100, 50, 25, 12},
+            {0, 0, 100, 50, 25},
+            {0, 0, 0, 0, 100}
+            {0, 0, 0, 100, 50},
+    };
     public static final int PLATEAU_LIGNES = 5;
     public static final int PLATEAU_COLONNES = 5;
 
