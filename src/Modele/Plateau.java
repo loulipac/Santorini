@@ -132,7 +132,7 @@ public class Plateau {
      * Vérifie que l'on peut sélectionner le batisseur aux coordonnées (position) appartient au joueur.
      *
      * @param position la position sur la grille
-     * @param joueur le numéro de joueur (joueur en cours)
+     * @param joueur   le numéro de joueur (joueur en cours)
      */
     public boolean estBatisseur(Point position, int joueur) {
         return getTypeBatisseurs(position) == joueur;
@@ -151,7 +151,7 @@ public class Plateau {
     /**
      * Vérifie que la case de la grille visé peut acceuillir le batisseur (deplacement vers le haut de uniquement 1 de hauteur).
      *
-     * @param position la position sur la grille
+     * @param position  la position sur la grille
      * @param batisseur position (x;y) d'un batisseur
      * @return si la case peut acceuillir un batisseur
      */
@@ -164,7 +164,7 @@ public class Plateau {
      * Ajoute un joueur sur la case de la grille.
      *
      * @param position la position sur la grille
-     * @param joueur le numéro de joueur (joueur en cours)
+     * @param joueur   le numéro de joueur (joueur en cours)
      */
     public void ajouterJoueur(Point position, int joueur) {
         setCase(position, (getTypeBatiments(position) | joueur));
@@ -173,7 +173,7 @@ public class Plateau {
     /**
      * Vérifie que la distance entre le batisseur et le case cliqué est inférieur à 2 (en x et en y)
      *
-     * @param position la position sur la grille
+     * @param position  la position sur la grille
      * @param batisseur position (x;y) d'un batisseur
      * @return vrai s'il est possible d'atteindre la case
      */
@@ -273,6 +273,42 @@ public class Plateau {
             constructions_possibles.add(new Point(batisseurs.x, batisseurs.y + 1));
         }
         return constructions_possibles;
+    }
+
+    public ArrayList<Point> getCasesVoisines(Point batisseur) {
+        ArrayList<Point> cases_acessibles = new ArrayList<>();
+
+        int l = batisseur.x;
+        int c = batisseur.y;
+
+        boolean case_existe_haut = l - 1 >= 0;
+        boolean case_existe_bas = l + 1 < lignes;
+        boolean case_existe_droite = c + 1 < colonnes;
+        boolean case_existe_gauche = c - 1 >= 0;
+
+        if (case_existe_haut) {
+            if (case_existe_gauche) {
+                cases_acessibles.add(new Point(l - 1, c - 1));
+            }
+            if (case_existe_droite) {
+                cases_acessibles.add(new Point(l - 1, c + 1));
+            }
+        }
+        if (case_existe_bas) {
+            if (case_existe_gauche) {
+                cases_acessibles.add(new Point(l + 1, c - 1));
+            }
+            if (case_existe_droite) {
+                cases_acessibles.add(new Point(l + 1, c + 1));
+            }
+        }
+        if (case_existe_gauche) {
+            cases_acessibles.add(new Point(batisseur.x, batisseur.y - 1));
+        }
+        if (case_existe_droite) {
+            cases_acessibles.add(new Point(batisseur.x, batisseur.y + 1));
+        }
+        return cases_acessibles;
     }
 
     /**

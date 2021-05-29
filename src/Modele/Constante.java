@@ -40,5 +40,21 @@ public class Constante {
     public static final int COUPOLE = 4;
 
     final static Point CASE_CENTRALE = new Point(2, 2);
+
     final static int POIDS_BASE = 1;
+    //    final static int[][] POIDS_CASES = {
+//            {0, 0, 0, 0, 0},
+//            {100, 100, 0, 0, 0},
+//            {200, 200, 200, 0, 0},
+//            {100, 100, 100, 100, 0},
+//            {0, 0, 0, 0, 0}
+//    };
+    final static int[][] POIDS_CASES = {
+            {100, 50, 25, 12, 0},
+            {0, 100, 50, 25, 12},
+            {0, 0, 100, 50, 25},
+            {0, 0, 0, 100, 50},
+            {0, 0, 0, 0, 100}
+    };
+
 }

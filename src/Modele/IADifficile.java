@@ -64,6 +64,7 @@ public class IADifficile implements IA {
                         jeu_simulation.reset();
 
                         if (value >= a) {
+                            System.out.println(value);
                             coups_liste.clear();
                             coups_liste.add(new Coups(batisseur, deplacement, construction));
                             a = value;
@@ -235,11 +236,33 @@ public class IADifficile implements IA {
         return heuristique;
     }
 
+    private float valeurVerticale(JeuSimulation _jeu) {
+        float heuristique = 0;
+        ArrayList<JeuSimulation.JoueurLambda> js = new ArrayList<>();
+        js.add(_jeu.j1);
+        js.add(_jeu.j2);
+        for(JeuSimulation.JoueurLambda j : js) {
+            int index = (js.indexOf(j) == 0) ? 1 : -1;
+            for (Point batisseur : j.getBatisseurs()) {
+                ArrayList<Point> _cases = _jeu.getPlateau().getCasesVoisines(batisseur);
+                int etageBatisseur = _jeu.getPlateau().getTypeBatiments(batisseur);
+//                System.out.println("====UN BATISSEUR====");
+                for (Point _case : _cases) {
+//                    System.out.println(_case);
+                    heuristique += POIDS_CASES[_jeu.getPlateau().getTypeBatiments(_case)][etageBatisseur] * index;
+                }
+            }
+        }
+        return heuristique;
+    }
+
     private float heuristique(JeuSimulation _jeu) {
-        return POIDS_BASE * caseCentrale(_jeu) +
-                POIDS_BASE * combinaisonHauteur(_jeu) +
-                10000000 * menaceDuNiveau2(_jeu) +
-                50 * mobiliteVerticale(_jeu);
+        return valeurVerticale(_jeu);
+//        return POIDS_BASE * caseCentrale(_jeu) +
+//                POIDS_BASE * combinaisonHauteur(_jeu) +
+//                10000000 * menaceDuNiveau2(_jeu) +
+//                50 * mobiliteVerticale(_jeu) +
+//                valeurVerticale(_jeu);
     }
 
     @Override
@@ -250,7 +273,7 @@ public class IADifficile implements IA {
             case SELECTION:
 
                 JeuSimulation jeu_simulation = new JeuSimulation(jeu.getPlateau(), jeu.j1,jeu.j2);
-                alphabeta(jeu_simulation, 3, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, jeu.getJoueur_en_cours());
+                alphabeta(jeu_simulation, 2, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, jeu.getJoueur_en_cours());
                 coups = coups_liste.get(random.nextInt(coups_liste.size()));
                 return coups.batisseur;
             case DEPLACEMENT:
