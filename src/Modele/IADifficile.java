@@ -43,7 +43,7 @@ public class IADifficile implements IA {
         }
     }
 
-    public float alphabeta(Jeu jeu, int depth, float a, float b, int maximizingPlayer) {
+    public float alphabeta(JeuSimulation jeu, int depth, float a, float b, int maximizingPlayer) {
         float value;
         if (depth == 0 || jeu.estJeufini()) {
             return heuristique(jeu);
@@ -56,20 +56,21 @@ public class IADifficile implements IA {
             for (Point batisseur : batisseur_copy) {
                 for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
                     for (Point construction : plateau.getConstructionsPossible(deplacement)) {
-                        jeu.setSimulation(true);
-                        int index_batisseur = batisseur_copy.indexOf(batisseur);
-                        CoupHisto c = jouer(jeu, batisseur, deplacement, construction, maximizingPlayer);
-                        value = Math.max(value, alphabeta(jeu, depth - 1, a, b, (maximizingPlayer % 16) + 8));
-                        dejouer(jeu, maximizingPlayer, index_batisseur, c);
-                        jeu.setSimulation(false);
-                        if (value > a) {
+
+                        JeuSimulation jeu_simulation = new JeuSimulation(jeu.getPlateau(), jeu.j1, jeu.j2);
+
+                        jouer(jeu_simulation, new Coups(batisseur, deplacement, construction), maximizingPlayer);
+                        value = Math.max(value, alphabeta(jeu_simulation, depth - 1, a, b, (maximizingPlayer % 16) + 8));
+                        jeu_simulation.reset();
+
+                        if (value >= a) {
                             coups_liste.clear();
                             coups_liste.add(new Coups(batisseur, deplacement, construction));
                             a = value;
                         } else if (value == a) {
-                            coups_liste.add(new Coups(batisseur, deplacement, construction));
+                            //coups_liste.add(new Coups(batisseur, deplacement, construction));
                         }
-                        if (b <= value) return value;
+                        //if (b <= value) return value;
                     }
                 }
             }
@@ -79,20 +80,21 @@ public class IADifficile implements IA {
             for (Point batisseur : batisseur_copy) {
                 for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
                     for (Point construction : plateau.getConstructionsPossible(deplacement)) {
-                        jeu.setSimulation(true);
-                        int index_batisseur = batisseur_copy.indexOf(batisseur);
-                        CoupHisto c = jouer(jeu, batisseur, deplacement, construction, maximizingPlayer);
-                        value = Math.min(value, alphabeta(jeu, depth - 1, a, b, (maximizingPlayer % 16) + 8));
-                        dejouer(jeu, maximizingPlayer, index_batisseur, c);
-                        jeu.setSimulation(false);
-                        if (value < b) {
+
+                        JeuSimulation jeu_simulation = new JeuSimulation(jeu.getPlateau(), jeu.j1, jeu.j2);
+
+                        jouer(jeu_simulation, new Coups(batisseur, deplacement, construction), maximizingPlayer);
+                        value = Math.min(value, alphabeta(jeu_simulation, depth - 1, a, b, (maximizingPlayer % 16) + 8));
+                        jeu_simulation.reset();
+
+                        if (value <= b) {
                             coups_liste.clear();
                             coups_liste.add(new Coups(batisseur, deplacement, construction));
                             b = value;
                         } else if (value == b) {
-                            coups_liste.add(new Coups(batisseur, deplacement, construction));
+                            //coups_liste.add(new Coups(batisseur, deplacement, construction));
                         }
-                        if (a >= value) return value;
+                        //if (a >= value) return value;
                     }
                 }
             }
@@ -102,17 +104,16 @@ public class IADifficile implements IA {
 
     /**
      * Joue un tour complet
-     * TODO: joueur en cours bizarre 
+     * TODO: joueur en cours bizarre
      */
-    private CoupHisto jouer(Jeu _jeu, Point batisseur, Point deplacement, Point construire, int p) {
+    private void jouer(JeuSimulation jeu_simulation, Coups c, int num_joueur) {
         // Selection
-        _jeu.joueSelection(batisseur);
+        jeu_simulation.setJoueur_en_cours(num_joueur);
+        jeu_simulation.jouer(c.batisseur, SELECTION);
         // Déplacement
-        _jeu.joueDeplacement(deplacement);
+        jeu_simulation.jouer(c.batisseur, DEPLACEMENT);
         // Construction
-        int prevHaut = _jeu.getPlateau().getTypeBatiments(construire);
-        _jeu.joueConstruction(construire);
-        return new CoupHisto(deplacement, batisseur, construire, prevHaut);
+        jeu_simulation.jouer(c.batisseur, CONSTRUCTION);
     }
 
     private class CoupHisto {
@@ -134,10 +135,10 @@ public class IADifficile implements IA {
      * Déjoue un tour complet (soit 2 undo)
      */
     private void dejouer(Jeu _jeu, int num_joueur, int index_batisseur, CoupHisto c) {
-        _jeu.getPlateau().setFloorBis(c.construction, c.prevHaut);
+        /*_jeu.getPlateau().setFloorBis(c.construction, c.prevHaut);
         _jeu.getPlateau().removePlayer(c.batisseur);
         _jeu.getPlateau().ajouterJoueur(c.prevPos, num_joueur);
-        _jeu.updateBatisseur(index_batisseur, c.prevPos, num_joueur);
+        _jeu.updateBatisseur(index_batisseur, c.prevPos, num_joueur);*/
     }
 
     public static float clamp(float val, float min, float max) {
@@ -149,12 +150,12 @@ public class IADifficile implements IA {
      * Le nombre de cases adjacentes au niveau + 1 où le bâtisseur se trouve au niveau 2, ce qui signifie une victoire imminente.
      * La valeur sera positive pour le joueur actuel et négative pour l’adversaire.
      */
-    private float menaceDuNiveau2(Jeu _jeu) {
+    private float menaceDuNiveau2(JeuSimulation _jeu) {
         float heuristique = 0;
-        ArrayList<Joueur> js = new ArrayList<>();
+        ArrayList<JeuSimulation.JoueurLambda> js = new ArrayList<>();
         js.add(_jeu.j1);
         js.add(_jeu.j2);
-        for (Joueur j : js) {
+        for (JeuSimulation.JoueurLambda j : js) {
             int index = (js.indexOf(j) == 0) ? 1 : -1;
             for (Point batisseur : j.getBatisseurs()) {
                 ArrayList<Point> cases = _jeu.getPlateau().getCasesAccessibles(batisseur);
@@ -174,12 +175,12 @@ public class IADifficile implements IA {
      * Combinaison des hauteurs des bâtisseurs :
      * Somme des niveaux des bâtisseurs du joueur moins la somme des niveaux des bâtisseurs de l’adversaire.
      */
-    private float combinaisonHauteur(Jeu _jeu) {
+    private float combinaisonHauteur(JeuSimulation _jeu) {
         float heuristique = 0;
-        ArrayList<Joueur> js = new ArrayList<>();
+        ArrayList<JeuSimulation.JoueurLambda> js = new ArrayList<>();
         js.add(_jeu.j1);
         js.add(_jeu.j2);
-        for (Joueur j : js) {
+        for (JeuSimulation.JoueurLambda j : js) {
             int index = (js.indexOf(j) == 0) ? 1 : -1;
             for (Point batisseur : j.getBatisseurs()) {
                 heuristique += index * _jeu.getPlateau().getTypeBatiments(batisseur);
@@ -193,11 +194,11 @@ public class IADifficile implements IA {
      * Contrôle de la  case centrale :
      * Si le joueur actuel possède un bâtisseur sur la case centrale.
      */
-    private float caseCentrale(Jeu _jeu) {
-        ArrayList<Joueur> js = new ArrayList<>();
+    private float caseCentrale(JeuSimulation _jeu) {
+        ArrayList<JeuSimulation.JoueurLambda> js = new ArrayList<>();
         js.add(_jeu.j1);
         js.add(_jeu.j2);
-        for (Joueur j : js) {
+        for (JeuSimulation.JoueurLambda j : js) {
             for (Point batisseur : j.getBatisseurs()) {
                 if (batisseur == CASE_CENTRALE) {
                     return (js.indexOf(j) == 0) ? 1 : -1;
@@ -213,12 +214,12 @@ public class IADifficile implements IA {
      * qui sont plus désirables et les cases étant au niveau + 2 et au niveau + 3 qui sont indésirables.
      * La mobilité de l’adversaire est soustraite à celle du joueur actuel
      */
-    private float mobiliteVerticale(Jeu _jeu) {
+    private float mobiliteVerticale(JeuSimulation _jeu) {
         float heuristique = 0;
-        ArrayList<Joueur> js = new ArrayList<>();
+        ArrayList<JeuSimulation.JoueurLambda> js = new ArrayList<>();
         js.add(_jeu.j1);
         js.add(_jeu.j2);
-        for (Joueur j : js) {
+        for (JeuSimulation.JoueurLambda j : js) {
             int index = (js.indexOf(j) == 0) ? 1 : -1;
             for (Point batisseur : j.getBatisseurs()) {
                 ArrayList<Point> _cases = _jeu.getPlateau().getCasesAccessibles(batisseur);
@@ -234,11 +235,11 @@ public class IADifficile implements IA {
         return heuristique;
     }
 
-    private float heuristique(Jeu _jeu) {
+    private float heuristique(JeuSimulation _jeu) {
         return POIDS_BASE * caseCentrale(_jeu) +
                 POIDS_BASE * combinaisonHauteur(_jeu) +
-                POIDS_BASE * menaceDuNiveau2(_jeu) +
-                POIDS_BASE * mobiliteVerticale(_jeu);
+                10000000 * menaceDuNiveau2(_jeu) +
+                50 * mobiliteVerticale(_jeu);
     }
 
     @Override
@@ -247,7 +248,9 @@ public class IADifficile implements IA {
             case PLACEMENT:
                 return jouePlacement();
             case SELECTION:
-                alphabeta(jeu, 2, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, jeu.getJoueur_en_cours());
+
+                JeuSimulation jeu_simulation = new JeuSimulation(jeu.getPlateau(), jeu.j1,jeu.j2);
+                alphabeta(jeu_simulation, 3, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, jeu.getJoueur_en_cours());
                 coups = coups_liste.get(random.nextInt(coups_liste.size()));
                 return coups.batisseur;
             case DEPLACEMENT:
