@@ -42,6 +42,9 @@ public class Constante {
     public static final int PLATEAU_LIGNES = 5;
     public static final int PLATEAU_COLONNES = 5;
 
-    final static Point CASE_CENTRALE = new Point(2, 2);
-    final static int POIDS_BASE = 1;
+    public final static Point CASE_CENTRALE = new Point(2, 2);
+    public final static int POIDS_BASE = 1;
+
+    public final static double RATIO_BOUTON_CLASSIQUE = (double) 508/98;
+    public final static double RATIO_BOUTON_PETIT = (double) 259/216;
 }
