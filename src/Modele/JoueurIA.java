@@ -2,27 +2,17 @@ package Modele;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
-import static Modele.Constante.*;
 
 public class JoueurIA extends Joueur {
-    IA ia;
-    Timer timer;
-    final int VITESSE_BASE = 1000;
+    private IA ia;
+    private Timer timer;
+    private static final int VITESSE_BASE = 1000;
 
     public JoueurIA(Jeu _jeu, int _num_joueur, IA _ia, int vitesse_ia) {
         super(_jeu, _num_joueur);
         ia = _ia;
 
-        timer = new Timer(VITESSE_BASE / vitesse_ia, new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                joue();
-            }
-        });
+        timer = new Timer(VITESSE_BASE / vitesse_ia, e -> joue());
         timer.stop();
     }
 
@@ -37,6 +27,11 @@ public class JoueurIA extends Joueur {
         jeu.jouer(jeu_ia);
         jeu.MAJObservateur();
         if(jeu.getJoueur_en_cours() != num_joueur) timer.stop();
+    }
+
+    @Override
+    public void joue(Point clic_position) {
+        throw new UnsupportedOperationException();
     }
 
     public void timerIaSet(boolean statut) {

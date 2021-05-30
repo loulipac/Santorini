@@ -8,19 +8,15 @@ public abstract class Joueur {
     protected Jeu jeu;
     protected ArrayList<Point> batisseurs;
 
-    public Joueur(Jeu _jeu, int _num_joueur) {
+    protected Joueur(Jeu _jeu, int _num_joueur) {
         jeu = _jeu;
         num_joueur = _num_joueur;
         batisseurs = new ArrayList<Point>();
     }
 
-    public void joue() {
-        System.err.println("NOT IMPLEMENTED METHOD");
-    }
+    public abstract void joue();
 
-    public void joue(Point clic_position) {
-        System.err.println("NOT IMPLEMENTED METHOD");
-    }
+    public abstract void joue(Point clic_position);
 
     public int getNum_joueur() {
         return num_joueur;
