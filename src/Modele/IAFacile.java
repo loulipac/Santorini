@@ -1,7 +1,6 @@
 package Modele;
 
 import java.awt.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -15,58 +14,43 @@ public class IAFacile implements IA {
 
     public IAFacile(Jeu j) {
         this.j = j;
-        batisseurs = new ArrayList<Point>();
+        batisseurs = new ArrayList<>();
         random = new Random();
         random.setSeed(System.currentTimeMillis());
     }
 
     public Point joue() {
-        switch (j.getSituation()) {
-            case PLACEMENT:
-                return jouePlacement();
-            case SELECTION:
-                return joueSelection();
-            case DEPLACEMENT:
-                return joueDeplacement();
-            case CONSTRUCTION:
-                return joueConstruction();
-            default:
-                return null;
-        }
+        return switch (j.getSituation()) {
+            case PLACEMENT -> jouePlacement();
+            case SELECTION -> joueSelection();
+            case DEPLACEMENT -> joueDeplacement();
+            case CONSTRUCTION -> joueConstruction();
+            default -> null;
+        };
     }
 
     private Point joueDeplacement() {
-        System.out.println("Déplacement");
         Point batisseur = batisseurs.get(index_batisseur);
-        System.out.println("Batisseur à la position (" + batisseur.x + ", " + batisseur.y + ")");
         ArrayList<Point> accessibles = j.getPlateau().getCasesAccessibles(batisseur);
         Point case_random = accessibles.get(random.nextInt(accessibles.size()));
         batisseurs.set(index_batisseur, case_random);
-        System.out.println("Envoie position déplacement. Est libre ?" + j.getPlateau().estLibre(case_random));
-        //System.out.println("Batisseur déplacé : (" + case_random.x + ", " + case_random.y + ")");
         return case_random;
     }
 
     private Point joueConstruction() {
-        System.out.println("Construction");
         Point batisseur = batisseurs.get(index_batisseur);
-        System.out.println("Batisseur à la position (" + batisseur.x + ", " + batisseur.y + ")");
-
         ArrayList<Point> construction_possible = j.getPlateau().getConstructionsPossible(batisseur);
-        Point  case_random = construction_possible.get(random.nextInt(construction_possible.size()));
-        System.out.println("Envoie position construction. Est libre ?" + j.getPlateau().estLibre(case_random));
-        return case_random;
+        return construction_possible.get(random.nextInt(construction_possible.size()));
     }
 
     private Point joueSelection() {
         System.out.println("Selectionne");
         index_batisseur = random.nextInt(2);
-        Point batisseur = batisseurs.get(index_batisseur);
-        return batisseur;
+        return batisseurs.get(index_batisseur);
     }
 
     private Point jouePlacement() {
-        Point case_alea = null;
+        Point case_alea;
         do {
             case_alea = new Point(
                     random.nextInt(PLATEAU_COLONNES),

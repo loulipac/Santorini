@@ -29,7 +29,8 @@ public class Jeu {
     private boolean ia_statut;
     int vitesse_ia;
 
-    Joueur j1, j2;
+    Joueur j1;
+    Joueur j2;
     Commande cmd;
 
     /**
@@ -67,20 +68,12 @@ public class Jeu {
     }
 
     private IA setIA(int ia_mode) {
-        switch (ia_mode) {
-            case 1 -> {
-                return new IAFacile(this);
-            }
-            case 2 -> {
-                return new IAFacile(this);
-            }
-            case 3 -> {
-                return new IAFacile(this);
-            }
-            default -> {
-                return null;
-            }
-        }
+        return switch (ia_mode) {
+            case 1 -> new IAFacile(this);
+            case 2 -> new IAFacile(this);
+            case 3 -> new IAFacile(this);
+            default ->  null;
+        };
     }
 
     /**
@@ -89,21 +82,11 @@ public class Jeu {
     public void jouer(Point position) {
         cmd = null;
         switch (situation) {
-            case PLACEMENT:
-                jouePlacement(position);
-                break;
-            case SELECTION:
-                joueSelection(position);
-                break;
-            case DEPLACEMENT:
-                joueDeplacement(position);
-                break;
-            case CONSTRUCTION:
-                joueConstruction(position);
-                break;
-            default:
-                System.err.println("Unknown situation");
-                break;
+            case PLACEMENT -> jouePlacement(position);
+            case SELECTION -> joueSelection(position);
+            case DEPLACEMENT -> joueDeplacement(position);
+            case CONSTRUCTION -> joueConstruction(position);
+            default -> System.err.println("Unknown situation");
         }
         histo.stocker(cmd);
     }
@@ -256,8 +239,8 @@ public class Jeu {
         }
     }
 
-    public String sauvegarder() {
-        return histo.sauvegarder();
+    public void sauvegarder() {
+        histo.sauvegarder();
     }
 
     public void charger(String filename) {
@@ -342,7 +325,7 @@ public class Jeu {
         return gagnant;
     }
 
-    public ArrayList<Point> getBatisseurs(int joueur) {
+    public ArrayList<Point> getBatisseurs() {
         return getJoueurType_en_cours().getBatisseurs();
     }
 

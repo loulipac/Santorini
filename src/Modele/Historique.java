@@ -10,7 +10,9 @@ import java.util.*;
 import static Modele.Constante.*;
 
 public class Historique {
-    private Stack<Commande> passe, futur;
+    private Stack<Commande> passe;
+    private Stack<Commande> futur;
+
     private Jeu jeu;
 
     public Historique(Jeu jeu) {
@@ -73,8 +75,8 @@ public class Historique {
             Scanner lecteur = new Scanner(fichier);
 
             String[] points = lecteur.nextLine().split(", ");
-            for (int i = 0; i < points.length; i++) {
-                String[] coord = points[i].split(" ");
+            for (String point : points) {
+                String[] coord = point.split(" ");
                 jeu.jouer(new Point(Integer.parseInt(coord[0]), Integer.parseInt(coord[1])));
             }
 
@@ -92,9 +94,7 @@ public class Historique {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Historique)) return false;
-
-        Historique h = (Historique) o;
+        if (!(o instanceof Historique h)) return false;
 
         return passe.equals(h.passe) && futur.equals(h.futur);
     }

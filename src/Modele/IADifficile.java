@@ -26,7 +26,7 @@ public class IADifficile implements IA {
         }
         if (maximizingPlayer == Constante.JOUEUR2) { // alpha
             value = Float.NEGATIVE_INFINITY;
-            for (Point batisseur : jeu.getBatisseurs(maximizingPlayer)) {
+            for (Point batisseur : jeu.getBatisseurs()) {
                 for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
                     for (Point construction : plateau.getConstructionsPossible(deplacement)) {
 

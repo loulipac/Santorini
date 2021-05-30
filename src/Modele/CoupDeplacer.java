@@ -51,7 +51,7 @@ public class CoupDeplacer extends Commande {
 
     @Override
     public String toString() {
-        String str = new String();
+        String str = "";
         if (positions[1] != null) str += positions[1].x + " " + positions[1].y + ", ";
         str += positions[0].x + " " + positions[0].y;
         return str;
@@ -59,9 +59,7 @@ public class CoupDeplacer extends Commande {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof CoupDeplacer)) return false;
-
-        CoupDeplacer c = (CoupDeplacer) o;
+        if (!(o instanceof CoupDeplacer c)) return false;
 
         return joueur == c.joueur &&
                 positions[0].equals(c.positions[0]) &&

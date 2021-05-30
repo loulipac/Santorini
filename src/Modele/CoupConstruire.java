@@ -5,7 +5,8 @@ import static Modele.Constante.*;
 import java.awt.Point;
 
 public class CoupConstruire extends Commande {
-    private Point position, batisseur;
+    private Point position;
+    private Point batisseur;
 
     public CoupConstruire(int joueur, Point position, Point batisseur) {
         super(joueur);
@@ -33,15 +34,12 @@ public class CoupConstruire extends Commande {
 
     @Override
     public String toString() {
-        String str = position.x + " " + position.y;
-        return str;
+        return position.x + " " + position.y;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof CoupConstruire)) return false;
-
-        CoupConstruire c = (CoupConstruire) o;
+        if (!(o instanceof CoupConstruire c)) return false;
 
         return joueur == c.joueur &&
                 position.equals(c.position) &&

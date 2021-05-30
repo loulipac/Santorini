@@ -303,22 +303,20 @@ public class Plateau {
 
     @Override
     public String toString() {
-        String value = "";
+        StringBuilder s = new StringBuilder();
         for (int i = 0; i < PLATEAU_LIGNES; i++) {
             for (int j = 0; j < PLATEAU_COLONNES; j++) {
                 Point pos = new Point(i, j);
-                value += "| " + getTypeBatisseurs(pos) / JOUEUR1 + " : " + getTypeBatiments(pos) + " ";
+                s.append("| ").append(getTypeBatisseurs(pos) / JOUEUR1).append(" : ").append(getTypeBatiments(pos)).append(" ");
             }
-            value += "\n";
+            s.append("\n");
         }
-        return value;
+        return s.toString();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Plateau)) return false;
-
-        Plateau pl = (Plateau) o;
+        if (!(o instanceof Plateau pl)) return false;
 
         for (int i = 0; i < PLATEAU_LIGNES; i++) {
             for (int j = 0; j < PLATEAU_COLONNES; j++) {
