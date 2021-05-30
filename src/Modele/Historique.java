@@ -94,7 +94,9 @@ public class Historique {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Historique h)) return false;
+        if (!(o instanceof Historique)) return false;
+
+        Historique h = (Historique) o;
 
         return passe.equals(h.passe) && futur.equals(h.futur);
     }
