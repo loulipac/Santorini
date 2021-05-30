@@ -16,7 +16,6 @@ public class LecteurSon {
     /**
      * Constructeur de LecteurSon qui charge un son en mémoire.
      *
-     * @param sound
      */
     public LecteurSon(String sound) {
         fichier = new File(CHEMIN_RESSOURCE+"/sons/" + sound);
@@ -38,7 +37,7 @@ public class LecteurSon {
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
             }
         } catch (Exception ex) {
-            System.err.println(ex.toString());
+            System.err.println(ex);
         }
     }
 }

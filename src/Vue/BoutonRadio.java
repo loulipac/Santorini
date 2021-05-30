@@ -21,21 +21,21 @@ public class BoutonRadio extends JRadioButton {
         setRolloverEnabled(true);
 
         /* Ajout de l'image par dessus le bouton*/
-        ImageIcon iconeBouton = ScaleImage(img, hauteur, largeur);
+        ImageIcon iconeBouton = scaleImage(img, hauteur, largeur);
         setIcon(iconeBouton);
-        ImageIcon iconeBoutonSurvole = ScaleImage(imgSurvole, hauteur, largeur);
+        ImageIcon iconeBoutonSurvole = scaleImage(imgSurvole, hauteur, largeur);
         setRolloverIcon(iconeBoutonSurvole);
-        ImageIcon iconeBoutonClique = ScaleImage(imgClique, hauteur, largeur);
+        ImageIcon iconeBoutonClique = scaleImage(imgClique, hauteur, largeur);
         setSelectedIcon(iconeBoutonClique);
 
         /* BoutonRadio ajouté au groupe de bouton*/
         groupe.add(this);
     }
 
-    private ImageIcon ScaleImage(String nomImage, int largeur, int hauteur){
+    private ImageIcon scaleImage(String nomImage, int largeur, int hauteur) {
         ImageIcon imgIc = new ImageIcon(nomImage);
         Image img = imgIc.getImage();
-        img = img.getScaledInstance(hauteur, largeur,  java.awt.Image.SCALE_SMOOTH);
+        img = img.getScaledInstance(hauteur, largeur, java.awt.Image.SCALE_SMOOTH);
         return new ImageIcon(img);
     }
 

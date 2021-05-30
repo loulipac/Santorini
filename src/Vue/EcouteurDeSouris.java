@@ -3,6 +3,7 @@ package Vue;
 import Modele.Jeu;
 import Modele.Joueur;
 import Modele.JoueurIA;
+
 import static Modele.Constante.*;
 
 import java.awt.*;
@@ -15,13 +16,13 @@ import java.awt.event.MouseEvent;
 public class EcouteurDeSouris extends MouseAdapter {
     JeuGraphique jg;
     Jeu jeu;
-    int largeur_plateau, hauteur_plateau;
+    int largeur_plateau;
+    int hauteur_plateau;
     PanelPlateau pp;
 
     /**
      * Constructeur de EcouteurDeSouris. Utilise un JeuGraphique.
      *
-     * @param jg
      * @see JeuGraphique
      */
     public EcouteurDeSouris(JeuGraphique jg, Jeu _jeu, PanelPlateau _pp) {
@@ -38,9 +39,9 @@ public class EcouteurDeSouris extends MouseAdapter {
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        if(pp.isParametreVisible()) return;
+        if (pp.isParametreVisible()) return;
         Joueur joueur_en_cours = jeu.getJoueurType_en_cours();
-        if(joueur_en_cours.getClass() != JoueurIA.class) {
+        if (joueur_en_cours.getClass() != JoueurIA.class) {
             this.largeur_plateau = jg.getTailleCase() * PLATEAU_COLONNES;
             this.hauteur_plateau = jg.getTailleCase() * PLATEAU_LIGNES;
             if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {

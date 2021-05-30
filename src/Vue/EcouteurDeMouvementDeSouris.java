@@ -14,7 +14,8 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     JeuGraphique jg;
     Jeu j;
-    int largeur_plateau, hauteur_plateau;
+    int largeur_plateau;
+    int hauteur_plateau;
     Cursor c_pas_bleu;
     Cursor c_pas_rouge;
     Cursor c_pas_gris;
@@ -28,14 +29,12 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     Cursor c_defaut_rouge;
     Cursor c_defaut_bleu;
 
-    final static Point CENTRE = new Point(16, 16);
-    final static Point HAUT_GAUCHE = new Point(0, 0);
+    static final Point CENTRE = new Point(16, 16);
+    static final Point HAUT_GAUCHE = new Point(0, 0);
 
     /**
      * Constructeur qui génère un ensemble de curseur.
      *
-     * @param j
-     * @param jg
      */
     public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg) {
         this.jg = jg;
@@ -57,8 +56,6 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     /**
      * Crée un objet de type Cursor depuis son nom de fichier.
      *
-     * @param fichier_nom
-     * @param decallage
      * @return le curseur crée
      */
     public static Cursor creerCurseurGenerique(String fichier_nom, Point decallage) {
@@ -74,13 +71,12 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        throw new UnsupportedOperationException();
     }
 
     /**
      * Définis le curseur selon sa position sur la grille et la situation du jeu.
      *
-     * @param e
      * @see Jeu#getSituation()
      * @see Jeu#getJoueur_en_cours()
      */
