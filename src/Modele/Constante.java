@@ -6,10 +6,8 @@ import java.awt.*;
  * Fichier de constante.
  */
 public class Constante {
+    private Constante() {}
 
-    /**
-     * Chemin vers le dossier de ressource ({@value #CHEMIN_RESSOURCE})
-     */
     public static final String CHEMIN_RESSOURCE = "./src/Ressources";
     public static final String SAVES_PATH = "./saves/";
 
@@ -42,9 +40,9 @@ public class Constante {
     public static final int PLATEAU_LIGNES = 5;
     public static final int PLATEAU_COLONNES = 5;
 
-    public final static Point CASE_CENTRALE = new Point(2, 2);
-    public final static int POIDS_BASE = 1;
+    public static final Point CASE_CENTRALE = new Point(2, 2);
+    public static final int POIDS_BASE = 1;
 
-    public final static double RATIO_BOUTON_CLASSIQUE = (double) 508/98;
-    public final static double RATIO_BOUTON_PETIT = (double) 259/216;
+    public static final double RATIO_BOUTON_CLASSIQUE = (double) 508/98;
+    public static final double RATIO_BOUTON_PETIT = (double) 259/216;
 }
