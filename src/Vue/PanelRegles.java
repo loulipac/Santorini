@@ -204,7 +204,7 @@ public class PanelRegles extends JPanel {
     public JLabel creerImage(String _in, Dimension _t) {
         ImageIcon _imIcon = new ImageIcon(_in);
         Image _im = _imIcon.getImage();
-        Dimension _nt = conserverRatio(new Dimension(_imIcon.getIconWidth(), _imIcon.getIconHeight()), _t);
+        Dimension _nt = Utile.conserverRatio(new Dimension(_imIcon.getIconWidth(), _imIcon.getIconHeight()), _t);
         Image _nim = _im.getScaledInstance(_nt.width, _nt.height, java.awt.Image.SCALE_SMOOTH);
         return new JLabel(new ImageIcon(_nim));
     }
@@ -212,49 +212,7 @@ public class PanelRegles extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        //Chargement de l"image de fond
-        try {
-            BufferedImage img = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/base.png"));
-            Dimension img_dim = new Dimension(img.getWidth(), img.getHeight());
-            Dimension taille_max = new Dimension((int) (taille_fenetre.width * 0.7), (int) (taille_fenetre.height * 0.7));
-            Dimension taille_redimensionnee = conserverRatio(img_dim, taille_max);
-
-            g2d.drawImage(
-                    img,
-                    getWidth() / 2 - ((int) (taille_redimensionnee.getWidth() / 2)),
-                    getHeight() / 2 - ((int) (taille_redimensionnee.getHeight() / 2)),
-                    taille_redimensionnee.width,
-                    taille_redimensionnee.height,
-                    this
-            );
-
-            
-            BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
-            g2d.drawImage(
-                    img_colonnes,
-                    0,
-                    0,
-                    getWidth(),
-                    getHeight(),
-                    this
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erreur image de fond: " + e.getMessage());
-        }
-    }
-
-    private Dimension conserverRatio(Dimension imageSize, Dimension boundary) {
-        double widthRatio = boundary.getWidth() / imageSize.getWidth();
-        double heightRatio = boundary.getHeight() / imageSize.getHeight();
-        double ratio = Math.min(widthRatio, heightRatio);
-
-        return new Dimension((int) (imageSize.width * ratio),
-                (int) (imageSize.height * ratio));
+        Utile.dessineBackground(g, getSize(), this);
     }
 
 }

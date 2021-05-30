@@ -1,69 +1,55 @@
 package Vue;
 
 import static Modele.Constante.*;
-import Modele.IA;
-import Modele.IAFacile;
+
 import Modele.Plateau;
 import Modele.Jeu;
-
-import static Modele.Constante.*;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.io.FileInputStream;
 
 /**
  * Classe dessinant les cases du plateau.
  */
 public class JeuGraphique extends JComponent {
-    private Plateau plateau;
+    private final Plateau plateau;
     private Jeu jeu;
-    private int largeur;
-    private int hauteur;
     private int taille_case;
-    private final Image case_claire, case_fonce, coupole, etage_1, etage_2, etage_3, batisseur_bleu, batisseur_rouge, batisseur_rouge_selectionne, batisseur_bleu_selectionne, pas_rouge, pas_bleu, outil_bleu, outil_rouge;
-    int ia_mode;
-    IA ia;
+    private final Image case_claire;
+    private final Image case_fonce;
+    private final Image coupole;
+    private final Image etage_1;
+    private final Image etage_2;
+    private final Image etage_3;
+    private final Image batisseur_bleu;
+    private final Image batisseur_rouge;
+    private final Image batisseur_rouge_selectionne;
+    private final Image batisseur_bleu_selectionne;
+    private final Image pas_rouge;
+    private final Image pas_bleu;
+    private final Image outil_bleu;
+    private final Image outil_rouge;
 
     /**
      * Constructeur de JeuGraphique, charge les images en mémoire.
      *
-     * @param j
      */
     public JeuGraphique(Jeu j) {
         this.jeu = j;
-        case_claire = readImage(CHEMIN_RESSOURCE+"/cases/case_claire.png");
-        case_fonce = readImage(CHEMIN_RESSOURCE+"/cases/case_fonce.png");
-        coupole = readImage(CHEMIN_RESSOURCE+"/Etages/coupole.png");
-        etage_1 = readImage(CHEMIN_RESSOURCE+"/Etages/etage_1.png");
-        etage_2 = readImage(CHEMIN_RESSOURCE+"/Etages/etage_2.png");
-        etage_3 = readImage(CHEMIN_RESSOURCE+"/Etages/etage_3.png");
-        batisseur_bleu = readImage(CHEMIN_RESSOURCE+"/batisseur/batisseur_bleu.png");
-        batisseur_rouge = readImage(CHEMIN_RESSOURCE+"/batisseur/batisseur_rouge.png");
-        batisseur_rouge_selectionne = readImage(CHEMIN_RESSOURCE+"/batisseur/batisseur_rouge_selectionne.png");
-        batisseur_bleu_selectionne = readImage(CHEMIN_RESSOURCE+"/batisseur/batisseur_bleu_selectionne.png");
-        pas_rouge = readImage(CHEMIN_RESSOURCE+"/icone/pas_rouge.png");
-        pas_bleu = readImage(CHEMIN_RESSOURCE+"/icone/pas_bleu.png");
-        outil_bleu = readImage(CHEMIN_RESSOURCE+"/icone/outil" +
-                "_bleu.png");
-        outil_rouge = readImage(CHEMIN_RESSOURCE+"/icone/outil_rouge.png");
+        case_claire = Utile.readImage(CHEMIN_RESSOURCE + "/cases/case_claire.png");
+        case_fonce = Utile.readImage(CHEMIN_RESSOURCE + "/cases/case_fonce.png");
+        coupole = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/coupole.png");
+        etage_1 = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/etage_1.png");
+        etage_2 = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/etage_2.png");
+        etage_3 = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/etage_3.png");
+        batisseur_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/batisseur/batisseur_bleu.png");
+        batisseur_rouge = Utile.readImage(CHEMIN_RESSOURCE + "/batisseur/batisseur_rouge.png");
+        batisseur_rouge_selectionne = Utile.readImage(CHEMIN_RESSOURCE + "/batisseur/batisseur_rouge_selectionne.png");
+        batisseur_bleu_selectionne = Utile.readImage(CHEMIN_RESSOURCE + "/batisseur/batisseur_bleu_selectionne.png");
+        pas_rouge = Utile.readImage(CHEMIN_RESSOURCE + "/icone/pas_rouge.png");
+        pas_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/icone/pas_bleu.png");
+        outil_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/icone/outil_bleu.png");
+        outil_rouge = Utile.readImage(CHEMIN_RESSOURCE + "/icone/outil_rouge.png");
         plateau = j.getPlateau();
-    }
-
-    /**
-     * Change une image en mémoire depuis son nom.
-     *
-     * @param _name
-     * @return l'image chargé.
-     */
-    public static Image readImage(String _name) {
-        try {
-            return ImageIO.read(new FileInputStream(_name));
-        } catch (Exception e) {
-            System.err.println(e);
-        }
-        return null;
     }
 
     @Override
@@ -72,15 +58,10 @@ public class JeuGraphique extends JComponent {
         // Graphics 2D est le vrai type de l'objet passé en paramètre
         // Le cast permet d'avoir acces a un peu plus de primitives de dessin
         Graphics2D drawable = (Graphics2D) g;
-        //setBorder(new LineBorder(Color.RED));
 
-        //largeur = getSize().width / PLATEAU_COLONNES;
-        hauteur = getSize().height / PLATEAU_LIGNES;
-        //taille_case = Math.min(largeur, hauteur);
-        taille_case = hauteur;
+        taille_case = getSize().height / PLATEAU_LIGNES;
 
         // On efface tout
-        //int nouvelle_origine = (getSize().width / 2) - (taille_case * PLATEAU_COLONNES / 2);
         int nouvelle_origine = 0;
         drawable.clearRect(
                 nouvelle_origine,
@@ -94,7 +75,9 @@ public class JeuGraphique extends JComponent {
         int batisseurs_ligne = batisseur_en_cours != null ? batisseur_en_cours.x : -1;
         int batisseurs_colonne = batisseur_en_cours != null ? batisseur_en_cours.y : -1;
 
-        Image image_batisseurs, image_case, image_batiment;
+        Image image_batisseurs;
+        Image image_case;
+        Image image_batiment;
 
         for (int l = 0; l < PLATEAU_LIGNES; l++) {
             for (int c = 0; c < PLATEAU_COLONNES; c++) {
@@ -147,36 +130,8 @@ public class JeuGraphique extends JComponent {
         }
     }
 
-    public Plateau getPlateau() {
-        return plateau;
-    }
-
-    public void setPlateau(Plateau plateau) {
-        this.plateau = plateau;
-    }
-
-    public int getLargeur() {
-        return largeur;
-    }
-
-    public void setLargeur(int largeur) {
-        this.largeur = largeur;
-    }
-
-    public int getHauteur() {
-        return hauteur;
-    }
-
-    public void setHauteur(int hauteur) {
-        this.hauteur = hauteur;
-    }
-
     public int getTailleCase() {
         return taille_case;
-    }
-
-    public void setTailleCase(int taille_case) {
-        this.taille_case = taille_case;
     }
 
     public Jeu getJeu() {
@@ -187,7 +142,4 @@ public class JeuGraphique extends JComponent {
         this.jeu = jeu;
     }
 
-    public IA getIa() {
-        return ia;
-    }
 }

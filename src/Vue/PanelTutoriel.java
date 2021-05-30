@@ -46,10 +46,10 @@ public class PanelTutoriel extends JPanel implements Observer {
         lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT, 40);
         initialiserPanel();
 
-        colonne_rouge = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
-        colonne_bleu = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
-        colonne_fin = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_berger.png");
-        arriere_plan = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
+        colonne_rouge = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
+        colonne_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
+        colonne_fin = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_berger.png");
+        arriere_plan = Utile.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
     }
 
     /**

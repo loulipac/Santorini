@@ -25,15 +25,18 @@ public class PanelPlateau extends JPanel implements Observer {
     Font lilly_belle;
     JLabel jt;
     Dimension taille_fenetre;
-    int ia1_mode, ia2_mode;
+    int ia1_mode;
+    int ia2_mode;
     Bouton on_off_ia;
-    Image colonne_rouge, colonne_bleu, arriere_plan, colonne_fin;
+    Image colonne_rouge;
+    Image colonne_bleu;
+    Image arriere_plan;
+    Image colonne_fin;
     ParametrePanel pp;
 
     /**
      * Initialise la fenêtre de jeu et charge la police et les images en mémoire.
      *
-     * @param _taille_fenetre
      * @see PanelPlateau#initialiserPanel()
      */
     public PanelPlateau(Dimension _taille_fenetre, int ia1_mode, int ia2_mode) {
@@ -47,13 +50,13 @@ public class PanelPlateau extends JPanel implements Observer {
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
         }
-        lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT, 40);
+        lilly_belle = new Font("Lily Script One", Font.PLAIN, 40);
         initialiserPanel();
 
-        colonne_rouge = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
-        colonne_bleu = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
-        colonne_fin = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_berger.png");
-        arriere_plan = JeuGraphique.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
+        colonne_rouge = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
+        colonne_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
+        colonne_fin = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_berger.png");
+        arriere_plan = Utile.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
     }
 
     /**
@@ -97,8 +100,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (pp.isVisible()) pp.setVisible(false);
-            else pp.setVisible(true);
+            pp.setVisible(!pp.isVisible());
         }
     }
 
@@ -119,7 +121,6 @@ public class PanelPlateau extends JPanel implements Observer {
         /**
          * Constructeur pour JGamePanel. Rajoute des components au JPanel.
          *
-         * @param _taille_h
          */
         public JGamePanel(float _taille_h) {
             this.taille_h = _taille_h - 0.05f;
@@ -130,7 +131,7 @@ public class PanelPlateau extends JPanel implements Observer {
             container.setLayout(new BoxLayout(container, BoxLayout.LINE_AXIS));
             container.setOpaque(false);
             setOpaque(false);
-            setPreferredSize(new Dimension((int) (taille_fenetre.width), (int) (taille_fenetre.height * taille_h)));
+            setPreferredSize(new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * taille_h)));
 
             JPanel parametres = new JPanel();
 
@@ -148,8 +149,8 @@ public class PanelPlateau extends JPanel implements Observer {
 
 
             ActionEchap echap = new ActionEchap();
-            PanelPlateau.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
-            PanelPlateau.this.getActionMap().put("echap", echap);
+            PanelPlateau.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), ECHAP_KEY);
+            PanelPlateau.this.getActionMap().put(ECHAP_KEY, echap);
 
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
@@ -189,7 +190,7 @@ public class PanelPlateau extends JPanel implements Observer {
                 niveauAcceleration.add(64);
                 acceleration = new Bouton(CHEMIN_RESSOURCE + "/bouton/vide.png", CHEMIN_RESSOURCE + "/bouton/vide.png", taille_fenetre.height / 20, taille_fenetre.height / 20);
                 acceleration.setText("x" + niveauAcceleration.get(index_acceleration));
-                Font lilli_belle_tmp = new Font("Lily Script One", Font.TRUETYPE_FONT, 20);
+                Font lilli_belle_tmp = new Font("Lily Script One", Font.PLAIN, 20);
                 acceleration.setFont(lilli_belle_tmp);
                 on_off_ia.addActionListener(PanelPlateau.this::switchOnOffIA);
                 acceleration.addActionListener(this::accelerationIA);
@@ -205,7 +206,6 @@ public class PanelPlateau extends JPanel implements Observer {
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
-            //int taille_case_largeur = largeur / PLATEAU_COLONNES;
             int taille_case = ((int) (taille_fenetre.height * taille_h)) / PLATEAU_LIGNES;
 
             jg.setPreferredSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
@@ -259,9 +259,6 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     private class ParametrePanel extends JPanel {
-        private Bouton bQuitter, bNouvellePartie, bSauvegarder, bReprendre, bCharger;
-        private LecteurSon son_bouton;
-
         private class BackgroundPanel extends JPanel {
             public BackgroundPanel(Dimension taille) {
                 super();
@@ -317,16 +314,14 @@ public class PanelPlateau extends JPanel implements Observer {
             double taille_restante = taille_panel.height - (taille_panel.height * ratio_marge) * 9;
             double height = taille_restante / 6;
 
-            // TODO: Créer la constante RATIO_BOUTON_CLASSIQUE = 508/95
-            double ratio = 508/95;
-            Dimension taille_bouton = new Dimension((int) (height * ratio), (int) (height));
+            Dimension taille_bouton = new Dimension((int) (height * RATIO_BOUTON_CLASSIQUE), (int) (height));
 
             /* Boutons*/
-            bReprendre = new Bouton(CHEMIN_RESSOURCE + "/bouton/reprendre.png", CHEMIN_RESSOURCE + "/bouton/reprendre_hover.png",
+            Bouton bReprendre = new Bouton(CHEMIN_RESSOURCE + "/bouton/reprendre.png", CHEMIN_RESSOURCE + "/bouton/reprendre_hover.png",
                     taille_bouton.width,
                     taille_bouton.height);
 
-            bNouvellePartie = new Bouton(CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE + "/bouton/nouvelle_partie_hover.png",
+            Bouton bNouvellePartie = new Bouton(CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE + "/bouton/nouvelle_partie_hover.png",
                     taille_bouton.width,
                     taille_bouton.height);
 
@@ -335,17 +330,17 @@ public class PanelPlateau extends JPanel implements Observer {
             charger_sauvegarder.setPreferredSize(taille_bouton);
             charger_sauvegarder.setMaximumSize(taille_bouton);
             charger_sauvegarder.setLayout(new GridLayout(1, 2));
-            bSauvegarder = new Bouton(CHEMIN_RESSOURCE + "/bouton/sauvegarder.png", CHEMIN_RESSOURCE + "/bouton/sauvegarder_hover.png",
+            Bouton bSauvegarder = new Bouton(CHEMIN_RESSOURCE + "/bouton/sauvegarder.png", CHEMIN_RESSOURCE + "/bouton/sauvegarder_hover.png",
                     taille_bouton.width / 2,
                     taille_bouton.height);
-            bCharger = new Bouton(CHEMIN_RESSOURCE + "/bouton/charger.png", CHEMIN_RESSOURCE + "/bouton/charger_hover.png",
+            Bouton bCharger = new Bouton(CHEMIN_RESSOURCE + "/bouton/charger.png", CHEMIN_RESSOURCE + "/bouton/charger_hover.png",
                     taille_bouton.width / 2,
                     taille_bouton.height);
 
             charger_sauvegarder.add(bSauvegarder);
             charger_sauvegarder.add(bCharger);
 
-            bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter_partie.png", CHEMIN_RESSOURCE + "/bouton/quitter_partie_hover.png",
+            Bouton bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter_partie.png", CHEMIN_RESSOURCE + "/bouton/quitter_partie_hover.png",
                     taille_bouton.width,
                     taille_bouton.height);
 
@@ -434,23 +429,16 @@ public class PanelPlateau extends JPanel implements Observer {
         /**
          * Constructeur de TopPanel. Ajoute les élements et définis les valeurs des propriétés de chacuns.
          *
-         * @param taille_h
          */
         public TopPanel(float taille_h) {
             setOpaque(false);
 
-            //BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
-            //setLayout(boxlayout);
             setLayout(new GridBagLayout());
 
             Dimension size = new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * taille_h));
             setPreferredSize(size);
             setMaximumSize(size);
             setMinimumSize(size);
-
-            /*JLabel logo = new JLabel(new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo.png"));
-            logo.setAlignmentX(CENTER_ALIGNMENT);
-            add(logo);*/
 
             jt = new JLabel("C'est au tour du Joueur 1");
             jt.setAlignmentX(CENTER_ALIGNMENT);
@@ -465,7 +453,6 @@ public class PanelPlateau extends JPanel implements Observer {
     /**
      * Dessine l'image de fond et la bannière (colonne).
      *
-     * @param g
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -476,7 +463,6 @@ public class PanelPlateau extends JPanel implements Observer {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         try {
-
             g2d.drawImage(
                     arriere_plan,
                     0,
@@ -485,7 +471,7 @@ public class PanelPlateau extends JPanel implements Observer {
                     getHeight(),
                     this
             );
-            Image colonne = null;
+            Image colonne;
             if (jeu.estJeufini()) {
                 colonne = colonne_fin;
             } else {

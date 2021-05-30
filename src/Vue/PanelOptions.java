@@ -2,30 +2,30 @@ package Vue;
 
 import static Modele.Constante.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
 
 class PanelOptions extends JPanel {
-    final static String TITRE_SECTION1 = "Mode de jeu";
-    final static String TITRE_SECTION2 = "Difficulté de l'IA";
-    final static String TITRE_SECTION3 = "Difficulté de l'IA 2";
+    private static final String TITRE_SECTION1 = "Mode de jeu";
+    private static final String TITRE_SECTION2 = "Difficulté de l'IA";
+    private static final String TITRE_SECTION3 = "Difficulté de l'IA 2";
 
-    private Bouton bRetour, bCommencer;
-    private LecteurSon son_bouton;
+    private Bouton bRetour;
+    private Bouton bCommencer;
+
+    private final LecteurSon son_bouton;
     Font lilly_belle;
-    JRadioButton joueur_joueur, joueur_ia, ia_ia;
+    JRadioButton joueur_joueur;
+    JRadioButton joueur_ia;
+    JRadioButton ia_ia;
     Dimension taille_fenetre;
 
     ButtonGroup adversaires_boutons;
     ButtonGroup boutons_IA;
-    ButtonGroup boutons_IA_IA ;
+    ButtonGroup boutons_IA_IA;
 
 
     public PanelOptions(Dimension _taille_fenetre) {
@@ -36,14 +36,13 @@ class PanelOptions extends JPanel {
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
         }
-        lilly_belle = new Font("Lily Script One", Font.TRUETYPE_FONT, 20);
+        lilly_belle = new Font("Lily Script One", Font.PLAIN, 20);
         taille_fenetre = _taille_fenetre;
         initialiserPanel();
     }
 
     /**
      * Ajoute tous les composants au panel
-     *
      */
     public void initialiserPanel() {
         setBackground(new Color(47, 112, 162));
@@ -148,36 +147,27 @@ class PanelOptions extends JPanel {
             bRetour.addActionListener(PanelOptions.this::actionBoutonRetourMenu);
             bCommencer.addActionListener(PanelOptions.this::actionBoutonCommencer);
 
-            joueur_joueur.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    IA_texte.setVisible(false);
-                    IA_IA_texte.setVisible(false);
-                    IA_panel.setVisible(false);
-                    IA_IA_panel.setVisible(false);
-                }
+            joueur_joueur.addActionListener(e -> {
+                IA_texte.setVisible(false);
+                IA_IA_texte.setVisible(false);
+                IA_panel.setVisible(false);
+                IA_IA_panel.setVisible(false);
             });
 
-            joueur_ia.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    IA_texte.setVisible(true);
-                    IA_IA_texte.setVisible(false);
-                    IA_panel.setVisible(true);
-                    IA_IA_panel.setVisible(false);
-                    IA_texte.setText(TITRE_SECTION2);
-                }
+            joueur_ia.addActionListener(e -> {
+                IA_texte.setVisible(true);
+                IA_IA_texte.setVisible(false);
+                IA_panel.setVisible(true);
+                IA_IA_panel.setVisible(false);
+                IA_texte.setText(TITRE_SECTION2);
             });
 
-            ia_ia.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    IA_texte.setVisible(true);
-                    IA_IA_texte.setVisible(true);
-                    IA_panel.setVisible(true);
-                    IA_IA_panel.setVisible(true);
-                    IA_texte.setText(TITRE_SECTION2 + " 1");
-                }
+            ia_ia.addActionListener(e -> {
+                IA_texte.setVisible(true);
+                IA_IA_texte.setVisible(true);
+                IA_panel.setVisible(true);
+                IA_IA_panel.setVisible(true);
+                IA_texte.setText(TITRE_SECTION2 + " 1");
             });
 
             /* Add dans les sous-panel */
@@ -208,25 +198,7 @@ class PanelOptions extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-            try {
-                BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/bg_regles.png"));
-                g2d.drawImage(
-                        bg_panel,
-                        0,
-                        0,
-                        getWidth(),
-                        getHeight(),
-                        this
-                );
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.err.println("Erreur image de fond: " + e.getMessage());
-            }
+            Utile.dessinePanelBackground(g, getSize(), this);
         }
     }
 
@@ -249,79 +221,27 @@ class PanelOptions extends JPanel {
      */
     public void actionBoutonCommencer(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        int ia_mode2 = 0;
+        int ia_mode1 = 0;
 
-        PanelPlateau plateau = null;
-        int ia_mode2 = 0, ia_mode1 = 0;
-
-        switch (Integer.valueOf(adversaires_boutons.getSelection().getActionCommand())) {
+        switch (Integer.parseInt(adversaires_boutons.getSelection().getActionCommand())) {
             case 2:
-                ia_mode1 = Integer.valueOf(boutons_IA.getSelection().getActionCommand());
-                ia_mode2 = Integer.valueOf(boutons_IA_IA.getSelection().getActionCommand());
+                ia_mode1 = Integer.parseInt(boutons_IA.getSelection().getActionCommand());
+                ia_mode2 = Integer.parseInt(boutons_IA_IA.getSelection().getActionCommand());
                 break;
             case 1:
-                ia_mode1 = Integer.valueOf(boutons_IA.getSelection().getActionCommand());
+                ia_mode1 = Integer.parseInt(boutons_IA.getSelection().getActionCommand());
                 break;
             default:
                 break;
         }
 
-        plateau = new PanelPlateau(getSize(), ia_mode1, ia_mode2);
-        f.setPanel(plateau);
+        f.setPanel(new PanelPlateau(getSize(), ia_mode1, ia_mode2));
     }
 
-    /**
-     * Joue un son lors du clique de la souris sur le bouton
-     *
-     * @param e Evenement declenché lors du clique de la souris sur le bouton
-     */
-    public void actionBoutonRadio(ActionEvent e) {
-        son_bouton.joueSon(false);
-    }
-
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        //Chargement de l"image de fond
-        try {
-            BufferedImage img = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/base.png"));
-            Dimension img_dim = new Dimension(img.getWidth(), img.getHeight());
-            Dimension taille_max = new Dimension((int) (taille_fenetre.width * 0.7), (int) (taille_fenetre.height * 0.7));
-            Dimension taille_redimensionnee = conserverRatio(img_dim, taille_max);
-
-            g2d.drawImage(
-                    img,
-                    getWidth() / 2 - ((int) (taille_redimensionnee.getWidth() / 2)),
-                    getHeight() / 2 - ((int) (taille_redimensionnee.getHeight() / 2)),
-                    taille_redimensionnee.width,
-                    taille_redimensionnee.height,
-                    this
-            );
-
-            BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
-            g2d.drawImage(
-                    img_colonnes,
-                    0,
-                    0,
-                    getWidth(),
-                    getHeight(),
-                    this
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Erreur image de fond: " + e.getMessage());
-        }
-    }
-    
-    private Dimension conserverRatio(Dimension imageSize, Dimension boundary) {
-
-        double widthRatio = boundary.getWidth() / imageSize.getWidth();
-        double heightRatio = boundary.getHeight() / imageSize.getHeight();
-        double ratio = Math.min(widthRatio, heightRatio);
-
-        return new Dimension((int) (imageSize.width * ratio),
-                (int) (imageSize.height * ratio));
+        Utile.dessineBackground(g, getSize(), this);
     }
 }
