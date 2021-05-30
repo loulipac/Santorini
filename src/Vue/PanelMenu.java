@@ -140,7 +140,7 @@ class PanelMenu extends JPanel {
     public void actionBoutonJouer(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.setPanel(new PanelOptions(taille_fenetre));
+        f.displayPanel("options");
     }
 
     /**
@@ -162,7 +162,7 @@ class PanelMenu extends JPanel {
     public void actionBoutonRegles(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.setPanel(new PanelRegles(taille_fenetre));
+        f.displayPanel("regles");
     }
 
     /**

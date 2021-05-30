@@ -238,7 +238,7 @@ class PanelOptions extends JPanel {
     public void actionBoutonRetourMenu(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.setPanel(new PanelMenu(taille_fenetre));
+        f.displayPanel("menu");
     }
 
 

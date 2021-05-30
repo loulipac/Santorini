@@ -387,7 +387,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
         public void actionBoutonAbandonner(ActionEvent e) {
             Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-            f.setPanel(new PanelMenu(taille_fenetre));
+            f.displayPanel("menu");
         }
 
         public void actionBoutonSauvergarder(ActionEvent e) {
