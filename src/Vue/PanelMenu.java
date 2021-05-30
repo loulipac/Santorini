@@ -11,14 +11,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 class PanelMenu extends JPanel {
-
-    private Bouton bJouer;
-    private Bouton bTutoriel;
-    private Bouton bRegles;
-    private Bouton bQuitter;
-    private Bouton bFullScreen;
-    private Bouton bSon;
-    private JLabel logo;
+    private final Bouton bFullScreen;
+    private final Bouton bSon;
     private final LecteurSon son_bouton;
     boolean maximized = false;
     boolean muted = false;
@@ -62,19 +56,19 @@ class PanelMenu extends JPanel {
                 (int) (height)
         );
 
-        bJouer = new Bouton(CHEMIN_RESSOURCE + "/bouton/jouer.png", CHEMIN_RESSOURCE + "/bouton/jouer_hover.png",
-                taille_bouton.width, taille_bouton.height);
-        bTutoriel = new Bouton(CHEMIN_RESSOURCE + "/bouton/tutoriel.png", CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png",
-                taille_bouton.width, taille_bouton.height);
-        bRegles = new Bouton(CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png",
-                taille_bouton.width, taille_bouton.height);
-        bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter.png", CHEMIN_RESSOURCE + "/bouton/quitter_hover.png",
-                taille_bouton.width, taille_bouton.height);
+        Bouton bJouer = new Bouton(CHEMIN_RESSOURCE + "/bouton/jouer.png", CHEMIN_RESSOURCE + "/bouton/jouer_hover.png",
+                taille_bouton.width, taille_bouton.height, this::actionBoutonJouer);
+        Bouton bTutoriel = new Bouton(CHEMIN_RESSOURCE + "/bouton/tutoriel.png", CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png",
+                taille_bouton.width, taille_bouton.height, this::actionBoutonTutoriel);
+        Bouton bRegles = new Bouton(CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png",
+                taille_bouton.width, taille_bouton.height, this::actionBoutonRegles);
+        Bouton bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter.png", CHEMIN_RESSOURCE + "/bouton/quitter_hover.png",
+                taille_bouton.width, taille_bouton.height, this::actionBoutonQuitter);
 
         bFullScreen = new Bouton(CHEMIN_RESSOURCE + "/bouton/fullscreen.png", CHEMIN_RESSOURCE + "/bouton/fullscreen_hover.png",
-                taille_petit_bouton.width, taille_bouton.height);
+                taille_petit_bouton.width, taille_bouton.height, this::actionFullscreen);
         bSon = new Bouton(CHEMIN_RESSOURCE + "/bouton/son_on.png", CHEMIN_RESSOURCE + "/bouton/son_on_hover.png",
-                taille_petit_bouton.width, taille_bouton.height);
+                taille_petit_bouton.width, taille_bouton.height, this::actionSon);
 
         /* Label */
         JPanel logoPanel = new JPanel();
@@ -84,26 +78,17 @@ class PanelMenu extends JPanel {
         double ratio_logo_img = (double) logo_img.getIconWidth() / logo_img.getIconHeight();
         double taille_logo = taille_fenetre.height * 0.15;
         ImageIcon logo_resize = new ImageIcon(logo_img.getImage().getScaledInstance((int) (taille_logo * ratio_logo_img), (int) (taille_logo), Image.SCALE_SMOOTH));
-        logo = new JLabel(logo_resize);
+        JLabel logo = new JLabel(logo_resize);
         logo.setAlignmentX(CENTER_ALIGNMENT);
         Dimension logoPanel_taille = new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * ratio_logo));
         logoPanel.setMaximumSize(logoPanel_taille);
         logoPanel.setPreferredSize(logoPanel_taille);
         logoPanel.add(logo);
 
-        /* redirection */
-        bJouer.addActionListener(this::actionBoutonJouer);
-        bTutoriel.addActionListener(this::actionBoutonTutoriel);
-        bRegles.addActionListener(this::actionBoutonRegles);
-        bQuitter.addActionListener(this::actionBoutonQuitter);
-        bFullScreen.addActionListener(this::actionFullscreen);
-        bSon.addActionListener(this::actionSon);
-
-
         /* Adding */
         bFullScreen.setAlignmentY(TOP_ALIGNMENT);
         bSon.setAlignmentY(TOP_ALIGNMENT);
-        constraint.setBorder(BorderFactory.createEmptyBorder((int) (taille_bouton.height * 0.1), (int) (taille_bouton.height * 0.1), 5, 5));
+        constraint.setBorder(BorderFactory.createEmptyBorder((int) (taille_bouton.height * 0.1), (int) (taille_bouton.height * 0.1), 0, 0));
         constraint.add(bSon, BorderLayout.NORTH);
         constraint.add(bFullScreen, BorderLayout.NORTH);
         floating_button.add(constraint, BorderLayout.EAST);
@@ -127,6 +112,7 @@ class PanelMenu extends JPanel {
 
         setBackground(new Color(47, 112, 162));
     }
+
 
     private void addMargin(JPanel parent, Dimension taille) {
         parent.add(Box.createRigidArea(taille));
