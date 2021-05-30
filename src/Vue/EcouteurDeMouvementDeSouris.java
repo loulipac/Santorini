@@ -71,7 +71,6 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        throw new UnsupportedOperationException();
     }
 
     /**
