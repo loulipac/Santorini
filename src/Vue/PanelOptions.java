@@ -286,6 +286,20 @@ class PanelOptions extends JPanel {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         //Chargement de l"image de fond
         try {
+            BufferedImage img = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/base.png"));
+            Dimension img_dim = new Dimension(img.getWidth(), img.getHeight());
+            Dimension taille_max = new Dimension((int) (taille_fenetre.width * 0.7), (int) (taille_fenetre.height * 0.7));
+            Dimension taille_redimensionnee = conserverRatio(img_dim, taille_max);
+
+            g2d.drawImage(
+                    img,
+                    getWidth() / 2 - ((int) (taille_redimensionnee.getWidth() / 2)),
+                    getHeight() / 2 - ((int) (taille_redimensionnee.getHeight() / 2)),
+                    taille_redimensionnee.width,
+                    taille_redimensionnee.height,
+                    this
+            );
+
             BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
             g2d.drawImage(
                     img_colonnes,
@@ -300,32 +314,14 @@ class PanelOptions extends JPanel {
             System.err.println("Erreur image de fond: " + e.getMessage());
         }
     }
+    
+    private Dimension conserverRatio(Dimension imageSize, Dimension boundary) {
 
+        double widthRatio = boundary.getWidth() / imageSize.getWidth();
+        double heightRatio = boundary.getHeight() / imageSize.getHeight();
+        double ratio = Math.min(widthRatio, heightRatio);
 
-    public Dimension conserverRatio(Dimension imgSize, Dimension boundary) {
-        int largeur_original = imgSize.width;
-        int hauteur_original = imgSize.height;
-        int largeur_max = boundary.width;
-        int hauteur_max = boundary.height;
-        int nouvelle_largeur = largeur_original;
-        int nouvelle_hauteur = hauteur_original;
-
-        // Vérifie si on doit redimensionner la largeur
-        if (largeur_original > largeur_max) {
-            // redimensionne la largeur
-            nouvelle_largeur = largeur_max;
-            // redimensionne la hauteur pour preserver le ratio
-            nouvelle_hauteur = (nouvelle_largeur * hauteur_original) / largeur_original;
-        }
-        // Verifie si on doit redimensionner la hauteur
-        if (nouvelle_hauteur > hauteur_max) {
-            // redimensionne la hauteur
-            nouvelle_hauteur = hauteur_max;
-            // redimensionne la largeur pour preserver le ratio
-            nouvelle_largeur = (nouvelle_hauteur * largeur_original) / hauteur_original;
-        }
-
-        return new Dimension(nouvelle_largeur, nouvelle_hauteur);
+        return new Dimension((int) (imageSize.width * ratio),
+                (int) (imageSize.height * ratio));
     }
-
 }
