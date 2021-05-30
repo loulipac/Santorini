@@ -39,8 +39,9 @@ public class CoupConstruire extends Commande {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof CoupConstruire c)) return false;
+        if (!(o instanceof CoupConstruire)) return false;
 
+        CoupConstruire c = (CoupConstruire) o;
         return joueur == c.joueur &&
                 position.equals(c.position) &&
                 batisseur.equals(c.batisseur);

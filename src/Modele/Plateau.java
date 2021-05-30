@@ -316,8 +316,9 @@ public class Plateau {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Plateau pl)) return false;
+        if (!(o instanceof Plateau)) return false;
 
+        Plateau pl = (Plateau) o;
         for (int i = 0; i < PLATEAU_LIGNES; i++) {
             for (int j = 0; j < PLATEAU_COLONNES; j++) {
                 Point p = new Point(i, j);

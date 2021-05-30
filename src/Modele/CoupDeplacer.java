@@ -59,8 +59,10 @@ public class CoupDeplacer extends Commande {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof CoupDeplacer c)) return false;
+        if (!(o instanceof CoupDeplacer)) return false;
 
+        CoupDeplacer c = (CoupDeplacer) o;
+        
         return joueur == c.joueur &&
                 positions[0].equals(c.positions[0]) &&
                 Objects.equals(positions[1], c.positions[1]);
