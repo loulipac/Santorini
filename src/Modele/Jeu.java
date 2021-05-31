@@ -83,6 +83,7 @@ public class Jeu {
      */
     public void jouer(Point position) {
         cmd = null;
+        situation = plateau.estBatisseur(position,getJoueur_en_cours()) && situation == DEPLACEMENT ? SELECTION: situation;
         switch (situation) {
             case PLACEMENT -> jouePlacement(position);
             case SELECTION -> joueSelection(position);

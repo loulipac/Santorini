@@ -95,7 +95,17 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                         } else {
                             jg.setCursor(c_pas_rouge);
                         }
-                    } else {
+                    }
+                    else if(jg.getJeu().getPlateau().estBatisseur(position,j.getJoueur_en_cours()))
+                    {
+                        if(j.getJoueur_en_cours().getNum_joueur() == JOUEUR1){
+                            jg.setCursor(c_defaut_bleu);
+                        }
+                        else{
+                            jg.setCursor(c_defaut_rouge);
+                        }
+                    }
+                    else {
                         jg.setCursor(c_pas_gris);
                     }
                 } else if (j.getSituation() == CONSTRUCTION) {
