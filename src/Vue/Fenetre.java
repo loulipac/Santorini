@@ -16,6 +16,7 @@ public class Fenetre extends JFrame {
     PanelMenu menu;
     PanelOptions options;
     PanelRegles regles;
+    PanelTutoriel tutoriel;
     LecteurSon musique;
     JPanel shown;
 
@@ -32,9 +33,11 @@ public class Fenetre extends JFrame {
         menu = new PanelMenu(getSize());
         options = new PanelOptions(getSize());
         regles = new PanelRegles(getSize());
+        tutoriel = new PanelTutoriel(getSize());
         panelPrincipal.add(menu, "menu");
         panelPrincipal.add(options, "options");
         panelPrincipal.add(regles, "regles");
+        panelPrincipal.add(tutoriel, "tutoriel");
 
         add(panelPrincipal);
         pileCarte.show(panelPrincipal, "menu");

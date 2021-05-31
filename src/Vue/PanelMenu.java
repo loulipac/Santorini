@@ -134,7 +134,7 @@ class PanelMenu extends JPanel {
     public void actionBoutonTutoriel(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.setPanel(new PanelTutoriel(taille_fenetre));
+        f.displayPanel("tutoriel");
     }
 
     /**
