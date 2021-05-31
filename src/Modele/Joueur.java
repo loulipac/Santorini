@@ -36,6 +36,7 @@ public abstract class Joueur {
 
         Joueur j = (Joueur) o;
 
-        return num_joueur == j.num_joueur;
+        return num_joueur == j.num_joueur &&
+                batisseurs.equals(j.batisseurs);
     }
 }

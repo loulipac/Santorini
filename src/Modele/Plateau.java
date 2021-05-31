@@ -110,9 +110,8 @@ public class Plateau {
      * @param position la position sur la grille
      * @return vrai si l'amélioration a marché
      */
-    public boolean ameliorerBatiment(Point position) {
+    public void ameliorerBatiment(Point position) {
         setCase(position, getCase(position) + 1);
-        return true;
     }
 
     /**

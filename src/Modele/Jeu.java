@@ -212,10 +212,10 @@ public class Jeu {
      */
     private boolean construire(Point position, Point batisseur) {
         if (plateau.peutConstruire(position, batisseur)) {
-            return plateau.ameliorerBatiment(position);
-        } else {
-            return false;
+            plateau.ameliorerBatiment(position);
+            return true;
         }
+        return false;
     }
 
     /**
