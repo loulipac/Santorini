@@ -90,7 +90,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
             if(pos_x < 5 && pos_y < 5) {
                 if (j.getSituation() == DEPLACEMENT) {
                     if (jg.getJeu().estAtteignable(position)) {
-                        if (j.getJoueur_en_cours() == JOUEUR1) {
+                        if (j.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
                             jg.setCursor(c_pas_bleu);
                         } else {
                             jg.setCursor(c_pas_rouge);
@@ -100,7 +100,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                     }
                 } else if (j.getSituation() == CONSTRUCTION) {
                     if (jg.getJeu().estAtteignable(position)) {
-                        if (j.getJoueur_en_cours() == JOUEUR1) {
+                        if (j.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
                             jg.setCursor(c_outil_bleu);
                         } else {
                             jg.setCursor(c_outil_rouge);
@@ -111,7 +111,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
                 } else if (j.getSituation() == PLACEMENT) {
                     if (jg.getJeu().getPlateau().estLibre(position)) {
-                        if (j.getJoueur_en_cours() == JOUEUR1) {
+                        if (j.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
                             jg.setCursor(c_drapeau_bleu);
                         } else {
                             jg.setCursor(c_drapeau_rouge);

@@ -9,7 +9,7 @@ public class CoupDeplacer extends Commande {
     private Point[] positions;
     private int coup;
 
-    public CoupDeplacer(int joueur, Point pPos, Point nPos) {
+    public CoupDeplacer(Joueur joueur, Point pPos, Point nPos) {
         super(joueur);
         positions = new Point[2];
         positions[1] = pPos;
@@ -63,7 +63,7 @@ public class CoupDeplacer extends Commande {
 
         CoupDeplacer c = (CoupDeplacer) o;
         
-        return joueur == c.joueur &&
+        return joueur.equals(c.joueur) &&
                 positions[0].equals(c.positions[0]) &&
                 Objects.equals(positions[1], c.positions[1]);
     }

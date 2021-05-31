@@ -8,7 +8,7 @@ public class CoupConstruire extends Commande {
     private Point position;
     private Point batisseur;
 
-    public CoupConstruire(int joueur, Point position, Point batisseur) {
+    public CoupConstruire(Joueur joueur, Point position, Point batisseur) {
         super(joueur);
         this.position = position;
         this.batisseur = batisseur;
@@ -42,7 +42,7 @@ public class CoupConstruire extends Commande {
         if (!(o instanceof CoupConstruire)) return false;
 
         CoupConstruire c = (CoupConstruire) o;
-        return joueur == c.joueur &&
+        return joueur.equals(c.joueur) &&
                 position.equals(c.position) &&
                 batisseur.equals(c.batisseur);
     }

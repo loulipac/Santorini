@@ -29,4 +29,13 @@ public abstract class Joueur {
     public void addBatisseur(Point batisseur) {
         batisseurs.add(batisseur);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Joueur)) return false;
+
+        Joueur j = (Joueur) o;
+
+        return num_joueur == j.num_joueur;
+    }
 }

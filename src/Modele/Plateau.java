@@ -121,8 +121,8 @@ public class Plateau {
      * @param position la position sur la grille
      * @param joueur le numéro de joueur (joueur en cours)
      */
-    public boolean estBatisseur(Point position, int joueur) {
-        return getTypeBatisseurs(position) == joueur;
+    public boolean estBatisseur(Point position, Joueur joueur) {
+        return getTypeBatisseurs(position) == joueur.getNum_joueur();
     }
 
     /**
@@ -153,8 +153,8 @@ public class Plateau {
      * @param position la position sur la grille
      * @param joueur le numéro de joueur (joueur en cours)
      */
-    public void ajouterJoueur(Point position, int joueur) {
-        setCase(position, (getTypeBatiments(position) | joueur));
+    public void ajouterJoueur(Point position, Joueur joueur) {
+        setCase(position, (getTypeBatiments(position) | joueur.getNum_joueur()));
     }
 
     /**
