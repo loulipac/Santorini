@@ -441,4 +441,8 @@ public class Jeu {
                 Objects.equals(batisseur_en_cours, j.batisseur_en_cours) &&
                 plateau.equals(j.plateau);
     }
+
+    public static int getAutreJoueur(int joueur){
+        return (joueur % Constante.JOUEUR2) + Constante.JOUEUR1;
+    }
 }
