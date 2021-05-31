@@ -13,7 +13,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Classe générant la fenêtre de jeu.
@@ -25,7 +24,6 @@ public class PanelTutoriel extends JPanel implements Observer {
     Font lilly_belle;
     JLabel jt;
     Dimension taille_fenetre;
-    Bouton on_off_ia;
     Image colonne_rouge;
     Image colonne_bleu;
     Image arriere_plan;
@@ -110,13 +108,9 @@ public class PanelTutoriel extends JPanel implements Observer {
     public class JGamePanel extends JPanel {
         int taille_margin;
         float taille_h;
-        Bouton acceleration;
-        ArrayList<Integer> niveauAcceleration;
-        int index_acceleration;
 
         /**
          * Constructeur pour JGamePanel. Rajoute des components au JPanel.
-         *
          */
         public JGamePanel(float _taille_h) {
             this.taille_h = _taille_h - 0.05f;
@@ -151,18 +145,8 @@ public class PanelTutoriel extends JPanel implements Observer {
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
 
-                jeu = new Jeu(5, 5, PanelTutoriel.this, 0, 0);
-                jg = new JeuGraphique(jeu);
-            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
-
-            JPanel histo_bouton = new JPanel();
-            histo_bouton.setOpaque(false);
-            histo_bouton.setPreferredSize(size);
-            histo_bouton.setMaximumSize(size);
-
-            Bouton histo_annuler = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
-
-            Bouton histo_refaire = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png", taille_fenetre.height / 19, taille_fenetre.height / 19);
+            jeu = new Jeu(5, 5, PanelTutoriel.this, 0, 0);
+            jg = new JeuGraphique(jeu);
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
@@ -186,9 +170,9 @@ public class PanelTutoriel extends JPanel implements Observer {
             addMargin(container);
             container.add(jg);
             addMargin(container);
-            container.add(histo_bouton);
-            addMargin(container);
             add(container);
+            addMargin(container);
+            addMargin(container);
         }
 
         /**
@@ -203,19 +187,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             c.add(j);
         }
 
-        public void accelerationIA(ActionEvent e) {
-            index_acceleration++;
-            if (index_acceleration >= niveauAcceleration.size()) {
-                index_acceleration = 0;
-            }
-            acceleration.setText("x" + niveauAcceleration.get(index_acceleration));
-            jeu.accelererIA(niveauAcceleration.get(index_acceleration));
-        }
 
-    }
-
-    public boolean isParametreVisible() {
-        return pp.isVisible();
     }
 
     private class ParametrePanel extends JPanel {
@@ -350,7 +322,6 @@ public class PanelTutoriel extends JPanel implements Observer {
         }
 
 
-
         public void actionCharger(ActionEvent e) {
             JFileChooser chooser = new JFileChooser(SAVES_PATH);
             FileNameExtensionFilter filter = new FileNameExtensionFilter(
@@ -383,7 +354,6 @@ public class PanelTutoriel extends JPanel implements Observer {
     public class TopPanel extends JPanel {
         /**
          * Constructeur de TopPanel. Ajoute les élements et définis les valeurs des propriétés de chacuns.
-         *
          */
         public TopPanel(float taille_h) {
             setOpaque(false);
@@ -407,7 +377,6 @@ public class PanelTutoriel extends JPanel implements Observer {
 
     /**
      * Dessine l'image de fond et la bannière (colonne).
-     *
      */
     @Override
     protected void paintComponent(Graphics g) {
@@ -447,25 +416,6 @@ public class PanelTutoriel extends JPanel implements Observer {
             e.printStackTrace();
             System.out.println("Erreur image de fond: " + e.getMessage());
         }
-    }
-
-    public void switchOnOffIA(ActionEvent e) {
-        jeu.iaSwitch();
-        if (jeu.getIa_statut()) {
-            on_off_ia.changeImage(CHEMIN_RESSOURCE + "/bouton/running.png", CHEMIN_RESSOURCE + "/bouton/running_hover.png");
-        } else {
-            on_off_ia.changeImage(CHEMIN_RESSOURCE + "/bouton/stop.png", CHEMIN_RESSOURCE + "/bouton/stop_hover.png");
-        }
-    }
-
-    public void actionUndo(ActionEvent e) {
-        jeu.annuler();
-        jg.repaint();
-    }
-
-    public void actionRedo(ActionEvent e) {
-        jeu.refaire();
-        jg.repaint();
     }
 
     private void changeVictory() {
