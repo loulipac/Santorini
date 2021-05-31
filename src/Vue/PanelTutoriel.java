@@ -175,11 +175,9 @@ public class PanelTutoriel extends JPanel implements Observer {
             taille_margin = taille / 4;
 
             addMargin(container);
-//            container.add(parametres);
             container.add(side_panel);
             addMargin(container);
             container.add(jg);
-            addMargin(container);
             addMargin(container);
             add(container);
         }
@@ -345,15 +343,14 @@ public class PanelTutoriel extends JPanel implements Observer {
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
             int height = (int) (size.height * 0.1);
 
-            Dimension size_pane = new Dimension(size.width, height);
+            int bouton_height = (int) (size.height * 0.1);
+            Dimension size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
 
             JPanel parametres = new JPanel();
             parametres.setOpaque(false);
-            parametres.setPreferredSize(size);
-            parametres.setMaximumSize(size);
+            parametres.setPreferredSize(new Dimension(size.width, size_bouton.height));
+            parametres.setMaximumSize(new Dimension(size.width, size_bouton.height));
 
-            int bouton_height = (int) (size.height * 0.1);
-            Dimension size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
             Bouton bParametres = new Bouton(
                     CHEMIN_RESSOURCE + "/bouton/parametres.png",
                     CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
@@ -368,7 +365,7 @@ public class PanelTutoriel extends JPanel implements Observer {
 
             TextePanel texte_panel = new TextePanel(size);
             add(parametres);
-            add(Box.createRigidArea(new Dimension(size.width, 0)));
+            add(Box.createRigidArea(new Dimension(size.width, size.height/20)));
             add(texte_panel);
         }
     }
@@ -418,6 +415,7 @@ public class PanelTutoriel extends JPanel implements Observer {
         }
 
         private void initialiserComposant() {
+            lilly_belle = new Font("Lily Script One", Font.PLAIN, 40);
             Dimension taille_panel = new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3);
             BackgroundPanel contenu = new BackgroundPanel(taille_panel);
 
