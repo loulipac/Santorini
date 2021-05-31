@@ -134,7 +134,7 @@ class PanelOptions extends JPanel {
 
             joueur_joueur = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_joueur", taille_fenetre.width / 6, taille_fenetre.width / 30, adversaires_boutons);
             joueur_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia", taille_fenetre.width / 6, taille_fenetre.width / 30, adversaires_boutons);
-            ia_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia", taille_fenetre.width / 6, taille_fenetre.width / 30, adversaires_boutons);
+            ia_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/ia_contre_ia", taille_fenetre.width / 6, taille_fenetre.width / 30, adversaires_boutons);
 
             joueur_joueur.setActionCommand("0");
             joueur_ia.setActionCommand("1");
