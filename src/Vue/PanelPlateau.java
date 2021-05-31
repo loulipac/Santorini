@@ -155,14 +155,14 @@ public class PanelPlateau extends JPanel implements Observer {
             parametres.add(bParametres);
 
             if (ia2_mode != 0) {
-                jeu = new Jeu(5, 5, PanelPlateau.this, ia1_mode, ia2_mode);
+                jeu = new Jeu(PanelPlateau.this, ia1_mode, ia2_mode);
                 jg = new JeuGraphique(jeu);
             } else if (ia1_mode != 0) {
-                jeu = new Jeu(5, 5, PanelPlateau.this, ia1_mode, 0);
+                jeu = new Jeu(PanelPlateau.this, ia1_mode, 0);
                 jg = new JeuGraphique(jeu);
                 jg.addMouseListener(new EcouteurDeSouris(jg, jeu, PanelPlateau.this));
             } else {
-                jeu = new Jeu(5, 5, PanelPlateau.this, 0, 0);
+                jeu = new Jeu(PanelPlateau.this, 0, 0);
                 jg = new JeuGraphique(jeu);
                 jg.addMouseListener(new EcouteurDeSouris(jg, jeu, PanelPlateau.this));
             }

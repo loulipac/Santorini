@@ -36,11 +36,9 @@ public class Jeu {
     /**
      * Instantie une classe jeu.
      *
-     * @param l nombre de ligne
-     * @param c nombre de colonne
      * @param o observateur
      */
-    public Jeu(int l, int c, Observer o, int ia1_mode, int ia2_mode) {
+    public Jeu(Observer o, int ia1_mode, int ia2_mode) {
         vitesse_ia = 1;
         ia_statut = true;
         situation = PLACEMENT;
@@ -65,6 +63,10 @@ public class Jeu {
             j2 = new JoueurHumain(this, JOUEUR2);
         }
         iaJoue();
+    }
+
+    public Jeu(Observer o) {
+        this(o, 0, 0);
     }
 
     private IA setIA(int ia_mode) {
@@ -239,8 +241,8 @@ public class Jeu {
         }
     }
 
-    public void sauvegarder() {
-        histo.sauvegarder();
+    public String sauvegarder() {
+        return histo.sauvegarder();
     }
 
     public void charger(String filename) {

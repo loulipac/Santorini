@@ -25,7 +25,7 @@ public class TestHistorique implements Observer {
 
     @Test
     public void testHistoriqueVide() {
-        Jeu game = new Jeu(5, 5, this, 0, 0);
+        Jeu game = new Jeu(this);
 
         Assertions.assertFalse(game.getHistorique().peutRefaire());
         Assertions.assertFalse(game.getHistorique().peutAnnuler());
@@ -33,20 +33,20 @@ public class TestHistorique implements Observer {
 
     @Test
     public void testUndo() {
-        Jeu game = new Jeu(5, 5, this, 0, 0);
+        Jeu game = new Jeu(this);
 
         for (Point move : moves) game.jouer(move);
-        Assertions.assertFalse(game.equals(new Jeu(5, 5, this, 0, 0)));
+        Assertions.assertFalse(game.equals(new Jeu(this)));
         for (Point move : moves) game.annuler();
-        Assertions.assertTrue(game.equals(new Jeu(5, 5, this, 0, 0)));
+        Assertions.assertTrue(game.equals(new Jeu(this)));
         Assertions.assertTrue(game.getHistorique().peutRefaire());
         Assertions.assertFalse(game.getHistorique().peutAnnuler());
     }
 
     @Test
     public void testRedo() {
-        Jeu g1 = new Jeu(5, 5, this, 0, 0);
-        Jeu g2 = new Jeu(5, 5, this, 0, 0);
+        Jeu g1 = new Jeu(this);
+        Jeu g2 = new Jeu(this);
 
         for (Point move : moves) {
             g1.jouer(move);
@@ -64,8 +64,8 @@ public class TestHistorique implements Observer {
 
     @Test
     public void testSaveLoad() {
-        Jeu g1 = new Jeu(5, 5, this, 0, 0);
-        Jeu g2 = new Jeu(5, 5, this, 0, 0);
+        Jeu g1 = new Jeu(this);
+        Jeu g2 = new Jeu(this);
 
         for (Point move : moves) {
             g1.jouer(move);

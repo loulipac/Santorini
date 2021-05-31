@@ -145,7 +145,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
 
-            jeu = new Jeu(5, 5, PanelTutoriel.this, 0, 0);
+            jeu = new Jeu(PanelTutoriel.this, 0, 0);
             jg = new JeuGraphique(jeu);
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
