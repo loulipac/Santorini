@@ -28,6 +28,7 @@ public class Jeu {
     private Joueur gagnant;
     private boolean ia_statut;
     private int vitesse_ia;
+    private int nb_tours;
 
     private Joueur[] joueurs;
     private int i_joueurs;
@@ -51,6 +52,7 @@ public class Jeu {
         jeu_fini = false;
         histo = new Historique(this);
         gagnant = null;
+        nb_tours = 0;
 
         if (ia2_mode != 0) {
             joueurs[0] = new JoueurIA(this, JOUEUR1, setIA(ia1_mode), vitesse_ia);
@@ -181,6 +183,7 @@ public class Jeu {
      * Fini le tour pour le joueur en cours.
      */
     public void finTour() {
+        nb_tours++;
         changerJoueur();
         batisseur_en_cours = null;
         MAJObservateur();
@@ -336,6 +339,10 @@ public class Jeu {
 
     public Joueur getJ2() {
         return joueurs[1];
+    }
+
+    public int getNb_tours() {
+        return nb_tours;
     }
 
     @Override
