@@ -56,7 +56,7 @@ public class PanelRegles extends JPanel {
         /* Boutons */
 
         /* Panel */
-        Dimension taille_panel = new Dimension((int) (taille_fenetre.width * 0.6), (int) (taille_fenetre.height * 0.8));
+        Dimension taille_panel = new Dimension((int) (taille_fenetre.width * 0.55), (int) (taille_fenetre.height * 0.8));
         ReglesPanel panel = new ReglesPanel(taille_panel);
 
         /* Adding */

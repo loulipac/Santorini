@@ -14,6 +14,15 @@ public class Bouton extends JButton {
         addActionListener(action);
     }
 
+    public Bouton(String image, String imageHover, Dimension size) {
+        this(image, imageHover, size.width, size.height);
+    }
+
+    public Bouton(String image, String imageHover, Dimension size, ActionListener action) {
+        this(image, imageHover, size.width, size.height);
+        addActionListener(action);
+    }
+
     public Bouton(String image, String imageHover, int largeur, int hauteur) {
         this.largeur = largeur;
         this.hauteur = hauteur;
