@@ -6,7 +6,6 @@ import Modele.Jeu;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -34,6 +33,7 @@ public class PanelPlateau extends JPanel implements Observer {
     Image arriere_plan;
     Image colonne_fin;
     ParametrePanel pp;
+    VictoirePanel victoire_panel;
 
     /**
      * Initialise la fenêtre de jeu et charge la police et les images en mémoire.
@@ -87,8 +87,13 @@ public class PanelPlateau extends JPanel implements Observer {
 
         pp = new ParametrePanel();
         pp.setVisible(false);
+
+        victoire_panel = new VictoirePanel();
+        victoire_panel.setVisible(false);
+
         main_panel.add(game, JLayeredPane.DEFAULT_LAYER);
         main_panel.add(pp, JLayeredPane.POPUP_LAYER);
+        main_panel.add(victoire_panel, JLayeredPane.POPUP_LAYER);
         add(main_panel);
     }
 
@@ -101,7 +106,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            pp.setVisible(!pp.isVisible());
+            if(!victoire_panel.isVisible()) pp.setVisible(!pp.isVisible());
         }
     }
 
@@ -139,7 +144,7 @@ public class PanelPlateau extends JPanel implements Observer {
             parametres.setMaximumSize(size);
 
             int bouton_height = (int) (size.height * 0.1);
-            Dimension size_bouton = new Dimension( (int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height );
+            Dimension size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
             Bouton bParametres = new Bouton(
                     CHEMIN_RESSOURCE + "/bouton/parametres.png",
                     CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
@@ -472,10 +477,10 @@ public class PanelPlateau extends JPanel implements Observer {
             getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
             getActionMap().put("echap", echap);
 
-            bQuitter.addActionListener(this::actionBoutonAbandonner);
+            bQuitter.addActionListener(PanelPlateau.this::actionQuitter);
             bReprendre.addActionListener(echap);
-            bNouvellePartie.addActionListener(this::actionBoutonNouvelle);
-            bSauvegarder.addActionListener(this::actionBoutonSauvergarder);
+            bNouvellePartie.addActionListener(PanelPlateau.this::actionBoutonNouvelle);
+            bSauvegarder.addActionListener(PanelPlateau.this::actionBoutonSauvergarder);
             bCharger.addActionListener(this::actionCharger);
 
             /* Adding */
@@ -501,22 +506,6 @@ public class PanelPlateau extends JPanel implements Observer {
         private void addMargin(JPanel parent, Dimension taille) {
             parent.add(Box.createRigidArea(taille));
         }
-
-        public void actionBoutonAbandonner(ActionEvent e) {
-            Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-            f.displayPanel("menu");
-        }
-
-        public void actionBoutonSauvergarder(ActionEvent e) {
-            jeu.sauvegarder();
-            pp.setVisible(false);
-        }
-
-        public void actionBoutonNouvelle(ActionEvent e) {
-            Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-            f.setPanel(new PanelPlateau(taille_fenetre, ia1_mode, ia2_mode));
-        }
-
 
         public void actionCharger(ActionEvent e) {
             JFileChooser chooser = new JFileChooser(SAVES_PATH);
@@ -544,6 +533,153 @@ public class PanelPlateau extends JPanel implements Observer {
 
     }
 
+    private class VictoirePanel extends JPanel {
+        private class BackgroundPanel extends JPanel {
+
+            public BackgroundPanel(Dimension taille) {
+                super();
+                setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+                setAlignmentX(CENTER_ALIGNMENT);
+                setMaximumSize(taille);
+                setPreferredSize(taille);
+                setOpaque(false);
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                try {
+                    BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/parchemin.png"));
+                    g2d.drawImage(
+                            bg_panel,
+                            0,
+                            0,
+                            getWidth(),
+                            getHeight(),
+                            this
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.err.println("Erreur image de fond: " + e.getMessage());
+                }
+            }
+        }
+
+        JPanel titre_victoire;
+        JPanel nb_tours;
+        JPanel tmp_reflexion_j1;
+        JPanel tmp_reflexion_j2;
+
+        public VictoirePanel() {
+            initialiserComposant();
+            setOpaque(false);
+            setLayout(new GridBagLayout());
+            setMaximumSize(taille_fenetre);
+        }
+
+        private void initialiserComposant() {
+            Dimension real_taille_panel = new Dimension((int) (taille_fenetre.width * 0.35), (int) (taille_fenetre.height * 0.9));
+            BackgroundPanel contenu = new BackgroundPanel(real_taille_panel);
+            Dimension taille_panel = new Dimension((int) (real_taille_panel.width * 0.75), (int) (real_taille_panel.height * 0.8));
+
+            double ratio_titre = 0.1;
+            double ratio_marge = 0.03;
+            double ratio_texte = 0.05;
+            double taille_restante = taille_panel.height - taille_panel.height * (ratio_titre + (ratio_marge * 10) + (ratio_texte * 4));
+            float height_bouton = (float) taille_restante / 4;
+
+            Dimension taille_bouton = new Dimension((int) (height_bouton * RATIO_BOUTON_CLASSIQUE), (int) (height_bouton));
+            Bouton bVisualiser = new Bouton(CHEMIN_RESSOURCE + "/bouton/visualiser.png", CHEMIN_RESSOURCE + "/bouton/visualiser.png",
+                    taille_bouton, this::actionVisualiser);
+            Bouton bSauvegarder = new Bouton(CHEMIN_RESSOURCE + "/bouton/sauvegarder_partie.png", CHEMIN_RESSOURCE + "/bouton/sauvegarder_partie.png",
+                    taille_bouton, PanelPlateau.this::actionBoutonSauvergarder);
+            Bouton bNouvelle = new Bouton(CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png",
+                    taille_bouton, PanelPlateau.this::actionBoutonNouvelle);
+            Bouton bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter.png", CHEMIN_RESSOURCE + "/bouton/quitter.png",
+                    taille_bouton, PanelPlateau.this::actionQuitter);
+
+            Dimension dim_texte = new Dimension(taille_panel.width, (int) (taille_panel.height * ratio_texte));
+            titre_victoire = creerTexte("Victoire du joueur %n", 35,
+                    new Dimension(taille_panel.width, (int) (taille_panel.height * ratio_titre)), SwingConstants.CENTER);
+            nb_tours = creerTexte("%n tours passés", 20, dim_texte, SwingConstants.CENTER);
+            JPanel tmp_reflexion_titre = creerTexte("Temps moyen de réflexion :", 20, dim_texte, SwingConstants.CENTER);
+            tmp_reflexion_j1 = creerTexte("%n secondes pour le joueur 1", 20, dim_texte, SwingConstants.LEFT);
+            tmp_reflexion_j2 = creerTexte("%n secondes pour le joueur 2", 20, dim_texte, SwingConstants.LEFT);
+            Dimension taille_marge = new Dimension(taille_panel.width, (int) (taille_panel.height * ratio_marge));
+
+            addMargin(contenu, taille_marge);
+            addMargin(contenu, taille_marge);
+            contenu.add(titre_victoire);
+            contenu.add(nb_tours);
+            addMargin(contenu, taille_marge);
+            addMargin(contenu, taille_marge);
+
+            contenu.add(tmp_reflexion_titre);
+            addMargin(contenu, taille_marge);
+            contenu.add(tmp_reflexion_j1);
+            addMargin(contenu, taille_marge);
+            contenu.add(tmp_reflexion_j2);
+            addMargin(contenu, taille_marge);
+
+            addMargin(contenu, taille_marge);
+            contenu.add(bVisualiser);
+            addMargin(contenu, taille_marge);
+            contenu.add(bSauvegarder);
+            addMargin(contenu, taille_marge);
+            contenu.add(bNouvelle);
+            addMargin(contenu, taille_marge);
+            contenu.add(bQuitter);
+            addMargin(contenu, taille_marge);
+            add(contenu);
+        }
+
+        private void actionVisualiser(ActionEvent e) {
+            victoire_panel.setVisible(false);
+        }
+
+        public void changeTexte(JPanel _jp, String texte) {
+            for(Component jc : _jp.getComponents()) {
+                JLabel label = (JLabel) jc;
+                label.setText(texte);
+            }
+        }
+
+        private void addMargin(JPanel parent, Dimension taille) {
+            parent.add(Box.createRigidArea(taille));
+        }
+
+        private JPanel creerTexte(String _t, int _fs, Dimension _s, int alignment) {
+            JPanel _jpan = new JPanel();
+            JLabel _lab = new JLabel(_t, alignment);
+            _lab.setFont(new Font("Lily Script One", Font.PLAIN, _fs));
+            _lab.setForeground(new Color(103, 69, 42));
+            _lab.setPreferredSize(_s);
+            _lab.setMaximumSize(_s);
+            _jpan.setLayout(new BorderLayout());
+            _jpan.setOpaque(false);
+            _jpan.add(_lab, BorderLayout.CENTER);
+            _jpan.setPreferredSize(_s);
+            _jpan.setMaximumSize(_s);
+            return _jpan;
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+            Color transparentColor = new Color(0, 0, 0, 0.4f);
+            g2d.setColor(transparentColor);
+            g2d.fillRect(0, 0, taille_fenetre.width, taille_fenetre.height);
+            g2d.setComposite(AlphaComposite.SrcOver);
+        }
+    }
+
+
     /**
      * Crée un JPanel modifié qui ajoute le logo et le texte designant quel joueur joue.
      */
@@ -569,6 +705,21 @@ public class PanelPlateau extends JPanel implements Observer {
             jt.setForeground(Color.WHITE);
             add(jt);
         }
+    }
+
+    public void actionBoutonNouvelle(ActionEvent e) {
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.setPanel(new PanelPlateau(taille_fenetre, ia1_mode, ia2_mode));
+    }
+
+    public void actionQuitter(ActionEvent e) {
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.displayPanel("menu");
+    }
+
+    public void actionBoutonSauvergarder(ActionEvent e) {
+        jeu.sauvegarder();
+        pp.setVisible(false);
     }
 
     /**
@@ -635,6 +786,12 @@ public class PanelPlateau extends JPanel implements Observer {
 
     private void changeVictory() {
         jt.setText("Joueur " + (jeu.getGagnant().getNum_joueur() / JOUEUR1) + " gagne");
+
+        victoire_panel.setVisible(true);
+        victoire_panel.changeTexte(victoire_panel.titre_victoire, "Victoire du joueur " + (jeu.getGagnant().getNum_joueur() / JOUEUR1));
+        victoire_panel.changeTexte(victoire_panel.nb_tours, jeu.getNb_tours() + " tours passés");
+        victoire_panel.changeTexte(victoire_panel.tmp_reflexion_j1, "n secondes pour le joueur 1");
+        victoire_panel.changeTexte(victoire_panel.tmp_reflexion_j2, "n secondes pour le joueur 2");
     }
 
     /**
