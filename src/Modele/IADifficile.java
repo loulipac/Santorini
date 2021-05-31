@@ -43,10 +43,10 @@ public class IADifficile implements IA {
         }
     }
 
-    public float alphabeta(JeuSimulation jeu, int depth, float a, float b, int maximizingPlayer) {
+public float alphabeta(JeuSimulation jeu, int depth, float a, float b, int maximizingPlayer) {
         float value;
         if (depth == 0 || jeu.estJeufini()) {
-            return heuristique(jeu);
+            return calculHeuristique(jeu);
         }
 
         ArrayList<Point> batisseur_copy = null;
@@ -57,7 +57,7 @@ public class IADifficile implements IA {
                 for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
                     for (Point construction : plateau.getConstructionsPossible(deplacement)) {
 
-                        JeuSimulation jeu_simulation = new JeuSimulation(jeu.getPlateau(), jeu.j1, jeu.j2);
+                        JeuSimulation jeu_simulation = new JeuSimulation(jeu.getPlateau(), jeu.j2, jeu.j1);
 
                         jouer(jeu_simulation, new Coups(batisseur, deplacement, construction), maximizingPlayer);
                         value = Math.max(value, alphabeta(jeu_simulation, depth - 1, a, b, (maximizingPlayer % 16) + 8));
@@ -82,7 +82,7 @@ public class IADifficile implements IA {
                 for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
                     for (Point construction : plateau.getConstructionsPossible(deplacement)) {
 
-                        JeuSimulation jeu_simulation = new JeuSimulation(jeu.getPlateau(), jeu.j1, jeu.j2);
+                        JeuSimulation jeu_simulation = new JeuSimulation(jeu.getPlateau(), jeu.j2, jeu.j1);
 
                         jouer(jeu_simulation, new Coups(batisseur, deplacement, construction), maximizingPlayer);
                         value = Math.min(value, alphabeta(jeu_simulation, depth - 1, a, b, (maximizingPlayer % 16) + 8));
@@ -102,7 +102,6 @@ public class IADifficile implements IA {
             return value;
         }
     }
-
     /**
      * Joue un tour complet
      * TODO: joueur en cours bizarre
@@ -265,6 +264,141 @@ public class IADifficile implements IA {
 //                valeurVerticale(_jeu);
     }
 
+
+
+    private float calculHeuristiqueDifferenceDesHauteurs(JeuSimulation _jeu) {
+        System.out.println("Entree calcul diff hauteurs");
+        float heuristique_j1 = 0;
+        float heuristique_j2 = 0;
+        Plateau plateau = _jeu.getPlateau();
+
+        for (Point batisseur : _jeu.j1.getBatisseurs()) {
+            if (plateau.estToit(batisseur)) {
+                heuristique_j1 += 1000;
+            } else if (plateau.estEtage(batisseur)) {
+                heuristique_j1 += 60;
+            } else if (plateau.estRDC(batisseur)) {
+                heuristique_j1 += 40;
+            }
+        }
+
+        for (Point batisseur : _jeu.j2.getBatisseurs()) {
+            if (plateau.estToit(batisseur)) {
+                heuristique_j2 += 1000;
+            } else if (plateau.estEtage(batisseur)) {
+                heuristique_j2 += 60;
+            } else if (plateau.estRDC(batisseur)) {
+                heuristique_j2 += 40;
+            }
+        }
+
+        System.out.println("DiffHauteur = " + (heuristique_j1 - heuristique_j2));
+        return heuristique_j1 - heuristique_j2;
+    }
+
+
+    private float calculHeuristiqueMobiliteVerticale(JeuSimulation _jeu) {
+        System.out.println("Entree calcul mobilite verticale");
+        float heuristique_j1 = 0;
+        float heuristique_j2 = 0;
+        Plateau plateau = _jeu.getPlateau();
+
+        for (Point batisseur : _jeu.j1.getBatisseurs()) {
+            int etage_batisseur = plateau.getTypeBatiments(batisseur);
+            for (Point case_voisine : plateau.getCasesVoisines(batisseur)) {
+                int etage_case_voisine = plateau.getTypeBatiments(case_voisine);
+                if (etage_case_voisine == etage_batisseur + 1) {
+                    heuristique_j1 += 5;
+                } else if (etage_case_voisine == etage_batisseur + 2) {
+                    heuristique_j1 -= 10;
+                } else if (etage_case_voisine == etage_batisseur + 3) {
+                    heuristique_j1 -= 15;
+                } else {
+                    heuristique_j1 -= 20;
+                }
+            }
+        }
+
+        for (Point batisseur : _jeu.j2.getBatisseurs()) {
+            int etage_batisseur = plateau.getTypeBatiments(batisseur);
+            for (Point case_voisine : plateau.getCasesVoisines(batisseur)) {
+                int etage_case_voisine = plateau.getTypeBatiments(case_voisine);
+                if (etage_case_voisine == etage_batisseur + 1) {
+                    heuristique_j2 += 5;
+                } else if (etage_case_voisine == etage_batisseur + 2) {
+                    heuristique_j2 -= 10;
+                } else if (etage_case_voisine == etage_batisseur + 3) {
+                    heuristique_j2 -= 15;
+                } else {
+                    heuristique_j2 -= 20;
+                }
+            }
+        }
+
+        System.out.println("MobVerticale = " + (heuristique_j1 - heuristique_j2));
+        return heuristique_j1 - heuristique_j2;
+    }
+
+    private float calculHeuristiqueCaseCentrale(JeuSimulation _jeu) {
+        System.out.println("Entree calcul case centrale");
+        for (Point batisseur : _jeu.j1.getBatisseurs()) {
+            if (batisseur == CASE_CENTRALE) {
+                System.out.println("CaseCentrale = 10");
+                return 10;
+            }
+        }
+        System.out.println("CaseCentrale = 0");
+        return 0;
+    }
+
+    private float calculHeuristiqueMenaceNiveau2(JeuSimulation _jeu) {
+        System.out.println("Entree calcul menace niveau 2");
+        Plateau plateau = _jeu.getPlateau();
+        for (Point batisseur : _jeu.j1.getBatisseurs()) {
+            if (!plateau.estToit(batisseur) && plateau.estEtage(batisseur)) {
+                for (Point case_voisine : plateau.getCasesAccessibles(batisseur)) {
+                    if (!plateau.estCoupole(case_voisine) && plateau.estToit(case_voisine)) {
+                        System.out.println("Menace2 = 500");
+                        return 500;
+                    }
+                }
+            }
+        }
+        System.out.println("Menace2 = 0");
+        return 0;
+    }
+
+    public float calculHeuristiquePasPerdre(JeuSimulation _jeu){
+        float valeur=0;
+
+        for (Point batisseur : _jeu.j1.getBatisseurs()) {
+            if(plateau.estToit(batisseur)){
+                valeur = 1000;
+            }
+            else if(plateau.estEtage(batisseur)){
+                for (Point case_voisine : plateau.getCasesVoisines(batisseur)) {
+                    if(plateau.estToit(case_voisine)){
+                        return 800;
+                }
+
+                }
+
+            }
+        }
+        return valeur;
+    }
+
+    private float calculHeuristique(JeuSimulation _jeu) {
+        System.out.println("Entree calcul heuristique");
+        float valeur_heuristique = calculHeuristiqueDifferenceDesHauteurs(_jeu)
+                + calculHeuristiqueMobiliteVerticale(_jeu)
+                + calculHeuristiqueCaseCentrale(_jeu)
+                + calculHeuristiqueMenaceNiveau2(_jeu);
+        System.out.println("heuristique = " + valeur_heuristique);
+        return valeur_heuristique;
+    }
+
+
     @Override
     public Point joue() {
         switch (jeu.getSituation()) {
@@ -273,7 +407,7 @@ public class IADifficile implements IA {
             case SELECTION:
 
                 JeuSimulation jeu_simulation = new JeuSimulation(jeu.getPlateau(), jeu.j1,jeu.j2);
-                alphabeta(jeu_simulation, 2, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, jeu.getJoueur_en_cours());
+                alphabeta(jeu_simulation, 3, Float.NEGATIVE_INFINITY, Float.POSITIVE_INFINITY, jeu.getJoueur_en_cours());
                 coups = coups_liste.get(random.nextInt(coups_liste.size()));
                 return coups.batisseur;
             case DEPLACEMENT:

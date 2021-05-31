@@ -375,4 +375,8 @@ public class Jeu {
     public boolean getIa_statut() {
         return ia_statut;
     }
+
+    public static int getAutreJoueur(int joueur){
+        return (joueur % Constante.JOUEUR2) + Constante.JOUEUR1;
+    }
 }
