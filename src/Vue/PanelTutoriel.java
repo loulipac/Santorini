@@ -6,6 +6,7 @@ import Modele.Jeu;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Classe générant la fenêtre de jeu.
@@ -130,11 +132,12 @@ public class PanelTutoriel extends JPanel implements Observer {
             parametres.setPreferredSize(size);
             parametres.setMaximumSize(size);
 
+            int bouton_height = (int) (size.height * 0.1);
+            Dimension size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
             Bouton bParametres = new Bouton(
                     CHEMIN_RESSOURCE + "/bouton/parametres.png",
                     CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
-                    taille_fenetre.height / 19,
-                    taille_fenetre.height / 19
+                    size_bouton
             );
 
 
@@ -147,6 +150,11 @@ public class PanelTutoriel extends JPanel implements Observer {
 
             jeu = new Jeu(5, 5, PanelTutoriel.this, 0, 0);
             jg = new JeuGraphique(jeu);
+            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
+
+            SidePanelRight side_panel = new SidePanelRight(size);
+            side_panel.setMaximumSize(size);
+            side_panel.setPreferredSize(size);
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
@@ -166,13 +174,13 @@ public class PanelTutoriel extends JPanel implements Observer {
             taille_margin = taille / 4;
 
             addMargin(container);
-            container.add(parametres);
+//            container.add(parametres);
+            container.add(side_panel);
             addMargin(container);
             container.add(jg);
             addMargin(container);
+            addMargin(container);
             add(container);
-            addMargin(container);
-            addMargin(container);
         }
 
         /**
@@ -187,8 +195,149 @@ public class PanelTutoriel extends JPanel implements Observer {
             c.add(j);
         }
 
-
     }
+
+    private class SidePanelRight extends JPanel {
+        Bouton acceleration;
+        ArrayList<Integer> niveauAcceleration;
+        int index_acceleration;
+        final int TITRE_TAILLE = 30;
+        Dimension size;
+
+        private final String[] TEXTE_ETAPES = {
+                """
+                Bienvenue dans le tutoriel de Santorini !
+                C’est ici que tu vas apprendre à devenir un pro de ce jeu.
+                Mais avant de devenir un pro commençons par voir les bases.
+                On y va ?""",
+                """
+                Commençons à jouer !
+                Au début du jeu, chaque joueur doit placer ses deux pions où il veut sur le plateau.""",
+                """
+                Tu es le joueur bleu, positionne par exemple tes 2 personnages sur la grille sur les cases indiquées.""",
+                """
+                C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs, voyons où il les place."""
+        };
+
+        private class TextePanel extends JPanel {
+            Dimension taille_personnage;
+            Dimension taille_parchemin;
+            Dimension pos_parchemin;
+            Dimension pos_personnage;
+            Dimension panel_texte_size;
+            JTextArea texte_bulle;
+
+            public TextePanel(Dimension size) {
+                // Polices
+                lilly_belle = new Font("Lily Script One", Font.PLAIN, 20);
+                taille_personnage = new Dimension(size.height / 6, size.height / 6);
+                taille_parchemin = new Dimension(size.width, size.height * 2 / 3 - taille_personnage.height / 2);
+
+                pos_parchemin = new Dimension(0, 0);
+                pos_personnage = new Dimension(0, pos_parchemin.height + taille_parchemin.height - taille_personnage.height * 3 / 4);
+                panel_texte_size = new Dimension(size.width*2/3, taille_parchemin.height);
+
+                setOpaque(false);
+                setMaximumSize(size);
+                JPanel panel_texte = new JPanel();
+                panel_texte.setOpaque(false);
+                panel_texte.setMaximumSize(panel_texte_size);
+                panel_texte.setMinimumSize(panel_texte_size);
+                panel_texte.setPreferredSize(panel_texte_size);
+
+                texte_bulle = new JTextArea(TEXTE_ETAPES[0]);
+                texte_bulle.setOpaque(false);
+                texte_bulle.setEditable(false);
+
+                texte_bulle.setFont(lilly_belle);
+                texte_bulle.setForeground(new Color(82, 60, 43));
+
+                texte_bulle.setMaximumSize(panel_texte_size);
+                texte_bulle.setMinimumSize(panel_texte_size);
+                texte_bulle.setPreferredSize(panel_texte_size);
+
+                texte_bulle.setLineWrap(true);
+                texte_bulle.setWrapStyleWord(true);
+                panel_texte.add(texte_bulle);
+                add(Box.createRigidArea(new Dimension(size.width, 10)));
+                add(texte_bulle);
+
+                changerTexte(0);
+
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                try {
+                    BufferedImage bg_parchemin = ImageIO.read(new File(CHEMIN_RESSOURCE + "/assets_recurrents/parchemin.png"));
+                    BufferedImage personnage = ImageIO.read(new File(CHEMIN_RESSOURCE + "/carte_dieu/aphrodite.png"));
+
+                    g2d.drawImage(
+                            bg_parchemin,
+                            pos_parchemin.width,
+                            pos_parchemin.height,
+                            taille_parchemin.width,
+                            taille_parchemin.height,
+                            this
+                    );
+                    g2d.drawImage(
+                            personnage,
+                            pos_personnage.width,
+                            pos_personnage.height,
+                            taille_personnage.width,
+                            taille_personnage.height,
+                            this
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println("Erreur image de fond: " + e.getMessage());
+                }
+            }
+
+            public void changerTexte(int num_etape) {
+                texte_bulle.setText(TEXTE_ETAPES[num_etape]);
+            }
+        }
+
+        public SidePanelRight(Dimension size) {
+            this.size = size;
+            setOpaque(false);
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            int height = (int) (size.height * 0.1);
+
+            Dimension size_pane = new Dimension(size.width, height);
+
+            JPanel parametres = new JPanel();
+            parametres.setOpaque(false);
+            parametres.setPreferredSize(size);
+            parametres.setMaximumSize(size);
+
+            int bouton_height = (int) (size.height * 0.1);
+            Dimension size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
+            Bouton bParametres = new Bouton(
+                    CHEMIN_RESSOURCE + "/bouton/parametres.png",
+                    CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
+                    size_bouton
+            );
+            ActionEchap echap = new ActionEchap();
+            PanelTutoriel.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), ECHAP_KEY);
+            PanelTutoriel.this.getActionMap().put(ECHAP_KEY, echap);
+
+            bParametres.addActionListener(echap);
+            parametres.add(bParametres);
+
+            TextePanel texte_panel = new TextePanel(size);
+            add(parametres);
+            add(Box.createRigidArea(new Dimension(size.width, 0)));
+            add(texte_panel);
+        }
+    }
+
 
     private class ParametrePanel extends JPanel {
         private class BackgroundPanel extends JPanel {
