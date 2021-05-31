@@ -109,12 +109,21 @@ public class JeuSimulation {
     public void joueSelection(Point position) {
         int index = joueur_en_cours.getBatisseurs().indexOf(position);
 
-        if (index == -1) batisseur_en_cours = null;
-        else batisseur_en_cours = joueur_en_cours.getBatisseurs().get(index);
+        System.out.println("Position = " + position);
+        for (Point batisseur : joueur_en_cours.getBatisseurs()) {
+            System.out.println("Batisseur = " + batisseur);
+        }
+
+        if (index == -1) {
+            batisseur_en_cours = null;
+        } else {
+            batisseur_en_cours = joueur_en_cours.getBatisseurs().get(index);
+        }
     }
 
     public void joueDeplacement(Point position) {
         Point prevPos = batisseur_en_cours;
+
         if (plateau.deplacementPossible(position, batisseur_en_cours)) {
 
             // remove batisseur at before pos
