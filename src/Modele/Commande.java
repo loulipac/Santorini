@@ -3,9 +3,9 @@ package Modele;
 import static Modele.Constante.*;
 
 public abstract class Commande {
-    protected int joueur;
+    protected Joueur joueur;
 
-    protected Commande(int joueur) {
+    protected Commande(Joueur joueur) {
         this.joueur = joueur;
     }
 

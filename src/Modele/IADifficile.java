@@ -63,8 +63,8 @@ public class IADifficile implements IA {
     private float menaceDuNiveau2(Jeu _jeu) {
         float heuristique = 0;
         ArrayList<Joueur> js = new ArrayList<>();
-        js.add(_jeu.j1);
-        js.add(_jeu.j2);
+        js.add(_jeu.getJ1());
+        js.add(_jeu.getJ2());
         for (Joueur j : js) {
             int index = (js.indexOf(j) == 0) ? 1 : -1;
             for (Point batisseur : j.getBatisseurs()) {
@@ -88,8 +88,8 @@ public class IADifficile implements IA {
     private float combinaisonHauteur(Jeu _jeu) {
         float heuristique = 0;
         ArrayList<Joueur> js = new ArrayList<>();
-        js.add(_jeu.j1);
-        js.add(_jeu.j2);
+        js.add(_jeu.getJ1());
+        js.add(_jeu.getJ2());
         for (Joueur j : js) {
             int index = (js.indexOf(j) == 0) ? 1 : -1;
             for (Point batisseur : j.getBatisseurs()) {
@@ -106,8 +106,8 @@ public class IADifficile implements IA {
      */
     private float caseCentrale(Jeu _jeu) {
         ArrayList<Joueur> js = new ArrayList<>();
-        js.add(_jeu.j1);
-        js.add(_jeu.j2);
+        js.add(_jeu.getJ1());
+        js.add(_jeu.getJ2());
         for (Joueur j : js) {
             for (Point batisseur : j.getBatisseurs()) {
                 if (batisseur == CASE_CENTRALE) {
@@ -127,8 +127,8 @@ public class IADifficile implements IA {
     private float mobiliteVerticale(Jeu _jeu) {
         float heuristique = 0;
         ArrayList<Joueur> js = new ArrayList<>();
-        js.add(_jeu.j1);
-        js.add(_jeu.j2);
+        js.add(_jeu.getJ1());
+        js.add(_jeu.getJ2());
         for (Joueur j : js) {
             int index = (js.indexOf(j) == 0) ? 1 : -1;
             for (Point batisseur : j.getBatisseurs()) {

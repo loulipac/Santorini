@@ -3,13 +3,15 @@ package Modele;
 import static Modele.Constante.*;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 public class CoupDeplacer extends Commande {
     private Point[] positions;
     private int coup;
 
-    public CoupDeplacer(int joueur, Point pPos, Point nPos) {
+    public CoupDeplacer(Joueur joueur, Point pPos, Point nPos) {
         super(joueur);
         positions = new Point[2];
         positions[1] = pPos;
@@ -26,6 +28,10 @@ public class CoupDeplacer extends Commande {
         if (positions[i] != null) {
             jeu.getPlateau().enleverJoueur(positions[i]);
         }
+
+        ArrayList<Point> batisseurs = joueur.getBatisseurs();
+        batisseurs.set(batisseurs.indexOf(positions[i]), positions[type]);
+        batisseurs.removeAll(Collections.singleton(null));
 
         if (coup == PLACEMENT) {
             jeu.setSituation(PLACEMENT);
@@ -63,7 +69,7 @@ public class CoupDeplacer extends Commande {
 
         CoupDeplacer c = (CoupDeplacer) o;
         
-        return joueur == c.joueur &&
+        return joueur.equals(c.joueur) &&
                 positions[0].equals(c.positions[0]) &&
                 Objects.equals(positions[1], c.positions[1]);
     }

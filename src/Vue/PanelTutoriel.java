@@ -148,7 +148,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
 
-            jeu = new Jeu(5, 5, PanelTutoriel.this, 0, 0);
+            jeu = new Jeu(PanelTutoriel.this, 0, 0);
             jg = new JeuGraphique(jeu);
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 
@@ -548,7 +548,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             if (jeu.estJeufini()) {
                 colonne = colonne_fin;
             } else {
-                colonne = (jeu.getJoueur_en_cours() == JOUEUR1 ? colonne_bleu : colonne_rouge);
+                colonne = (jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? colonne_bleu : colonne_rouge);
             }
 
             // float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre
@@ -579,7 +579,7 @@ public class PanelTutoriel extends JPanel implements Observer {
         if (jeu.estJeufini()) {
             changeVictory();
         } else {
-            jt.setText(jeu.getJoueur_en_cours() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
+            jt.setText(jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
         }
         repaint();
     }
