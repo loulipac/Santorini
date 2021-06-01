@@ -34,7 +34,7 @@ public class PanelPlateau extends JPanel implements Observer {
     Image colonne_fin;
     ParametrePanel pp;
     VictoirePanel victoire_panel;
-
+    String jeu_charger = "";
     /**
      * Initialise la fenêtre de jeu et charge la police et les images en mémoire.
      *
@@ -58,6 +58,11 @@ public class PanelPlateau extends JPanel implements Observer {
         colonne_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
         colonne_fin = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_berger.png");
         arriere_plan = Utile.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
+    }
+
+    public PanelPlateau(Dimension _taille_fenetre, String filename) {
+        this(_taille_fenetre, 0, 0);
+        jeu.charger(filename);
     }
 
     /**
@@ -261,6 +266,7 @@ public class PanelPlateau extends JPanel implements Observer {
                 // titre IA
                 panel_ia = creerTitre("IA", TITRE_TAILLE, size_pane);
 
+                // boutons
                 // boutons
                 ia_bouton = new JPanel();
                 ia_bouton.setOpaque(false);
