@@ -3,9 +3,8 @@ package Modele;
 import Vue.Observer;
 
 import java.awt.*;
-import static Modele.Constante.*;
 
-public class JeuTuto extends Jeu{
+public class JeuTuto extends Jeu {
     int num_etape;
 
     public JeuTuto(Observer o) {
@@ -28,14 +27,21 @@ public class JeuTuto extends Jeu{
             default:
             case 0:
                 break;
-            case 3 :
+            case 3:
                 initialiserEtape1();
                 break;
         }
     }
 
     public void initialiserEtape1() {
-        this.getPlateau().ajouterJoueur(new Point(1,3), this.getJ2());
-        this.getPlateau().ajouterJoueur(new Point(3,4), this.getJ2());
+        this.getPlateau().ajouterJoueur(new Point(1, 3), this.getJ2());
+        this.getPlateau().ajouterJoueur(new Point(3, 4), this.getJ2());
+        construireBatiment(new Point(0, 0),2);
+    }
+
+    private void construireBatiment(Point position, int num_etage) {
+        for (int i = 0; i < num_etage; i++) {
+            this.getPlateau().ameliorerBatiment(position);
+        }
     }
 }
