@@ -116,35 +116,14 @@ public class PanelTutoriel extends JPanel implements Observer {
         public PanelJeu(float _taille_h) {
             this.taille_h = _taille_h - 0.05f;
             setLayout(new GridBagLayout());
+            setOpaque(false);
 
             JPanel container = new JPanel();
-
             container.setLayout(new BoxLayout(container, BoxLayout.LINE_AXIS));
             container.setOpaque(false);
-            setOpaque(false);
             setPreferredSize(new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * taille_h)));
 
-            JPanel parametres = new JPanel();
-
             Dimension size = new Dimension((int) (taille_fenetre.width * 0.2), (int) (taille_fenetre.height * taille_h));
-            parametres.setOpaque(false);
-            parametres.setPreferredSize(size);
-            parametres.setMaximumSize(size);
-
-            int bouton_height = (int) (size.height * 0.1);
-            Dimension size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
-            Bouton bParametres = new Bouton(
-                    CHEMIN_RESSOURCE + "/bouton/parametres.png",
-                    CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
-                    size_bouton
-            );
-            
-            ActionEchap echap = new ActionEchap();
-            PanelTutoriel.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), ECHAP_KEY);
-            PanelTutoriel.this.getActionMap().put(ECHAP_KEY, echap);
-
-            bParametres.addActionListener(echap);
-            parametres.add(bParametres);
 
             jeu = new Jeu(PanelTutoriel.this, 0, 0);
             jg = new JeuGraphique(jeu);
@@ -156,10 +135,11 @@ public class PanelTutoriel extends JPanel implements Observer {
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
-            int taille_case = ((int) (taille_fenetre.height * taille_h)) / PLATEAU_LIGNES;
+            int taille_case = ((int) (taille_fenetre.height * (taille_h - 0.1f))) / PLATEAU_LIGNES;
 
             jg.setPreferredSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
             jg.setMaximumSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
+            jg.setMinimumSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
 
             int taille = taille_fenetre.width;
 
@@ -171,10 +151,19 @@ public class PanelTutoriel extends JPanel implements Observer {
 
             taille_margin = taille / 4;
 
+
+            JPanel panel = new JPanel();
+            panel.setOpaque(false);
+            panel.setPreferredSize(size);
+            panel.setMaximumSize(size);
+            panel.setMinimumSize(size);
+
             addMargin(container);
             container.add(side_panel);
             addMargin(container);
             container.add(jg);
+            addMargin(container);
+            container.add(panel);
             addMargin(container);
             add(container);
         }
@@ -267,6 +256,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             int num_etape = 0;
 
             public TextePanel(Dimension size) {
+                setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
                 // Polices
                 lilly_belle = new Font("Lily Script One", Font.PLAIN, 20);
 
