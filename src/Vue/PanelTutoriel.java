@@ -105,9 +105,7 @@ public class PanelTutoriel extends JPanel implements Observer {
     public void actionBoutonSuivant(ActionEvent e) {
         this.num_etape+=1;
         if(this.num_etape < jgame.panel_gauche.TEXTE_ETAPES.length) {
-            jgame.panel_gauche.panel_info.changerTexte(num_etape);
-            jeu.chargerEtape(num_etape);
-            jg.repaint();
+            changerEtape();
         }
         else {
             this.num_etape = jgame.panel_gauche.TEXTE_ETAPES.length;
@@ -116,8 +114,16 @@ public class PanelTutoriel extends JPanel implements Observer {
 
     public void actionBoutonPrecedent(ActionEvent e) {
         this.num_etape-=1;
-        if(this.num_etape >= 0) jgame.panel_gauche.panel_info.changerTexte(num_etape);
+        if(this.num_etape >= 0) {
+            changerEtape();
+        }
         else this.num_etape = 0;
+    }
+
+    public void changerEtape() {
+        jgame.panel_gauche.panel_info.changerTexte(num_etape);
+        jeu.chargerEtape(num_etape);
+        jg.repaint();
     }
 
     /**
