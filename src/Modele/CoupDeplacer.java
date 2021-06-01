@@ -24,7 +24,7 @@ public class CoupDeplacer extends Commande {
         }
         int i = (type + 1) % 2;
         if (positions[i] != null) {
-            game.getPlateau().removePlayer(positions[i]);
+            game.getPlateau().supprimerJoueur(positions[i]);
         }
 
         if (move == PLACEMENT) {

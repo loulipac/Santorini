@@ -127,6 +127,10 @@ public class Plateau {
         setCase(position, getCase(position) + 1);
         return true;
     }
+    public boolean degraderBatiment(Point position) {
+        setCase(position, getCase(position) - 1);
+        return true;
+    }
 
     /**
      * Vérifie que l'on peut sélectionner le batisseur aux coordonnées (position) appartient au joueur.
@@ -347,9 +351,10 @@ public class Plateau {
         return getCase(position) & (~7);
     }
 
-    public void removePlayer(Point position) {
+    public void supprimerJoueur(Point position) {
         setCase(position, getTypeBatiments(position));
     }
+    
 
     public void setFloor(Point position, int value) {
         setCase(position, getCase(position) + value);

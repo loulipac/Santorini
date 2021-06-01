@@ -16,19 +16,14 @@ import static Modele.Constante.*;
 public class Jeu {
     private Plateau plateau;
 
-    private int joueur_en_cours;
-    private int situation;
-    private int nombre_batisseurs;
+    private int joueur_en_cours, situation, nombre_batisseurs,vitesse_ia;
     private Point batisseur_en_cours;
     private final LecteurSon construction_son;
     private Observer observateur;
-    private boolean jeu_fini;
+    private boolean jeu_fini, ia_statut, simulation;
     private Historique histo;
     private Joueur gagnant;
-    private boolean ia_statut;
-    int vitesse_ia;
     Commande cmd;
-    boolean in_simulation;
 
     Joueur j1, j2;
 
@@ -40,7 +35,7 @@ public class Jeu {
      * @param o observateur
      */
     public Jeu(int l, int c, Observer o, int ia1_mode, int ia2_mode) {
-        in_simulation = false;
+        simulation = false;
         vitesse_ia = 1;
         ia_statut = true;
         situation = PLACEMENT;
@@ -68,7 +63,7 @@ public class Jeu {
     }
 
     public void setSimulation(boolean statut) {
-        in_simulation = statut;
+        simulation = statut;
     }
 
     private IA setIA(int ia_mode) {
@@ -95,15 +90,19 @@ public class Jeu {
         cmd = null;
         switch (situation) {
             case PLACEMENT:
+                System.out.println("PLACEMENT");
                 jouePlacement(position);
                 break;
             case SELECTION:
+                System.out.println("SELECTION");
                 joueSelection(position);
                 break;
             case DEPLACEMENT:
+                System.out.println("DEPLACEMENT");
                 joueDeplacement(position);
                 break;
             case CONSTRUCTION:
+                System.out.println("CONSTRUCTION");
                 joueConstruction(position);
                 break;
             default:
@@ -128,7 +127,6 @@ public class Jeu {
     }
 
 
-
     public void joueSelection(Point position) {
         batisseur_en_cours = choisirBatisseur(position);
         situation = batisseur_en_cours == null ? SELECTION : DEPLACEMENT;
@@ -136,8 +134,10 @@ public class Jeu {
 
     public void joueDeplacement(Point position) {
         Point prevPos = batisseur_en_cours;
+        System.out.println("dans la fonction jouer deplacement");
         if (avancer(position, batisseur_en_cours)) {
             getJoueurType_en_cours().getBatisseurs().set(getJoueurType_en_cours().getBatisseurs().indexOf(prevPos), position);
+            System.out.println("dans le if");
 
             cmd = new CoupDeplacer(joueur_en_cours, prevPos, batisseur_en_cours);
             situation = CONSTRUCTION;
@@ -147,7 +147,7 @@ public class Jeu {
 
     public void joueConstruction(Point position) {
         if (!jeu_fini && construire(position, batisseur_en_cours)) {
-            if(!in_simulation) construction_son.joueSon(false);
+            if(!simulation) construction_son.joueSon(false);
             cmd = new CoupConstruire(joueur_en_cours, position, batisseur_en_cours);
             finTour();
             situation = SELECTION;
@@ -176,6 +176,11 @@ public class Jeu {
      */
     private Point choisirBatisseur(Point position) {
         int index = getJoueurType_en_cours().getBatisseurs().indexOf(position);
+        int index1 = j1.getBatisseurs().indexOf(position);
+        int index2 = j2.getBatisseurs().indexOf(position);
+        String joueur = joueur_en_cours == j1.getNum_joueur() ? "joueur 1" : "joueur 2";
+        System.out.println("au tour du joueur "+joueur+" index :"+index+" index du j1 :"+index1+" index du j2 :"+index2);
+
         if(index == -1) return null;
         return getJoueurType_en_cours().getBatisseurs().get(index);
         //return plateau.estBatisseur(position, joueur_en_cours) ? position : null;
@@ -201,7 +206,7 @@ public class Jeu {
     }
 
     public void MAJObservateur() {
-        if(in_simulation) return;
+        if(simulation) return;
         observateur.miseAjour();
     }
 
@@ -255,7 +260,7 @@ public class Jeu {
         if (batisseur_en_cours != null && plateau.getTypeBatiments(batisseur_en_cours) == Plateau.TOIT) {
             gagnant = getJoueurType_en_cours();
             jeu_fini = true;
-            observateur.miseAjour();
+            MAJObservateur();
         }
     }
 
@@ -323,11 +328,18 @@ public class Jeu {
         }
     }
 
-    public void updateBatisseur(int index_batisseur, Point newPos, int joueur) {
-        if (joueur == j1.getNum_joueur()) {
-            j1.getBatisseurs().set(index_batisseur, newPos);
-        } else if (joueur_en_cours == j2.getNum_joueur()) {
-            j2.getBatisseurs().set(index_batisseur, newPos);
+    public void updateBatisseur(Point ancienne_Pos, Point nouvelle_Pos) {
+        plateau.supprimerJoueur(ancienne_Pos);
+        plateau.ajouterJoueur(nouvelle_Pos,joueur_en_cours);
+
+        String joueur = joueur_en_cours == j1.getNum_joueur() ? "joueur 1" : "joueur 2";
+        System.out.println("Joueur en cours : "+joueur+" et index du batisseurs dans ceux du joueur 1 : "+j1.getBatisseurs().indexOf(nouvelle_Pos)+" et index du batisseurs dans ceux du joueur 2 : "+j2.getBatisseurs().indexOf(nouvelle_Pos));
+
+
+        if (joueur_en_cours == j1.getNum_joueur()) {
+            j1.getBatisseurs().set(j1.getBatisseurs().indexOf(ancienne_Pos), nouvelle_Pos);
+        } else {
+            j2.getBatisseurs().set(j2.getBatisseurs().indexOf(ancienne_Pos), nouvelle_Pos);
         }
     }
 
@@ -374,6 +386,10 @@ public class Jeu {
 
     public boolean getIa_statut() {
         return ia_statut;
+    }
+
+    public int getJoueurEnCours(){
+        return joueur_en_cours;
     }
 
     public static int getAutreJoueur(int joueur){
