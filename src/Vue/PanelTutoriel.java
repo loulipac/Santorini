@@ -280,7 +280,6 @@ public class PanelTutoriel extends JPanel implements Observer {
                 panel_texte.setMaximumSize(panel_texte_taille);
                 panel_texte.setMinimumSize(panel_texte_taille);
                 panel_texte.setPreferredSize(panel_texte_taille);
-//                panel_texte.setBorder(new LineBorder(Color.red));
 
                 texte_bulle = new JTextArea(TEXTE_ETAPES[0]);
                 texte_bulle.setOpaque(false);
@@ -300,10 +299,13 @@ public class PanelTutoriel extends JPanel implements Observer {
 
                 Bouton suivant = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png",
                         size_bouton, PanelTutoriel.SidePanelRight.TextePanel.this::actionBoutonSuivant);
+                Bouton precedent = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png",
+                        size_bouton, PanelTutoriel.SidePanelRight.TextePanel.this::actionBoutonPrecedent);
 
                 JPanel panel_bouton = new JPanel();
 
                 panel_bouton.setOpaque(false);
+                panel_bouton.add(precedent);
                 panel_bouton.add(suivant);
                 panel_bouton.setPreferredSize(new Dimension(panel_texte_taille.width,size_bouton.height));
                 panel_bouton.setMaximumSize(new Dimension(panel_texte_taille.width,size_bouton.height));
@@ -357,6 +359,12 @@ public class PanelTutoriel extends JPanel implements Observer {
                 num_etape+=1;
                 if(num_etape < TEXTE_ETAPES.length) changerTexte(num_etape);
                 else num_etape = TEXTE_ETAPES.length;
+            }
+
+            public void actionBoutonPrecedent(ActionEvent e) {
+                num_etape-=1;
+                if(num_etape >= 0) changerTexte(num_etape);
+                else num_etape = 0;
             }
 
             public void changerTexte(int num_etape) {
