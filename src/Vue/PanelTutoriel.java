@@ -202,6 +202,7 @@ public class PanelTutoriel extends JPanel implements Observer {
         int index_acceleration;
         final int TITRE_TAILLE = 30;
         Dimension size;
+        TextePanel texte_panel;
 
         private final String[] TEXTE_ETAPES = {
                 """
@@ -213,37 +214,46 @@ public class PanelTutoriel extends JPanel implements Observer {
                 Commençons à jouer !
                 Au début du jeu, chaque joueur doit placer ses deux pions où il veut sur le plateau.""",
                 "Tu es le joueur bleu, positionne par exemple tes 2 personnages sur la grille sur les cases indiquées.",
-                "C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs, voyons où il les place.",
+                """
+                C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !
+                Voyons où il les place.""",
                 """
                 A chaque tour, tu dois bouger un de tes pions, pour cela :
                 Clic sur le personnage que tu veux déplacer, puis sélectionne la case accessible (indiqué par les traces de pas) sur laquelle tu veux aller.
                 """,
                 "C’est à toi de jouer, clic sur le personnage. ",
-                "Va sur la case en haut à gauche du personnage pour le déplacer",
+                "Va sur la case en haut à gauche du personnage pour le déplacer.",
                 """
                 Super ! Tu dois ensuite construire un étage d’un bâtiment sur une des cases autour du personnage.
-                Seul le personnage déplacé précédemment peut construire un étage durant ce tour
+                Seul le personnage déplacé précédemment peut construire un étage durant ce tour.
                 """,
                 "A toi de jouer, construis le rez-de-chaussée sur la case à droite du personnage.",
-                "Génial! Tu as effectué tes deux actions, c’est donc la fin de ton tour, c’est maintenant à ton adversaire de jouer.",
+                """
+                Génial! Tu as effectué tes deux actions, c’est donc la fin de ton tour.
+                C’est maintenant à ton adversaire de jouer.""",
                 "C’est de nouveau ton tour, essaie de monter sur le premier étage que tu as construit au tour d’avant",
-                "Trop bien ! N’oublie pas, tu ne peux monter que d’un étage à la fois et descendre de n’importe quel étage.",
-                "Tu peux voir qu’il n'est pas possible de construire sur ta propre case. Construit un étage sur la case de gauche.",
-                "Génial ! Maintenant avançons un peu dans la partie",
+                """
+                Trop bien !
+                N’oublie pas, tu ne peux monter que d’un étage à la fois et descendre de n’importe quel étage.""",
+                """
+                Tu peux voir qu’il n'est pas possible de construire sur ta propre case.
+                Construit un étage sur la case de gauche.""",
+                """
+                Génial !
+                Maintenant avançons un peu dans la partie.""",
                 """
                 Pour bloquer ton adversaire,
                 tu peux construire un dôme sur une tour à 3 étages pour l’empêcher de monter dessus.
                 Mais méfie toi, car toi non plus tu ne peux plus monter dessus !
                 """,
                 """
-                Attention !
-                Ton adversaire va gagner !
+                Attention ! Ton adversaire va gagner !
                 Pour éviter cela, place un dôme au-dessus de la tour. Il ne gagnera pas ce tour là !
                 """,
                 "C’est maintenant au tour de ton adversaire de jouer !",
                 """
                 Tu as la possibilité de gagner, profites-en !
-                Déplace ton pion sur la tour à 3 étage
+                Déplace ton pion sur la tour à 3 étage.
                 """,
                 """
                 Félicitations, tu as gagné(e) !
@@ -258,17 +268,26 @@ public class PanelTutoriel extends JPanel implements Observer {
             Dimension pos_parchemin;
             Dimension pos_personnage;
             Dimension panel_texte_size;
+            Dimension size_bouton;
+            Dimension texte_bulle_size;
             JTextArea texte_bulle;
+            int num_etape = 0;
 
             public TextePanel(Dimension size) {
                 // Polices
                 lilly_belle = new Font("Lily Script One", Font.PLAIN, 20);
+
+                // Dimensions
+                int bouton_height = (int) (size.height * 0.1);
+
                 taille_personnage = new Dimension(size.height / 6, size.height / 6);
                 taille_parchemin = new Dimension(size.width, size.height * 2 / 3 - taille_personnage.height / 2);
 
                 pos_parchemin = new Dimension(0, 0);
                 pos_personnage = new Dimension(0, pos_parchemin.height + taille_parchemin.height - taille_personnage.height * 3 / 4);
                 panel_texte_size = new Dimension(size.width*2/3, taille_parchemin.height);
+                size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
+                texte_bulle_size = new Dimension(panel_texte_size.width, panel_texte_size.height - 2 * size_bouton.height);
 
                 setOpaque(false);
                 setMaximumSize(size);
@@ -277,6 +296,7 @@ public class PanelTutoriel extends JPanel implements Observer {
                 panel_texte.setMaximumSize(panel_texte_size);
                 panel_texte.setMinimumSize(panel_texte_size);
                 panel_texte.setPreferredSize(panel_texte_size);
+//                panel_texte.setBorder(new LineBorder(Color.red));
 
                 texte_bulle = new JTextArea(TEXTE_ETAPES[0]);
                 texte_bulle.setOpaque(false);
@@ -285,18 +305,35 @@ public class PanelTutoriel extends JPanel implements Observer {
                 texte_bulle.setFont(lilly_belle);
                 texte_bulle.setForeground(new Color(82, 60, 43));
 
-                texte_bulle.setMaximumSize(panel_texte_size);
-                texte_bulle.setMinimumSize(panel_texte_size);
-                texte_bulle.setPreferredSize(panel_texte_size);
+                texte_bulle.setMaximumSize(texte_bulle_size);
+                texte_bulle.setMinimumSize(texte_bulle_size);
+                texte_bulle.setPreferredSize(texte_bulle_size);
 
                 texte_bulle.setLineWrap(true);
                 texte_bulle.setWrapStyleWord(true);
+
                 panel_texte.add(texte_bulle);
+
+                Bouton suivant = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png",
+                        size_bouton, PanelTutoriel.SidePanelRight.TextePanel.this::actionBoutonSuivant);
+
+                JPanel panel_bouton = new JPanel();
+
+                panel_bouton.setOpaque(false);
+                panel_bouton.add(suivant);
+                panel_bouton.setPreferredSize(new Dimension(panel_texte_size.width,size_bouton.height));
+                panel_bouton.setMaximumSize(new Dimension(panel_texte_size.width,size_bouton.height));
+                panel_bouton.setMinimumSize(new Dimension(panel_texte_size.width,size_bouton.height));
+
+//                panel_bouton.setBorder(new LineBorder(Color.blue));
+
                 add(Box.createRigidArea(new Dimension(size.width, 10)));
-                add(texte_bulle);
 
-                changerTexte(0);
+                panel_texte.add(panel_bouton);
 
+                add(panel_texte);
+
+                changerTexte(num_etape);
             }
 
             @Override
@@ -332,6 +369,12 @@ public class PanelTutoriel extends JPanel implements Observer {
                 }
             }
 
+            public void actionBoutonSuivant(ActionEvent e) {
+                num_etape+=1;
+                if(num_etape < TEXTE_ETAPES.length) changerTexte(num_etape);
+                else num_etape = TEXTE_ETAPES.length;
+            }
+
             public void changerTexte(int num_etape) {
                 texte_bulle.setText(TEXTE_ETAPES[num_etape]);
             }
@@ -341,7 +384,6 @@ public class PanelTutoriel extends JPanel implements Observer {
             this.size = size;
             setOpaque(false);
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-            int height = (int) (size.height * 0.1);
 
             int bouton_height = (int) (size.height * 0.1);
             Dimension size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
@@ -363,7 +405,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
 
-            TextePanel texte_panel = new TextePanel(size);
+            texte_panel = new TextePanel(size);
             add(parametres);
             add(Box.createRigidArea(new Dimension(size.width, size.height/20)));
             add(texte_panel);
