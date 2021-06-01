@@ -2,7 +2,7 @@ package Vue;
 
 import static Modele.Constante.*;
 
-import Modele.Jeu;
+import Modele.JeuTuto;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -20,7 +20,7 @@ import java.io.IOException;
  */
 public class PanelTutoriel extends JPanel implements Observer {
 
-    Jeu jeu;
+    JeuTuto jeu;
     JeuGraphique jg;
     Font lilly_belle;
     JLabel jt;
@@ -30,6 +30,8 @@ public class PanelTutoriel extends JPanel implements Observer {
     Image arriere_plan;
     Image colonne_fin;
     ParametrePanel pp;
+    PanelJeu jgame;
+    int num_etape;
 
     /**
      * Initialise la fenêtre Tutoriel et charge la police et les images en mémoire.
@@ -61,6 +63,7 @@ public class PanelTutoriel extends JPanel implements Observer {
      * @see PanelJeu
      */
     public void initialiserPanel() {
+        this.num_etape = 0;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // layered pane pour la superposition des panels
@@ -75,7 +78,7 @@ public class PanelTutoriel extends JPanel implements Observer {
         game.setMaximumSize(taille_fenetre);
 
         TopPanel tp = new TopPanel(0.20f);
-        PanelJeu jgame = new PanelJeu(0.80f);
+        jgame = new PanelJeu(0.80f);
         game.add(tp);
         game.add(jgame);
 
@@ -99,16 +102,35 @@ public class PanelTutoriel extends JPanel implements Observer {
         }
     }
 
+    public void actionBoutonSuivant(ActionEvent e) {
+        this.num_etape+=1;
+        if(this.num_etape < jgame.panel_gauche.TEXTE_ETAPES.length) {
+            jgame.panel_gauche.panel_info.changerTexte(num_etape);
+            jeu.chargerEtape(num_etape);
+            jg.repaint();
+        }
+        else {
+            this.num_etape = jgame.panel_gauche.TEXTE_ETAPES.length;
+        }
+    }
+
+    public void actionBoutonPrecedent(ActionEvent e) {
+        this.num_etape-=1;
+        if(this.num_etape >= 0) jgame.panel_gauche.panel_info.changerTexte(num_etape);
+        else this.num_etape = 0;
+    }
+
     /**
      * Crée un JPanel modifié qui génère deux zones de boutons de 20% de la taille de la fenêtre.
      * Génère la grille de jeu.
      *
      * @see JeuGraphique
-     * @see Jeu
+     * @see JeuTuto
      */
     public class PanelJeu extends JPanel {
         int taille_margin;
         float taille_h;
+        PanelGauche panel_gauche;
 
         /**
          * Constructeur pour PanelJeu. Rajoute des components au JPanel.
@@ -125,13 +147,13 @@ public class PanelTutoriel extends JPanel implements Observer {
 
             Dimension size = new Dimension((int) (taille_fenetre.width * 0.2), (int) (taille_fenetre.height * taille_h));
 
-            jeu = new Jeu(PanelTutoriel.this, 0, 0);
+            jeu = new JeuTuto(PanelTutoriel.this);
             jg = new JeuGraphique(jeu);
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 
-            SidePanelRight side_panel = new SidePanelRight(size);
-            side_panel.setMaximumSize(size);
-            side_panel.setPreferredSize(size);
+            panel_gauche = new PanelGauche(size);
+            panel_gauche.setMaximumSize(size);
+            panel_gauche.setPreferredSize(size);
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
 
@@ -159,7 +181,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             panel.setMinimumSize(size);
 
             addMargin(container);
-            container.add(side_panel);
+            container.add(panel_gauche);
             addMargin(container);
             container.add(jg);
             addMargin(container);
@@ -182,9 +204,9 @@ public class PanelTutoriel extends JPanel implements Observer {
 
     }
 
-    private class SidePanelRight extends JPanel {
+    private class PanelGauche extends JPanel {
         Dimension size;
-        TextePanel texte_panel;
+        PanelInfo panel_info;
 
         private final String[] TEXTE_ETAPES = {
                 """
@@ -244,7 +266,7 @@ public class PanelTutoriel extends JPanel implements Observer {
                 """
         };
 
-        private class TextePanel extends JPanel {
+        private class PanelInfo extends JPanel {
             Dimension taille_personnage;
             Dimension taille_parchemin;
             Dimension pos_parchemin;
@@ -253,9 +275,8 @@ public class PanelTutoriel extends JPanel implements Observer {
             Dimension size_bouton;
             Dimension texte_bulle_taille;
             JTextArea texte_bulle;
-            int num_etape = 0;
 
-            public TextePanel(Dimension size) {
+            public PanelInfo(Dimension size) {
                 setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
                 // Polices
                 lilly_belle = new Font("Lily Script One", Font.PLAIN, 20);
@@ -297,9 +318,9 @@ public class PanelTutoriel extends JPanel implements Observer {
                 panel_texte.add(texte_bulle);
 
                 Bouton suivant = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png",
-                        size_bouton, PanelTutoriel.SidePanelRight.TextePanel.this::actionBoutonSuivant);
+                        size_bouton, PanelTutoriel.this::actionBoutonSuivant);
                 Bouton precedent = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png",
-                        size_bouton, PanelTutoriel.SidePanelRight.TextePanel.this::actionBoutonPrecedent);
+                        size_bouton, PanelTutoriel.this::actionBoutonPrecedent);
 
                 JPanel panel_bouton = new JPanel();
 
@@ -309,8 +330,6 @@ public class PanelTutoriel extends JPanel implements Observer {
                 panel_bouton.setPreferredSize(new Dimension(panel_texte_taille.width,size_bouton.height));
                 panel_bouton.setMaximumSize(new Dimension(panel_texte_taille.width,size_bouton.height));
                 panel_bouton.setMinimumSize(new Dimension(panel_texte_taille.width,size_bouton.height));
-
-//                panel_bouton.setBorder(new LineBorder(Color.blue));
 
                 add(Box.createRigidArea(new Dimension(size.width, 10)));
 
@@ -354,24 +373,12 @@ public class PanelTutoriel extends JPanel implements Observer {
                 }
             }
 
-            public void actionBoutonSuivant(ActionEvent e) {
-                num_etape+=1;
-                if(num_etape < TEXTE_ETAPES.length) changerTexte(num_etape);
-                else num_etape = TEXTE_ETAPES.length;
-            }
-
-            public void actionBoutonPrecedent(ActionEvent e) {
-                num_etape-=1;
-                if(num_etape >= 0) changerTexte(num_etape);
-                else num_etape = 0;
-            }
-
             public void changerTexte(int num_etape) {
                 texte_bulle.setText(TEXTE_ETAPES[num_etape]);
             }
         }
 
-        public SidePanelRight(Dimension size) {
+        public PanelGauche(Dimension size) {
             this.size = size;
             setOpaque(false);
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -396,10 +403,10 @@ public class PanelTutoriel extends JPanel implements Observer {
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
 
-            texte_panel = new TextePanel(size);
+            panel_info = new PanelInfo(size);
             add(parametres);
             add(Box.createRigidArea(new Dimension(size.width, size.height/20)));
-            add(texte_panel);
+            add(panel_info);
         }
     }
 
