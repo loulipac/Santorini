@@ -28,14 +28,14 @@ public class JeuTuto extends Jeu{
             default:
             case 0:
                 break;
-            case 1 :
+            case 3 :
                 initialiserEtape1();
                 break;
         }
     }
 
     public void initialiserEtape1() {
-        this.getPlateau().ajouterJoueur(new Point(1,1), this.getJ1());
-//        System.out.println(this.getPlateau());
+        this.getPlateau().ajouterJoueur(new Point(1,3), this.getJ2());
+        this.getPlateau().ajouterJoueur(new Point(3,4), this.getJ2());
     }
 }
