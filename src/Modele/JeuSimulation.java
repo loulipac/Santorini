@@ -109,11 +109,6 @@ public class JeuSimulation {
     public void joueSelection(Point position) {
         int index = joueur_en_cours.getBatisseurs().indexOf(position);
 
-        System.out.println("Position = " + position);
-        for (Point batisseur : joueur_en_cours.getBatisseurs()) {
-            System.out.println("Batisseur = " + batisseur);
-        }
-
         if (index == -1) {
             batisseur_en_cours = null;
         } else {

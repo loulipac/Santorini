@@ -112,6 +112,10 @@ public class Plateau {
     public void ameliorerBatiment(Point position) {
         setCase(position, getCase(position) + 1);
     }
+    public boolean degraderBatiment(Point position) {
+        setCase(position, getCase(position) - 1);
+        return true;
+    }
 
     /**
      * Vérifie que l'on peut sélectionner le batisseur aux coordonnées (position) appartient au joueur.
