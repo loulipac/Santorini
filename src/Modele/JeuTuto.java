@@ -23,6 +23,7 @@ public class JeuTuto extends Jeu{
     }
 
     public void chargerEtape(int etape) {
+        this.getPlateau().RAZ();
         switch (etape) {
             default:
             case 0:
@@ -35,6 +36,6 @@ public class JeuTuto extends Jeu{
 
     public void initialiserEtape1() {
         this.getPlateau().ajouterJoueur(new Point(1,1), this.getJ1());
-        System.out.println(this.getPlateau());
+//        System.out.println(this.getPlateau());
     }
 }
