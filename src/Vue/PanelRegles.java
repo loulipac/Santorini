@@ -16,28 +16,26 @@ public class PanelRegles extends JPanel {
     private static final String TITRE_SECTION3 = "Construction";
     private static final String CONTENU_SECTION1 = """
             Ce jeu se joue à 2 joueurs au tour par tour.
-            Le but du jeu est de monter le plus vite possible au sommet
-            d'une tour de 3 étages qu'il faut construire.
+            Le but du jeu est de monter le plus vite possible au sommet d'une tour de 3 étages qu'il faut construire.
             Chaque joueur dispose de 2 bâtisseur qu'il place sur le plateau au début de la partie.
-            A chaque tour, le joueur doit sélectionner un bâtisseur à déplacer
-            et construire un étage dans les cases adjacentes.""";
+            A chaque tour, le joueur doit sélectionner un bâtisseur à déplacer et construire un étage dans les cases adjacentes.""";
     private static final String CONTENU_SECTION2 = """
             Le bâtisseur choisi peut se déplacer sur un des emplacements proposés.
-            Le bâtisseur ne peut monter que d'un étage à la fois et ne peut pas se
-            déplacer sur un dôme.""";
+            Le bâtisseur ne peut monter que d'un étage à la fois et ne peut pas se déplacer sur un dôme.""";
     private static final String CONTENU_SECTION3 = """
             Un bâtisseur peut construire un étage sur les emplacements proposés.
             Le bâtisseur peut poser un dôme en haut de la tour pour bloquer son adversaire.
             On considère une tour de 3 étages et un dôme comme une "Tour Complète".""";
 
     Font lilly_belle;
+    Font lohit_bengali;
     Dimension taille_fenetre;
 
     public PanelRegles(Dimension _taille_fenetre) {
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
-
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/Lora-Regular.ttf")));
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
         }
@@ -56,7 +54,7 @@ public class PanelRegles extends JPanel {
         /* Boutons */
 
         /* Panel */
-        Dimension taille_panel = new Dimension((int) (taille_fenetre.width * 0.55), (int) (taille_fenetre.height * 0.8));
+        Dimension taille_panel = new Dimension((int) (taille_fenetre.width * 0.6), (int) (taille_fenetre.height * 0.8));
         ReglesPanel panel = new ReglesPanel(taille_panel);
 
         /* Adding */
@@ -73,12 +71,16 @@ public class PanelRegles extends JPanel {
         public LignePanel(Dimension taille_panel, String image_path, String titre, String texte) {
             setOpaque(false);
             setMaximumSize(taille_panel);
-            setLayout(new BorderLayout());
+            setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
+
+            double ratio_image = 0.25;
+            double ratio_marge = 0.05;
+            double ratio_texte = 1 - ratio_image - ratio_marge * 2;
 
             JPanel panel_image = new JPanel();
             panel_image.setLayout(new GridBagLayout());
             panel_image.setOpaque(false);
-            Dimension taille_panel_image = new Dimension(taille_panel.width / 4, taille_panel.height);
+            Dimension taille_panel_image = new Dimension((int) (taille_panel.width * ratio_image), taille_panel.height);
             panel_image.setPreferredSize(taille_panel_image);
             panel_image.setMaximumSize(taille_panel_image);
             panel_image.add(creerImage(image_path, taille_panel_image));
@@ -86,16 +88,17 @@ public class PanelRegles extends JPanel {
             JPanel contenu = new JPanel();
             contenu.setLayout(new BorderLayout());
             contenu.setOpaque(false);
-            Dimension taille_panel_contenu = new Dimension(taille_panel.width - taille_panel.width / 4, taille_panel.height);
+            Dimension taille_panel_contenu = new Dimension((int) (taille_panel.width * ratio_texte), taille_panel.height);
             contenu.setMaximumSize(taille_panel_contenu);
             contenu.setPreferredSize(taille_panel_contenu);
             contenu.add(creerTitre(titre), BorderLayout.NORTH);
             contenu.add(creerContenu(texte), BorderLayout.CENTER);
 
-            add(panel_image, BorderLayout.WEST);
-            add(contenu, BorderLayout.EAST);
+            add(panel_image);
+            addMargin(this, new Dimension((int) (taille_panel.width * ratio_marge), taille_panel.height));
+            add(contenu);
+            addMargin(this, new Dimension((int) (taille_panel.width * ratio_marge), taille_panel.height));
         }
-
         private JLabel creerTitre(String titre) {
             JLabel _e = new JLabel(titre);
             _e.setFont(lilly_belle);
@@ -107,7 +110,10 @@ public class PanelRegles extends JPanel {
             JTextArea _e = new JTextArea(contenu);
             _e.setOpaque(false);
             _e.setEditable(false);
-            _e.setFont(new Font("Arial", Font.PLAIN, 14));
+            _e.setFont(new Font("Lora", Font.PLAIN, 14));
+            _e.setForeground(new Color(56, 56, 56));
+            _e.setLineWrap(true);
+            _e.setWrapStyleWord(true);
             return _e;
         }
     }
