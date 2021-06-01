@@ -232,7 +232,7 @@ public class PanelTutoriel extends JPanel implements Observer {
                 Clic sur le personnage que tu veux déplacer, puis sélectionne la case accessible (indiqué par les traces de pas) sur laquelle tu veux aller.
                 """,
                 "C’est à toi de jouer, clic sur le personnage. ",
-                "Va sur la case en haut à gauche du personnage pour le déplacer.",
+                "Va sur la case en à droite du personnage pour le déplacer.",
                 """
                 Super ! Tu dois ensuite construire un étage d’un bâtiment sur une des cases autour du personnage.
                 Seul le personnage déplacé précédemment peut construire un étage durant ce tour.
