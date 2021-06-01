@@ -14,15 +14,14 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
- * Classe générant la fenêtre de jeu.
+ * Classe générant la fenêtre Tutoriel.
  */
 public class PanelTutoriel extends JPanel implements Observer {
 
-    private Jeu jeu;
-    private JeuGraphique jg;
+    Jeu jeu;
+    JeuGraphique jg;
     Font lilly_belle;
     JLabel jt;
     Dimension taille_fenetre;
@@ -33,7 +32,7 @@ public class PanelTutoriel extends JPanel implements Observer {
     ParametrePanel pp;
 
     /**
-     * Initialise la fenêtre de jeu et charge la police et les images en mémoire.
+     * Initialise la fenêtre Tutoriel et charge la police et les images en mémoire.
      *
      * @see PanelTutoriel#initialiserPanel()
      */
@@ -59,7 +58,7 @@ public class PanelTutoriel extends JPanel implements Observer {
      * Ajoute tous les composants au panel.
      *
      * @see TopPanel
-     * @see JGamePanel
+     * @see PanelJeu
      */
     public void initialiserPanel() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -76,7 +75,7 @@ public class PanelTutoriel extends JPanel implements Observer {
         game.setMaximumSize(taille_fenetre);
 
         TopPanel tp = new TopPanel(0.20f);
-        JGamePanel jgame = new JGamePanel(0.80f);
+        PanelJeu jgame = new PanelJeu(0.80f);
         game.add(tp);
         game.add(jgame);
 
@@ -107,14 +106,14 @@ public class PanelTutoriel extends JPanel implements Observer {
      * @see JeuGraphique
      * @see Jeu
      */
-    public class JGamePanel extends JPanel {
+    public class PanelJeu extends JPanel {
         int taille_margin;
         float taille_h;
 
         /**
-         * Constructeur pour JGamePanel. Rajoute des components au JPanel.
+         * Constructeur pour PanelJeu. Rajoute des components au JPanel.
          */
-        public JGamePanel(float _taille_h) {
+        public PanelJeu(float _taille_h) {
             this.taille_h = _taille_h - 0.05f;
             setLayout(new GridBagLayout());
 
@@ -139,8 +138,7 @@ public class PanelTutoriel extends JPanel implements Observer {
                     CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
                     size_bouton
             );
-
-
+            
             ActionEchap echap = new ActionEchap();
             PanelTutoriel.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), ECHAP_KEY);
             PanelTutoriel.this.getActionMap().put(ECHAP_KEY, echap);
@@ -196,10 +194,6 @@ public class PanelTutoriel extends JPanel implements Observer {
     }
 
     private class SidePanelRight extends JPanel {
-        Bouton acceleration;
-        ArrayList<Integer> niveauAcceleration;
-        int index_acceleration;
-        final int TITRE_TAILLE = 30;
         Dimension size;
         TextePanel texte_panel;
 
@@ -266,9 +260,9 @@ public class PanelTutoriel extends JPanel implements Observer {
             Dimension taille_parchemin;
             Dimension pos_parchemin;
             Dimension pos_personnage;
-            Dimension panel_texte_size;
+            Dimension panel_texte_taille;
             Dimension size_bouton;
-            Dimension texte_bulle_size;
+            Dimension texte_bulle_taille;
             JTextArea texte_bulle;
             int num_etape = 0;
 
@@ -284,17 +278,17 @@ public class PanelTutoriel extends JPanel implements Observer {
 
                 pos_parchemin = new Dimension(0, 0);
                 pos_personnage = new Dimension(0, pos_parchemin.height + taille_parchemin.height - taille_personnage.height * 3 / 4);
-                panel_texte_size = new Dimension(size.width*2/3, taille_parchemin.height);
+                panel_texte_taille = new Dimension(size.width*2/3, taille_parchemin.height);
                 size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
-                texte_bulle_size = new Dimension(panel_texte_size.width, panel_texte_size.height - 2 * size_bouton.height);
+                texte_bulle_taille = new Dimension(panel_texte_taille.width, panel_texte_taille.height - 2 * size_bouton.height);
 
                 setOpaque(false);
                 setMaximumSize(size);
                 JPanel panel_texte = new JPanel();
                 panel_texte.setOpaque(false);
-                panel_texte.setMaximumSize(panel_texte_size);
-                panel_texte.setMinimumSize(panel_texte_size);
-                panel_texte.setPreferredSize(panel_texte_size);
+                panel_texte.setMaximumSize(panel_texte_taille);
+                panel_texte.setMinimumSize(panel_texte_taille);
+                panel_texte.setPreferredSize(panel_texte_taille);
 //                panel_texte.setBorder(new LineBorder(Color.red));
 
                 texte_bulle = new JTextArea(TEXTE_ETAPES[0]);
@@ -304,9 +298,9 @@ public class PanelTutoriel extends JPanel implements Observer {
                 texte_bulle.setFont(lilly_belle);
                 texte_bulle.setForeground(new Color(82, 60, 43));
 
-                texte_bulle.setMaximumSize(texte_bulle_size);
-                texte_bulle.setMinimumSize(texte_bulle_size);
-                texte_bulle.setPreferredSize(texte_bulle_size);
+                texte_bulle.setMaximumSize(texte_bulle_taille);
+                texte_bulle.setMinimumSize(texte_bulle_taille);
+                texte_bulle.setPreferredSize(texte_bulle_taille);
 
                 texte_bulle.setLineWrap(true);
                 texte_bulle.setWrapStyleWord(true);
@@ -320,9 +314,9 @@ public class PanelTutoriel extends JPanel implements Observer {
 
                 panel_bouton.setOpaque(false);
                 panel_bouton.add(suivant);
-                panel_bouton.setPreferredSize(new Dimension(panel_texte_size.width,size_bouton.height));
-                panel_bouton.setMaximumSize(new Dimension(panel_texte_size.width,size_bouton.height));
-                panel_bouton.setMinimumSize(new Dimension(panel_texte_size.width,size_bouton.height));
+                panel_bouton.setPreferredSize(new Dimension(panel_texte_taille.width,size_bouton.height));
+                panel_bouton.setMaximumSize(new Dimension(panel_texte_taille.width,size_bouton.height));
+                panel_bouton.setMinimumSize(new Dimension(panel_texte_taille.width,size_bouton.height));
 
 //                panel_bouton.setBorder(new LineBorder(Color.blue));
 
