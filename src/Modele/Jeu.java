@@ -78,7 +78,7 @@ public class Jeu {
     }
     
     public void setSimulation(boolean statut) {
-        simulation = statut;
+        in_simulation = statut;
     }
 
     private IA setIA(int ia_mode) {
@@ -130,6 +130,7 @@ public class Jeu {
     }
 
 
+
     public void joueSelection(Point position) {
         batisseur_en_cours = choisirBatisseur(position);
         situation = batisseur_en_cours == null ? SELECTION : DEPLACEMENT;
@@ -138,7 +139,6 @@ public class Jeu {
 
     public void joueDeplacement(Point position) {
         Point prevPos = batisseur_en_cours;
-        System.out.println("dans la fonction jouer deplacement");
         if (avancer(position, batisseur_en_cours)) {
             ArrayList<Point> batisseurs_en_cours = getJoueur_en_cours().getBatisseurs();
             batisseurs_en_cours.set(batisseurs_en_cours.indexOf(prevPos), position);
@@ -203,7 +203,7 @@ public class Jeu {
     }
 
     public void MAJObservateur() {
-        if(simulation) return;
+        if(in_simulation) return;
         observateur.miseAjour();
     }
 
@@ -275,7 +275,7 @@ public class Jeu {
         if (batisseur_en_cours != null && plateau.getTypeBatiments(batisseur_en_cours) == Plateau.TOIT) {
             gagnant = getJoueurType_en_cours();
             jeu_fini = true;
-            MAJObservateur();
+            observateur.miseAjour();
         }
     }
 
@@ -357,18 +357,11 @@ public class Jeu {
         }
     }
 
-    public void updateBatisseur(Point ancienne_Pos, Point nouvelle_Pos) {
-        plateau.supprimerJoueur(ancienne_Pos);
-        plateau.ajouterJoueur(nouvelle_Pos,joueur_en_cours);
-
-        String joueur = joueur_en_cours == j1.getNum_joueur() ? "joueur 1" : "joueur 2";
-        System.out.println("Joueur en cours : "+joueur+" et index du batisseurs dans ceux du joueur 1 : "+j1.getBatisseurs().indexOf(nouvelle_Pos)+" et index du batisseurs dans ceux du joueur 2 : "+j2.getBatisseurs().indexOf(nouvelle_Pos));
-
-
-        if (joueur_en_cours == j1.getNum_joueur()) {
-            j1.getBatisseurs().set(j1.getBatisseurs().indexOf(ancienne_Pos), nouvelle_Pos);
-        } else {
-            j2.getBatisseurs().set(j2.getBatisseurs().indexOf(ancienne_Pos), nouvelle_Pos);
+    public void updateBatisseur(int index_batisseur, Point newPos, int joueur) {
+        if (joueur == j1.getNum_joueur()) {
+            j1.getBatisseurs().set(index_batisseur, newPos);
+        } else if (joueur_en_cours == j2.getNum_joueur()) {
+            j2.getBatisseurs().set(index_batisseur, newPos);
         }
     }
 
