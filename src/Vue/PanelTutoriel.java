@@ -123,7 +123,8 @@ public class PanelTutoriel extends JPanel implements Observer {
     public void changerEtape() {
         jgame.panel_gauche.panel_info.changerTexte(num_etape);
         jeu.chargerEtape(num_etape);
-        jg.repaint();
+        jg.chargerEtape(num_etape);
+        jt.setText("Tutoriel : Etape " + (this.num_etape+1));
     }
 
     /**
@@ -154,7 +155,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             Dimension size = new Dimension((int) (taille_fenetre.width * 0.2), (int) (taille_fenetre.height * taille_h));
 
             jeu = new JeuTuto(PanelTutoriel.this);
-            jg = new JeuGraphiqueTuto(jeu);
+            jg = new JeuGraphiqueTuto(jeu, num_etape);
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 
             panel_gauche = new PanelGauche(size);
@@ -593,7 +594,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             setMaximumSize(size);
             setMinimumSize(size);
 
-            jt = new JLabel("C'est au tour du Joueur 1");
+            jt = new JLabel("Tutoriel : Etape " + (num_etape+1));
             jt.setAlignmentX(CENTER_ALIGNMENT);
             jt.setAlignmentY(CENTER_ALIGNMENT);
             jt.setOpaque(false);
