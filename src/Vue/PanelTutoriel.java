@@ -17,7 +17,7 @@ import java.io.IOException;
  * Classe générant la fenêtre Tutoriel.
  */
 public class PanelTutoriel extends JPanel implements Observer {
-
+    private final LecteurSon son_bouton;
     JeuTuto jeu_tuto;
     JeuGraphiqueTuto jg;
     Font lilly_belle;
@@ -37,6 +37,8 @@ public class PanelTutoriel extends JPanel implements Observer {
      */
     public PanelTutoriel(Dimension _taille_fenetre) {
         this.taille_fenetre = _taille_fenetre;
+        son_bouton = new LecteurSon("menu_click.wav");
+
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
@@ -51,6 +53,9 @@ public class PanelTutoriel extends JPanel implements Observer {
         colonne_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
         colonne_fin = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_berger.png");
         arriere_plan = Utile.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
+
+        setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("sword", new Point(0, 0)));
+
     }
 
     /**
@@ -83,6 +88,7 @@ public class PanelTutoriel extends JPanel implements Observer {
     }
 
     public void actionBoutonSuivant(ActionEvent e) {
+        son_bouton.joueSon(false);
         this.num_etape+=1;
         if(this.num_etape < Constante.TEXTE_ETAPES.length) {
             changerEtape();
@@ -93,11 +99,18 @@ public class PanelTutoriel extends JPanel implements Observer {
     }
 
     public void actionBoutonPrecedent(ActionEvent e) {
+        son_bouton.joueSon(false);
         this.num_etape-=1;
         if(this.num_etape >= 0) {
             changerEtape();
         }
         else this.num_etape = 0;
+    }
+
+    public void actionBoutonRetourMenu(ActionEvent e) {
+        son_bouton.joueSon(false);
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.displayPanel("menu");
     }
 
     public void changerEtape() {
@@ -413,10 +426,6 @@ public class PanelTutoriel extends JPanel implements Observer {
         repaint();
     }
 
-    public void actionBoutonRetourMenu(ActionEvent e) {
-        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.displayPanel("menu");
-    }
 
     public JeuGraphiqueTuto getJg() {
         return jg;

@@ -42,6 +42,9 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
             case 6:
                 actionEtape(6,pos_souris,1);
                 break;
+            case 8:
+                actionEtape(8,pos_souris,1);
+                break;
             default:
                 break;
         }
