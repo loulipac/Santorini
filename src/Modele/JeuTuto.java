@@ -89,6 +89,7 @@ public class JeuTuto extends Jeu {
             case 5 -> joueEtape5(position);
             case 6 -> joueEtape6(position);
             case 8 -> joueEtape8(position);
+            case 12 -> joueEtape12(position);
         }
     }
 
@@ -122,6 +123,13 @@ public class JeuTuto extends Jeu {
         if (comparePoints(position, new Point(2, 2))) {
             this.getPlateau().ajouterJoueur(position, this.getJ1());
             clic_etapes[8]++;
+        }
+    }
+
+    public void joueEtape12(Point position) {
+        if (comparePoints(position, new Point(3, 3))) {
+            construireBatiment(position, 1);
+            clic_etapes[12]++;
         }
     }
     
