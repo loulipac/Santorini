@@ -1,44 +1,48 @@
 package Vue;
 
+import Modele.Constante;
 import Modele.JeuTuto;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.util.Arrays;
 
-import static Modele.Constante.PLATEAU_COLONNES;
-import static Modele.Constante.PLATEAU_LIGNES;
+import static Modele.Constante.*;
 
-public class JeuGraphiqueTuto extends JeuGraphique{
+public class JeuGraphiqueTuto extends JeuGraphique {
     JeuTuto jeu_tuto;
     int num_etape;
     Color c_fond = creerCouleur(67, 204, 212, 0.5f);
     Color c_bordure = creerCouleur(80, 186, 245, 1f);
-    int etape1 = 0;
+    int etapes[];
+    Point clic_prec;
 
     /**
      * Constructeur de JeuGraphiqueTuto.
      *
-     * @param j un JeuTuto
+     * @param j         un JeuTuto
      * @param num_etape le numéro de l'étape
      */
     public JeuGraphiqueTuto(JeuTuto j, int num_etape) {
         super(j);
         this.jeu_tuto = j;
         this.num_etape = num_etape;
+        this.etapes = new int[Constante.TEXTE_ETAPES.length];
+        clic_prec = new Point(PLATEAU_LIGNES, PLATEAU_COLONNES);
     }
 
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D drawable = (Graphics2D) g;
-        drawable.clearRect(0,0,getTailleCase() * PLATEAU_COLONNES,getTailleCase() * PLATEAU_LIGNES);
+        drawable.clearRect(0, 0, getTailleCase() * PLATEAU_COLONNES, getTailleCase() * PLATEAU_LIGNES);
 
         super.paintComponent(g);
 
-        switch(num_etape){
+        switch (num_etape) {
             case 2:
                 // draw the rectangle here
-                dessinerRectangle(drawable, new Point(1,1), c_fond, c_bordure);
-                dessinerRectangle(drawable, new Point(3,2), c_fond, c_bordure);
+                dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
+                dessinerRectangle(drawable, new Point(3, 2), c_fond, c_bordure);
                 break;
             default:
                 break;
@@ -58,23 +62,24 @@ public class JeuGraphiqueTuto extends JeuGraphique{
 
     public Color creerCouleur(int r, int g, int b, float alpha) {
         return new Color(
-                (float) r/255,
-                (float) g/255,
-                (float) b/255,
+                (float) r / 255,
+                (float) g / 255,
+                (float) b / 255,
                 alpha
         );
     }
 
-    public boolean etapeUneEffectuee(Point position){
-        if((position.getX() == 1 && position.getY() == 1) || (position.getX() == 3 && position.getY() == 2)){
+    public void joueEtape2(Point position) {
+        if (!comparePoints(position, clic_prec) && comparePoints(position, new Point(1,1))) {
+            clic_prec = position;
             this.jeu_tuto.getPlateau().ajouterJoueur(position, this.jeu_tuto.getJ1());
-            etape1 ++;
+            etapes[2]++;
+        } else if (!comparePoints(position, clic_prec) && comparePoints(position, new Point(3,2))) {
+            clic_prec = position;
+            this.jeu_tuto.getPlateau().ajouterJoueur(position, this.jeu_tuto.getJ1());
+            etapes[2]++;
         }
-        if(etape1 > 2)
-            return true;
-        return false;
     }
-
 
     public void chargerEtape(int num_etape) {
         this.num_etape = num_etape;
@@ -82,4 +87,39 @@ public class JeuGraphiqueTuto extends JeuGraphique{
         repaint();
     }
 
+    public boolean comparePoints(Point p1, Point p2) {
+        return p1.equals(p2);
+    }
+
+    public int[] getEtapes() {
+        return etapes;
+    }
+
+    public void setEtapes(int[] etape) {
+        this.etapes = etape;
+    }
+
+    public int getEtape(int num_etape) {
+        return etapes[num_etape];
+    }
+
+    public void setEtape(int num_etape, int valeur) {
+        this.etapes[num_etape] = valeur;
+    }
+
+    public JeuTuto getJeu_tuto() {
+        return jeu_tuto;
+    }
+
+    public void setJeu_tuto(JeuTuto jeu_tuto) {
+        this.jeu_tuto = jeu_tuto;
+    }
+
+    public int getNum_etape() {
+        return num_etape;
+    }
+
+    public void setNum_etape(int num_etape) {
+        this.num_etape = num_etape;
+    }
 }
