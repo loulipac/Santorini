@@ -1,6 +1,6 @@
 package Vue;
 
-import Modele.Jeu;
+import Modele.JeuTuto;
 
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
@@ -9,15 +9,19 @@ import static Modele.Constante.PLATEAU_COLONNES;
 import static Modele.Constante.PLATEAU_LIGNES;
 
 public class JeuGraphiqueTuto extends JeuGraphique{
+    JeuTuto jeu_tuto;
     int num_etape;
+    Color c_fond = creerCouleur(67, 204, 212, 0.5f);
+    Color c_bordure = creerCouleur(80, 186, 245, 1f);
 
     /**
      * Constructeur de JeuGraphiqueTuto.
      *
      * @param j
      */
-    public JeuGraphiqueTuto(Jeu j, int num_etape) {
+    public JeuGraphiqueTuto(JeuTuto j, int num_etape) {
         super(j);
+        this.jeu_tuto = j;
         this.num_etape = num_etape;
     }
 
@@ -31,8 +35,6 @@ public class JeuGraphiqueTuto extends JeuGraphique{
         switch(num_etape){
             case 2:
                 // draw the rectangle here
-                Color c_fond = creerCouleur(67, 204, 212, 0.5f);
-                Color c_bordure = creerCouleur(80, 186, 245, 1f);
                 dessinerRectangle(drawable, new Point(1,1), c_fond, c_bordure);
                 dessinerRectangle(drawable, new Point(3,2), c_fond, c_bordure);
                 break;
@@ -63,14 +65,16 @@ public class JeuGraphiqueTuto extends JeuGraphique{
 
     public void chargerEtape(int num_etape) {
         this.num_etape = num_etape;
+        jeu_tuto.chargerEtape(num_etape);
         repaint();
     }
 
-    public int getNum_etape() {
-        return num_etape;
+    public JeuTuto getJeu_tuto() {
+        return jeu_tuto;
     }
 
-    public void setNum_etape(int num_etape) {
-        this.num_etape = num_etape;
+    public void setJeu_tuto(JeuTuto jeu_tuto) {
+        this.jeu_tuto = jeu_tuto;
     }
+
 }
