@@ -11,5 +11,7 @@ public class JeuGraphiqueTuto extends JeuGraphique{
      */
     public JeuGraphiqueTuto(Jeu j) {
         super(j);
+
+
     }
 }
