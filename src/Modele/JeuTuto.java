@@ -28,8 +28,6 @@ public class JeuTuto extends Jeu {
         //
 
         switch (etape) {
-            default:
-                break;
             case 3:
             case 4:
             case 5:
@@ -72,7 +70,8 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2,2),1);
                 construireBatiment(new Point(3,3),2);
                 break;
-
+            default:
+                break;
         }
     }
 
