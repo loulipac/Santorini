@@ -4,13 +4,20 @@ import Vue.Observer;
 
 import java.awt.*;
 
+import static Modele.Constante.*;
+
 public class JeuTuto extends Jeu {
     int num_etape;
+    Point clic_prec;
+    int clic_etapes[];
 
     public JeuTuto(Observer o) {
         super(o);
         this.num_etape = 0;
         chargerEtape(num_etape);
+        this.clic_prec = new Point(PLATEAU_LIGNES, PLATEAU_COLONNES);
+        this.clic_etapes = new int[Constante.TEXTE_ETAPES.length];
+
     }
 
     public int getNum_etape() {
@@ -75,10 +82,73 @@ public class JeuTuto extends Jeu {
         }
     }
 
+
+    public void joueEtape(int num_etape, Point position) {
+        switch (num_etape) {
+            case 2 -> joueEtape2(position);
+            case 5 -> joueEtape5(position);
+            case 6 -> joueEtape6(position);
+            case 8 -> joueEtape8(position);
+        }
+    }
+
+    public void joueEtape2(Point position) {
+        if (!comparePoints(position, clic_prec) && comparePoints(position, new Point(1, 1))) {
+            clic_prec = position;
+            this.getPlateau().ajouterJoueur(position, this.getJ1());
+            clic_etapes[2]++;
+        } else if (!comparePoints(position, clic_prec) && comparePoints(position, new Point(3, 2))) {
+            clic_prec = position;
+            this.getPlateau().ajouterJoueur(position, this.getJ1());
+            clic_etapes[2]++;
+        }
+    }
+
+    public void joueEtape5(Point position) {
+        if (comparePoints(position, new Point(1, 1))) {
+            this.getPlateau().ajouterJoueur(position, this.getJ1());
+            clic_etapes[5]++;
+        }
+    }
+
+    public void joueEtape6(Point position) {
+        if (comparePoints(position, new Point(1, 2))) {
+            this.getPlateau().ajouterJoueur(position, this.getJ1());
+            clic_etapes[6]++;
+        }
+    }
+
+    public void joueEtape8(Point position) {
+        if (comparePoints(position, new Point(2, 2))) {
+            this.getPlateau().ajouterJoueur(position, this.getJ1());
+            clic_etapes[8]++;
+        }
+    }
+    
+    public boolean comparePoints(Point p1, Point p2) {
+        return p1.equals(p2);
+    }
+
     private void construireBatiment(Point position, int num_etage) {
         for (int i = 0; i < num_etage; i++) {
             this.getPlateau().ameliorerBatiment(position);
         }
+    }
+
+    public int[] getEtapes() {
+        return clic_etapes;
+    }
+
+    public void setEtapes(int[] etape) {
+        this.clic_etapes = etape;
+    }
+
+    public int getEtape(int num_etape) {
+        return clic_etapes[num_etape];
+    }
+
+    public void setEtape(int num_etape, int valeur) {
+        this.clic_etapes[num_etape] = valeur;
     }
 
 }

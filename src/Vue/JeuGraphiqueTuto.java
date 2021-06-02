@@ -14,7 +14,6 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     int num_etape;
     Color c_fond = creerCouleur(67, 204, 212, 0.5f);
     Color c_bordure = creerCouleur(80, 186, 245, 1f);
-    int etapes[];
     Point clic_prec;
 
     /**
@@ -27,8 +26,6 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         super(j);
         this.jeu_tuto = j;
         this.num_etape = num_etape;
-        this.etapes = new int[Constante.TEXTE_ETAPES.length];
-        clic_prec = new Point(PLATEAU_LIGNES, PLATEAU_COLONNES);
     }
 
     @Override
@@ -58,47 +55,6 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         }
     }
 
-    public void joueEtape(int num_etape, Point position) {
-        switch (num_etape) {
-            case 2 -> joueEtape2(position);
-            case 5 -> joueEtape5(position);
-            case 6 -> joueEtape6(position);
-            case 8 -> joueEtape8(position);
-        }
-    }
-
-    public void joueEtape2(Point position) {
-        if (!comparePoints(position, clic_prec) && comparePoints(position, new Point(1, 1))) {
-            clic_prec = position;
-            this.jeu_tuto.getPlateau().ajouterJoueur(position, this.jeu_tuto.getJ1());
-            etapes[2]++;
-        } else if (!comparePoints(position, clic_prec) && comparePoints(position, new Point(3, 2))) {
-            clic_prec = position;
-            this.jeu_tuto.getPlateau().ajouterJoueur(position, this.jeu_tuto.getJ1());
-            etapes[2]++;
-        }
-    }
-
-    public void joueEtape5(Point position) {
-        if (comparePoints(position, new Point(1, 1))) {
-            this.jeu_tuto.getPlateau().ajouterJoueur(position, this.jeu_tuto.getJ1());
-            etapes[5]++;
-        }
-    }
-
-    public void joueEtape6(Point position) {
-        if (comparePoints(position, new Point(1, 2))) {
-            this.jeu_tuto.getPlateau().ajouterJoueur(position, this.jeu_tuto.getJ1());
-            etapes[6]++;
-        }
-    }
-
-    public void joueEtape8(Point position) {
-        if (comparePoints(position, new Point(2, 2))) {
-            this.jeu_tuto.getPlateau().ajouterJoueur(position, this.jeu_tuto.getJ1());
-            etapes[8]++;
-        }
-    }
 
     public void dessinerRectangle(Graphics2D drawable, Point position, Color c_fond, Color c_bordure) {
         RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(position.y * getTailleCase(), position.x * getTailleCase(), getTailleCase(), getTailleCase(), 10, 10);
@@ -128,26 +84,6 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         this.num_etape = num_etape;
         jeu_tuto.chargerEtape(num_etape);
         repaint();
-    }
-
-    public boolean comparePoints(Point p1, Point p2) {
-        return p1.equals(p2);
-    }
-
-    public int[] getEtapes() {
-        return etapes;
-    }
-
-    public void setEtapes(int[] etape) {
-        this.etapes = etape;
-    }
-
-    public int getEtape(int num_etape) {
-        return etapes[num_etape];
-    }
-
-    public void setEtape(int num_etape, int valeur) {
-        this.etapes[num_etape] = valeur;
     }
 
     public JeuTuto getJeu_tuto() {
