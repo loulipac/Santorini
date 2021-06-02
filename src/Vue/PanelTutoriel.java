@@ -2,6 +2,7 @@ package Vue;
 
 import static Modele.Constante.*;
 
+import Modele.Constante;
 import Modele.JeuTuto;
 
 import javax.imageio.ImageIO;
@@ -103,11 +104,11 @@ public class PanelTutoriel extends JPanel implements Observer {
 
     public void actionBoutonSuivant(ActionEvent e) {
         this.num_etape+=1;
-        if(this.num_etape < panel_jeu.panel_gauche.TEXTE_ETAPES.length) {
+        if(this.num_etape < Constante.TEXTE_ETAPES.length) {
             changerEtape();
         }
         else {
-            this.num_etape = panel_jeu.panel_gauche.TEXTE_ETAPES.length;
+            this.num_etape = Constante.TEXTE_ETAPES.length;
         }
     }
 
@@ -211,64 +212,6 @@ public class PanelTutoriel extends JPanel implements Observer {
     private class PanelGauche extends JPanel {
         Dimension size;
         PanelInfo panel_info;
-
-        private final String[] TEXTE_ETAPES = {
-                """
-                Bienvenue dans le tutoriel de Santorini !
-                C’est ici que tu vas apprendre à devenir un pro de ce jeu_tuto.
-                Mais avant de devenir un pro commençons par voir les bases.
-                On y va ?""",
-                """
-                Commençons à jouer !
-                Au début du jeu_tuto, chaque joueur doit placer ses deux pions où il veut sur le plateau.""",
-                "Tu es le joueur bleu, positionne par exemple tes 2 personnages sur la grille sur les cases indiquées.",
-                """
-                C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !
-                Voyons où il les place.""",
-                """
-                A chaque tour, tu dois bouger un de tes pions, pour cela :
-                Clic sur le personnage que tu veux déplacer, puis sélectionne la case accessible (indiqué par les traces de pas) sur laquelle tu veux aller.
-                """,
-                "C’est à toi de jouer, clic sur le personnage. ",
-                "Va sur la case en à droite du personnage pour le déplacer.",
-                """
-                Super ! Tu dois ensuite construire un étage d’un bâtiment sur une des cases autour du personnage.
-                Seul le personnage déplacé précédemment peut construire un étage durant ce tour.
-                """,
-                "A toi de jouer, construis le rez-de-chaussée sur la case à droite du personnage.",
-                """
-                Génial! Tu as effectué tes deux actions, c’est donc la fin de ton tour.
-                C’est maintenant à ton adversaire de jouer.""",
-                "C’est de nouveau ton tour, essaie de monter sur le premier étage que tu as construit au tour d’avant",
-                """
-                Trop bien !
-                N’oublie pas, tu ne peux monter que d’un étage à la fois et descendre de n’importe quel étage.""",
-                """
-                Tu peux voir qu’il n'est pas possible de construire sur ta propre case.
-                Construit un étage sur la case de gauche.""",
-                """
-                Génial !
-                Maintenant avançons un peu dans la partie.""",
-                """
-                Pour bloquer ton adversaire,
-                tu peux construire un dôme sur une tour à 3 étages pour l’empêcher de monter dessus.
-                Mais méfie toi, car toi non plus tu ne peux plus monter dessus !
-                """,
-                """
-                Attention ! Ton adversaire va gagner !
-                Pour éviter cela, place un dôme au-dessus de la tour. Il ne gagnera pas ce tour là !
-                """,
-                "C’est maintenant au tour de ton adversaire de jouer !",
-                """
-                Tu as la possibilité de gagner, profites-en !
-                Déplace ton pion sur la tour à 3 étage.
-                """,
-                """
-                Félicitations, tu as gagné(e) !
-                Le tutoriel est fini, tu es maintenant un pro de ce jeu_tuto.
-                Amuse toi bien !
-                """
-        };
 
         private class PanelInfo extends JPanel {
             Dimension taille_personnage;
