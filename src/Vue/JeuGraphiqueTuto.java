@@ -50,6 +50,9 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             case 8:
                 dessinerRectangle(drawable, new Point(2, 2), c_fond, c_bordure);
                 break;
+            case 12:
+                dessinerRectangle(drawable, new Point(3, 3), c_fond, c_bordure);
+                break;
             default:
                 break;
         }
