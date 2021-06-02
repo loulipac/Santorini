@@ -7,7 +7,6 @@ import Modele.JeuTuto;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -29,7 +28,6 @@ public class PanelTutoriel extends JPanel implements Observer {
     Image colonne_bleu;
     Image arriere_plan;
     Image colonne_fin;
-    PanelParametre pp;
     PanelJeu panel_jeu;
     int num_etape;
 
@@ -81,11 +79,7 @@ public class PanelTutoriel extends JPanel implements Observer {
         panel_jeu = new PanelJeu(0.80f);
         game.add(tp);
         game.add(panel_jeu);
-
-        pp = new PanelParametre();
-        pp.setVisible(false);
         main_panel.add(game, JLayeredPane.DEFAULT_LAYER);
-        main_panel.add(pp, JLayeredPane.POPUP_LAYER);
         add(main_panel);
     }
 
@@ -98,7 +92,7 @@ public class PanelTutoriel extends JPanel implements Observer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            pp.setVisible(!pp.isVisible());
+//            pp.setVisible(!pp.isVisible());
         }
     }
 
@@ -334,188 +328,29 @@ public class PanelTutoriel extends JPanel implements Observer {
             int bouton_height = (int) (size.height * 0.1);
             Dimension size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
 
-            JPanel parametres = new JPanel();
-            parametres.setOpaque(false);
-            parametres.setPreferredSize(new Dimension(size.width, size_bouton.height));
-            parametres.setMaximumSize(new Dimension(size.width, size_bouton.height));
+            JPanel panel_parametres = new JPanel();
+            panel_parametres.setOpaque(false);
+            panel_parametres.setPreferredSize(new Dimension(size.width, size_bouton.height));
+            panel_parametres.setMaximumSize(new Dimension(size.width, size_bouton.height));
 
-            Bouton bParametres = new Bouton(
-                    CHEMIN_RESSOURCE + "/bouton/parametres.png",
-                    CHEMIN_RESSOURCE + "/bouton/parametres_hover.png",
-                    size_bouton
+            Bouton bRetour = new Bouton(
+                    CHEMIN_RESSOURCE + "/bouton/arriere.png",
+                    CHEMIN_RESSOURCE + "/bouton/arriere_hover.png",
+                    size_bouton,
+                    PanelTutoriel.this::actionBoutonRetourMenu
             );
             ActionEchap echap = new ActionEchap();
             PanelTutoriel.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), ECHAP_KEY);
             PanelTutoriel.this.getActionMap().put(ECHAP_KEY, echap);
 
-            bParametres.addActionListener(echap);
-            parametres.add(bParametres);
+            bRetour.addActionListener(echap);
+            panel_parametres.add(bRetour);
 
             panel_info = new PanelInfo(size);
-            add(parametres);
+            add(panel_parametres);
             add(Box.createRigidArea(new Dimension(size.width, size.height/20)));
             add(panel_info);
         }
-    }
-
-
-    private class PanelParametre extends JPanel {
-        private class PanelFond extends JPanel {
-            public PanelFond(Dimension taille) {
-                super();
-                setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-                setAlignmentX(CENTER_ALIGNMENT);
-                setMaximumSize(taille);
-                setPreferredSize(taille);
-                setOpaque(false);
-            }
-
-            @Override
-            protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                try {
-                    BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/bg_regles.png"));
-                    g2d.drawImage(
-                            bg_panel,
-                            0,
-                            0,
-                            getWidth(),
-                            getHeight(),
-                            this
-                    );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.err.println("Erreur image de fond: " + e.getMessage());
-                }
-            }
-        }
-
-        public PanelParametre() {
-            initialiserComposant();
-            setOpaque(false);
-            setLayout(new GridBagLayout());
-            setMaximumSize(taille_fenetre);
-        }
-
-        private void initialiserComposant() {
-            lilly_belle = new Font("Lily Script One", Font.PLAIN, 40);
-            Dimension taille_panel = new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3);
-            PanelFond contenu = new PanelFond(taille_panel);
-
-            JLabel parametres_texte = new JLabel("Paramètres");
-            parametres_texte.setForeground(new Color(82, 60, 43));
-            parametres_texte.setFont(lilly_belle);
-            parametres_texte.setAlignmentX(CENTER_ALIGNMENT);
-
-            double ratio_marge = 0.03;
-            double taille_restante = taille_panel.height - (taille_panel.height * ratio_marge) * 9;
-            double height = taille_restante / 6;
-
-            Dimension taille_bouton = new Dimension((int) (height * RATIO_BOUTON_CLASSIQUE), (int) (height));
-
-            /* Boutons*/
-            Bouton bReprendre = new Bouton(CHEMIN_RESSOURCE + "/bouton/reprendre.png", CHEMIN_RESSOURCE + "/bouton/reprendre_hover.png",
-                    taille_bouton.width,
-                    taille_bouton.height);
-
-            Bouton bNouvellePartie = new Bouton(CHEMIN_RESSOURCE + "/bouton/nouvelle_partie.png", CHEMIN_RESSOURCE + "/bouton/nouvelle_partie_hover.png",
-                    taille_bouton.width,
-                    taille_bouton.height);
-
-            JPanel charger_sauvegarder = new JPanel();
-            charger_sauvegarder.setOpaque(false);
-            charger_sauvegarder.setPreferredSize(taille_bouton);
-            charger_sauvegarder.setMaximumSize(taille_bouton);
-            charger_sauvegarder.setLayout(new GridLayout(1, 2));
-            Bouton bSauvegarder = new Bouton(CHEMIN_RESSOURCE + "/bouton/sauvegarder.png", CHEMIN_RESSOURCE + "/bouton/sauvegarder_hover.png",
-                    taille_bouton.width / 2,
-                    taille_bouton.height);
-            Bouton bCharger = new Bouton(CHEMIN_RESSOURCE + "/bouton/charger.png", CHEMIN_RESSOURCE + "/bouton/charger_hover.png",
-                    taille_bouton.width / 2,
-                    taille_bouton.height);
-
-            charger_sauvegarder.add(bSauvegarder);
-            charger_sauvegarder.add(bCharger);
-
-            Bouton bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter_partie.png", CHEMIN_RESSOURCE + "/bouton/quitter_partie_hover.png",
-                    taille_bouton.width,
-                    taille_bouton.height);
-
-
-            /* Evenements */
-            ActionEchap echap = new ActionEchap();
-            getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "echap");
-            getActionMap().put("echap", echap);
-
-            bQuitter.addActionListener(this::actionBoutonAbandonner);
-            bReprendre.addActionListener(echap);
-            bSauvegarder.addActionListener(this::actionBoutonSauvergarder);
-            bCharger.addActionListener(this::actionCharger);
-
-            /* Adding */
-            Dimension margin_taille = new Dimension(taille_panel.width, (int) (taille_panel.height * ratio_marge));
-            ajouteMarge(contenu, margin_taille);
-            ajouteMarge(contenu, margin_taille);
-            contenu.add(parametres_texte);
-            ajouteMarge(contenu, margin_taille);
-            ajouteMarge(contenu, margin_taille);
-            contenu.add(bReprendre);
-            ajouteMarge(contenu, margin_taille);
-            contenu.add(bNouvellePartie);
-            ajouteMarge(contenu, margin_taille);
-            contenu.add(charger_sauvegarder);
-            ajouteMarge(contenu, margin_taille);
-            ajouteMarge(contenu, taille_bouton);
-            ajouteMarge(contenu, margin_taille);
-            contenu.add(bQuitter);
-            ajouteMarge(contenu, margin_taille);
-            add(contenu);
-        }
-
-        private void ajouteMarge(JPanel parent, Dimension taille) {
-            parent.add(Box.createRigidArea(taille));
-        }
-
-        public void actionBoutonAbandonner(ActionEvent e) {
-            Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-            f.displayPanel("menu");
-        }
-
-        public void actionBoutonSauvergarder(ActionEvent e) {
-            jeu_tuto.sauvegarder();
-            pp.setVisible(false);
-        }
-
-
-        public void actionCharger(ActionEvent e) {
-            JFileChooser chooser = new JFileChooser(SAVES_PATH);
-            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "Sauvegardes", "sav");
-            chooser.setFileFilter(filter);
-            int returnVal = chooser.showOpenDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                jeu_tuto.charger(chooser.getSelectedFile().getName());
-                pp.setVisible(false);
-            }
-        }
-
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            Color transparentColor = new Color(0, 0, 0, 0.4f);
-            g2d.setColor(transparentColor);
-            g2d.fillRect(0, 0, taille_fenetre.width, taille_fenetre.height);
-            g2d.setComposite(AlphaComposite.SrcOver);
-        }
-
-
     }
 
     /**
@@ -603,6 +438,11 @@ public class PanelTutoriel extends JPanel implements Observer {
             jt.setText(jeu_tuto.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
         }
         repaint();
+    }
+
+    public void actionBoutonRetourMenu(ActionEvent e) {
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.displayPanel("menu");
     }
 
     public JeuGraphiqueTuto getJg() {
