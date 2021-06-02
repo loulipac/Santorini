@@ -154,7 +154,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             Dimension size = new Dimension((int) (taille_fenetre.width * 0.2), (int) (taille_fenetre.height * taille_h));
 
             jeu = new JeuTuto(PanelTutoriel.this);
-            jg = new JeuGraphique(jeu);
+            jg = new JeuGraphiqueTuto(jeu);
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 
             panel_gauche = new PanelGauche(size);
