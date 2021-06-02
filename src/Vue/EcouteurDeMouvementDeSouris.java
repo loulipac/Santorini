@@ -14,6 +14,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     JeuGraphique jg;
     Jeu j;
+    PanelPlateau pp;
     int largeur_plateau;
     int hauteur_plateau;
     Cursor c_pas_bleu;
@@ -28,6 +29,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     Cursor c_defaut_gris;
     Cursor c_defaut_rouge;
     Cursor c_defaut_bleu;
+    Cursor c_hand_rouge;
 
     static final Point CENTRE = new Point(16, 16);
     static final Point HAUT_GAUCHE = new Point(0, 0);
@@ -36,9 +38,10 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
      * Constructeur qui génère un ensemble de curseur.
      *
      */
-    public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg) {
+    public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg, PanelPlateau pp) {
         this.jg = jg;
         this.j = j;
+        this.pp = pp;
         c_defaut_gris = creerCurseurGenerique("defaut_gris", HAUT_GAUCHE);
         c_defaut_rouge = creerCurseurGenerique("defaut_rouge", HAUT_GAUCHE);
         c_defaut_bleu = creerCurseurGenerique("defaut_bleu", HAUT_GAUCHE);
@@ -51,6 +54,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         c_drapeau_bleu = creerCurseurGenerique("drapeau_bleu", CENTRE);
         c_drapeau_rouge = creerCurseurGenerique("drapeau_rouge", CENTRE);
         c_drapeau_gris = creerCurseurGenerique("drapeau_gris", CENTRE);
+        c_hand_rouge = creerCurseurGenerique("hand_rouge", CENTRE);
     }
 
     /**
@@ -86,14 +90,22 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
+            if(j.getSituation() == PLACEMENT && pp.is_finish_draw) {
+                jg.setCase_sous_souris(new Point(pos_x, pos_y));
+                jg.repaint();
+            }
+            if(j.getSituation() == CONSTRUCTION) {
+                jg.setCase_sous_souris(new Point(pos_x, pos_y));
+                jg.repaint();
+            }
             Point position = new Point(pos_y, pos_x);
             if(pos_x < 5 && pos_y < 5) {
                 if (j.getSituation() == DEPLACEMENT) {
                     if (jg.getJeu().estAtteignable(position)) {
                         if (j.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
-                            jg.setCursor(c_pas_bleu);
+                            jg.setCursor(c_hand_rouge);
                         } else {
-                            jg.setCursor(c_pas_rouge);
+                            jg.setCursor(c_hand_rouge);
                         }
                     }
                     else if(jg.getJeu().getPlateau().estBatisseur(position,j.getJoueur_en_cours()))
@@ -106,28 +118,28 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                         }
                     }
                     else {
-                        jg.setCursor(c_pas_gris);
+                        jg.setCursor(c_defaut_gris);
                     }
                 } else if (j.getSituation() == CONSTRUCTION) {
                     if (jg.getJeu().estAtteignable(position)) {
                         if (j.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
-                            jg.setCursor(c_outil_bleu);
+                            jg.setCursor(c_hand_rouge);
                         } else {
-                            jg.setCursor(c_outil_rouge);
+                            jg.setCursor(c_hand_rouge);
                         }
                     } else {
-                        jg.setCursor(c_outil_gris);
+                        jg.setCursor(c_hand_rouge);
                     }
 
                 } else if (j.getSituation() == PLACEMENT) {
                     if (jg.getJeu().getPlateau().estLibre(position)) {
                         if (j.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
-                            jg.setCursor(c_drapeau_bleu);
+                            jg.setCursor(c_hand_rouge);
                         } else {
-                            jg.setCursor(c_drapeau_rouge);
+                            jg.setCursor(c_hand_rouge);
                         }
                     } else {
-                        jg.setCursor(c_drapeau_gris);
+                        jg.setCursor(c_hand_rouge);
                     }
 
                 } else {

@@ -34,7 +34,7 @@ public class PanelPlateau extends JPanel implements Observer {
     Image colonne_fin;
     ParametrePanel pp;
     VictoirePanel victoire_panel;
-    String jeu_charger = "";
+    boolean is_finish_draw;
     /**
      * Initialise la fenêtre de jeu et charge la police et les images en mémoire.
      *
@@ -44,6 +44,7 @@ public class PanelPlateau extends JPanel implements Observer {
         this.taille_fenetre = _taille_fenetre;
         this.ia1_mode = ia1_mode;
         this.ia2_mode = ia2_mode;
+        is_finish_draw = false;
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
@@ -100,6 +101,7 @@ public class PanelPlateau extends JPanel implements Observer {
         main_panel.add(pp, JLayeredPane.POPUP_LAYER);
         main_panel.add(victoire_panel, JLayeredPane.POPUP_LAYER);
         add(main_panel);
+        is_finish_draw = true;
     }
 
     private class ActionEchap extends AbstractAction {
@@ -164,19 +166,12 @@ public class PanelPlateau extends JPanel implements Observer {
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
 
-            if (ia2_mode != 0) {
-                jeu = new Jeu(PanelPlateau.this, ia1_mode, ia2_mode);
-                jg = new JeuGraphique(jeu);
-            } else if (ia1_mode != 0) {
-                jeu = new Jeu(PanelPlateau.this, ia1_mode, 0);
-                jg = new JeuGraphique(jeu);
-                jg.addMouseListener(new EcouteurDeSouris(jg, jeu, PanelPlateau.this));
-            } else {
-                jeu = new Jeu(PanelPlateau.this, 0, 0);
-                jg = new JeuGraphique(jeu);
+            jeu = new Jeu(PanelPlateau.this, ia1_mode, ia2_mode);
+            jg = new JeuGraphique(jeu);
+            if (ia2_mode == 0) {
                 jg.addMouseListener(new EcouteurDeSouris(jg, jeu, PanelPlateau.this));
             }
-            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
+            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg, PanelPlateau.this));
 
             SidePanelRight side_panel = new SidePanelRight(size);
             side_panel.setMaximumSize(size);

@@ -24,10 +24,21 @@ public class JeuGraphique extends JComponent {
     private final Image batisseur_rouge;
     private final Image batisseur_rouge_selectionne;
     private final Image batisseur_bleu_selectionne;
+    private final Image batisseur_bleu_transparent;
+    private final Image batisseur_rouge_transparent;
     private final Image pas_rouge;
     private final Image pas_bleu;
     private final Image outil_bleu;
     private final Image outil_rouge;
+    private final Image etage_1_tmp;
+    private final Image etage_1_tmp_transparent;
+    private final Image etage_2_tmp;
+    private final Image etage_2_tmp_transparent;
+    private final Image etage_3_tmp;
+    private final Image etage_3_tmp_transparent;
+    private final Image coupole_tmp;
+    private final Image coupole_tmp_transparent;
+    private Point case_sous_souris;
 
     /**
      * Constructeur de JeuGraphique, charge les images en mémoire.
@@ -38,13 +49,23 @@ public class JeuGraphique extends JComponent {
         case_claire = Utile.readImage(CHEMIN_RESSOURCE + "/cases/case_claire.png");
         case_fonce = Utile.readImage(CHEMIN_RESSOURCE + "/cases/case_fonce.png");
         coupole = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/coupole.png");
+        coupole_tmp = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/coupole_tmp.png");
+        coupole_tmp_transparent = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/coupole_tmp_transparent.png");
         etage_1 = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/etage_1.png");
+        etage_1_tmp = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/etage_1_tmp.png");
+        etage_1_tmp_transparent = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/etage_1_tmp_transparent.png");
         etage_2 = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/etage_2.png");
+        etage_2_tmp = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/etage_2_tmp.png");
+        etage_2_tmp_transparent = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/etage_2_tmp_transparent.png");
         etage_3 = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/etage_3.png");
+        etage_3_tmp = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/etage_3_tmp.png");
+        etage_3_tmp_transparent = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/etage_3_tmp_transparent.png");
         batisseur_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/batisseur/batisseur_bleu.png");
         batisseur_rouge = Utile.readImage(CHEMIN_RESSOURCE + "/batisseur/batisseur_rouge.png");
         batisseur_rouge_selectionne = Utile.readImage(CHEMIN_RESSOURCE + "/batisseur/batisseur_rouge_selectionne.png");
         batisseur_bleu_selectionne = Utile.readImage(CHEMIN_RESSOURCE + "/batisseur/batisseur_bleu_selectionne.png");
+        batisseur_rouge_transparent = Utile.readImage(CHEMIN_RESSOURCE + "/batisseur/batisseur_rouge_transparent.png");
+        batisseur_bleu_transparent = Utile.readImage(CHEMIN_RESSOURCE + "/batisseur/batisseur_bleu_transparent.png");
         pas_rouge = Utile.readImage(CHEMIN_RESSOURCE + "/icone/pas_rouge.png");
         pas_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/icone/pas_bleu.png");
         outil_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/icone/outil_bleu.png");
@@ -115,17 +136,39 @@ public class JeuGraphique extends JComponent {
                 }
             }
         }
-        if (jeu.getSituation() == DEPLACEMENT) {
+        if(jeu.getSituation() == PLACEMENT && case_sous_souris != null) {
+            Image batisseur = jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? batisseur_bleu_transparent : batisseur_rouge_transparent;
+            if(plateau.estLibre(new Point(case_sous_souris.y, case_sous_souris.x))) {
+                drawable.drawImage(batisseur, case_sous_souris.x * taille_case, case_sous_souris.y * taille_case, taille_case, taille_case, null);
+            }
+        } else if (jeu.getSituation() == DEPLACEMENT) {
             Image pas_joueur = jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? pas_bleu : pas_rouge;
 
             for (Point case_autour : plateau.getCasesAccessibles(jeu.getBatisseur_en_cours())) {
                 drawable.drawImage(pas_joueur, case_autour.y * taille_case, case_autour.x * taille_case, taille_case, taille_case, null);
             }
         } else if (jeu.getSituation() == CONSTRUCTION && !jeu.estJeufini()) {
-            Image outil_joueur = jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? outil_bleu : outil_rouge;
-
+            Image batiment = null;
             for (Point constructions_autour : plateau.getConstructionsPossible(jeu.getBatisseur_en_cours())) {
-                drawable.drawImage(outil_joueur, constructions_autour.y * taille_case, constructions_autour.x * taille_case, taille_case, taille_case, null);
+                if(new Point(case_sous_souris.y, case_sous_souris.x).equals(constructions_autour)) {
+                    switch (plateau.getTypeBatiments(constructions_autour)) {
+                        case VIDE -> batiment = etage_1_tmp;
+                        case RDC -> batiment = etage_2_tmp;
+                        case ETAGE -> batiment = etage_3_tmp;
+                        case TOIT -> batiment = coupole_tmp;
+                        default -> batiment = null;
+                    }
+                    drawable.drawImage(batiment, constructions_autour.y * taille_case, constructions_autour.x * taille_case, taille_case, taille_case, null);
+                } else {
+                    switch (plateau.getTypeBatiments(constructions_autour)) {
+                        case VIDE -> batiment = etage_1_tmp_transparent;
+                        case RDC -> batiment = etage_2_tmp_transparent;
+                        case ETAGE -> batiment = etage_3_tmp_transparent;
+                        case TOIT -> batiment = coupole_tmp_transparent;
+                        default -> batiment = null;
+                    }
+                    drawable.drawImage(batiment, constructions_autour.y * taille_case, constructions_autour.x * taille_case, taille_case, taille_case, null);
+                }
             }
         }
     }
@@ -140,6 +183,10 @@ public class JeuGraphique extends JComponent {
 
     public void setJeu(Jeu jeu) {
         this.jeu = jeu;
+    }
+
+    public void setCase_sous_souris(Point case_sous_souris) {
+        this.case_sous_souris = case_sous_souris;
     }
 
 }
