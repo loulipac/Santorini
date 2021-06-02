@@ -6,7 +6,8 @@ import java.awt.*;
  * Fichier de constante.
  */
 public class Constante {
-    private Constante() {}
+    private Constante() {
+    }
 
     public static final String CHEMIN_RESSOURCE = "./src/Ressources";
     public static final String SAVES_PATH = "./saves/";
@@ -54,49 +55,48 @@ public class Constante {
     public static final String[] TEXTE_ETAPES = {
             """
                 Bienvenue dans le tutoriel de Santorini !
-                C’est ici que tu vas apprendre à devenir un pro de ce jeu_tuto.
+                C’est ici que tu vas apprendre à devenir un pro de ce jeu.
                 Mais avant de devenir un pro commençons par voir les bases.
                 On y va ?""",
             """
                 Commençons à jouer !
                 Au début du jeu, chaque joueur doit placer ses deux pions où il veut sur le plateau.""",
-            "Tu es le joueur bleu, positionne par exemple tes 2 personnages sur la grille sur les cases indiquées.",
+            "Tu es le joueur bleu, positionne par exemple tes 2 personnages sur les cases indiquées.",
             """
-                C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !
-                Voyons où il les place.""",
+               C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !
+               Voyons où il les place.""",
             """
-                A chaque tour, tu dois bouger un de tes pions, pour cela :
-                Clic sur le personnage que tu veux déplacer, puis sélectionne la case accessible (indiqué par les traces de pas) sur laquelle tu veux aller.
+                A chaque tour, tu dois bouger un de tes pions.
+                Pour cela tu dois cliquer sur le personnage que tu veux déplacer, puis sélectionner la case sur laquelle tu veux aller.
                 """,
             "C’est à toi de jouer, clic sur le personnage. ",
-            "Va sur la case en à droite du personnage pour le déplacer.",
+            "Va sur la case de droite du personnage pour le déplacer.",
             """
-                Super ! Tu dois ensuite construire un étage d’un bâtiment sur une des cases autour du personnage.
-                Seul le personnage déplacé précédemment peut construire un étage durant ce tour.
-                """,
-            "A toi de jouer, construis le rez-de-chaussée sur la case à droite du personnage.",
+               Super ! Tu dois ensuite construire un étage d’un bâtiment sur une des cases autour du personnage.
+               Seul le personnage que tu as déplacé précédemment peut construire un étage durant ce tour.
+               """,
+            "A toi de jouer, construis le rez-de-chaussée sur la case en dessous du personnage.",
             """
                 Génial! Tu as effectué tes deux actions, c’est donc la fin de ton tour.
-                C’est maintenant à ton adversaire de jouer.""",
+                C’est maintenant à ton adversaire de jouer.
+                """,
             "C’est de nouveau ton tour, essaie de monter sur le premier étage que tu as construit au tour d’avant",
             """
                 Trop bien !
                 N’oublie pas, tu ne peux monter que d’un étage à la fois et descendre de n’importe quel étage.""",
             """
                 Tu peux voir qu’il n'est pas possible de construire sur ta propre case.
-                Construit un étage sur la case de gauche.""",
+                Construit un étage sur la case en diagonale à droite.""",
             """
                 Génial !
-                Maintenant avançons un peu dans la partie.""",
+                Maintenant avançons un peu dans la partie !""",
             """
-                Pour bloquer ton adversaire,
-                tu peux construire un dôme sur une tour à 3 étages pour l’empêcher de monter dessus.
-                Mais méfie toi, car toi non plus tu ne peux plus monter dessus !
-                """,
+                Pour bloquer ton adversaire qui risque de gagner la partie en arrivant sur un bâtiment de 3 étages, tu peux construire un dôme sur une tour à 3 étages pour l’empêcher de monter dessus.
+                Mais méfie toi, car toi non plus tu ne peux plus monter dessus !""",
             """
-                Attention ! Ton adversaire va gagner !
-                Pour éviter cela, place un dôme au-dessus de la tour. Il ne gagnera pas ce tour là !
-                """,
+               Attention, ton adversaire va gagner !
+               Pour éviter cela, place un dôme au-dessus de la tour. Il ne gagnera pas ce tour là !
+               """,
             "C’est maintenant au tour de ton adversaire de jouer !",
             """
                 Tu as la possibilité de gagner, profites-en !
