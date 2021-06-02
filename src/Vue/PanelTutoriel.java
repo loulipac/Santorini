@@ -122,7 +122,6 @@ public class PanelTutoriel extends JPanel implements Observer {
 
     public void changerEtape() {
         jgame.panel_gauche.panel_info.changerTexte(num_etape);
-        jeu.chargerEtape(num_etape);
         jg.chargerEtape(num_etape);
         jt.setText("Tutoriel : Etape " + (this.num_etape+1));
     }
