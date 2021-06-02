@@ -75,6 +75,13 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         );
     }
 
+    public void joueEtape(int num_etape, Point position) {
+        switch (num_etape) {
+            case 2 -> joueEtape2(position);
+            case 5 -> joueEtape5(position);
+        }
+    }
+
     public void joueEtape2(Point position) {
         if (!comparePoints(position, clic_prec) && comparePoints(position, new Point(1, 1))) {
             clic_prec = position;
