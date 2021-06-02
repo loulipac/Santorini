@@ -31,6 +31,18 @@ public class Plateau {
         colonnes = nombre_colonnes;
     }
 
+    public Plateau(Plateau plateau) {
+        lignes = plateau.lignes;
+        colonnes = plateau.colonnes;
+
+        cases = new int[lignes][colonnes];
+        for (int i = 0; i < lignes; i++) {
+            for (int j = 0; j < colonnes; j++) {
+                cases[i][j] = plateau.cases[i][j];
+            }
+        }
+    }
+
     /**
      * Vérifie que la case (c, l) est vide.
      *
@@ -140,6 +152,20 @@ public class Plateau {
      */
     public boolean estBatisseur(Point position, int joueur) {
         return getTypeBatisseurs(position) == joueur;
+    }
+
+
+    public ArrayList<Point> rechercherBatisseurs(int joueur) {
+        ArrayList<Point> batisseurs = new ArrayList<Point>();
+        for (int i = 0; i < lignes; i++) {
+            for (int j = 0; j < colonnes; j++) {
+                Point point = new Point(j, i);
+                if (estBatisseur(point, joueur)) {
+                    batisseurs.add(point);
+                }
+            }
+        }
+        return batisseurs;
     }
 
     /**
