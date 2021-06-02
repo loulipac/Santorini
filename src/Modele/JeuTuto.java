@@ -80,4 +80,5 @@ public class JeuTuto extends Jeu {
             this.getPlateau().ameliorerBatiment(position);
         }
     }
+
 }

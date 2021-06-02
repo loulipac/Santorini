@@ -50,29 +50,12 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             case 6:
                 dessinerRectangle(drawable, new Point(1, 2), c_fond, c_bordure);
                 break;
+            case 8:
+                dessinerRectangle(drawable, new Point(2, 2), c_fond, c_bordure);
+                break;
             default:
                 break;
         }
-    }
-
-    public void dessinerRectangle(Graphics2D drawable, Point position, Color c_fond, Color c_bordure) {
-        RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(position.y * getTailleCase(), position.x * getTailleCase(), getTailleCase(), getTailleCase(), 10, 10);
-
-        drawable.setColor(c_fond);
-        drawable.fillRoundRect(position.y * getTailleCase(), position.x * getTailleCase(), getTailleCase(), getTailleCase(), 10, 10);
-
-        drawable.setStroke(new BasicStroke(4));
-        drawable.setColor(c_bordure);
-        drawable.draw(roundedRectangle);
-    }
-
-    public Color creerCouleur(int r, int g, int b, float alpha) {
-        return new Color(
-                (float) r / 255,
-                (float) g / 255,
-                (float) b / 255,
-                alpha
-        );
     }
 
     public void joueEtape(int num_etape, Point position) {
@@ -80,6 +63,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             case 2 -> joueEtape2(position);
             case 5 -> joueEtape5(position);
             case 6 -> joueEtape6(position);
+            case 8 -> joueEtape8(position);
         }
     }
 
@@ -107,6 +91,33 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             this.jeu_tuto.getPlateau().ajouterJoueur(position, this.jeu_tuto.getJ1());
             etapes[6]++;
         }
+    }
+
+    public void joueEtape8(Point position) {
+        if (comparePoints(position, new Point(2, 2))) {
+            this.jeu_tuto.getPlateau().ajouterJoueur(position, this.jeu_tuto.getJ1());
+            etapes[8]++;
+        }
+    }
+
+    public void dessinerRectangle(Graphics2D drawable, Point position, Color c_fond, Color c_bordure) {
+        RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(position.y * getTailleCase(), position.x * getTailleCase(), getTailleCase(), getTailleCase(), 10, 10);
+
+        drawable.setColor(c_fond);
+        drawable.fillRoundRect(position.y * getTailleCase(), position.x * getTailleCase(), getTailleCase(), getTailleCase(), 10, 10);
+
+        drawable.setStroke(new BasicStroke(4));
+        drawable.setColor(c_bordure);
+        drawable.draw(roundedRectangle);
+    }
+
+    public Color creerCouleur(int r, int g, int b, float alpha) {
+        return new Color(
+                (float) r / 255,
+                (float) g / 255,
+                (float) b / 255,
+                alpha
+        );
     }
 
     public void viderClic_prec() {
