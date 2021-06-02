@@ -13,6 +13,7 @@ public class JeuGraphiqueTuto extends JeuGraphique{
     int num_etape;
     Color c_fond = creerCouleur(67, 204, 212, 0.5f);
     Color c_bordure = creerCouleur(80, 186, 245, 1f);
+    int etape1 = 0;
 
     /**
      * Constructeur de JeuGraphiqueTuto.
@@ -63,6 +64,17 @@ public class JeuGraphiqueTuto extends JeuGraphique{
                 alpha
         );
     }
+
+    public boolean etapeUneEffectuee(Point position){
+        if((position.getX() == 1 && position.getY() == 1) || (position.getX() == 3 && position.getY() == 2)){
+            this.jeu_tuto.getPlateau().ajouterJoueur(position, this.jeu_tuto.getJ1());
+            etape1 ++;
+        }
+        if(etape1 > 2)
+            return true;
+        return false;
+    }
+
 
     public void chargerEtape(int num_etape) {
         this.num_etape = num_etape;

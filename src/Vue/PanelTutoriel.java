@@ -155,7 +155,8 @@ public class PanelTutoriel extends JPanel implements Observer {
 
             jeu_tuto = new JeuTuto(PanelTutoriel.this);
             jg = new JeuGraphiqueTuto(jeu_tuto, num_etape);
-            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu_tuto, jg));
+//            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu_tuto, jg));
+            jg.addMouseListener(new EcouteurDeSourisTuto(PanelTutoriel.this));
 
             panel_gauche = new PanelGauche(size);
             panel_gauche.setMaximumSize(size);
