@@ -103,7 +103,7 @@ public class PanelTutoriel extends JPanel implements Observer {
     public void changerEtape() {
         panel_jeu.panel_gauche.panel_info.changerTexte(num_etape);
         jg.chargerEtape(num_etape);
-        jt.setText("Tutoriel : Etape " + (this.num_etape+1));
+        jt.setText("Tutoriel : Etape " + (num_etape+1) + "/" + TEXTE_ETAPES.length);
     }
 
     /**
@@ -352,7 +352,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             setMaximumSize(size);
             setMinimumSize(size);
 
-            jt = new JLabel("Tutoriel : Etape " + (num_etape+1));
+            jt = new JLabel("Tutoriel : Etape " + (num_etape+1) + "/" + TEXTE_ETAPES.length);
             jt.setAlignmentX(CENTER_ALIGNMENT);
             jt.setAlignmentY(CENTER_ALIGNMENT);
             jt.setOpaque(false);
