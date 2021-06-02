@@ -7,33 +7,41 @@ import java.awt.event.MouseEvent;
 import static Modele.Constante.*;
 
 public class EcouteurDeSourisTuto extends MouseAdapter {
-    PanelTutoriel panel_tutoriel;
+    PanelTutoriel pt;
     int largeur_plateau;
     int hauteur_plateau;
 
     /**
      * Constructeur de EcouteurDeSourisTuto. Utilise un PanelTutoriel.
      *
-     * @param panel_tutoriel
+     * @param pt
      */
-    public EcouteurDeSourisTuto(PanelTutoriel panel_tutoriel ) {
-        this.panel_tutoriel = panel_tutoriel;
+    public EcouteurDeSourisTuto(PanelTutoriel pt ) {
+        this.pt = pt;
     }
 
 
     /**
-     * Utilise getJeu().jouer de JeuGraphique pour effectuer une action à la case calculé depuis la position de la souris.
+     * Ecouteur de souris personnalisé pour le tutoriel, permettant de récupérer les clics pour chacunes des étapes
      *
      * @param e evenement lorsqu'un clic intervient (contient la position du clic par exemple)
-     * @see JeuGraphique#getJeu()
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        this.largeur_plateau = panel_tutoriel.jg.getTailleCase() * PLATEAU_COLONNES;
-        this.hauteur_plateau = panel_tutoriel.jg.getTailleCase() * PLATEAU_LIGNES;
-        if(panel_tutoriel.num_etape == 2) {
-            panel_tutoriel.jg.etapeUneEffectuee(new Point(e.getY() / panel_tutoriel.jg.getTailleCase(),e.getX() / panel_tutoriel.jg.getTailleCase()));
+        this.largeur_plateau = pt.jg.getTailleCase() * PLATEAU_COLONNES;
+        this.hauteur_plateau = pt.jg.getTailleCase() * PLATEAU_LIGNES;
+        switch (pt.num_etape) {
+            case 2:
+                pt.getJg().joueEtape2(new Point(e.getY() / pt.jg.getTailleCase(),e.getX() / pt.jg.getTailleCase()));
+                if (pt.getJg().getEtape(2) >= 2) {
+                    pt.getJg().setEtape(2,0);;
+                    pt.setNum_etape(pt.getNum_etape()+1);
+                    pt.changerEtape();
+                }
+                break;
+            default:
+                break;
         }
-        this.panel_tutoriel.jg.repaint();
+        this.pt.jg.repaint();
     }
 }

@@ -604,4 +604,20 @@ public class PanelTutoriel extends JPanel implements Observer {
         }
         repaint();
     }
+
+    public JeuGraphiqueTuto getJg() {
+        return jg;
+    }
+
+    public void setJg(JeuGraphiqueTuto jg) {
+        this.jg = jg;
+    }
+
+    public int getNum_etape() {
+        return num_etape;
+    }
+
+    public void setNum_etape(int num_etape) {
+        this.num_etape = num_etape;
+    }
 }
