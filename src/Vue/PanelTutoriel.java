@@ -6,7 +6,6 @@ import Modele.JeuTuto;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,7 +19,7 @@ import java.io.IOException;
  */
 public class PanelTutoriel extends JPanel implements Observer {
 
-    JeuTuto jeu;
+    JeuTuto jeu_tuto;
     JeuGraphiqueTuto jg;
     Font lilly_belle;
     JLabel jt;
@@ -29,8 +28,8 @@ public class PanelTutoriel extends JPanel implements Observer {
     Image colonne_bleu;
     Image arriere_plan;
     Image colonne_fin;
-    ParametrePanel pp;
-    PanelJeu jgame;
+    PanelParametre pp;
+    PanelJeu panel_jeu;
     int num_etape;
 
     /**
@@ -71,18 +70,18 @@ public class PanelTutoriel extends JPanel implements Observer {
         main_panel.setOpaque(false);
         main_panel.setLayout(new OverlayLayout(main_panel));
 
-        // panel de base avec le jeu
+        // panel de base avec le jeu_tuto
         JPanel game = new JPanel();
         game.setOpaque(false);
         game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
         game.setMaximumSize(taille_fenetre);
 
         TopPanel tp = new TopPanel(0.20f);
-        jgame = new PanelJeu(0.80f);
+        panel_jeu = new PanelJeu(0.80f);
         game.add(tp);
-        game.add(jgame);
+        game.add(panel_jeu);
 
-        pp = new ParametrePanel();
+        pp = new PanelParametre();
         pp.setVisible(false);
         main_panel.add(game, JLayeredPane.DEFAULT_LAYER);
         main_panel.add(pp, JLayeredPane.POPUP_LAYER);
@@ -104,11 +103,11 @@ public class PanelTutoriel extends JPanel implements Observer {
 
     public void actionBoutonSuivant(ActionEvent e) {
         this.num_etape+=1;
-        if(this.num_etape < jgame.panel_gauche.TEXTE_ETAPES.length) {
+        if(this.num_etape < panel_jeu.panel_gauche.TEXTE_ETAPES.length) {
             changerEtape();
         }
         else {
-            this.num_etape = jgame.panel_gauche.TEXTE_ETAPES.length;
+            this.num_etape = panel_jeu.panel_gauche.TEXTE_ETAPES.length;
         }
     }
 
@@ -121,20 +120,20 @@ public class PanelTutoriel extends JPanel implements Observer {
     }
 
     public void changerEtape() {
-        jgame.panel_gauche.panel_info.changerTexte(num_etape);
+        panel_jeu.panel_gauche.panel_info.changerTexte(num_etape);
         jg.chargerEtape(num_etape);
         jt.setText("Tutoriel : Etape " + (this.num_etape+1));
     }
 
     /**
      * Crée un JPanel modifié qui génère deux zones de boutons de 20% de la taille de la fenêtre.
-     * Génère la grille de jeu.
+     * Génère la grille de jeu_tuto.
      *
      * @see JeuGraphique
      * @see JeuTuto
      */
     public class PanelJeu extends JPanel {
-        int taille_margin;
+        int taille_marge;
         float taille_h;
         PanelGauche panel_gauche;
 
@@ -153,9 +152,9 @@ public class PanelTutoriel extends JPanel implements Observer {
 
             Dimension size = new Dimension((int) (taille_fenetre.width * 0.2), (int) (taille_fenetre.height * taille_h));
 
-            jeu = new JeuTuto(PanelTutoriel.this);
-            jg = new JeuGraphiqueTuto(jeu, num_etape);
-            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
+            jeu_tuto = new JeuTuto(PanelTutoriel.this);
+            jg = new JeuGraphiqueTuto(jeu_tuto, num_etape);
+            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu_tuto, jg));
 
             panel_gauche = new PanelGauche(size);
             panel_gauche.setMaximumSize(size);
@@ -177,8 +176,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             // place des menus
             taille -= taille_fenetre.width * 0.4;
 
-            taille_margin = taille / 4;
-
+            taille_marge = taille / 4;
 
             JPanel panel = new JPanel();
             panel.setOpaque(false);
@@ -186,23 +184,23 @@ public class PanelTutoriel extends JPanel implements Observer {
             panel.setMaximumSize(size);
             panel.setMinimumSize(size);
 
-            addMargin(container);
+            ajouteMarge(container);
             container.add(panel_gauche);
-            addMargin(container);
+            ajouteMarge(container);
             container.add(jg);
-            addMargin(container);
+            ajouteMarge(container);
             container.add(panel);
-            addMargin(container);
+            ajouteMarge(container);
             add(container);
         }
 
         /**
          * Crée un JPanel servant de marge.
          */
-        private void addMargin(JPanel c) {
+        private void ajouteMarge(JPanel c) {
             JPanel j = new JPanel();
             j.setOpaque(false);
-            Dimension size = new Dimension(taille_margin, (int) (taille_fenetre.height * taille_h));
+            Dimension size = new Dimension(taille_marge, (int) (taille_fenetre.height * taille_h));
             j.setPreferredSize(size);
             j.setMaximumSize(size);
             c.add(j);
@@ -217,12 +215,12 @@ public class PanelTutoriel extends JPanel implements Observer {
         private final String[] TEXTE_ETAPES = {
                 """
                 Bienvenue dans le tutoriel de Santorini !
-                C’est ici que tu vas apprendre à devenir un pro de ce jeu.
+                C’est ici que tu vas apprendre à devenir un pro de ce jeu_tuto.
                 Mais avant de devenir un pro commençons par voir les bases.
                 On y va ?""",
                 """
                 Commençons à jouer !
-                Au début du jeu, chaque joueur doit placer ses deux pions où il veut sur le plateau.""",
+                Au début du jeu_tuto, chaque joueur doit placer ses deux pions où il veut sur le plateau.""",
                 "Tu es le joueur bleu, positionne par exemple tes 2 personnages sur la grille sur les cases indiquées.",
                 """
                 C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !
@@ -267,7 +265,7 @@ public class PanelTutoriel extends JPanel implements Observer {
                 """,
                 """
                 Félicitations, tu as gagné(e) !
-                Le tutoriel est fini, tu es maintenant un pro de ce jeu.
+                Le tutoriel est fini, tu es maintenant un pro de ce jeu_tuto.
                 Amuse toi bien !
                 """
         };
@@ -417,9 +415,9 @@ public class PanelTutoriel extends JPanel implements Observer {
     }
 
 
-    private class ParametrePanel extends JPanel {
-        private class BackgroundPanel extends JPanel {
-            public BackgroundPanel(Dimension taille) {
+    private class PanelParametre extends JPanel {
+        private class PanelFond extends JPanel {
+            public PanelFond(Dimension taille) {
                 super();
                 setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
                 setAlignmentX(CENTER_ALIGNMENT);
@@ -453,7 +451,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             }
         }
 
-        public ParametrePanel() {
+        public PanelParametre() {
             initialiserComposant();
             setOpaque(false);
             setLayout(new GridBagLayout());
@@ -463,7 +461,7 @@ public class PanelTutoriel extends JPanel implements Observer {
         private void initialiserComposant() {
             lilly_belle = new Font("Lily Script One", Font.PLAIN, 40);
             Dimension taille_panel = new Dimension((int) (taille_fenetre.width * 0.55), taille_fenetre.height * 2 / 3);
-            BackgroundPanel contenu = new BackgroundPanel(taille_panel);
+            PanelFond contenu = new PanelFond(taille_panel);
 
             JLabel parametres_texte = new JLabel("Paramètres");
             parametres_texte.setForeground(new Color(82, 60, 43));
@@ -517,25 +515,25 @@ public class PanelTutoriel extends JPanel implements Observer {
 
             /* Adding */
             Dimension margin_taille = new Dimension(taille_panel.width, (int) (taille_panel.height * ratio_marge));
-            addMargin(contenu, margin_taille);
-            addMargin(contenu, margin_taille);
+            ajouteMarge(contenu, margin_taille);
+            ajouteMarge(contenu, margin_taille);
             contenu.add(parametres_texte);
-            addMargin(contenu, margin_taille);
-            addMargin(contenu, margin_taille);
+            ajouteMarge(contenu, margin_taille);
+            ajouteMarge(contenu, margin_taille);
             contenu.add(bReprendre);
-            addMargin(contenu, margin_taille);
+            ajouteMarge(contenu, margin_taille);
             contenu.add(bNouvellePartie);
-            addMargin(contenu, margin_taille);
+            ajouteMarge(contenu, margin_taille);
             contenu.add(charger_sauvegarder);
-            addMargin(contenu, margin_taille);
-            addMargin(contenu, taille_bouton);
-            addMargin(contenu, margin_taille);
+            ajouteMarge(contenu, margin_taille);
+            ajouteMarge(contenu, taille_bouton);
+            ajouteMarge(contenu, margin_taille);
             contenu.add(bQuitter);
-            addMargin(contenu, margin_taille);
+            ajouteMarge(contenu, margin_taille);
             add(contenu);
         }
 
-        private void addMargin(JPanel parent, Dimension taille) {
+        private void ajouteMarge(JPanel parent, Dimension taille) {
             parent.add(Box.createRigidArea(taille));
         }
 
@@ -545,7 +543,7 @@ public class PanelTutoriel extends JPanel implements Observer {
         }
 
         public void actionBoutonSauvergarder(ActionEvent e) {
-            jeu.sauvegarder();
+            jeu_tuto.sauvegarder();
             pp.setVisible(false);
         }
 
@@ -557,7 +555,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             chooser.setFileFilter(filter);
             int returnVal = chooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                jeu.charger(chooser.getSelectedFile().getName());
+                jeu_tuto.charger(chooser.getSelectedFile().getName());
                 pp.setVisible(false);
             }
         }
@@ -624,10 +622,10 @@ public class PanelTutoriel extends JPanel implements Observer {
                     this
             );
             Image colonne;
-            if (jeu.estJeufini()) {
+            if (jeu_tuto.estJeufini()) {
                 colonne = colonne_fin;
             } else {
-                colonne = (jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? colonne_bleu : colonne_rouge);
+                colonne = (jeu_tuto.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? colonne_bleu : colonne_rouge);
             }
 
             // float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre
@@ -647,7 +645,7 @@ public class PanelTutoriel extends JPanel implements Observer {
     }
 
     private void changeVictory() {
-        jt.setText("Joueur " + (jeu.getGagnant().getNum_joueur() / JOUEUR1) + " gagne");
+        jt.setText("Joueur " + (jeu_tuto.getGagnant().getNum_joueur() / JOUEUR1) + " gagne");
     }
 
     /**
@@ -655,10 +653,10 @@ public class PanelTutoriel extends JPanel implements Observer {
      */
     @Override
     public void miseAjour() {
-        if (jeu.estJeufini()) {
+        if (jeu_tuto.estJeufini()) {
             changeVictory();
         } else {
-            jt.setText(jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
+            jt.setText(jeu_tuto.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
         }
         repaint();
     }

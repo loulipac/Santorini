@@ -17,7 +17,8 @@ public class JeuGraphiqueTuto extends JeuGraphique{
     /**
      * Constructeur de JeuGraphiqueTuto.
      *
-     * @param j
+     * @param j un JeuTuto
+     * @param num_etape le numéro de l'étape
      */
     public JeuGraphiqueTuto(JeuTuto j, int num_etape) {
         super(j);
@@ -67,14 +68,6 @@ public class JeuGraphiqueTuto extends JeuGraphique{
         this.num_etape = num_etape;
         jeu_tuto.chargerEtape(num_etape);
         repaint();
-    }
-
-    public JeuTuto getJeu_tuto() {
-        return jeu_tuto;
-    }
-
-    public void setJeu_tuto(JeuTuto jeu_tuto) {
-        this.jeu_tuto = jeu_tuto;
     }
 
 }
