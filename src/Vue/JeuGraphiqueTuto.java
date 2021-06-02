@@ -79,6 +79,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         switch (num_etape) {
             case 2 -> joueEtape2(position);
             case 5 -> joueEtape5(position);
+            case 6 -> joueEtape6(position);
         }
     }
 
@@ -98,6 +99,13 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         if (comparePoints(position, new Point(1, 1))) {
             this.jeu_tuto.getPlateau().ajouterJoueur(position, this.jeu_tuto.getJ1());
             etapes[5]++;
+        }
+    }
+
+    public void joueEtape6(Point position) {
+        if (comparePoints(position, new Point(1, 2))) {
+            this.jeu_tuto.getPlateau().ajouterJoueur(position, this.jeu_tuto.getJ1());
+            etapes[6]++;
         }
     }
 
