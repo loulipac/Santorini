@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -81,19 +80,6 @@ public class PanelTutoriel extends JPanel implements Observer {
         game.add(panel_jeu);
         main_panel.add(game, JLayeredPane.DEFAULT_LAYER);
         add(main_panel);
-    }
-
-    private class ActionEchap extends AbstractAction {
-        public ActionEchap() {
-            super();
-            putValue(SHORT_DESCRIPTION, "Afficher les paramètres");
-            putValue(MNEMONIC_KEY, KeyEvent.VK_ESCAPE);
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-//            pp.setVisible(!pp.isVisible());
-        }
     }
 
     public void actionBoutonSuivant(ActionEvent e) {
@@ -339,11 +325,7 @@ public class PanelTutoriel extends JPanel implements Observer {
                     size_bouton,
                     PanelTutoriel.this::actionBoutonRetourMenu
             );
-            ActionEchap echap = new ActionEchap();
-            PanelTutoriel.this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), ECHAP_KEY);
-            PanelTutoriel.this.getActionMap().put(ECHAP_KEY, echap);
 
-            bRetour.addActionListener(echap);
             panel_parametres.add(bRetour);
 
             panel_info = new PanelInfo(size);
@@ -423,20 +405,11 @@ public class PanelTutoriel extends JPanel implements Observer {
         }
     }
 
-    private void changeVictory() {
-        jt.setText("Joueur " + (jeu_tuto.getGagnant().getNum_joueur() / JOUEUR1) + " gagne");
-    }
-
     /**
      * Modifie le texte qui affiche quel joueur doit jouer.
      */
     @Override
     public void miseAjour() {
-        if (jeu_tuto.estJeufini()) {
-            changeVictory();
-        } else {
-            jt.setText(jeu_tuto.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
-        }
         repaint();
     }
 
