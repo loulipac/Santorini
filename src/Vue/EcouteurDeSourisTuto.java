@@ -30,11 +30,28 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         this.largeur_plateau = pt.jg.getTailleCase() * PLATEAU_COLONNES;
         this.hauteur_plateau = pt.jg.getTailleCase() * PLATEAU_LIGNES;
+        Point pos_souris = new Point(e.getY() / pt.jg.getTailleCase(),e.getX() / pt.jg.getTailleCase());
         switch (pt.num_etape) {
             case 2:
-                pt.getJg().joueEtape2(new Point(e.getY() / pt.jg.getTailleCase(),e.getX() / pt.jg.getTailleCase()));
+                pt.getJg().joueEtape2(pos_souris);
                 if (pt.getJg().getEtape(2) >= 2) {
-                    pt.getJg().setEtape(2,0);;
+                    // On vide le tableau et la variable clic_prec
+                    pt.getJg().setEtape(2,0);
+                    pt.getJg().viderClic_prec();
+
+                    // Passe à l'étape suivante
+                    pt.setNum_etape(pt.getNum_etape()+1);
+                    pt.changerEtape();
+                }
+                break;
+            case 5:
+                pt.getJg().joueEtape5(pos_souris);
+                if (pt.getJg().getEtape(5) >= 1) {
+                    // On vide le tableau et la variable clic_prec
+                    pt.getJg().setEtape(5,0);
+                    pt.getJg().viderClic_prec();
+
+                    // Passe à l'étape suivante
                     pt.setNum_etape(pt.getNum_etape()+1);
                     pt.changerEtape();
                 }
