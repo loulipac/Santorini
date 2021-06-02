@@ -21,7 +21,7 @@ import java.io.IOException;
 public class PanelTutoriel extends JPanel implements Observer {
 
     JeuTuto jeu;
-    JeuGraphique jg;
+    JeuGraphiqueTuto jg;
     Font lilly_belle;
     JLabel jt;
     Dimension taille_fenetre;
