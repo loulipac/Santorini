@@ -83,6 +83,7 @@ public class JeuTuto extends Jeu {
             case 5 -> joueEtape5(position);
             case 6 -> joueEtape6(position);
             case 8 -> joueEtape8(position);
+            case 10 -> joueEtape10(position);
             case 12 -> joueEtape12(position);
             default -> {
                 break;
@@ -120,6 +121,13 @@ public class JeuTuto extends Jeu {
         if (position.equals(new Point(2, 2))) {
             this.getPlateau().ajouterJoueur(position, this.getJ1());
             clic_etapes[8]++;
+        }
+    }
+
+    public void joueEtape10(Point position) {
+        if (position.equals(new Point(2, 2))) {
+            this.getPlateau().ajouterJoueur(position, this.getJ1());
+            clic_etapes[10]++;
         }
     }
 

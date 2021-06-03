@@ -84,9 +84,7 @@ public class Constante {
             """
                Génial !
                Maintenant avançons un peu dans la partie !""",
-            """
-                Le premier qui arrive sur un bâtiment de 3 étages gagne la partie, mais pour contrer ça tu peux construire un dôme sur le bâtiment, ce qui l’empêchera de monter dessus.
-                Mais méfie toi, car toi non plus tu ne peux plus monter dessus !""",
+            "Le premier qui arrive sur un bâtiment de 3 étages gagne la partie, mais pour contrer ça tu peux construire un dôme sur le bâtiment, ce qui empêche de monter dessus.",
             """
                Attention, ton adversaire va gagner !
                Pour éviter cela, place un dôme au-dessus de la tour. Il ne gagnera pas ce tour là !""",
