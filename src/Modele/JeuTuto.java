@@ -80,7 +80,7 @@ public class JeuTuto extends Jeu {
                 break;
             case 14,15:
                 this.getPlateau().ajouterJoueur(new Point(2, 1), this.getJ1());
-                this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
+                this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
                 this.getPlateau().ajouterJoueur(new Point(2, 2), this.getJ2());
                 construireBatiment(new Point(1,1),1);
@@ -91,7 +91,7 @@ public class JeuTuto extends Jeu {
                 break;
             case 16:
                 this.getPlateau().ajouterJoueur(new Point(2, 1), this.getJ1());
-                this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
+                this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
                 this.getPlateau().ajouterJoueur(new Point(2, 2), this.getJ2());
                 construireBatiment(new Point(1,1),1);
