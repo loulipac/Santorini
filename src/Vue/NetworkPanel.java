@@ -11,11 +11,6 @@ public class NetworkPanel extends JPanel {
     JTextField ip;
     Client client;
 
-    final String HOSTNAME = "localhost";
-    final int PORT = 2121;
-
-
-
     public NetworkPanel(Dimension _taille_fenetre) {
         taille_fenetre = _taille_fenetre;
         initialiserComposant();
