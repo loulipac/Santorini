@@ -56,56 +56,50 @@ public class Constante {
             """
                 Bienvenue dans le tutoriel de Santorini !
                 C’est ici que tu vas apprendre à devenir un pro de ce jeu.
-                Mais avant de devenir un pro commençons par voir les bases.
+                Mais avant d’en devenir un, commençons par voir les bases.
                 On y va ?""",
             """
                 Commençons à jouer !
                 Au début du jeu, chaque joueur doit placer ses deux pions où il veut sur le plateau.""",
-            "Tu es le joueur bleu, positionne par exemple tes 2 personnages sur les cases indiquées.",
+            "Tu es le joueur bleu, positionne par exemple tes 2 bâtisseurs sur les cases indiquées.",
             """
                C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !
                Voyons où il les place.""",
             """
-                A chaque tour, tu dois bouger un de tes pions.
-                Pour cela tu dois cliquer sur le personnage que tu veux déplacer, puis sélectionner la case sur laquelle tu veux aller.
-                """,
-            "C’est à toi de jouer, clic sur le personnage. ",
-            "Va sur la case de droite du personnage pour le déplacer.",
+                A chaque tour, tu dois déplacer un de tes pions.
+                Pour cela, tu dois cliquer sur le bâtisseur que tu veux déplacer, puis choisir une des cases adjacentes sur laquelle tu veux aller.""",
+            "C’est à toi de jouer, clique sur le personnage.",
+            "Clique sur la case de droite adjacente à ton bâtisseur pour le déplacer.",
             """
-               Super ! Tu dois ensuite construire un étage d’un bâtiment sur une des cases autour du personnage.
-               Seul le personnage que tu as déplacé précédemment peut construire un étage durant ce tour.
-               """,
+              Super ! Il faut ensuite construire l’étage d’un bâtiment sur une des cases autour du personnage.
+              Dans un même tour, seul le personnage que tu as déplacé précédemment peut construire un étage.""",
             "A toi de jouer, construis le rez-de-chaussée sur la case en dessous du personnage.",
             """
-                Génial! Tu as effectué tes deux actions, c’est donc la fin de ton tour.
-                C’est maintenant à ton adversaire de jouer.
-                """,
+               Génial! Tu as effectué tes deux actions, ton tour est maintenant fini.
+               C’est à ton adversaire de jouer.""",
             "C’est de nouveau ton tour, essaie de monter sur le premier étage que tu as construit au tour d’avant",
             """
-                Trop bien !
-                N’oublie pas, tu ne peux monter que d’un étage à la fois et descendre de n’importe quel étage.""",
+                Bien joué !
+                N’oublie pas, tu ne peux monter que d’un étage à la fois mais tu peux descendre de n’importe quel étage.""",
             """
                 Tu peux voir qu’il n'est pas possible de construire sur ta propre case.
                 Construit un étage sur la case en diagonale à droite.""",
             """
-                Génial !
-                Maintenant avançons un peu dans la partie !""",
+               Génial !
+               Maintenant avançons un peu dans la partie !""",
             """
-                Pour bloquer ton adversaire qui risque de gagner la partie en arrivant sur un bâtiment de 3 étages, tu peux construire un dôme sur une tour à 3 étages pour l’empêcher de monter dessus.
+                Le premier qui arrive sur un bâtiment de 3 étages gagne la partie, mais pour contrer ça tu peux construire un dôme sur le bâtiment, ce qui l’empêchera de monter dessus.
                 Mais méfie toi, car toi non plus tu ne peux plus monter dessus !""",
             """
                Attention, ton adversaire va gagner !
-               Pour éviter cela, place un dôme au-dessus de la tour. Il ne gagnera pas ce tour là !
-               """,
+               Pour éviter cela, place un dôme au-dessus de la tour. Il ne gagnera pas ce tour là !""",
             "C’est maintenant au tour de ton adversaire de jouer !",
             """
                 Tu as la possibilité de gagner, profites-en !
-                Déplace ton pion sur la tour à 3 étage.
-                """,
+                Déplace ton pion sur la tour à 3 étages.""",
             """
-                Félicitations, tu as gagné(e) !
+                C’est gagné !
                 Le tutoriel est fini, tu es maintenant un pro de ce jeu.
-                Amuse toi bien !
-                """
+                Amuse toi bien !"""
     };
 }
