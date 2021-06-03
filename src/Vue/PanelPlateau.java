@@ -2,6 +2,7 @@ package Vue;
 
 import static Modele.Constante.*;
 
+import IO.IO;
 import Modele.Jeu;
 
 import javax.imageio.ImageIO;
@@ -64,6 +65,11 @@ public class PanelPlateau extends JPanel implements Observer {
     public PanelPlateau(Dimension _taille_fenetre, String filename) {
         this(_taille_fenetre, 0, 0);
         jeu.charger(filename);
+    }
+
+    public PanelPlateau(Dimension _taille_fenetre, IO netUser) {
+        this(_taille_fenetre, 0, 0);
+        jeu.setNetUser(netUser);
     }
 
     /**

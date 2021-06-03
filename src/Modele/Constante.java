@@ -48,4 +48,6 @@ public class Constante {
     public static final double RATIO_BOUTON_PETIT = (double) 259/216;
 
     public static final String ECHAP_KEY = "echap";
+
+    public static final int PORT = 2121;
 }

@@ -69,6 +69,8 @@ class PanelMenu extends JPanel {
                 taille_petit_bouton.width, taille_bouton.height, this::actionFullscreen);
         bSon = new Bouton(CHEMIN_RESSOURCE + "/bouton/son_on.png", CHEMIN_RESSOURCE + "/bouton/son_on_hover.png",
                 taille_petit_bouton.width, taille_bouton.height, this::actionSon);
+        JButton bNet = new JButton("Net");
+        JButton bHost = new JButton("Host");
 
         /* Label */
         JPanel logoPanel = new JPanel();
@@ -88,7 +90,12 @@ class PanelMenu extends JPanel {
         /* Adding */
         bFullScreen.setAlignmentY(TOP_ALIGNMENT);
         bSon.setAlignmentY(TOP_ALIGNMENT);
+        bNet.setAlignmentY(TOP_ALIGNMENT);
+        bNet.addActionListener(this::actionNet);
+        bHost.addActionListener(this::actionHost);
         constraint.setBorder(BorderFactory.createEmptyBorder((int) (taille_bouton.height * 0.1), (int) (taille_bouton.height * 0.1), 0, 0));
+        constraint.add(bHost, BorderLayout.NORTH);
+        constraint.add(bNet, BorderLayout.NORTH);
         constraint.add(bSon, BorderLayout.NORTH);
         constraint.add(bFullScreen, BorderLayout.NORTH);
         floating_button.add(constraint, BorderLayout.EAST);
@@ -130,6 +137,7 @@ class PanelMenu extends JPanel {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("options");
     }
+
     public void actionCharger(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
 
@@ -153,6 +161,20 @@ class PanelMenu extends JPanel {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("tutoriel");
+    }
+
+    public void actionNet(ActionEvent e) {
+        son_bouton.joueSon(false);
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        NetworkPanel np = new NetworkPanel(taille_fenetre);
+        f.setPanel(np);
+    }
+
+    public void actionHost(ActionEvent e) {
+        son_bouton.joueSon(false);
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        HostPanel hp = new HostPanel(taille_fenetre);
+        f.setPanel(hp);
     }
 
     /**

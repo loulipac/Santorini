@@ -1,5 +1,6 @@
 package Modele;
 
+import IO.IO;
 import Vue.Observer;
 import Vue.LecteurSon;
 
@@ -32,6 +33,7 @@ public class Jeu {
 
     private Joueur[] joueurs;
     private int i_joueurs;
+    IO netUser;
 
     /**
      * Instantie une classe jeu.
@@ -103,6 +105,7 @@ public class Jeu {
             getJoueur_en_cours().addBatisseur(position);
             nombre_batisseurs++;
             verificationNbBatisseur();
+            if(netUser != null) netUser.sendAction(position);
         }
     }
 
@@ -110,6 +113,7 @@ public class Jeu {
     private void joueSelection(Point position) {
         batisseur_en_cours = choisirBatisseur(position);
         situation = batisseur_en_cours == null ? SELECTION : DEPLACEMENT;
+        sendMove(position);
     }
 
     private void joueDeplacement(Point position) {
@@ -120,6 +124,7 @@ public class Jeu {
 
             cmd = new CoupDeplacer(joueurs[i_joueurs], prevPos, batisseur_en_cours);
             situation = CONSTRUCTION;
+            sendMove(position);
         }
         victoireJoueur();
     }
@@ -130,6 +135,7 @@ public class Jeu {
             cmd = new CoupConstruire(joueurs[i_joueurs], position, batisseur_en_cours);
             finTour();
             situation = SELECTION;
+            sendMove(position);
         }
     }
 
@@ -233,6 +239,10 @@ public class Jeu {
             jeu_fini = true;
             observateur.miseAjour();
         }
+    }
+
+    private void sendMove(Point position) {
+        if(netUser != null && !netUser.isSet_local_change()) netUser.sendAction(position);
     }
 
     public void accelererIA(double index_acceleration) {
@@ -343,6 +353,15 @@ public class Jeu {
 
     public int getNb_tours() {
         return nb_tours;
+    }
+
+    public void setNetUser(IO netUser) {
+        this.netUser = netUser;
+        netUser.setJeu(this);
+    }
+
+    public IO getNetUser() {
+        return netUser;
     }
 
     @Override
