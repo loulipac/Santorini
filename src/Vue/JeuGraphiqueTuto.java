@@ -1,13 +1,11 @@
 package Vue;
 
-import Modele.Constante;
 import Modele.JeuTuto;
 import Patterns.Observateur;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
-import java.util.Arrays;
 
 import static Modele.Constante.*;
 
@@ -32,7 +30,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         this.jeu_tuto = j;
         this.num_etape = num_etape;
         this.o = o;
-        timer = new Timer(VITESSE_BASE , e -> animationEtapes());
+        timer = new Timer(VITESSE_BASE, e -> animationEtapes());
     }
 
     @Override
@@ -48,6 +46,9 @@ public class JeuGraphiqueTuto extends JeuGraphique {
                 dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
                 dessinerRectangle(drawable, new Point(3, 2), c_fond, c_bordure);
                 break;
+            case 3,9:
+                timerSet(true);
+                break;
             case 5:
                 dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
                 break;
@@ -56,9 +57,6 @@ public class JeuGraphiqueTuto extends JeuGraphique {
                 break;
             case 8, 10:
                 dessinerRectangle(drawable, new Point(2, 2), c_fond, c_bordure);
-                break;
-            case 9 :
-                timerSet(true);
                 break;
             case 12, 15:
                 dessinerRectangle(drawable, new Point(3, 3), c_fond, c_bordure);
@@ -70,23 +68,45 @@ public class JeuGraphiqueTuto extends JeuGraphique {
 
     public void animationEtapes() {
         switch (num_etape) {
-            case 9:
-                Point pos_batiment = new Point(3,3);
-                Point nouv_pos_J2 = new Point(4,3);
+            case 3 -> animationEtape3();
+            case 9 -> animationEtape9();
+            default -> timerSet(false);
+        }
+        repaint();
+    }
 
-                if(jeu_tuto.getPlateau().estBatisseur(nouv_pos_J2, jeu_tuto.getJ2())) {
-                    jeu_tuto.construireBatiment(pos_batiment,1);
-                    timerSet(false);
-                    o.miseAjour();
-                } else {
-                    jeu_tuto.getPlateau().enleverJoueur(new Point(4,2));
-                    jeu_tuto.getPlateau().ajouterJoueur(nouv_pos_J2, jeu_tuto.getJ2());
-                }
-                repaint();
-                break;
-            default:
-                timerSet(false);
-                break;
+    public void animationEtape3() {
+        Point pos_pion1 = new Point(1, 3);
+        Point pos_pion2 = new Point(4, 2);
+
+        if (    jeu_tuto.getPlateau().estBatisseur(pos_pion1, jeu_tuto.getJ2())
+            &&  jeu_tuto.getPlateau().estBatisseur(pos_pion2, jeu_tuto.getJ2())) {
+            timerSet(false);
+            o.miseAjour();
+
+        } else if (jeu_tuto.getPlateau().estBatisseur(pos_pion1, jeu_tuto.getJ2())) {
+            jeu_tuto.getPlateau().ajouterJoueur(pos_pion2, jeu_tuto.getJ2());
+
+        } else {
+            jeu_tuto.getPlateau().ajouterJoueur(pos_pion1, jeu_tuto.getJ2());
+        }
+    }
+
+    public void animationEtape9() {
+        Point pos_batiment = new Point(3, 3);
+        Point nouv_pos_J2 = new Point(4, 3);
+
+        if (    jeu_tuto.getPlateau().estBatisseur(nouv_pos_J2, jeu_tuto.getJ2())
+            &&  jeu_tuto.getPlateau().estRDC(pos_batiment)) {
+            timerSet(false);
+            o.miseAjour();
+
+        } else if (jeu_tuto.getPlateau().estBatisseur(nouv_pos_J2, jeu_tuto.getJ2())) {
+            jeu_tuto.construireBatiment(pos_batiment, 1);
+
+        } else {
+            jeu_tuto.getPlateau().enleverJoueur(new Point(4, 2));
+            jeu_tuto.getPlateau().ajouterJoueur(nouv_pos_J2, jeu_tuto.getJ2());
         }
     }
 
@@ -100,7 +120,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
 
 
     public void dessinerRectangle(Graphics2D drawable, Point position, Color c_fond, Color c_bordure) {
-        RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float(position.y * getTailleCase(), position.x * getTailleCase(), getTailleCase(), getTailleCase(), 10, 10);
+        RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float((float) position.y * getTailleCase(), (float) position.x * getTailleCase(), getTailleCase(), getTailleCase(), 10, 10);
 
         drawable.setColor(c_fond);
         drawable.fillRoundRect(position.y * getTailleCase(), position.x * getTailleCase(), getTailleCase(), getTailleCase(), 10, 10);
@@ -131,17 +151,5 @@ public class JeuGraphiqueTuto extends JeuGraphique {
 
     public JeuTuto getJeu_tuto() {
         return jeu_tuto;
-    }
-
-    public void setJeu_tuto(JeuTuto jeu_tuto) {
-        this.jeu_tuto = jeu_tuto;
-    }
-
-    public int getNum_etape() {
-        return num_etape;
-    }
-
-    public void setNum_etape(int num_etape) {
-        this.num_etape = num_etape;
     }
 }
