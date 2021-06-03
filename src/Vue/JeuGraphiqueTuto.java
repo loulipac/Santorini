@@ -50,7 +50,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
                 dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
                 dessinerRectangle(drawable, new Point(3, 2), c_fond, c_bordure);
                 break;
-            case 3,9,13:
+            case 3, 9, 13, 16:
                 timerSet(true);
                 break;
             case 5:
@@ -78,6 +78,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             case 3 -> animationEtape3();
             case 9 -> animationEtape9();
             case 13 -> animationEtape13();
+            case 16 -> animationEtape16();
             default -> timerSet(false);
         }
         repaint();
@@ -90,8 +91,8 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         Point pos_pion1 = new Point(1, 3);
         Point pos_pion2 = new Point(4, 2);
 
-        if (    jeu_tuto.getPlateau().estBatisseur(pos_pion1, jeu_tuto.getJ2())
-            &&  jeu_tuto.getPlateau().estBatisseur(pos_pion2, jeu_tuto.getJ2())) {
+        if (jeu_tuto.getPlateau().estBatisseur(pos_pion1, jeu_tuto.getJ2())
+                && jeu_tuto.getPlateau().estBatisseur(pos_pion2, jeu_tuto.getJ2())) {
             timerSet(false);
             o.miseAjour();
 
@@ -110,8 +111,8 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         Point pos_batiment = new Point(3, 3);
         Point nouv_pos_J2 = new Point(4, 3);
 
-        if (    jeu_tuto.getPlateau().estBatisseur(nouv_pos_J2, jeu_tuto.getJ2())
-            &&  jeu_tuto.getPlateau().estRDC(pos_batiment)) {
+        if (jeu_tuto.getPlateau().estBatisseur(nouv_pos_J2, jeu_tuto.getJ2())
+                && jeu_tuto.getPlateau().estRDC(pos_batiment)) {
             timerSet(false);
             o.miseAjour();
 
@@ -129,68 +130,122 @@ public class JeuGraphiqueTuto extends JeuGraphique {
      */
     public void animationEtape13() {
         Point[] pos_J2 = {
-                new Point(1,3),
-                new Point(1,2),
-                new Point(2,3),
-                new Point(2,2)
+                new Point(1, 3),
+                new Point(1, 2),
+                new Point(2, 3),
+                new Point(2, 2)
         };
 
         Point[] pos_J1 = {
-                new Point(2,2),
-                new Point(3,1),
-                new Point(2,1),
-                new Point(3,2),
-                new Point(4,2)
+                new Point(2, 2),
+                new Point(3, 1),
+                new Point(2, 1),
+                new Point(3, 2),
+                new Point(4, 2)
         };
 
         Point[] construction = {
-                new Point(2,3),
-                new Point(2,2),
-                new Point(1,2),
-                new Point(1,1),
-                new Point(3,3)
+                new Point(2, 3),
+                new Point(2, 2),
+                new Point(1, 2),
+                new Point(1, 1),
+                new Point(3, 3)
         };
 
         if (jeu_tuto.getPlateau().estBatisseur(pos_J1[4], jeu_tuto.getJ1())) {
             timerSet(false);
             o.miseAjour();
-        }
-        else if (jeu_tuto.getPlateau().estToit(construction[4])) {
+        } else if (jeu_tuto.getPlateau().estToit(construction[4])) {
             jeu_tuto.getPlateau().enleverJoueur(pos_J1[3]);
             jeu_tuto.getPlateau().ajouterJoueur(pos_J1[4], jeu_tuto.getJ1());
+        } else if (jeu_tuto.getPlateau().estBatisseur(pos_J2[3], jeu_tuto.getJ2())) {
+            jeu_tuto.getPlateau().ajouterToit(construction[4]);
+        } else if (jeu_tuto.getPlateau().estRDC(construction[3])) {
+            jeu_tuto.getPlateau().enleverJoueur(pos_J2[2]);
+            jeu_tuto.getPlateau().ajouterJoueur(pos_J2[3], jeu_tuto.getJ2());
+        } else if (jeu_tuto.getPlateau().estBatisseur(pos_J1[2], jeu_tuto.getJ1())) {
+            jeu_tuto.getPlateau().ajouterRDC(construction[3]);
+        } else if (jeu_tuto.getPlateau().estRDC(construction[2])) {
+            jeu_tuto.getPlateau().enleverJoueur(pos_J1[1]);
+            jeu_tuto.getPlateau().ajouterJoueur(pos_J1[2], jeu_tuto.getJ1());
+        } else if (jeu_tuto.getPlateau().estBatisseur(pos_J2[2], jeu_tuto.getJ2())) {
+            jeu_tuto.getPlateau().ajouterRDC(construction[2]);
+        } else if (jeu_tuto.getPlateau().estEtage(construction[1])) {
+            jeu_tuto.getPlateau().enleverJoueur(pos_J2[1]);
+            jeu_tuto.getPlateau().ajouterJoueur(pos_J2[2], jeu_tuto.getJ2());
+        } else if (jeu_tuto.getPlateau().estBatisseur(pos_J1[1], jeu_tuto.getJ1())) {
+            jeu_tuto.getPlateau().ajouterEtage(construction[1]);
+        } else if (jeu_tuto.getPlateau().estRDC(construction[0])) {
+            jeu_tuto.getPlateau().enleverJoueur(pos_J1[0]);
+            jeu_tuto.getPlateau().ajouterJoueur(pos_J1[1], jeu_tuto.getJ1());
+        } else if (jeu_tuto.getPlateau().estBatisseur(pos_J2[1], jeu_tuto.getJ2())) {
+            jeu_tuto.getPlateau().ajouterRDC(construction[0]);
+        } else {
+            jeu_tuto.getPlateau().enleverJoueur(pos_J2[0]);
+            jeu_tuto.getPlateau().ajouterJoueur(pos_J2[1], jeu_tuto.getJ2());
+        }
+    }
+
+    /**
+     * Effectue l'animation pour une étape donnée
+     */
+    public void animationEtape16() {
+        Point[] pos_J2 = {
+                new Point(2, 2),
+                new Point(1,3),
+                new Point(2,4),
+                new Point(1,4)
+        };
+
+        Point[] pos_J1 = {
+                new Point(2, 1),
+                new Point(1, 1),
+                new Point(1,2)
+        };
+
+        Point[] construction = {
+                new Point(1, 2),
+                new Point(2, 2),
+                new Point(2,3),
+                new Point(1,1),
+                new Point(1,3)
+        };
+
+        if (jeu_tuto.getPlateau().estRDC(construction[4])) {
+            timerSet(false);
+            o.miseAjour();
         }
         else if (jeu_tuto.getPlateau().estBatisseur(pos_J2[3], jeu_tuto.getJ2())) {
-            jeu_tuto.getPlateau().ajouterToit(construction[4]);
+            jeu_tuto.getPlateau().ajouterRDC(construction[4]);
         }
-        else if (jeu_tuto.getPlateau().estRDC(construction[3])) {
+        else if (jeu_tuto.getPlateau().estEtage(construction[3])) {
             jeu_tuto.getPlateau().enleverJoueur(pos_J2[2]);
             jeu_tuto.getPlateau().ajouterJoueur(pos_J2[3], jeu_tuto.getJ2());
         }
         else if (jeu_tuto.getPlateau().estBatisseur(pos_J1[2], jeu_tuto.getJ1())) {
-            jeu_tuto.getPlateau().ajouterRDC(construction[3]);
+            jeu_tuto.getPlateau().ajouterEtage(construction[3]);
         }
-        else if (jeu_tuto.getPlateau().estRDC(construction[2])) {
+        else if (jeu_tuto.getPlateau().estEtage(construction[2])) {
             jeu_tuto.getPlateau().enleverJoueur(pos_J1[1]);
             jeu_tuto.getPlateau().ajouterJoueur(pos_J1[2], jeu_tuto.getJ1());
         }
         else if (jeu_tuto.getPlateau().estBatisseur(pos_J2[2], jeu_tuto.getJ2())) {
-            jeu_tuto.getPlateau().ajouterRDC(construction[2]);
+            jeu_tuto.getPlateau().ajouterEtage(construction[2]);
         }
-        else if (jeu_tuto.getPlateau().estEtage(construction[1])) {
+        else if (jeu_tuto.getPlateau().estToit(construction[1])) {
             jeu_tuto.getPlateau().enleverJoueur(pos_J2[1]);
             jeu_tuto.getPlateau().ajouterJoueur(pos_J2[2], jeu_tuto.getJ2());
         }
         else if (jeu_tuto.getPlateau().estBatisseur(pos_J1[1], jeu_tuto.getJ1())) {
-            jeu_tuto.getPlateau().ajouterEtage(construction[1]);
+            jeu_tuto.getPlateau().ajouterToit(construction[1]);
         }
-        else if (jeu_tuto.getPlateau().estRDC(construction[0])) {
+        else if (jeu_tuto.getPlateau().estEtage(construction[0])) {
             jeu_tuto.getPlateau().enleverJoueur(pos_J1[0]);
             jeu_tuto.getPlateau().ajouterJoueur(pos_J1[1], jeu_tuto.getJ1());
         }
         else if (jeu_tuto.getPlateau().estBatisseur(pos_J2[1], jeu_tuto.getJ2())) {
-            jeu_tuto.getPlateau().ajouterRDC(construction[0]);
-        }
-        else {
+            jeu_tuto.getPlateau().ajouterEtage(construction[0]);
+        } else {
             jeu_tuto.getPlateau().enleverJoueur(pos_J2[0]);
             jeu_tuto.getPlateau().ajouterJoueur(pos_J2[1], jeu_tuto.getJ2());
         }
@@ -213,9 +268,9 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     /**
      * dessine un rectangle à une position donnée
      *
-     * @param drawable le Graphics2D
-     * @param position la position où dessiner le rectangle
-     * @param c_fond la couleur de fond du rectangle
+     * @param drawable  le Graphics2D
+     * @param position  la position où dessiner le rectangle
+     * @param c_fond    la couleur de fond du rectangle
      * @param c_bordure la couleur de la bordure du rectangle
      */
     public void dessinerRectangle(Graphics2D drawable, Point position, Color c_fond, Color c_bordure) {
@@ -232,9 +287,9 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     /**
      * Créer une couleur RGBA
      *
-     * @param r le taux de rouge
-     * @param g le taux de rouge
-     * @param b le taux de rouge
+     * @param r     le taux de rouge
+     * @param g     le taux de rouge
+     * @param b     le taux de rouge
      * @param alpha le niveau de transparence (entre 0 et 1, 0 = invisible, 1 = visible)
      */
     public Color creerCouleur(int r, int g, int b, float alpha) {
