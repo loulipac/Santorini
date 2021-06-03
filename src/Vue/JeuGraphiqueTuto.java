@@ -41,13 +41,16 @@ public class JeuGraphiqueTuto extends JeuGraphique {
                 dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
                 dessinerRectangle(drawable, new Point(3, 2), c_fond, c_bordure);
                 break;
-            case 5 :
+            case 5:
                 dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
                 break;
             case 6:
                 dessinerRectangle(drawable, new Point(1, 2), c_fond, c_bordure);
                 break;
             case 8:
+                dessinerRectangle(drawable, new Point(2, 2), c_fond, c_bordure);
+                break;
+            case 10:
                 dessinerRectangle(drawable, new Point(2, 2), c_fond, c_bordure);
                 break;
             case 12:

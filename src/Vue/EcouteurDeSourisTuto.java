@@ -37,6 +37,7 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
             case 5 -> actionEtape(5,pos_souris,1);
             case 6 -> actionEtape(6,pos_souris,1);
             case 8 -> actionEtape(8,pos_souris,1);
+            case 10 -> actionEtape(10, pos_souris, 1);
             case 12 -> actionEtape(12,pos_souris,1);
         }
         this.pt.jg.repaint();
