@@ -1,12 +1,12 @@
 import Modele.Jeu;
-import Vue.Observer;
+import Patterns.Observateur;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
 
-public class TestHistorique implements Observer {
+public class TestHistorique implements Observateur {
     private static Point[] moves = {
         new Point(1,2),
         new Point(2,1),
@@ -83,5 +83,7 @@ public class TestHistorique implements Observer {
     }
 
     @Override
-    public void miseAjour() { }
+    public void miseAjour() {
+
+    }
 }

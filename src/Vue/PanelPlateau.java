@@ -5,6 +5,7 @@ import static Modele.Constante.*;
 import Modele.ConfigurationPartie;
 import Reseau.Reseau;
 import Modele.Jeu;
+import Patterns.Observateur;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Classe générant la fenêtre de jeu.
  */
-public class PanelPlateau extends JPanel implements Observer {
+public class PanelPlateau extends JPanel implements Observateur {
 
     private Jeu jeu;
     private JeuGraphique jg;

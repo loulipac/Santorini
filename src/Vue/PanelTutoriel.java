@@ -4,6 +4,7 @@ import static Modele.Constante.*;
 
 import Modele.Constante;
 import Modele.JeuTuto;
+import Patterns.Observateur;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -16,7 +17,7 @@ import java.io.IOException;
 /**
  * Classe générant la fenêtre Tutoriel.
  */
-public class PanelTutoriel extends JPanel implements Observer {
+public class PanelTutoriel extends JPanel implements Observateur {
     private final LecteurSon son_bouton;
     JeuTuto jeu_tuto;
     JeuGraphiqueTuto jg;

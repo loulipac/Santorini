@@ -1,7 +1,7 @@
 package Modele;
 
+import Patterns.Observateur;
 import Reseau.Reseau;
-import Vue.Observer;
 import Vue.LecteurSon;
 
 import java.awt.*;
@@ -22,7 +22,7 @@ public class Jeu {
     private int situation;
     private int nombre_batisseurs;
     private Point batisseur_en_cours;
-    private Observer observateur;
+    private Observateur observateur;
     private boolean jeu_fini;
     private Historique histo;
     private Commande cmd;
@@ -42,7 +42,7 @@ public class Jeu {
      *
      * @param o observateur
      */
-    public Jeu(Observer o, ConfigurationPartie config) {
+    public Jeu(Observateur o, ConfigurationPartie config) {
         joueurs = new Joueur[2];
         vitesse_ia = 1;
         configurationPartie = config;
@@ -72,7 +72,7 @@ public class Jeu {
         iaJoue();
     }
 
-    public Jeu(Observer o) {
+    public Jeu(Observateur o) {
         this(o, new ConfigurationPartie(0, 0));
     }
 
