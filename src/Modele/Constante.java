@@ -93,7 +93,7 @@ public class Constante {
                Pour éviter cela, place un dôme au-dessus de la tour.""",
             """
             Il ne gagnera pas ce tour là !
-            C’est maintenant au tour de ton adversaire de jouer !""",
+            Avançons encore dans la partie.""",
             """
                 Tu as la possibilité de gagner, profites-en !
                 Déplace ton pion sur la tour à 3 étages.""",
