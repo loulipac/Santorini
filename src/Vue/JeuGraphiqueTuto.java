@@ -33,6 +33,11 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         timer = new Timer(VITESSE_BASE, e -> animationEtapes());
     }
 
+    /**
+     * Affiche le JeuTuto, affiche également par dessus les zones cliquables, et démarre les animations suivant le numéro d'étape
+     *
+     * @param g le Graphics
+     */
     @Override
     public void paintComponent(Graphics g) {
         Graphics2D drawable = (Graphics2D) g;
@@ -42,7 +47,6 @@ public class JeuGraphiqueTuto extends JeuGraphique {
 
         switch (num_etape) {
             case 2:
-                // draw the rectangle here
                 dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
                 dessinerRectangle(drawable, new Point(3, 2), c_fond, c_bordure);
                 break;
@@ -66,6 +70,9 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         }
     }
 
+    /**
+     * Redirige vers des sous-fonction d'animation en fonction du numéro d'étape
+     */
     public void animationEtapes() {
         switch (num_etape) {
             case 3 -> animationEtape3();
@@ -75,6 +82,9 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         repaint();
     }
 
+    /**
+     * Effectue l'animation pour une étape donnée
+     */
     public void animationEtape3() {
         Point pos_pion1 = new Point(1, 3);
         Point pos_pion2 = new Point(4, 2);
@@ -92,6 +102,9 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         }
     }
 
+    /**
+     * Effectue l'animation pour une étape donnée
+     */
     public void animationEtape9() {
         Point pos_batiment = new Point(3, 3);
         Point nouv_pos_J2 = new Point(4, 3);
@@ -110,6 +123,11 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         }
     }
 
+    /**
+     * Modifie le mode du timer (activé ou désactivé)
+     *
+     * @param statut un booléen qui active ou désactive le timer
+     */
     public void timerSet(boolean statut) {
         if (statut) {
             timer.start();
@@ -118,7 +136,14 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         }
     }
 
-
+    /**
+     * dessine un rectangle à une position donnée
+     *
+     * @param drawable le Graphics2D
+     * @param position la position où dessiner le rectangle
+     * @param c_fond la couleur de fond du rectangle
+     * @param c_bordure la couleur de la bordure du rectangle
+     */
     public void dessinerRectangle(Graphics2D drawable, Point position, Color c_fond, Color c_bordure) {
         RoundRectangle2D roundedRectangle = new RoundRectangle2D.Float((float) position.y * getTailleCase(), (float) position.x * getTailleCase(), getTailleCase(), getTailleCase(), 10, 10);
 
@@ -130,6 +155,14 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         drawable.draw(roundedRectangle);
     }
 
+    /**
+     * Créer une couleur RGBA
+     *
+     * @param r le taux de rouge
+     * @param g le taux de rouge
+     * @param b le taux de rouge
+     * @param alpha le niveau de transparence (entre 0 et 1, 0 = invisible, 1 = visible)
+     */
     public Color creerCouleur(int r, int g, int b, float alpha) {
         return new Color(
                 (float) r / 255,
@@ -139,16 +172,27 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         );
     }
 
+    /**
+     * Réinitialise la valeur du clic précédent
+     */
     public void viderClic_prec() {
         clic_prec = new Point(PLATEAU_LIGNES, PLATEAU_COLONNES);
     }
 
+    /**
+     * Charge une étape donnée
+     *
+     * @param num_etape le numéro d'étape
+     */
     public void chargerEtape(int num_etape) {
         this.num_etape = num_etape;
         jeu_tuto.chargerEtape(num_etape);
         repaint();
     }
 
+    /**
+     * Getter de jeu_tuto
+     */
     public JeuTuto getJeu_tuto() {
         return jeu_tuto;
     }
