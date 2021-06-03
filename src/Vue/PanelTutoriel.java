@@ -148,7 +148,7 @@ public class PanelTutoriel extends JPanel implements Observateur {
             Dimension size = new Dimension((int) (taille_fenetre.width * 0.2), (int) (taille_fenetre.height * taille_h));
 
             jeu_tuto = new JeuTuto(PanelTutoriel.this);
-            jg = new JeuGraphiqueTuto(jeu_tuto, num_etape);
+            jg = new JeuGraphiqueTuto(jeu_tuto, num_etape, PanelTutoriel.this);
 //            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu_tuto, jg));
             jg.addMouseListener(new EcouteurDeSourisTuto(PanelTutoriel.this));
 
@@ -424,7 +424,10 @@ public class PanelTutoriel extends JPanel implements Observateur {
      */
     @Override
     public void miseAjour() {
-        repaint();
+        num_etape++;
+        jg.chargerEtape(num_etape);
+        panel_jeu.panel_gauche.panel_info.changerTexte(num_etape);
+
     }
 
 

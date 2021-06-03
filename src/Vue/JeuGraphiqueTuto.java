@@ -2,7 +2,9 @@ package Vue;
 
 import Modele.Constante;
 import Modele.JeuTuto;
+import Patterns.Observateur;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.util.Arrays;
@@ -15,6 +17,9 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     Color c_fond = creerCouleur(67, 204, 212, 0.5f);
     Color c_bordure = creerCouleur(80, 186, 245, 1f);
     Point clic_prec;
+    Timer timer;
+    static final int VITESSE_BASE = 1000;
+    Observateur o;
 
     /**
      * Constructeur de JeuGraphiqueTuto.
@@ -22,10 +27,12 @@ public class JeuGraphiqueTuto extends JeuGraphique {
      * @param j         un JeuTuto
      * @param num_etape le numéro de l'étape
      */
-    public JeuGraphiqueTuto(JeuTuto j, int num_etape) {
+    public JeuGraphiqueTuto(JeuTuto j, int num_etape, Observateur o) {
         super(j);
         this.jeu_tuto = j;
         this.num_etape = num_etape;
+        this.o = o;
+        timer = new Timer(VITESSE_BASE , e -> animationEtapes());
     }
 
     @Override
@@ -50,11 +57,44 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             case 8, 10:
                 dessinerRectangle(drawable, new Point(2, 2), c_fond, c_bordure);
                 break;
+            case 9 :
+                timerSet(true);
+                break;
             case 12, 15:
                 dessinerRectangle(drawable, new Point(3, 3), c_fond, c_bordure);
                 break;
             default:
                 break;
+        }
+    }
+
+    public void animationEtapes() {
+        switch (num_etape) {
+            case 9:
+                Point pos_batiment = new Point(3,3);
+                Point nouv_pos_J2 = new Point(4,3);
+
+                if(jeu_tuto.getPlateau().estBatisseur(nouv_pos_J2, jeu_tuto.getJ2())) {
+                    jeu_tuto.construireBatiment(pos_batiment,1);
+                    timerSet(false);
+                    o.miseAjour();
+                } else {
+                    jeu_tuto.getPlateau().enleverJoueur(new Point(4,2));
+                    jeu_tuto.getPlateau().ajouterJoueur(nouv_pos_J2, jeu_tuto.getJ2());
+                }
+                repaint();
+                break;
+            default:
+                timerSet(false);
+                break;
+        }
+    }
+
+    public void timerSet(boolean statut) {
+        if (statut) {
+            timer.start();
+        } else {
+            timer.stop();
         }
     }
 
