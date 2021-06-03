@@ -89,7 +89,7 @@ public class PanelTutoriel extends JPanel implements Observateur {
     }
 
     public void actionBoutonSuivant(ActionEvent e) {
-        son_bouton.joueSon(false);
+//        son_bouton.joueSon(false);
         this.num_etape+=1;
         if(this.num_etape < Constante.TEXTE_ETAPES.length) {
             changerEtape();
@@ -100,7 +100,7 @@ public class PanelTutoriel extends JPanel implements Observateur {
     }
 
     public void actionBoutonPrecedent(ActionEvent e) {
-        son_bouton.joueSon(false);
+//        son_bouton.joueSon(false);
         this.num_etape-=1;
         if(this.num_etape >= 0) {
             changerEtape();

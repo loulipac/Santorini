@@ -90,8 +90,10 @@ public class Constante {
             "Le premier qui arrive sur un bâtiment de 3 étages gagne la partie, mais pour contrer ça tu peux construire un dôme sur le bâtiment, ce qui empêche de monter dessus.",
             """
                Attention, ton adversaire va gagner !
-               Pour éviter cela, place un dôme au-dessus de la tour. Il ne gagnera pas ce tour là !""",
-            "C’est maintenant au tour de ton adversaire de jouer !",
+               Pour éviter cela, place un dôme au-dessus de la tour.""",
+            """
+            Il ne gagnera pas ce tour là !
+            C’est maintenant au tour de ton adversaire de jouer !""",
             """
                 Tu as la possibilité de gagner, profites-en !
                 Déplace ton pion sur la tour à 3 étages.""",
