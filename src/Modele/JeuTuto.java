@@ -2,9 +2,7 @@ package Modele;
 
 import Patterns.Observateur;
 
-import javax.swing.*;
 import java.awt.*;
-
 import static Modele.Constante.*;
 
 public class JeuTuto extends Jeu {
@@ -20,14 +18,11 @@ public class JeuTuto extends Jeu {
         this.clic_etapes = new int[Constante.TEXTE_ETAPES.length];
     }
 
-    public int getNum_etape() {
-        return num_etape;
-    }
-
-    public void setNum_etape(int etape) {
-        this.num_etape = etape;
-    }
-
+    /**
+     * Modifie le contenu du plateau du tutoriel pour une étape donnée
+     *
+     * @param etape le numéro d'étape
+     */
     public void chargerEtape(int etape) {
         this.num_etape = etape;
         this.getPlateau().RAZ();
@@ -110,7 +105,12 @@ public class JeuTuto extends Jeu {
         }
     }
 
-
+    /**
+     * Redirige vers des sous-fonction en fonction du numéro d'étape
+     *
+     * @param num_etape le numéro d'étape
+     * @param position la case cliquée par la souris
+     */
     public void joueEtape(int num_etape, Point position) {
         switch (num_etape) {
             case 2 -> joueEtape2(position);
@@ -120,12 +120,15 @@ public class JeuTuto extends Jeu {
             case 10 -> joueEtape10(position);
             case 12 -> joueEtape12(position);
             case 15 -> joueEtape15(position);
-            default -> {
-                break;
-            }
+            default -> {}
         }
     }
 
+    /**
+     * Modifie le plateau en fonction de la position des clics de la souris
+     *
+     * @param position la case cliquée par la souris
+     */
     public void joueEtape2(Point position) {
         if (!position.equals(clic_prec) && position.equals(new Point(1, 1))) {
             clic_prec = position;
@@ -138,6 +141,9 @@ public class JeuTuto extends Jeu {
         }
     }
 
+    /**
+     * @see JeuTuto#joueEtape2
+     */
     public void joueEtape5(Point position) {
         if (position.equals(new Point(1, 1))) {
             this.getPlateau().ajouterJoueur(position, this.getJ1());
@@ -145,6 +151,9 @@ public class JeuTuto extends Jeu {
         }
     }
 
+    /**
+     * @see JeuTuto#joueEtape2
+     */
     public void joueEtape6(Point position) {
         if (position.equals(new Point(1, 2))) {
             this.getPlateau().ajouterJoueur(position, this.getJ1());
@@ -152,6 +161,9 @@ public class JeuTuto extends Jeu {
         }
     }
 
+    /**
+     * @see JeuTuto#joueEtape2
+     */
     public void joueEtape8(Point position) {
         if (position.equals(new Point(2, 2))) {
             this.getPlateau().ajouterJoueur(position, this.getJ1());
@@ -159,6 +171,9 @@ public class JeuTuto extends Jeu {
         }
     }
 
+    /**
+     * @see JeuTuto#joueEtape2
+     */
     public void joueEtape10(Point position) {
         if (position.equals(new Point(2, 2))) {
             this.getPlateau().ajouterJoueur(position, this.getJ1());
@@ -166,6 +181,9 @@ public class JeuTuto extends Jeu {
         }
     }
 
+    /**
+     * @see JeuTuto#joueEtape2
+     */
     public void joueEtape12(Point position) {
         if (position.equals(new Point(3, 3))) {
             construireBatiment(position, 1);
@@ -173,6 +191,9 @@ public class JeuTuto extends Jeu {
         }
     }
 
+    /**
+     * @see JeuTuto#joueEtape2
+     */
     public void joueEtape15(Point position) {
         if (position.equals(new Point(3, 3))) {
             construireBatiment(position, 3);
@@ -180,25 +201,34 @@ public class JeuTuto extends Jeu {
         }
     }
 
+    /**
+     * Construit un bâtiment de X étage(s) sur le plateau à une position donnée
+     *
+     * @param position la case cliquée par la souris
+     * @param num_etage le nombre d'étage à construire
+     */
     public void construireBatiment(Point position, int num_etage) {
         for (int i = 0; i < num_etage; i++) {
             this.getPlateau().ameliorerBatiment(position);
         }
     }
 
-    public int[] getEtapes() {
-        return clic_etapes;
-    }
-
-    public void setEtapes(int[] etape) {
-        this.clic_etapes = etape;
-    }
-
-    public int getEtape(int num_etape) {
+    /**
+     * Getter de clic_etapes pour une étape donnée
+     *
+     * @param num_etape le numéro d'étape
+     */
+    public int getClic_etape(int num_etape) {
         return clic_etapes[num_etape];
     }
 
-    public void setEtape(int num_etape, int valeur) {
+    /**
+     * Setter de clic_etapes pour une étape donnée
+     *
+     * @param num_etape le numéro d'étape
+     * @param valeur la valeur pour une étape donnée
+     */
+    public void setClic_etape(int num_etape, int valeur) {
         this.clic_etapes[num_etape] = valeur;
     }
 

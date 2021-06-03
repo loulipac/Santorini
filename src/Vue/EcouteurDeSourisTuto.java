@@ -49,9 +49,9 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
 
     public void actionEtape(int num_etape, Point pos_souris, int nb_clic) {
         pt.getJg().getJeu_tuto().joueEtape(num_etape,pos_souris);
-        if (pt.getJg().getJeu_tuto().getEtape(num_etape) >= nb_clic) {
+        if (pt.getJg().getJeu_tuto().getClic_etape(num_etape) >= nb_clic) {
             // On vide le tableau et la variable clic_prec
-            pt.getJg().getJeu_tuto().setEtape(num_etape,0);
+            pt.getJg().getJeu_tuto().setClic_etape(num_etape,0);
             pt.getJg().viderClic_prec();
 
             // Passe à l'étape suivante
