@@ -14,12 +14,11 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
     /**
      * Constructeur de EcouteurDeSourisTuto. Utilise un PanelTutoriel.
      *
-     * @param pt
+     * @param pt le PanelTutoriel
      */
     public EcouteurDeSourisTuto(PanelTutoriel pt ) {
         this.pt = pt;
     }
-
 
     /**
      * Ecouteur de souris personnalisé pour le tutoriel, permettant de récupérer les clics pour chacunes des étapes
@@ -47,9 +46,17 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
         this.pt.jg.repaint();
     }
 
+    /**
+     * Compare le nombre de clics validés et le nombre de clics validés nécessaires pour chaque étape, change d'étape
+     *
+     * @param num_etape le numéro d'étape
+     * @param pos_souris la position de la souris
+     * @param nb_clic le nombre de clics validés nécessaire pour passer à l'étape suivante
+     */
     public void actionEtape(int num_etape, Point pos_souris, int nb_clic) {
         pt.getJg().getJeu_tuto().joueEtape(num_etape,pos_souris);
         if (pt.getJg().getJeu_tuto().getClic_etape(num_etape) >= nb_clic) {
+
             // On vide le tableau et la variable clic_prec
             pt.getJg().getJeu_tuto().setClic_etape(num_etape,0);
             pt.getJg().viderClic_prec();
