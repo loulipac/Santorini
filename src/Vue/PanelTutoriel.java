@@ -89,7 +89,6 @@ public class PanelTutoriel extends JPanel implements Observateur {
     }
 
     public void actionBoutonSuivant(ActionEvent e) {
-//        son_bouton.joueSon(false);
         this.num_etape+=1;
         if(this.num_etape < Constante.TEXTE_ETAPES.length) {
             changerEtape();
@@ -100,7 +99,6 @@ public class PanelTutoriel extends JPanel implements Observateur {
     }
 
     public void actionBoutonPrecedent(ActionEvent e) {
-//        son_bouton.joueSon(false);
         this.num_etape-=1;
         if(this.num_etape >= 0) {
             changerEtape();
@@ -420,7 +418,7 @@ public class PanelTutoriel extends JPanel implements Observateur {
     }
 
     /**
-     * Modifie le texte qui affiche quel joueur doit jouer.
+     * Modifie le numéro d'étape et met à jour le jeu et le texte
      */
     @Override
     public void miseAjour() {
@@ -430,13 +428,8 @@ public class PanelTutoriel extends JPanel implements Observateur {
 
     }
 
-
     public JeuGraphiqueTuto getJg() {
         return jg;
-    }
-
-    public void setJg(JeuGraphiqueTuto jg) {
-        this.jg = jg;
     }
 
     public int getNum_etape() {

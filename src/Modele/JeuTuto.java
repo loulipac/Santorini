@@ -36,7 +36,11 @@ public class JeuTuto extends Jeu {
         //
 
         switch (etape) {
-            case 3, 4, 5, 6:
+            case 3 :
+                this.getPlateau().ajouterJoueur(new Point(1, 1), this.getJ1());
+                this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
+                break;
+            case 4, 5, 6:
                 this.getPlateau().ajouterJoueur(new Point(1, 1), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ2());
