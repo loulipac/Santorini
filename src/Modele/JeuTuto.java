@@ -2,6 +2,7 @@ package Modele;
 
 import Patterns.Observateur;
 
+import javax.swing.*;
 import java.awt.*;
 
 import static Modele.Constante.*;
@@ -17,7 +18,6 @@ public class JeuTuto extends Jeu {
         chargerEtape(num_etape);
         this.clic_prec = new Point(PLATEAU_LIGNES, PLATEAU_COLONNES);
         this.clic_etapes = new int[Constante.TEXTE_ETAPES.length];
-
     }
 
     public int getNum_etape() {
@@ -29,6 +29,7 @@ public class JeuTuto extends Jeu {
     }
 
     public void chargerEtape(int etape) {
+        this.num_etape = etape;
         this.getPlateau().RAZ();
         //
         // Attention ! C'est la position AU DEBUT du tour
@@ -47,7 +48,14 @@ public class JeuTuto extends Jeu {
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ2());
                 this.getPlateau().ajouterJoueur(new Point(1, 3), this.getJ2());
                 break;
-            case 9, 10:
+            case 9:
+                this.getPlateau().ajouterJoueur(new Point(1, 2), this.getJ1());
+                this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
+                this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ2());
+                this.getPlateau().ajouterJoueur(new Point(1, 3), this.getJ2());
+                construireBatiment(new Point(2,2),1);
+                break;
+            case 10:
                 this.getPlateau().ajouterJoueur(new Point(1, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
@@ -168,7 +176,7 @@ public class JeuTuto extends Jeu {
         }
     }
 
-    private void construireBatiment(Point position, int num_etage) {
+    public void construireBatiment(Point position, int num_etage) {
         for (int i = 0; i < num_etage; i++) {
             this.getPlateau().ameliorerBatiment(position);
         }
