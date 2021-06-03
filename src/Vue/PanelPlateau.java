@@ -3,10 +3,10 @@ package Vue;
 import static Modele.Constante.*;
 
 import Modele.Jeu;
+import Patterns.Observateur;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Classe générant la fenêtre de jeu.
  */
-public class PanelPlateau extends JPanel implements Observer {
+public class PanelPlateau extends JPanel implements Observateur {
 
     private Jeu jeu;
     private JeuGraphique jg;
@@ -91,6 +91,7 @@ public class PanelPlateau extends JPanel implements Observer {
         main_panel.add(pp, JLayeredPane.POPUP_LAYER);
         add(main_panel);
     }
+
 
     private class ActionEchap extends AbstractAction {
         public ActionEchap() {
