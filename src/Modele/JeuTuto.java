@@ -100,6 +100,30 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2,3),1);
                 construireBatiment(new Point(3,3),4);
                 break;
+            case 17:
+                this.getPlateau().ajouterJoueur(new Point(1, 2), this.getJ1());
+                this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
+                this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
+                this.getPlateau().ajouterJoueur(new Point(1, 4), this.getJ2());
+                construireBatiment(new Point(1,1),2);
+                construireBatiment(new Point(1,2),2);
+                construireBatiment(new Point(1,3),1);
+                construireBatiment(new Point(2,2),3);
+                construireBatiment(new Point(2,3),2);
+                construireBatiment(new Point(3,3),4);
+                break;
+            case 18:
+                this.getPlateau().ajouterJoueur(new Point(2, 2), this.getJ1());
+                this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
+                this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
+                this.getPlateau().ajouterJoueur(new Point(1, 4), this.getJ2());
+                construireBatiment(new Point(1,1),2);
+                construireBatiment(new Point(1,2),2);
+                construireBatiment(new Point(1,3),1);
+                construireBatiment(new Point(2,2),3);
+                construireBatiment(new Point(2,3),2);
+                construireBatiment(new Point(3,3),4);
+                break;
             default:
                 break;
         }
@@ -120,6 +144,7 @@ public class JeuTuto extends Jeu {
             case 10 -> joueEtape10(position);
             case 12 -> joueEtape12(position);
             case 15 -> joueEtape15(position);
+            case 17 -> joueEtape17(position);
             default -> {}
         }
     }
@@ -198,6 +223,15 @@ public class JeuTuto extends Jeu {
         if (position.equals(new Point(3, 3))) {
             construireBatiment(position, 3);
             clic_etapes[15]++;
+        }
+    }
+
+    /**
+     * @see JeuTuto#joueEtape2
+     */
+    public void joueEtape17(Point position) {
+        if (position.equals(new Point(2, 2))) {
+            clic_etapes[17]++;
         }
     }
 
