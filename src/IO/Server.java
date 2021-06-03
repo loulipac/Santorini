@@ -37,11 +37,18 @@ public class Server extends IO {
     }
 
     public String getIPAddress() {
-        String ip = "";
+        String ip = "Local : ";
+        try (final DatagramSocket socket = new DatagramSocket()) {
+            socket.connect(InetAddress.getByName("8.8.8.8"), 10002);
+            ip += socket.getLocalAddress().getHostAddress();
+        } catch (SocketException | UnknownHostException e) {
+            e.printStackTrace();
+        }
+        ip += " Public : ";
         try {
             URL whatismyip = new URL("http://checkip.amazonaws.com");
             BufferedReader in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
-            ip = in.readLine();
+            ip += in.readLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
