@@ -1,5 +1,6 @@
 package Modele;
 
+import IO.IO;
 import Patterns.Observateur;
 import Vue.LecteurSon;
 
@@ -28,9 +29,11 @@ public class Jeu {
     private Joueur gagnant;
     private boolean ia_statut;
     private int vitesse_ia;
+    private int nb_tours;
 
     private Joueur[] joueurs;
     private int i_joueurs;
+    IO netUser;
 
     /**
      * Instantie une classe jeu.
@@ -51,6 +54,7 @@ public class Jeu {
         jeu_fini = false;
         histo = new Historique(this);
         gagnant = null;
+        nb_tours = 0;
 
         if (ia2_mode != 0) {
             joueurs[0] = new JoueurIA(this, JOUEUR1, setIA(ia1_mode), vitesse_ia);
@@ -83,6 +87,7 @@ public class Jeu {
      */
     public void jouer(Point position) {
         cmd = null;
+        situation = plateau.estBatisseur(position,getJoueur_en_cours()) && situation == DEPLACEMENT ? SELECTION: situation;
         switch (situation) {
             case PLACEMENT -> jouePlacement(position);
             case SELECTION -> joueSelection(position);
@@ -97,6 +102,7 @@ public class Jeu {
         if (plateau.estLibre(position)) {
             cmd = new CoupDeplacer(joueurs[i_joueurs], null, position);
             plateau.ajouterJoueur(position, joueurs[i_joueurs]);
+            if(netUser != null) netUser.envoieCoup(position);
             getJoueur_en_cours().addBatisseur(position);
             nombre_batisseurs++;
             verificationNbBatisseur();
@@ -107,6 +113,7 @@ public class Jeu {
     private void joueSelection(Point position) {
         batisseur_en_cours = choisirBatisseur(position);
         situation = batisseur_en_cours == null ? SELECTION : DEPLACEMENT;
+        sendMove(position);
     }
 
     private void joueDeplacement(Point position) {
@@ -117,6 +124,7 @@ public class Jeu {
 
             cmd = new CoupDeplacer(joueurs[i_joueurs], prevPos, batisseur_en_cours);
             situation = CONSTRUCTION;
+            sendMove(position);
         }
         victoireJoueur();
     }
@@ -127,6 +135,7 @@ public class Jeu {
             cmd = new CoupConstruire(joueurs[i_joueurs], position, batisseur_en_cours);
             finTour();
             situation = SELECTION;
+            sendMove(position);
         }
     }
 
@@ -180,6 +189,7 @@ public class Jeu {
      * Fini le tour pour le joueur en cours.
      */
     public void finTour() {
+        nb_tours++;
         changerJoueur();
         batisseur_en_cours = null;
         MAJObservateur();
@@ -229,6 +239,10 @@ public class Jeu {
             jeu_fini = true;
             observateur.miseAjour();
         }
+    }
+
+    private void sendMove(Point position) {
+        if(netUser != null && !netUser.estEnModificationsLocal()) netUser.envoieCoup(position);
     }
 
     public void accelererIA(double index_acceleration) {
@@ -335,6 +349,19 @@ public class Jeu {
 
     public Joueur getJ2() {
         return joueurs[1];
+    }
+
+    public int getNb_tours() {
+        return nb_tours;
+    }
+
+    public void setNetUser(IO netUser) {
+        this.netUser = netUser;
+        netUser.setJeu(this);
+    }
+
+    public IO getNetUser() {
+        return netUser;
     }
 
     @Override

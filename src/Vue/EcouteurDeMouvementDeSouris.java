@@ -1,7 +1,9 @@
 package Vue;
 
 import static Modele.Constante.*;
+
 import Modele.Jeu;
+import Modele.JoueurIA;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -13,7 +15,8 @@ import java.awt.event.MouseMotionListener;
 public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     JeuGraphique jg;
-    Jeu j;
+    Jeu jeu;
+    PanelPlateau pp;
     int largeur_plateau;
     int hauteur_plateau;
     Cursor c_pas_bleu;
@@ -28,17 +31,21 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     Cursor c_defaut_gris;
     Cursor c_defaut_rouge;
     Cursor c_defaut_bleu;
+    Cursor c_hand_rouge;
+    Cursor c_hand_bleu;
+    Cursor c_hand_gris;
+    Cursor c_hourglass;
 
     static final Point CENTRE = new Point(16, 16);
     static final Point HAUT_GAUCHE = new Point(0, 0);
 
     /**
      * Constructeur qui génère un ensemble de curseur.
-     *
      */
-    public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg) {
+    public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg, PanelPlateau pp) {
         this.jg = jg;
-        this.j = j;
+        this.jeu = j;
+        this.pp = pp;
         c_defaut_gris = creerCurseurGenerique("defaut_gris", HAUT_GAUCHE);
         c_defaut_rouge = creerCurseurGenerique("defaut_rouge", HAUT_GAUCHE);
         c_defaut_bleu = creerCurseurGenerique("defaut_bleu", HAUT_GAUCHE);
@@ -51,6 +58,10 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         c_drapeau_bleu = creerCurseurGenerique("drapeau_bleu", CENTRE);
         c_drapeau_rouge = creerCurseurGenerique("drapeau_rouge", CENTRE);
         c_drapeau_gris = creerCurseurGenerique("drapeau_gris", CENTRE);
+        c_hand_rouge = creerCurseurGenerique("hand_rouge", CENTRE);
+        c_hand_bleu = creerCurseurGenerique("hand_bleu", CENTRE);
+        c_hand_gris = creerCurseurGenerique("hand_gris", CENTRE);
+        c_hourglass = creerCurseurGenerique("hourglass", CENTRE);
     }
 
     /**
@@ -62,7 +73,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         try {
             Image img = toolkit.getImage(CHEMIN_RESSOURCE + "/curseur/" + fichier_nom + ".png");
-            return toolkit.createCustomCursor(img.getScaledInstance(32,32, Image.SCALE_SMOOTH), decallage, "c_" + fichier_nom);
+            return toolkit.createCustomCursor(img.getScaledInstance(32, 32, Image.SCALE_SMOOTH), decallage, "c_" + fichier_nom);
         } catch (Exception ex) {
             System.err.println(ex);
         }
@@ -72,6 +83,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     @Override
     public void mouseDragged(MouseEvent e) {
     }
+
 
     /**
      * Définis le curseur selon sa position sur la grille et la situation du jeu.
@@ -87,43 +99,62 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
             Point position = new Point(pos_y, pos_x);
-            if(pos_x < 5 && pos_y < 5) {
-                if (j.getSituation() == DEPLACEMENT) {
-                    if (jg.getJeu().estAtteignable(position)) {
-                        if (j.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
-                            jg.setCursor(c_pas_bleu);
-                        } else {
-                            jg.setCursor(c_pas_rouge);
-                        }
-                    } else {
-                        jg.setCursor(c_pas_gris);
-                    }
-                } else if (j.getSituation() == CONSTRUCTION) {
-                    if (jg.getJeu().estAtteignable(position)) {
-                        if (j.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
-                            jg.setCursor(c_outil_bleu);
-                        } else {
-                            jg.setCursor(c_outil_rouge);
-                        }
-                    } else {
-                        jg.setCursor(c_outil_gris);
-                    }
+            if (pos_x > 5 || pos_y > 5) {
+                return;
+            }
 
-                } else if (j.getSituation() == PLACEMENT) {
-                    if (jg.getJeu().getPlateau().estLibre(position)) {
-                        if (j.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
-                            jg.setCursor(c_drapeau_bleu);
-                        } else {
-                            jg.setCursor(c_drapeau_rouge);
-                        }
-                    } else {
-                        jg.setCursor(c_drapeau_gris);
-                    }
+            if(jeu.getJoueur_en_cours().getClass() == JoueurIA.class) {
+                jg.setCursor(c_hourglass);
+                return;
+            }
+            if (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueur_en_cours().getNum_joueur()) {
+                jg.setCursor(c_hourglass);
+                return;
+            }
 
+            if (jeu.getSituation() == PLACEMENT && pp.is_finish_draw) {
+
+                setCursor((jg.getJeu().estAtteignable(position)), c_hand_gris, c_hand_rouge, c_hand_bleu);
+                jg.setCase_sous_souris(new Point(pos_x, pos_y));
+                jg.repaint();
+            }
+            if (jeu.getSituation() == DEPLACEMENT) {
+
+                if (jg.getJeu().estAtteignable(position)) {
+                    setCursor(true, null, c_hand_rouge, c_hand_bleu);
+                } else if (jg.getJeu().getPlateau().estBatisseur(position, jeu.getJoueur_en_cours())) {
+                    setCursor(true, null, c_defaut_rouge, c_defaut_bleu);
                 } else {
                     jg.setCursor(c_defaut_gris);
                 }
+
+                jg.setCase_sous_souris(new Point(pos_x, pos_y));
+                jg.repaint();
+            }
+            if (jeu.getSituation() == CONSTRUCTION) {
+
+                setCursor((jg.getJeu().estAtteignable(position)), c_hand_gris, c_hand_rouge, c_hand_bleu);
+                jg.setCase_sous_souris(new Point(pos_x, pos_y));
+                jg.repaint();
+            }
+            if(jeu.getSituation() == SELECTION) {
+                setCursor((jg.getJeu().getPlateau().estBatisseur(position, jeu.getJoueur_en_cours())), c_defaut_gris, c_hand_rouge, c_hand_bleu);
             }
         }
     }
+
+    private void setCursor(boolean condition, Cursor gris, Cursor rouge, Cursor bleu) {
+        if(condition) {
+            if (jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
+                jg.setCursor(bleu);
+            } else {
+                jg.setCursor(rouge);
+            }
+        } else {
+            jg.setCursor(gris);
+        }
+    }
+
+
 }
+

@@ -44,10 +44,13 @@ public class Constante {
     public static final Point CASE_CENTRALE = new Point(2, 2);
     public static final int POIDS_BASE = 1;
 
-    public static final double RATIO_BOUTON_CLASSIQUE = (double) 508 / 98;
-    public static final double RATIO_BOUTON_PETIT = (double) 259 / 216;
+    public static final double RATIO_BOUTON_CLASSIQUE = (double) 508/98;
+    public static final double RATIO_BOUTON_CLASSIQUE_INVERSE = (double) 98/508;
+    public static final double RATIO_BOUTON_PETIT = (double) 259/216;
 
     public static final String ECHAP_KEY = "echap";
+
+    public static final int PORT = 16518;
 
     public static final String[] TEXTE_ETAPES = {
             """

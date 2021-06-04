@@ -30,6 +30,11 @@ public class BoutonRadio extends JRadioButton {
 
         /* BoutonRadio ajouté au groupe de bouton*/
         groupe.add(this);
+        setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }
+
+    public BoutonRadio(String image, Dimension taille, ButtonGroup groupe) {
+        this(image, taille.width, taille.height, groupe);
     }
 
     private ImageIcon scaleImage(String nomImage, int largeur, int hauteur) {
