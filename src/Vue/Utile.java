@@ -31,7 +31,7 @@ public class Utile {
             Dimension taille_max = new Dimension((int) (taille_fenetre.width * 0.7), (int) (taille_fenetre.height * 0.7));
             Dimension taille_redimensionnee = Utile.conserverRatio(img_dim, taille_max);
 
-            g2d.drawImage(
+            g.drawImage(
                     img,
                     taille_fenetre.width / 2 - ((int) (taille_redimensionnee.getWidth() / 2)),
                     taille_fenetre.height / 2 - ((int) (taille_redimensionnee.getHeight() / 2)),
@@ -42,7 +42,7 @@ public class Utile {
 
 
             BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
-            g2d.drawImage(
+            g.drawImage(
                     img_colonnes,
                     0,
                     0,

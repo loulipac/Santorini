@@ -1,7 +1,6 @@
 package IO;
 
 import Modele.Jeu;
-import Vue.NetworkPanel;
 
 import java.awt.*;
 import java.io.*;
@@ -16,22 +15,16 @@ public class Client extends IO {
     private Socket clientSocket;
     Thread thread;
     ObjectOutputStream send_object;
-    NetworkPanel np;
     Jeu jeu;
-
     private boolean set_local_change = false;
-
-    public boolean isSet_local_change() {
-        return set_local_change;
-    }
 
     @Override
     public int getNum_player() {
         return num_player;
     }
 
-    public Client(String ip, NetworkPanel np) {
-        this.np = np;
+    public Client(String ip, String username) {
+        this.username = username;
         this.ip = ip;
         connect();
     }
@@ -99,7 +92,36 @@ public class Client extends IO {
                 }
                 case Message.START -> startPartie();
                 case Message.MOVE -> setActionLocal(_message);
+                case Message.UNAME -> setAdversaireNom((String) _message.getContenu());
                 default -> System.out.println("Unknown code operation.");
+            }
+        }
+    }
+
+    public void sendReady(boolean status) {
+        System.out.println("Sending rdy");
+        synchronized (this) {
+            if (clientSocket != null) {
+                try {
+                    send_object.writeObject(new Message(Message.RDY, status));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void sendName() {
+        System.out.println("Sending name");
+        synchronized (this) {
+            if (clientSocket != null) {
+                Message uname = new Message(Message.UNAME, username);
+                try {
+                    send_object.writeObject(uname);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -112,12 +134,16 @@ public class Client extends IO {
 
     @Override
     public void startPartie() {
-        np.startGame();
+        lobby.startClientGame();
     }
 
     @Override
     public void setJeu(Jeu jeu) {
         this.jeu = jeu;
+    }
+
+    public boolean isSet_local_change() {
+        return set_local_change;
     }
 
     private class ClientThread implements Runnable {

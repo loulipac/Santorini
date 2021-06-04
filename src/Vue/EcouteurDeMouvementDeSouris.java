@@ -15,7 +15,7 @@ import java.awt.event.MouseMotionListener;
 public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     JeuGraphique jg;
-    Jeu j;
+    Jeu jeu;
     PanelPlateau pp;
     int largeur_plateau;
     int hauteur_plateau;
@@ -44,7 +44,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
      */
     public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg, PanelPlateau pp) {
         this.jg = jg;
-        this.j = j;
+        this.jeu = j;
         this.pp = pp;
         c_defaut_gris = creerCurseurGenerique("defaut_gris", HAUT_GAUCHE);
         c_defaut_rouge = creerCurseurGenerique("defaut_rouge", HAUT_GAUCHE);
@@ -103,22 +103,26 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 return;
             }
 
-            if(j.getJoueur_en_cours().getClass() == JoueurIA.class) {
+            if(jeu.getJoueur_en_cours().getClass() == JoueurIA.class) {
+                jg.setCursor(c_hourglass);
+                return;
+            }
+            if (jeu.getNetUser() != null && jeu.getNetUser().getNum_player() != jeu.getJoueur_en_cours().getNum_joueur()) {
                 jg.setCursor(c_hourglass);
                 return;
             }
 
-            if (j.getSituation() == PLACEMENT && pp.is_finish_draw) {
+            if (jeu.getSituation() == PLACEMENT && pp.is_finish_draw) {
 
                 setCursor((jg.getJeu().estAtteignable(position)), c_hand_gris, c_hand_rouge, c_hand_bleu);
                 jg.setCase_sous_souris(new Point(pos_x, pos_y));
                 jg.repaint();
             }
-            if (j.getSituation() == DEPLACEMENT) {
+            if (jeu.getSituation() == DEPLACEMENT) {
 
                 if (jg.getJeu().estAtteignable(position)) {
                     setCursor(true, null, c_hand_rouge, c_hand_bleu);
-                } else if (jg.getJeu().getPlateau().estBatisseur(position, j.getJoueur_en_cours())) {
+                } else if (jg.getJeu().getPlateau().estBatisseur(position, jeu.getJoueur_en_cours())) {
                     setCursor(true, null, c_defaut_rouge, c_defaut_bleu);
                 } else {
                     jg.setCursor(c_defaut_gris);
@@ -127,21 +131,21 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 jg.setCase_sous_souris(new Point(pos_x, pos_y));
                 jg.repaint();
             }
-            if (j.getSituation() == CONSTRUCTION) {
+            if (jeu.getSituation() == CONSTRUCTION) {
 
                 setCursor((jg.getJeu().estAtteignable(position)), c_hand_gris, c_hand_rouge, c_hand_bleu);
                 jg.setCase_sous_souris(new Point(pos_x, pos_y));
                 jg.repaint();
             }
-            if(j.getSituation() == SELECTION) {
-                setCursor((jg.getJeu().getPlateau().estBatisseur(position, j.getJoueur_en_cours())), c_defaut_gris, c_hand_rouge, c_hand_bleu);
+            if(jeu.getSituation() == SELECTION) {
+                setCursor((jg.getJeu().getPlateau().estBatisseur(position, jeu.getJoueur_en_cours())), c_defaut_gris, c_hand_rouge, c_hand_bleu);
             }
         }
     }
 
     private void setCursor(boolean condition, Cursor gris, Cursor rouge, Cursor bleu) {
         if(condition) {
-            if (j.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
+            if (jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
                 jg.setCursor(bleu);
             } else {
                 jg.setCursor(rouge);

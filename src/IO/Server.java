@@ -1,24 +1,23 @@
 package IO;
 
 import Modele.Jeu;
-import Vue.HostPanel;
+import Vue.LobbyPanel;
 
 import java.awt.*;
 import java.io.*;
 import java.net.*;
-import java.util.ArrayList;
 
-import static Modele.Constante.JOUEUR1;
-import static Modele.Constante.JOUEUR2;
+import static Modele.Constante.*;
 
 public class Server extends IO {
-    static final int PORT = 2121;
     private ServerSocket serverSocket;
     int num_player = JOUEUR1;
     Thread thread;
-    HostPanel hp;
     ObjectOutputStream send_object;
     Jeu jeu;
+    LobbyPanel lobby;
+
+    private boolean client_ready = false;
     private boolean set_local_change = false;
 
     public boolean isSet_local_change() {
@@ -30,11 +29,11 @@ public class Server extends IO {
         return num_player;
     }
 
-    public Server(HostPanel hp) {
-        this.hp = hp;
+    public Server(String username) {
+        this.username = username;
         connect();
-
     }
+
 
     public String getIPAddress() {
         String ip = "Local : ";
@@ -56,11 +55,35 @@ public class Server extends IO {
     }
 
 
+
+    @Override
+    public void sendName() {
+        synchronized (this) {
+            if (serverSocket != null) {
+                Message uname = new Message(Message.UNAME, username);
+                try {
+                    send_object.writeObject(uname);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void setAdversaireNom(String nom) {
+        if(nom != null && lobby != null) {
+            adversaire_nom = nom;
+            lobby.setAdversaireNom(nom);
+        }
+        sendName();
+    }
+
     public void setActionLocal(Message _message) {
         set_local_change = true;
         jeu.jouer((Point) _message.getContenu());
         set_local_change = false;
     }
+
     @Override
     public void connect() {
         System.out.println("Server starting");
@@ -96,12 +119,22 @@ public class Server extends IO {
         }
     }
 
+    private void getReadyStatus(boolean status) {
+        client_ready = status;
+    }
+
+    public boolean isClient_ready() {
+        return client_ready;
+    }
+
     @Override
     public void analyserMessage(Message _message) {
         synchronized (this) {
             switch (_message.getCode()) {
                 case Message.DECO -> deconnexion();
                 case Message.MOVE -> setActionLocal(_message);
+                case Message.UNAME -> setAdversaireNom((String) _message.getContenu());
+                case Message.RDY -> getReadyStatus((Boolean) _message.getContenu());
                 default -> System.out.println("Unknown code operation.");
             }
         }
@@ -123,6 +156,10 @@ public class Server extends IO {
     @Override
     public void setJeu(Jeu jeu) {
         this.jeu = jeu;
+    }
+
+    public void setLobby(LobbyPanel lobby) {
+        this.lobby = lobby;
     }
 
 

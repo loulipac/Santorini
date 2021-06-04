@@ -1,7 +1,11 @@
 package Vue;
 
+import IO.Client;
+import IO.Server;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
@@ -65,7 +69,7 @@ public class PanelMultijoueur extends JPanel {
 
         bRejoindre = new Bouton(CHEMIN_RESSOURCE + "/bouton/rejoindre.png", CHEMIN_RESSOURCE + "/bouton/rejoindre_hover.png",
                 1,
-                1);
+                1, this::actionRejoindre);
 
 
         rejoindrePanel.add(titreRejoindre);
@@ -87,7 +91,7 @@ public class PanelMultijoueur extends JPanel {
 
         bHeberger = new Bouton(CHEMIN_RESSOURCE + "/bouton/heberger.png", CHEMIN_RESSOURCE + "/bouton/heberger_hover.png",
                 1,
-                1);
+                1, this::actionHeberger);
 
         hebergerPanel.add(titreHeberger);
         hebergerPanel.add(placeholder_nom_heberger);
@@ -110,6 +114,38 @@ public class PanelMultijoueur extends JPanel {
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Utile.dessinePanelBackground(g, getSize(), this);
+        }
+    }
+
+    public void actionRejoindre(ActionEvent e) {
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+
+        if (!nom_rejoindre.getText().equals("") && !ip.getText().equals("")) {
+            Client client = new Client(ip.getText(), nom_rejoindre.getText());
+            LobbyPanel lp = new LobbyPanel(client);
+            f.setPanel(lp);
+        } else if (!ip.getText().equals("")) {
+            Client client = new Client(ip.getText(), "anonyme_client");
+            LobbyPanel lp = new LobbyPanel(client);
+            f.setPanel(lp);
+        }else {
+            Client client = new Client("127.0.0.1", "anonyme_client");
+            LobbyPanel lp = new LobbyPanel(client);
+            f.setPanel(lp);
+        }
+    }
+
+    public void actionHeberger(ActionEvent e) {
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+
+        if (!nom_heberger.getText().equals("")) {
+            Server serveur = new Server(nom_heberger.getText());
+            LobbyPanel lp = new LobbyPanel(serveur);
+            f.setPanel(lp);
+        } else {
+            Server serveur = new Server("anonyme_hote");
+            LobbyPanel lp = new LobbyPanel(serveur);
+            f.setPanel(lp);
         }
     }
 

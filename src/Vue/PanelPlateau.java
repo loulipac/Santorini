@@ -36,6 +36,8 @@ public class PanelPlateau extends JPanel implements Observer {
     ParametrePanel pp;
     VictoirePanel victoire_panel;
     boolean is_finish_draw;
+    IO netUser;
+
     /**
      * Initialise la fenêtre de jeu et charge la police et les images en mémoire.
      *
@@ -69,7 +71,10 @@ public class PanelPlateau extends JPanel implements Observer {
 
     public PanelPlateau(Dimension _taille_fenetre, IO netUser) {
         this(_taille_fenetre, 0, 0);
+        this.netUser = netUser;
         jeu.setNetUser(netUser);
+        if (netUser.getNum_player() == JOUEUR1) jt.setText("C'est au tour de " + netUser.getUsername());
+        else jt.setText("C'est au tour de " + netUser.getAdversaire_nom());
     }
 
     /**
@@ -119,7 +124,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(!victoire_panel.isVisible()) pp.setVisible(!pp.isVisible());
+            if (!victoire_panel.isVisible()) pp.setVisible(!pp.isVisible());
         }
     }
 
@@ -650,7 +655,7 @@ public class PanelPlateau extends JPanel implements Observer {
         }
 
         public void changeTexte(JPanel _jp, String texte) {
-            for(Component jc : _jp.getComponents()) {
+            for (Component jc : _jp.getComponents()) {
                 JLabel label = (JLabel) jc;
                 label.setText(texte);
             }
@@ -703,6 +708,7 @@ public class PanelPlateau extends JPanel implements Observer {
             setPreferredSize(size);
             setMaximumSize(size);
             setMinimumSize(size);
+
 
             jt = new JLabel("C'est au tour du Joueur 1");
             jt.setAlignmentX(CENTER_ALIGNMENT);
@@ -792,10 +798,17 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     private void changeVictory() {
-        jt.setText("Joueur " + (jeu.getGagnant().getNum_joueur() / JOUEUR1) + " gagne");
+        String nom_joueur = "";
+        if(netUser != null) {
+            if (netUser.getNum_player() == jeu.getJoueur_en_cours().getNum_joueur()) nom_joueur = netUser.getUsername();
+            else nom_joueur = netUser.getAdversaire_nom();
+        } else {
+            nom_joueur = jeu.getGagnant().getNum_joueur() == JOUEUR1 ? "Joueur 1" : "Joueur 2";
+        }
+        jt.setText(nom_joueur + " gagne");
 
         victoire_panel.setVisible(true);
-        victoire_panel.changeTexte(victoire_panel.titre_victoire, "Victoire du joueur " + (jeu.getGagnant().getNum_joueur() / JOUEUR1));
+        victoire_panel.changeTexte(victoire_panel.titre_victoire, "Victoire de " + nom_joueur);
         victoire_panel.changeTexte(victoire_panel.nb_tours, jeu.getNb_tours() + " tours passés");
         victoire_panel.changeTexte(victoire_panel.tmp_reflexion_j1, "n secondes pour le joueur 1");
         victoire_panel.changeTexte(victoire_panel.tmp_reflexion_j2, "n secondes pour le joueur 2");
@@ -809,7 +822,12 @@ public class PanelPlateau extends JPanel implements Observer {
         if (jeu.estJeufini()) {
             changeVictory();
         } else {
-            jt.setText(jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
+            if(netUser != null) {
+                if (netUser.getNum_player() == jeu.getJoueur_en_cours().getNum_joueur()) jt.setText("C'est au tour de " + netUser.getUsername());
+                else jt.setText("C'est au tour de " + netUser.getAdversaire_nom());
+            } else {
+                jt.setText(jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
+            }
         }
         repaint();
     }
