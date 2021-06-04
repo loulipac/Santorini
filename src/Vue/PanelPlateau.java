@@ -38,6 +38,7 @@ public class PanelPlateau extends JPanel implements Observer {
     boolean is_finish_draw;
     IO netUser;
 
+
     /**
      * Initialise la fenêtre de jeu et charge la police et les images en mémoire.
      *
@@ -235,6 +236,8 @@ public class PanelPlateau extends JPanel implements Observer {
         int index_acceleration;
         final int TITRE_TAILLE = 30;
         Dimension size;
+        Bouton histo_annuler;
+        Bouton histo_refaire;
 
         public SidePanelRight(Dimension size) {
             this.size = size;
@@ -254,11 +257,10 @@ public class PanelPlateau extends JPanel implements Observer {
             histo_bouton.setPreferredSize(size_pane_button);
             histo_bouton.setMaximumSize(size_pane_button);
 
-            Bouton histo_annuler = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png",
-                    size_button, PanelPlateau.this::actionUndo);
-
-            Bouton histo_refaire = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png",
-                    size_button, PanelPlateau.this::actionRedo);
+            histo_annuler = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png",
+                    size_button, this::actionUndo);
+            histo_refaire = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png",
+                    size_button, this::actionRedo);
 
             histo_bouton.add(histo_annuler);
             histo_bouton.add(histo_refaire);
@@ -351,6 +353,18 @@ public class PanelPlateau extends JPanel implements Observer {
                 e.printStackTrace();
                 System.out.println("Erreur image de fond: " + e.getMessage());
             }
+
+            if(jeu.getHistorique().peutAnnuler()){
+                histo_annuler.setEnabled(true);
+            }
+            else
+                histo_annuler.setEnabled(false);
+            if(jeu.getHistorique().peutRefaire()){
+                histo_refaire.setEnabled(true);
+            }
+            else
+                histo_refaire.setEnabled(false);
+
         }
 
         private JPanel creerTitre(String _t, int _fs, Dimension _s) {
@@ -391,6 +405,17 @@ public class PanelPlateau extends JPanel implements Observer {
                     CHEMIN_RESSOURCE + "/bouton/x" + niveauAcceleration.get(index_acceleration) + ".png"
             );
         }
+
+        public void actionUndo(ActionEvent e) {
+            jeu.annuler();
+            jg.repaint();
+        }
+
+        public void actionRedo(ActionEvent e) {
+            jeu.refaire();
+            jg.repaint();
+        }
+
     }
 
     public boolean isParametreVisible() {
@@ -787,16 +812,6 @@ public class PanelPlateau extends JPanel implements Observer {
         }
     }
 
-    public void actionUndo(ActionEvent e) {
-        jeu.annuler();
-        jg.repaint();
-    }
-
-    public void actionRedo(ActionEvent e) {
-        jeu.refaire();
-        jg.repaint();
-    }
-
     private void changeVictory() {
         String nom_joueur = "";
         if(netUser != null) {
@@ -829,6 +844,7 @@ public class PanelPlateau extends JPanel implements Observer {
                 jt.setText(jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
             }
         }
+
         repaint();
     }
 }

@@ -29,9 +29,9 @@ public class CoupDeplacer extends Commande {
             jeu.getPlateau().enleverJoueur(positions[i]);
         }
 
-        ArrayList<Point> batisseurs = joueur.getBatisseurs();
-        batisseurs.set(batisseurs.indexOf(positions[i]), positions[type]);
-        batisseurs.removeAll(Collections.singleton(null));
+//        ArrayList<Point> batisseurs = joueur.getBatisseurs();
+//        batisseurs.set(batisseurs.indexOf(positions[i]), positions[type]);
+//        batisseurs.removeAll(Collections.singleton(null));
 
         if (coup == PLACEMENT) {
             jeu.setSituation(PLACEMENT);

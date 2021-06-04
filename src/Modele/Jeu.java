@@ -272,12 +272,24 @@ public class Jeu {
         i_joueurs = 0;
     }
 
-    public void annuler() {
-        if (histo.peutAnnuler()) histo.annuler();
+    public boolean annuler() {
+        if (histo.peutAnnuler()){
+            histo.annuler();
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
-    public void refaire() {
-        if (histo.peutRefaire()) histo.refaire();
+    public boolean refaire() {
+        if (histo.peutRefaire()){
+            histo.refaire();
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public boolean estJeufini() {
