@@ -11,8 +11,7 @@ public class Server extends IO {
     private boolean client_pret = false;
 
     public Server(String username) {
-        this.nomJoueur = username;
-        this.numJoueur = JOUEUR1;
+        super(username, JOUEUR1);
         connexion();
     }
 

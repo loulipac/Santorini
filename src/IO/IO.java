@@ -16,6 +16,11 @@ public abstract class IO {
     protected Thread thread;
     protected boolean statut_modification = false;
 
+    public IO(String username, int numJoueur) {
+        this.nomJoueur = username;
+        this.numJoueur = numJoueur;
+    }
+
     /**
      * Dans le cas du serveur, on crée une socket serveur et on attend une connexion client à l'aide d'un Thread.
      * Dans le cas du client, on se connecte au serveur depuis son ip et port et on démarre un Thread pour la communication.
