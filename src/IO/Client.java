@@ -12,8 +12,7 @@ public class Client extends IO {
     private final String ip;
 
     public Client(String ipHote, String username) {
-        this.nomJoueur = username;
-        this.numJoueur = JOUEUR2;
+        super(username, JOUEUR2);
         this.ip = ipHote;
         connexion();
     }
