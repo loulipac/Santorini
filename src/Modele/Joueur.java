@@ -11,12 +11,18 @@ public abstract class Joueur {
     protected Joueur(Jeu _jeu, int _num_joueur) {
         jeu = _jeu;
         num_joueur = _num_joueur;
-        batisseurs = new ArrayList<Point>();
+        batisseurs = new ArrayList<>();
     }
 
-    public abstract void joue();
+    /**
+     * Ajoute un batisseur dans la liste des batisseurs du joueur.
+     * @param batisseur position (x, y) du batisseur
+     */
+    public void addBatisseur(Point batisseur) {
+        batisseurs.add(batisseur);
+    }
 
-    public abstract void joue(Point clic_position);
+    // GETTER
 
     public int getNum_joueur() {
         return num_joueur;
@@ -24,10 +30,6 @@ public abstract class Joueur {
 
     public ArrayList<Point> getBatisseurs() {
         return batisseurs;
-    }
-
-    public void addBatisseur(Point batisseur) {
-        batisseurs.add(batisseur);
     }
 
     @Override

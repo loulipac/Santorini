@@ -19,6 +19,11 @@ public class IAFacile implements IA {
         random.setSeed(System.currentTimeMillis());
     }
 
+    /**
+     * L'IA joue un coup aléatoire selon la situation du jeu.
+     *
+     * @return la position (x, y) du coup
+     */
     public Point joue() {
         return switch (j.getSituation()) {
             case PLACEMENT -> jouePlacement();
@@ -29,6 +34,12 @@ public class IAFacile implements IA {
         };
     }
 
+    /**
+     * L'IA déplace le batisseur à une position aléatoire récupéré grâce à une fonction qui donne
+     * tous les déplacements possibles autour de ce même batisseur.
+     *
+     * @return position de la case à construire
+     */
     private Point joueDeplacement() {
         Point batisseur = batisseurs.get(index_batisseur);
         ArrayList<Point> accessibles = j.getPlateau().getCasesAccessibles(batisseur);
@@ -37,18 +48,37 @@ public class IAFacile implements IA {
         return case_random;
     }
 
+    /**
+     * L'IA construit à un Point aléatoire récupéré grâce à une fonction qui donne
+     * toutes les constructions possibles autour d'un batisseur.
+     *
+     * @return position de la case à construire
+     */
     private Point joueConstruction() {
         Point batisseur = batisseurs.get(index_batisseur);
         ArrayList<Point> construction_possible = j.getPlateau().getConstructionsPossible(batisseur);
         return construction_possible.get(random.nextInt(construction_possible.size()));
     }
 
+    /**
+     * L'IA sélectionne un des deux batisseurs aléatoirement, s'il ne peut pas se déplacer, l'autre batisseur est
+     * sélectionné. Même si ce dernier ne peut pas bouger, il est quand même sélectionné (défaite de l'IA).
+     *
+     * @return position du batisseur à sélectionner
+     */
     private Point joueSelection() {
-        System.out.println("Selectionne");
         index_batisseur = random.nextInt(2);
+        if (j.getPlateau().getCasesAccessibles(batisseurs.get(index_batisseur)).isEmpty()) {
+            index_batisseur = (index_batisseur + 1) % 2;
+        }
         return batisseurs.get(index_batisseur);
     }
 
+    /**
+     * L'IA joue un placement aléatoire, c'est à dire, qu'elle pose un batisseur sur une case aléatoire si elle est vide.
+     *
+     * @return position du batisseur à poser
+     */
     private Point jouePlacement() {
         Point case_alea;
         do {
