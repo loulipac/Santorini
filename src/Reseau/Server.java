@@ -1,4 +1,4 @@
-package IO;
+package Reseau;
 
 import java.awt.*;
 import java.io.*;
@@ -6,7 +6,7 @@ import java.net.*;
 
 import static Modele.Constante.*;
 
-public class Server extends IO {
+public class Server extends Reseau {
     private ServerSocket serverSocket;
     private boolean client_pret = false;
 

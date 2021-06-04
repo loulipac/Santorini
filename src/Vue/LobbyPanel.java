@@ -1,8 +1,8 @@
 package Vue;
 
-import IO.IO;
-import IO.Server;
-import IO.Client;
+import Reseau.Reseau;
+import Reseau.Server;
+import Reseau.Client;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,7 +14,7 @@ import static Modele.Constante.CHEMIN_RESSOURCE;
 import static Modele.Constante.RATIO_BOUTON_CLASSIQUE_INVERSE;
 
 public class LobbyPanel extends JPanel {
-    IO netUser;
+    Reseau netUser;
     JPanel fondPanel;
     JLabel titreLobby;
 
@@ -29,7 +29,7 @@ public class LobbyPanel extends JPanel {
     boolean pret_bool = false;
 
 
-    public LobbyPanel(IO netUser) {
+    public LobbyPanel(Reseau netUser) {
         this.netUser = netUser;
         netUser.setLobby(this);
         try {

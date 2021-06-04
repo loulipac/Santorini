@@ -1,4 +1,4 @@
-package IO;
+package Reseau;
 
 import java.awt.*;
 import java.io.*;
@@ -7,7 +7,7 @@ import java.net.Socket;
 
 import static Modele.Constante.*;
 
-public class Client extends IO {
+public class Client extends Reseau {
     private Socket clientSocket;
     private final String ip;
 

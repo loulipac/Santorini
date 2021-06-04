@@ -1,4 +1,4 @@
-package IO;
+package Reseau;
 
 import Modele.Jeu;
 import Vue.LobbyPanel;
@@ -6,7 +6,7 @@ import Vue.LobbyPanel;
 import java.awt.*;
 import java.io.ObjectOutputStream;
 
-public abstract class IO {
+public abstract class Reseau {
     private Jeu jeu;
     protected int numJoueur;
     protected String nomJoueur;
@@ -16,7 +16,7 @@ public abstract class IO {
     protected Thread thread;
     protected boolean statut_modification = false;
 
-    public IO(String username, int numJoueur) {
+    public Reseau(String username, int numJoueur) {
         this.nomJoueur = username;
         this.numJoueur = numJoueur;
     }

@@ -1,6 +1,6 @@
 package Modele;
 
-import IO.IO;
+import Reseau.Reseau;
 import Vue.Observer;
 import Vue.LecteurSon;
 
@@ -33,7 +33,7 @@ public class Jeu {
 
     private Joueur[] joueurs;
     private int i_joueurs;
-    IO netUser;
+    Reseau netUser;
 
     ConfigurationPartie configurationPartie;
 
@@ -385,7 +385,7 @@ public class Jeu {
         return nb_tours;
     }
 
-    public void setNetUser(IO netUser) {
+    public void setNetUser(Reseau netUser) {
         this.netUser = netUser;
         netUser.setJeu(this);
     }
@@ -394,7 +394,7 @@ public class Jeu {
         return configurationPartie;
     }
 
-    public IO getNetUser() {
+    public Reseau getNetUser() {
         return netUser;
     }
 

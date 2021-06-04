@@ -2,8 +2,8 @@ package Vue;
 
 import static Modele.Constante.*;
 
-import IO.IO;
 import Modele.ConfigurationPartie;
+import Reseau.Reseau;
 import Modele.Jeu;
 
 import javax.imageio.ImageIO;
@@ -37,7 +37,7 @@ public class PanelPlateau extends JPanel implements Observer {
     ParametrePanel pp;
     VictoirePanel victoire_panel;
     boolean is_finish_draw;
-    IO netUser;
+    Reseau netUser;
     ConfigurationPartie config;
 
 
@@ -71,7 +71,7 @@ public class PanelPlateau extends JPanel implements Observer {
         jeu.charger(filename);
     }
 
-    public PanelPlateau(Dimension _taille_fenetre, IO netUser) {
+    public PanelPlateau(Dimension _taille_fenetre, Reseau netUser) {
         this(_taille_fenetre, new ConfigurationPartie(0, 0));
         this.netUser = netUser;
         jeu.setNetUser(netUser);
