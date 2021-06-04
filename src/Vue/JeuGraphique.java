@@ -4,6 +4,7 @@ import static Modele.Constante.*;
 
 import Modele.Plateau;
 import Modele.Jeu;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -30,8 +31,6 @@ public class JeuGraphique extends JComponent {
     private final Image pas_rouge_hover;
     private final Image pas_bleu;
     private final Image pas_bleu_hover;
-    private final Image outil_bleu;
-    private final Image outil_rouge;
     private final Image etage_1_tmp;
     private final Image etage_1_tmp_transparent;
     private final Image etage_2_tmp;
@@ -45,7 +44,6 @@ public class JeuGraphique extends JComponent {
 
     /**
      * Constructeur de JeuGraphique, charge les images en mémoire.
-     *
      */
     public JeuGraphique(Jeu j) {
         this.jeu = j;
@@ -74,8 +72,6 @@ public class JeuGraphique extends JComponent {
         pas_rouge_hover = Utile.readImage(CHEMIN_RESSOURCE + "/icone/pas_rouge_hover.png");
         pas_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/icone/pas_bleu.png");
         pas_bleu_hover = Utile.readImage(CHEMIN_RESSOURCE + "/icone/pas_bleu_hover.png");
-        outil_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/icone/outil_bleu.png");
-        outil_rouge = Utile.readImage(CHEMIN_RESSOURCE + "/icone/outil_rouge.png");
         plateau = j.getPlateau();
     }
 
@@ -152,7 +148,7 @@ public class JeuGraphique extends JComponent {
             Image pas_joueur_hover = jeu.getJoueur_en_cours().getNum_joueur() == numJoueurBleu ? pas_bleu_hover : pas_rouge_hover;
 
             for (Point case_autour : plateau.getCasesAccessibles(jeu.getBatisseur_en_cours())) {
-                if(case_sous_souris != null && new Point(case_sous_souris.y, case_sous_souris.x).equals(case_autour)) {
+                if (case_sous_souris != null && new Point(case_sous_souris.y, case_sous_souris.x).equals(case_autour)) {
                     drawable.drawImage(pas_joueur_hover, case_autour.y * taille_case, case_autour.x * taille_case, taille_case, taille_case, null);
                 } else {
                     drawable.drawImage(pas_joueur, case_autour.y * taille_case, case_autour.x * taille_case, taille_case, taille_case, null);
@@ -160,7 +156,7 @@ public class JeuGraphique extends JComponent {
             }
         } else if (jeu.getSituation() == CONSTRUCTION && !jeu.estJeufini()) {
             for (Point constructions_autour : plateau.getConstructionsPossible(jeu.getBatisseur_en_cours())) {
-                if(case_sous_souris != null && new Point(case_sous_souris.y, case_sous_souris.x).equals(constructions_autour)) {
+                if (case_sous_souris != null && new Point(case_sous_souris.y, case_sous_souris.x).equals(constructions_autour)) {
                     setPreviewBatiment(drawable, constructions_autour, etage_1_tmp, etage_2_tmp, etage_3_tmp, coupole_tmp);
                 } else {
                     setPreviewBatiment(drawable, constructions_autour, etage_1_tmp_transparent, etage_2_tmp_transparent, etage_3_tmp_transparent, coupole_tmp_transparent);
@@ -169,6 +165,10 @@ public class JeuGraphique extends JComponent {
         }
     }
 
+    /**
+     * Affiche sur la grille la preview du bâtiment à construire.
+     * @param constructions_autour position sur la grille où dessiner la preview
+     */
     private void setPreviewBatiment(Graphics2D drawable, Point constructions_autour, Image etage_1_tmp_transparent, Image etage_2_tmp_transparent, Image etage_3_tmp_transparent, Image coupole_tmp_transparent) {
         Image batiment;
         switch (plateau.getTypeBatiments(constructions_autour)) {
