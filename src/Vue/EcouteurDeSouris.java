@@ -15,11 +15,9 @@ import java.awt.event.MouseEvent;
  * Classe Listener de souris pour effectuer les actions sur la grille de jeu.
  */
 public class EcouteurDeSouris extends MouseAdapter {
-    JeuGraphique jg;
-    Jeu jeu;
-    int largeur_plateau;
-    int hauteur_plateau;
-    PanelPlateau pp;
+    private final JeuGraphique jg;
+    private final Jeu jeu;
+    private final PanelPlateau pp;
 
     /**
      * Constructeur de EcouteurDeSouris. Utilise un JeuGraphique.
@@ -41,12 +39,11 @@ public class EcouteurDeSouris extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         if (pp.isParametreVisible()) return;
-        if (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueur_en_cours().getNum_joueur()) return;
+        if (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueur_en_cours().getNum_joueur())
+            return;
         Joueur joueur_en_cours = jeu.getJoueur_en_cours();
         if (joueur_en_cours.getClass() != JoueurIA.class) {
-            this.largeur_plateau = jg.getTailleCase() * PLATEAU_COLONNES;
-            this.hauteur_plateau = jg.getTailleCase() * PLATEAU_LIGNES;
-            if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
+            if (e.getX() <= (jg.getTailleCase() * PLATEAU_COLONNES) && e.getY() <= (jg.getTailleCase() * PLATEAU_LIGNES)) {
                 ((JoueurHumain) joueur_en_cours).joue(new Point(
                         e.getY() / jg.getTailleCase(),
                         e.getX() / jg.getTailleCase()
