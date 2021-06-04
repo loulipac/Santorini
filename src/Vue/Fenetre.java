@@ -21,6 +21,9 @@ public class Fenetre extends JFrame {
     LecteurSon musique;
     JPanel shown;
 
+    /**
+     * Initialise les JPanels ne nécessitant pas d'être créer selon des options.
+     */
     public Fenetre() {
         setTitle("Santorini");
         setMinimumSize(DEFAULT_FENETRE_TAILLE);
@@ -53,6 +56,11 @@ public class Fenetre extends JFrame {
         setVisible(true);
         // musique.joueSon(true);
     }
+
+    /**
+     * Affiche un JPanel passé en paramètre sur la fenêtre.
+     * @param p le JPanel à afficher
+     */
     public void setPanel(JPanel p) {
         JPanel tmp_shown = shown;
         shown = p;
@@ -61,6 +69,10 @@ public class Fenetre extends JFrame {
         if(tmp_shown != null) panelPrincipal.remove(tmp_shown);
     }
 
+    /**
+     * Affiche un JPanel déjà présent dans le CardLayout.
+     * @param name nom du JPanel
+     */
     public void displayPanel(String name) {
         pileCarte.show(panelPrincipal, name);
     }
