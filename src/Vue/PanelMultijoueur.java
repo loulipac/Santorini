@@ -1,7 +1,7 @@
 package Vue;
 
-import IO.Client;
-import IO.Server;
+import Reseau.Client;
+import Reseau.Server;
 
 import javax.swing.*;
 import java.awt.*;

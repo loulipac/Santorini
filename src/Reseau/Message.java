@@ -1,4 +1,4 @@
-package IO;
+package Reseau;
 
 import java.io.Serializable;
 
