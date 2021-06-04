@@ -40,6 +40,7 @@ public class EcouteurDeSouris extends MouseAdapter {
     @Override
     public void mousePressed(MouseEvent e) {
         if (pp.isParametreVisible()) return;
+        if (jeu.getNetUser() != null && jeu.getNetUser().getNum_player() != jeu.getJoueur_en_cours().getNum_joueur()) return;
         Joueur joueur_en_cours = jeu.getJoueur_en_cours();
         if (joueur_en_cours.getClass() != JoueurIA.class) {
             this.largeur_plateau = jg.getTailleCase() * PLATEAU_COLONNES;

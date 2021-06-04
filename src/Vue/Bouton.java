@@ -8,6 +8,7 @@ public class Bouton extends JButton {
     int largeur;
     int hauteur;
     String image;
+    String imageHover;
 
     public Bouton(String image, String imageHover, int largeur, int hauteur, ActionListener action) {
         this(image, imageHover, largeur, hauteur);
@@ -27,6 +28,7 @@ public class Bouton extends JButton {
         this.largeur = largeur;
         this.hauteur = hauteur;
         this.image = image;
+        this.imageHover = imageHover;
 
         /* Parametres principaux du bouton */
         setOpaque(false);
@@ -59,5 +61,14 @@ public class Bouton extends JButton {
         ImageIcon iconButtonHover = scaleImage(imageHover, hauteur, largeur);
         setRolloverIcon(iconButtonHover);
     }
+
+    public void setTaille(int width, int height) {
+        hauteur = height;
+        largeur = width;
+        setSize(width, height);
+        setIcon(scaleImage(image, getSize().width, getSize().height));
+        setRolloverIcon(scaleImage(imageHover, getSize().width, getSize().height));
+    }
+
 
 }

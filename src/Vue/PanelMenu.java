@@ -4,6 +4,7 @@ import static Modele.Constante.*;
 
 import javax.sound.sampled.*;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
@@ -39,9 +40,9 @@ class PanelMenu extends JPanel {
 
         double ratio_marge = 0.02;
         double ratio_logo = 0.35;
-        double ratio_footer = 0.15;
+        double ratio_footer = 0.10;
         double taille_restante = taille_fenetre.height - taille_fenetre.height * (ratio_logo + ratio_footer) - (taille_fenetre.height * ratio_marge) * 5;
-        double height = taille_restante / 4;
+        double height = taille_restante / 6;
 
         Dimension taille_bouton = new Dimension(
                 (int) (height * RATIO_BOUTON_CLASSIQUE),
@@ -55,6 +56,10 @@ class PanelMenu extends JPanel {
 
         Bouton bJouer = new Bouton(CHEMIN_RESSOURCE + "/bouton/jouer.png", CHEMIN_RESSOURCE + "/bouton/jouer_hover.png",
                 taille_bouton.width, taille_bouton.height, this::actionBoutonJouer);
+        Bouton bJouerLigne = new Bouton(CHEMIN_RESSOURCE + "/bouton/jouer_ligne.png", CHEMIN_RESSOURCE + "/bouton/jouer_ligne.png",
+                taille_bouton.width, taille_bouton.height, this::actionBoutonJouerLigne);
+        Bouton bCharger = new Bouton(CHEMIN_RESSOURCE + "/bouton/charger_partie.png", CHEMIN_RESSOURCE + "/bouton/charger_partie_hover.png",
+                taille_bouton.width, taille_bouton.height, this::actionCharger);
         Bouton bTutoriel = new Bouton(CHEMIN_RESSOURCE + "/bouton/tutoriel.png", CHEMIN_RESSOURCE + "/bouton/tutoriel_hover.png",
                 taille_bouton.width, taille_bouton.height, this::actionBoutonTutoriel);
         Bouton bRegles = new Bouton(CHEMIN_RESSOURCE + "/bouton/regle_jeu.png", CHEMIN_RESSOURCE + "/bouton/regle_jeu_hover.png",
@@ -96,6 +101,10 @@ class PanelMenu extends JPanel {
         addMargin(main_contenu, taille_margin);
         main_contenu.add(bJouer);
         addMargin(main_contenu, taille_margin);
+        main_contenu.add(bJouerLigne);
+        addMargin(main_contenu, taille_margin);
+        main_contenu.add(bCharger);
+        addMargin(main_contenu, taille_margin);
         main_contenu.add(bTutoriel);
         addMargin(main_contenu, taille_margin);
         main_contenu.add(bRegles);
@@ -124,6 +133,26 @@ class PanelMenu extends JPanel {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("options");
+    }
+
+    public void actionBoutonJouerLigne(ActionEvent e) {
+        son_bouton.joueSon(false);
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.displayPanel("multi");
+    }
+
+    public void actionCharger(ActionEvent e) {
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+
+        JFileChooser chooser = new JFileChooser(SAVES_PATH);
+        FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                "Sauvegardes", "sav");
+        chooser.setFileFilter(filter);
+
+        int returnVal = chooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            f.setPanel(new PanelPlateau(getSize(), chooser.getSelectedFile().getName()));
+        }
     }
 
     /**
