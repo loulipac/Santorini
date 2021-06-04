@@ -120,16 +120,16 @@ public class PanelMultijoueur extends JPanel {
     public void actionRejoindre(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
 
-        if (!nom_rejoindre.getText().equals("") && !ip.getText().equals("")) {
-            Client client = new Client(ip.getText(), nom_rejoindre.getText());
+        if (nom_rejoindre.getText().equals("") && ip.getText().equals("")) {
+            Client client = new Client("127.0.0.1", "anonyme_client");
             LobbyPanel lp = new LobbyPanel(client);
             f.setPanel(lp);
-        } else if (!ip.getText().equals("")) {
+        } else if (nom_rejoindre.getText().equals("")) {
             Client client = new Client(ip.getText(), "anonyme_client");
             LobbyPanel lp = new LobbyPanel(client);
             f.setPanel(lp);
-        }else {
-            Client client = new Client("127.0.0.1", "anonyme_client");
+        } else {
+            Client client = new Client(ip.getText(), nom_rejoindre.getText());
             LobbyPanel lp = new LobbyPanel(client);
             f.setPanel(lp);
         }

@@ -117,6 +117,7 @@ public class Client extends IO {
         synchronized (this) {
             if (clientSocket != null) {
                 Message uname = new Message(Message.UNAME, username);
+                System.out.println(username);
                 try {
                     send_object.writeObject(uname);
                 } catch (IOException e) {
