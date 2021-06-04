@@ -102,10 +102,10 @@ public class Jeu {
         if (plateau.estLibre(position)) {
             cmd = new CoupDeplacer(joueurs[i_joueurs], null, position);
             plateau.ajouterJoueur(position, joueurs[i_joueurs]);
+            if(netUser != null) netUser.sendAction(position);
             getJoueur_en_cours().addBatisseur(position);
             nombre_batisseurs++;
             verificationNbBatisseur();
-            if(netUser != null) netUser.sendAction(position);
         }
     }
 
