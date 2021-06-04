@@ -1,7 +1,5 @@
 package IO;
 
-import Modele.Jeu;
-
 import java.awt.*;
 import java.io.*;
 import java.net.InetSocketAddress;
@@ -10,27 +8,18 @@ import java.net.Socket;
 import static Modele.Constante.*;
 
 public class Client extends IO {
-    String ip;
-    int num_player = JOUEUR2;
     private Socket clientSocket;
-    Thread thread;
-    ObjectOutputStream send_object;
-    Jeu jeu;
-    private boolean set_local_change = false;
+    private final String ip;
 
-    @Override
-    public int getNum_player() {
-        return num_player;
-    }
-
-    public Client(String ip, String username) {
-        this.username = username;
-        this.ip = ip;
-        connect();
+    public Client(String ipHote, String username) {
+        this.nomJoueur = username;
+        this.numJoueur = JOUEUR2;
+        this.ip = ipHote;
+        connexion();
     }
 
     @Override
-    public void connect() {
+    public void connexion() {
         try {
             clientSocket = new Socket();
             clientSocket.connect(new InetSocketAddress(ip, PORT));
@@ -40,17 +29,24 @@ public class Client extends IO {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
-    public void sendAction(Point action) {
+    public void analyserMessage(Message _message) {
         synchronized (this) {
-            try {
-                Message m = new Message(Message.MOVE, action);
-                send_object.writeObject(m);
-            } catch (IOException e) {
-                e.printStackTrace();
+            switch (_message.getCode()) {
+                case Message.DECO -> {
+                    thread.interrupt();
+                    try {
+                        clientSocket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                case Message.START -> demarrerPartie();
+                case Message.MOVE -> jouerCoupLocal((Point) _message.getContenu());
+                case Message.UNAME -> setAdversaireNom((String) _message.getContenu());
+                default -> System.out.println("Unknown code operation.");
             }
         }
     }
@@ -62,7 +58,7 @@ public class Client extends IO {
                 System.out.println("Asking for deconnection.");
                 Message deconnexion = new Message(Message.DECO);
                 try {
-                    send_object.writeObject(deconnexion);
+                    streamEnvoie.writeObject(deconnexion);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -79,77 +75,64 @@ public class Client extends IO {
     }
 
     @Override
-    public void analyserMessage(Message _message) {
-        synchronized (this) {
-            switch (_message.getCode()) {
-                case Message.DECO -> {
-                    thread.interrupt();
-                    try {
-                        clientSocket.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                case Message.START -> startPartie();
-                case Message.MOVE -> setActionLocal(_message);
-                case Message.UNAME -> setAdversaireNom((String) _message.getContenu());
-                default -> System.out.println("Unknown code operation.");
-            }
-        }
-    }
-
-    public void sendReady(boolean status) {
-        System.out.println("Sending rdy");
-        synchronized (this) {
-            if (clientSocket != null) {
-                try {
-                    send_object.writeObject(new Message(Message.RDY, status));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    @Override
-    public void sendName() {
-        System.out.println("Sending name");
-        synchronized (this) {
-            if (clientSocket != null) {
-                Message uname = new Message(Message.UNAME, username);
-                System.out.println(username);
-                try {
-                    send_object.writeObject(uname);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public void setActionLocal(Message _message) {
-        set_local_change = true;
-        jeu.jouer((Point) _message.getContenu());
-        set_local_change = false;
-    }
-
-    @Override
-    public void startPartie() {
+    public void demarrerPartie() {
         lobby.startClientGame();
     }
 
     @Override
-    public void setJeu(Jeu jeu) {
-        this.jeu = jeu;
+    public void envoieCoup(Point coup) {
+        synchronized (this) {
+            try {
+                streamEnvoie.writeObject(new Message(Message.MOVE, coup));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
-    public boolean isSet_local_change() {
-        return set_local_change;
+    @Override
+    public void envoyerNomUtilisateur() {
+        synchronized (this) {
+            if (clientSocket != null) {
+                try {
+                    streamEnvoie.writeObject(new Message(Message.UNAME, nomJoueur));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
+    @Override
+    public void setAdversaireNom(String nom) {
+        if (nom != null && lobby != null) {
+            nomAdversaire = nom;
+            lobby.setAdversaireNom(nom);
+        }
+    }
+
+    /**
+     * Envoie au serveur, que le client est prêt ou non.
+     * @param status si le client est prêt ou non
+     */
+    public void sendReady(boolean status) {
+        synchronized (this) {
+            if (clientSocket != null) {
+                try {
+                    streamEnvoie.writeObject(new Message(Message.RDY, status));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Classe gérant la réception des messages venant du serveur.
+     */
     private class ClientThread implements Runnable {
 
-        private Socket socket;
+        private final Socket socket;
         ObjectInputStream reader_object;
 
         public ClientThread(Socket socket) {
@@ -159,8 +142,7 @@ public class Client extends IO {
         @Override
         public void run() {
             try {
-                System.out.println("Client " + ip + " connected to server.");
-                send_object = new ObjectOutputStream(socket.getOutputStream());
+                streamEnvoie = new ObjectOutputStream(socket.getOutputStream());
                 reader_object = new ObjectInputStream(socket.getInputStream());
                 Message result;
                 while ((result = (Message) reader_object.readObject()) != null) {

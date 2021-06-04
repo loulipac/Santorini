@@ -73,8 +73,8 @@ public class PanelPlateau extends JPanel implements Observer {
         this(_taille_fenetre, 0, 0);
         this.netUser = netUser;
         jeu.setNetUser(netUser);
-        if (netUser.getNum_player() == JOUEUR1) jt.setText("C'est au tour de " + netUser.getUsername());
-        else jt.setText("C'est au tour de " + netUser.getAdversaire_nom());
+        if (netUser.getNumJoueur() == JOUEUR1) jt.setText("C'est au tour de " + netUser.getNomJoueur());
+        else jt.setText("C'est au tour de " + netUser.getNomAdversaire());
     }
 
     /**
@@ -800,8 +800,8 @@ public class PanelPlateau extends JPanel implements Observer {
     private void changeVictory() {
         String nom_joueur = "";
         if(netUser != null) {
-            if (netUser.getNum_player() == jeu.getJoueur_en_cours().getNum_joueur()) nom_joueur = netUser.getUsername();
-            else nom_joueur = netUser.getAdversaire_nom();
+            if (netUser.getNumJoueur() == jeu.getJoueur_en_cours().getNum_joueur()) nom_joueur = netUser.getNomJoueur();
+            else nom_joueur = netUser.getNomAdversaire();
         } else {
             nom_joueur = jeu.getGagnant().getNum_joueur() == JOUEUR1 ? "Joueur 1" : "Joueur 2";
         }
@@ -823,8 +823,8 @@ public class PanelPlateau extends JPanel implements Observer {
             changeVictory();
         } else {
             if(netUser != null) {
-                if (netUser.getNum_player() == jeu.getJoueur_en_cours().getNum_joueur()) jt.setText("C'est au tour de " + netUser.getUsername());
-                else jt.setText("C'est au tour de " + netUser.getAdversaire_nom());
+                if (netUser.getNumJoueur() == jeu.getJoueur_en_cours().getNum_joueur()) jt.setText("C'est au tour de " + netUser.getNomJoueur());
+                else jt.setText("C'est au tour de " + netUser.getNomAdversaire());
             } else {
                 jt.setText(jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
             }
