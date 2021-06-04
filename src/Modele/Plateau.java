@@ -108,7 +108,6 @@ public class Plateau {
      * Ameliore le batiment à la position l c si c'est possible, considère qu'il n'y pas de batisseurs dessus.
      *
      * @param position la position sur la grille
-     * @return vrai si l'amélioration a marché
      */
     public void ameliorerBatiment(Point position) {
         setCase(position, getCase(position) + 1);
@@ -138,7 +137,7 @@ public class Plateau {
      * Vérifie que la case de la grille visé peut acceuillir le batisseur (deplacement vers le haut de uniquement 1 de hauteur).
      *
      * @param position la position sur la grille
-     * @param batisseur position (x;y) d'un batisseur
+     * @param batisseur position (x, y) d'un batisseur
      * @return si la case peut acceuillir un batisseur
      */
     public boolean deplacementPossible(Point position, Point batisseur) {
@@ -160,7 +159,7 @@ public class Plateau {
      * Vérifie que la distance entre le batisseur et le case cliqué est inférieur à 2 (en x et en y)
      *
      * @param position la position sur la grille
-     * @param batisseur position (x;y) d'un batisseur
+     * @param batisseur position (x, y) d'un batisseur
      * @return vrai s'il est possible d'atteindre la case
      */
     public boolean atteignable(Point position, Point batisseur) {
@@ -172,7 +171,7 @@ public class Plateau {
     /**
      * Construit un tableau de cases accessible depuis la position d'un batisseur.
      *
-     * @param batisseurs position (x;y) d'un batisseur
+     * @param batisseurs position (x, y) d'un batisseur
      * @return un ensemble de case accessible
      */
     public ArrayList<Point> getCasesAccessibles(Point batisseurs) {
@@ -218,7 +217,7 @@ public class Plateau {
     /**
      * Construit un tableau de case où une construction peut-être faite depuis la position d'un batisseur.
      *
-     * @param batisseurs position (x;y) d'un batisseur
+     * @param batisseurs position (x, y) d'un batisseur
      * @return une ensemble de case où la construction est possible
      */
     public ArrayList<Point> getConstructionsPossible(Point batisseurs) {
@@ -264,13 +263,39 @@ public class Plateau {
     /**
      * Vérifie si un ouvrier peut construire sur la case de la grille en l et c
      *
-     * @param position
-     * @param batisseur position (x;y) d'un batisseur
+     * @param position la case (x, y) de la grille
+     * @param batisseur position (x, y) d'un batisseur
      * @return vrai si le batisseur peut construire ici.
      */
     public boolean peutConstruire(Point position, Point batisseur) {
         return (atteignable(position, batisseur) && !estCoupole(position) && estLibre(position));
     }
+
+    /**
+     * Retire le joueur sur la case "position"
+     * @param position la case (x, y) de la grille
+     */
+    public void enleverJoueur(Point position) {
+        setCase(position, getTypeBatiments(position));
+    }
+
+    /**
+     * Met la case (x, y) à la valeur d'étage "value"
+     * @param position la case (x, y) de la grille
+     * @param value la nouvelle valeur d'étage
+     */
+    public void MAJEtage(Point position, int value) {
+        setCase(position, getCase(position) + value);
+    }
+
+    /**
+     * Remet à zéro le plateau.
+     */
+    public void RAZ() {
+        cases = new int[PLATEAU_LIGNES][PLATEAU_COLONNES];
+    }
+
+    // GETTER
 
     private void setCase(Point position, int valeur) {
         cases[position.x][position.y] = valeur;
@@ -286,18 +311,6 @@ public class Plateau {
 
     public int getTypeBatisseurs(Point position) {
         return getCase(position) & (~7);
-    }
-
-    public void enleverJoueur(Point position) {
-        setCase(position, getTypeBatiments(position));
-    }
-
-    public void MAJEtage(Point position, int value) {
-        setCase(position, getCase(position) + value);
-    }
-
-    public void RAZ() {
-        cases = new int[PLATEAU_LIGNES][PLATEAU_COLONNES];
     }
 
     @Override
