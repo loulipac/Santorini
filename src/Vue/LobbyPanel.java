@@ -4,7 +4,6 @@ import IO.IO;
 import IO.Server;
 import IO.Client;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -57,7 +56,7 @@ public class LobbyPanel extends JPanel {
         nom_hote.setHorizontalAlignment(JLabel.CENTER);
         nom_hote.setForeground(new Color(70, 153, 206));
         nom_hote.setFont(lilly_belle_texte);
-        if (netUser.getClass() == Server.class) nom_hote.setText(netUser.getUsername());
+        if (netUser.getClass() == Server.class) nom_hote.setText(netUser.getNomJoueur());
 
 
         if (netUser.getClass() == Server.class) {
@@ -70,7 +69,7 @@ public class LobbyPanel extends JPanel {
         nom_client.setHorizontalAlignment(JLabel.CENTER);
         nom_client.setForeground(new Color(224, 98, 98));
         nom_client.setFont(lilly_belle_texte);
-        if (netUser.getClass() == Client.class) nom_client.setText(netUser.getUsername());
+        if (netUser.getClass() == Client.class) nom_client.setText(netUser.getNomJoueur());
 
         client_ready = new JLabel();
         client_ready.setHorizontalAlignment(JLabel.CENTER);
@@ -102,7 +101,7 @@ public class LobbyPanel extends JPanel {
         add(fondPanel);
 
         setBackground(new Color(47, 112, 162));
-        if (netUser.getClass() == Client.class) netUser.sendName();
+        if (netUser.getClass() == Client.class) netUser.envoyerNomUtilisateur();
     }
 
     public void setAdversaireNom(String nom) {
@@ -126,9 +125,9 @@ public class LobbyPanel extends JPanel {
     }
 
     public void actionStart(ActionEvent e) {
-        if (((Server) netUser).isClient_ready()) {
+        if (((Server) netUser).estClientPret()) {
             Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-            netUser.startPartie();
+            netUser.demarrerPartie();
             f.setPanel(new PanelPlateau(getSize(), netUser));
         }
     }

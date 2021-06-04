@@ -105,7 +105,7 @@ public class Jeu {
         if (plateau.estLibre(position)) {
             cmd = new CoupDeplacer(joueurs[i_joueurs], null, position);
             plateau.ajouterJoueur(position, joueurs[i_joueurs]);
-            if (netUser != null) netUser.sendAction(position);
+            if(netUser != null) netUser.envoieCoup(position);
             getJoueur_en_cours().addBatisseur(position);
             nombre_batisseurs++;
             verificationNbBatisseur();
@@ -262,7 +262,7 @@ public class Jeu {
     }
 
     private void sendMove(Point position) {
-        if (netUser != null && !netUser.isSet_local_change()) netUser.sendAction(position);
+        if(netUser != null && !netUser.estEnModificationsLocal()) netUser.envoieCoup(position);
     }
 
     public void accelererIA(double index_acceleration) {

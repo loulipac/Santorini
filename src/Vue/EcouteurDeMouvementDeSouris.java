@@ -110,7 +110,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 jg.setCursor(c_hourglass);
                 return;
             }
-            if (jeu.getNetUser() != null && jeu.getNetUser().getNum_player() != jeu.getJoueur_en_cours().getNum_joueur()) {
+            if (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueur_en_cours().getNum_joueur()) {
                 jg.setCursor(c_hourglass);
                 return;
             }
