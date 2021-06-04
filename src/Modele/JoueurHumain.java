@@ -7,12 +7,6 @@ public class JoueurHumain extends Joueur {
         super(_jeu, _num_joueur);
     }
 
-    @Override
-    public void joue() {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void joue(Point clic_position) {
         jeu.jouer(clic_position);
     }

@@ -2,6 +2,7 @@ package Vue;
 
 import Modele.Jeu;
 import Modele.Joueur;
+import Modele.JoueurHumain;
 import Modele.JoueurIA;
 
 import static Modele.Constante.*;
@@ -46,7 +47,7 @@ public class EcouteurDeSouris extends MouseAdapter {
             this.largeur_plateau = jg.getTailleCase() * PLATEAU_COLONNES;
             this.hauteur_plateau = jg.getTailleCase() * PLATEAU_LIGNES;
             if (e.getX() <= largeur_plateau && e.getY() <= hauteur_plateau) {
-                joueur_en_cours.joue(new Point(
+                ((JoueurHumain) joueur_en_cours).joue(new Point(
                         e.getY() / jg.getTailleCase(),
                         e.getX() / jg.getTailleCase()
                 ));
