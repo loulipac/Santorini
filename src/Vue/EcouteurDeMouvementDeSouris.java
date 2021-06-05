@@ -36,6 +36,8 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     Cursor c_hand_gris;
     Cursor c_hourglass;
 
+    int numJoueurBleu;
+
     static final Point CENTRE = new Point(16, 16);
     static final Point HAUT_GAUCHE = new Point(0, 0);
 
@@ -46,6 +48,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         this.jg = jg;
         this.jeu = j;
         this.pp = pp;
+        this.numJoueurBleu = (j.getConfigurationPartie().isJoueur1Bleu() ? JOUEUR1 : JOUEUR2);
         c_defaut_gris = creerCurseurGenerique("defaut_gris", HAUT_GAUCHE);
         c_defaut_rouge = creerCurseurGenerique("defaut_rouge", HAUT_GAUCHE);
         c_defaut_bleu = creerCurseurGenerique("defaut_bleu", HAUT_GAUCHE);
@@ -145,7 +148,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     private void setCursor(boolean condition, Cursor gris, Cursor rouge, Cursor bleu) {
         if(condition) {
-            if (jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1) {
+            if (jeu.getJoueur_en_cours().getNum_joueur() == numJoueurBleu) {
                 jg.setCursor(bleu);
             } else {
                 jg.setCursor(rouge);

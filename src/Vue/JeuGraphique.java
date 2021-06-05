@@ -41,6 +41,7 @@ public class JeuGraphique extends JComponent {
     private final Image coupole_tmp;
     private final Image coupole_tmp_transparent;
     private Point case_sous_souris;
+    int numJoueurBleu;
 
     /**
      * Constructeur de JeuGraphique, charge les images en mémoire.
@@ -48,6 +49,7 @@ public class JeuGraphique extends JComponent {
      */
     public JeuGraphique(Jeu j) {
         this.jeu = j;
+        this.numJoueurBleu = (j.getConfigurationPartie().isJoueur1Bleu() ? JOUEUR1 : JOUEUR2);
         case_claire = Utile.readImage(CHEMIN_RESSOURCE + "/cases/case_claire.png");
         case_fonce = Utile.readImage(CHEMIN_RESSOURCE + "/cases/case_fonce.png");
         coupole = Utile.readImage(CHEMIN_RESSOURCE + "/Etages/coupole.png");
@@ -130,7 +132,7 @@ public class JeuGraphique extends JComponent {
 
                     boolean batisseur_selectionne = (batisseurs_ligne == l && batisseurs_colonne == c);
 
-                    if (plateau.getTypeBatisseurs(position) == JOUEUR1) {
+                    if (plateau.getTypeBatisseurs(position) == numJoueurBleu) {
                         image_batisseurs = batisseur_selectionne ? batisseur_bleu_selectionne : batisseur_bleu;
                     } else {
                         image_batisseurs = batisseur_selectionne ? batisseur_rouge_selectionne : batisseur_rouge;
@@ -141,13 +143,13 @@ public class JeuGraphique extends JComponent {
             }
         }
         if(jeu.getSituation() == PLACEMENT && case_sous_souris != null) {
-            Image batisseur = jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? batisseur_bleu_transparent : batisseur_rouge_transparent;
+            Image batisseur = jeu.getJoueur_en_cours().getNum_joueur() == numJoueurBleu ? batisseur_bleu_transparent : batisseur_rouge_transparent;
             if(case_sous_souris != null && plateau.estLibre(new Point(case_sous_souris.y, case_sous_souris.x))) {
                 drawable.drawImage(batisseur, case_sous_souris.x * taille_case, case_sous_souris.y * taille_case, taille_case, taille_case, null);
             }
         } else if (jeu.getSituation() == DEPLACEMENT) {
-            Image pas_joueur = jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? pas_bleu : pas_rouge;
-            Image pas_joueur_hover = jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? pas_bleu_hover : pas_rouge_hover;
+            Image pas_joueur = jeu.getJoueur_en_cours().getNum_joueur() == numJoueurBleu ? pas_bleu : pas_rouge;
+            Image pas_joueur_hover = jeu.getJoueur_en_cours().getNum_joueur() == numJoueurBleu ? pas_bleu_hover : pas_rouge_hover;
 
             for (Point case_autour : plateau.getCasesAccessibles(jeu.getBatisseur_en_cours())) {
                 if(case_sous_souris != null && new Point(case_sous_souris.y, case_sous_souris.x).equals(case_autour)) {

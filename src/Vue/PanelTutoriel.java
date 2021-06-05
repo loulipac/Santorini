@@ -2,6 +2,7 @@ package Vue;
 
 import static Modele.Constante.*;
 
+import Modele.ConfigurationPartie;
 import Modele.Jeu;
 
 import javax.imageio.ImageIO;
@@ -148,7 +149,7 @@ public class PanelTutoriel extends JPanel implements Observer {
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
 
-            jeu = new Jeu(PanelTutoriel.this, 0, 0);
+            jeu = new Jeu(PanelTutoriel.this, new ConfigurationPartie(0, 0));
             jg = new JeuGraphique(jeu);
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg, null));
 

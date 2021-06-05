@@ -3,6 +3,7 @@ package Vue;
 import static Modele.Constante.*;
 
 import IO.IO;
+import Modele.ConfigurationPartie;
 import Modele.Jeu;
 
 import javax.imageio.ImageIO;
@@ -37,6 +38,7 @@ public class PanelPlateau extends JPanel implements Observer {
     VictoirePanel victoire_panel;
     boolean is_finish_draw;
     IO netUser;
+    ConfigurationPartie config;
 
 
     /**
@@ -44,10 +46,9 @@ public class PanelPlateau extends JPanel implements Observer {
      *
      * @see PanelPlateau#initialiserPanel()
      */
-    public PanelPlateau(Dimension _taille_fenetre, int ia1_mode, int ia2_mode) {
+    public PanelPlateau(Dimension _taille_fenetre, ConfigurationPartie config) {
         this.taille_fenetre = _taille_fenetre;
-        this.ia1_mode = ia1_mode;
-        this.ia2_mode = ia2_mode;
+        this.config = config;
         is_finish_draw = false;
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -66,12 +67,12 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     public PanelPlateau(Dimension _taille_fenetre, String filename) {
-        this(_taille_fenetre, 0, 0);
+        this(_taille_fenetre, new ConfigurationPartie(0, 0));
         jeu.charger(filename);
     }
 
     public PanelPlateau(Dimension _taille_fenetre, IO netUser) {
-        this(_taille_fenetre, 0, 0);
+        this(_taille_fenetre, new ConfigurationPartie(0, 0));
         this.netUser = netUser;
         jeu.setNetUser(netUser);
         if (netUser.getNum_player() == JOUEUR1) jt.setText("C'est au tour de " + netUser.getUsername());
@@ -178,7 +179,7 @@ public class PanelPlateau extends JPanel implements Observer {
             bParametres.addActionListener(echap);
             parametres.add(bParametres);
 
-            jeu = new Jeu(PanelPlateau.this, ia1_mode, ia2_mode);
+            jeu = new Jeu(PanelPlateau.this, config);
             jg = new JeuGraphique(jeu);
             if (ia2_mode == 0) {
                 jg.addMouseListener(new EcouteurDeSouris(jg, jeu, PanelPlateau.this));
@@ -735,7 +736,7 @@ public class PanelPlateau extends JPanel implements Observer {
             setMinimumSize(size);
 
 
-            jt = new JLabel("C'est au tour du Joueur 1");
+            jt = new JLabel("C'est au tour du Joueur " + (config.getIndexJoueurCommence() + 1));
             jt.setAlignmentX(CENTER_ALIGNMENT);
             jt.setAlignmentY(CENTER_ALIGNMENT);
             jt.setOpaque(false);
@@ -750,7 +751,7 @@ public class PanelPlateau extends JPanel implements Observer {
         if(netUser != null) {
             f.setPanel(new LobbyPanel(netUser));
         } else {
-            f.setPanel(new PanelPlateau(taille_fenetre, ia1_mode, ia2_mode));
+            f.setPanel(new PanelPlateau(taille_fenetre, new ConfigurationPartie(this.ia1_mode, this.ia2_mode)));
         }
     }
 
@@ -791,7 +792,7 @@ public class PanelPlateau extends JPanel implements Observer {
             if (jeu.estJeufini()) {
                 colonne = colonne_fin;
             } else {
-                colonne = (jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? colonne_bleu : colonne_rouge);
+                colonne = (jeu.getJoueur_en_cours().getNum_joueur() == (config.isJoueur1Bleu() ? JOUEUR1 : JOUEUR2) ? colonne_bleu : colonne_rouge);
             }
 
             // float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre

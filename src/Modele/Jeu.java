@@ -35,19 +35,22 @@ public class Jeu {
     private int i_joueurs;
     IO netUser;
 
+    ConfigurationPartie configurationPartie;
+
     /**
      * Instantie une classe jeu.
      *
      * @param o observateur
      */
-    public Jeu(Observer o, int ia1_mode, int ia2_mode) {
+    public Jeu(Observer o, ConfigurationPartie config) {
         joueurs = new Joueur[2];
         vitesse_ia = 1;
+        configurationPartie = config;
         ia_statut = true;
         situation = PLACEMENT;
         plateau = new Plateau();
         nombre_batisseurs = 0;
-        i_joueurs = 0;
+        i_joueurs = config.getIndexJoueurCommence();
         batisseur_en_cours = null;
         construction_son = new LecteurSon("boulder_drop.wav");
         observateur = o;
@@ -56,12 +59,12 @@ public class Jeu {
         gagnant = null;
         nb_tours = 0;
 
-        if (ia2_mode != 0) {
-            joueurs[0] = new JoueurIA(this, JOUEUR1, setIA(ia1_mode), vitesse_ia);
-            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(ia2_mode), vitesse_ia);
-        } else if (ia1_mode != 0) {
+        if (config.getIaMode2() != 0) {
+            joueurs[0] = new JoueurIA(this, JOUEUR1, setIA(config.getIaMode1()), vitesse_ia);
+            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(config.getIaMode2()), vitesse_ia);
+        } else if (config.getIaMode1() != 0) {
             joueurs[0] = new JoueurHumain(this, JOUEUR1);
-            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(ia1_mode), vitesse_ia);
+            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(config.getIaMode1()), vitesse_ia);
         } else {
             joueurs[0] = new JoueurHumain(this, JOUEUR1);
             joueurs[1] = new JoueurHumain(this, JOUEUR2);
@@ -70,7 +73,7 @@ public class Jeu {
     }
 
     public Jeu(Observer o) {
-        this(o, 0, 0);
+        this(o, new ConfigurationPartie(0, 0));
     }
 
     private IA setIA(int ia_mode) {
@@ -385,6 +388,10 @@ public class Jeu {
     public void setNetUser(IO netUser) {
         this.netUser = netUser;
         netUser.setJeu(this);
+    }
+
+    public ConfigurationPartie getConfigurationPartie() {
+        return configurationPartie;
     }
 
     public IO getNetUser() {

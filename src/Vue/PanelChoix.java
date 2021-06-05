@@ -2,38 +2,42 @@ package Vue;
 
 import Modele.ConfigurationPartie;
 
-import static Modele.Constante.*;
-
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
-class PanelOptions extends JPanel {
-    private static final String TITRE_SECTION1 = "Mode de jeu";
-    private static final String TITRE_SECTION2 = "Difficulté de l'IA";
-    private static final String TITRE_SECTION3 = "Difficulté de l'IA 2";
+import static Modele.Constante.*;
+import static Modele.Constante.CHEMIN_RESSOURCE;
+
+public class PanelChoix extends JPanel {
+
+    private static final String TITRE_PANEL = "Options de partie";
+    private static final String TITRE_SECTION2 = "Qui commence ?";
+    private static final String TITRE_SECTION3 = "Changer les couleurs";
+
+    private final Color BLEU = new Color(70, 153, 206);
+    private final Color ROUGE = new Color(224, 98, 98);
 
     private Bouton bRetour;
     private Bouton bCommencer;
 
-    private final LecteurSon son_bouton;
     Font lilly_belle;
-    Font lohit_bengali;
-    JRadioButton joueur_joueur;
-    JRadioButton joueur_ia;
-    JRadioButton ia_ia;
     Dimension taille_fenetre;
+    ButtonGroup quiCommenceRadioGroupe;
 
-    ButtonGroup adversaires_boutons;
-    ButtonGroup boutons_IA;
-    ButtonGroup boutons_IA_IA;
+    int ia_mode1, ia_mode2;
+
+    boolean joueur1EstBleu = true;
+
+    OptionPanel contenu;
 
 
-    public PanelOptions(Dimension _taille_fenetre) {
-        son_bouton = new LecteurSon("menu_click.wav");
+    public PanelChoix(Dimension _taille_fenetre, ConfigurationPartie config) {
+        this.ia_mode1 = config.getIaMode1();
+        this.ia_mode2 = config.getIaMode2();
+        taille_fenetre = _taille_fenetre;
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
@@ -41,7 +45,6 @@ class PanelOptions extends JPanel {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
         }
         lilly_belle = new Font("Lily Script One", Font.PLAIN, 20);
-        taille_fenetre = _taille_fenetre;
         initialiserPanel();
     }
 
@@ -76,7 +79,7 @@ class PanelOptions extends JPanel {
 
         /* JPanel */
 
-        OptionPanel contenu = new OptionPanel(new Dimension((int) (taille_fenetre.width * 0.55), (int) (taille_panel)));
+        contenu = new OptionPanel(new Dimension((int) (taille_fenetre.width * 0.55), (int) (taille_panel)));
 
         double width_bouton = taille_fenetre.width * 0.25;
         JPanel bouton_bas = new JPanel();
@@ -92,9 +95,6 @@ class PanelOptions extends JPanel {
         bouton_bas.add(bRetour);
         addSeparateur(bouton_bas, new Dimension((int) (taille_fenetre.width * 0.03), (int) (width_bouton * RATIO_BOUTON_CLASSIQUE_INVERSE)));
         bouton_bas.add(bCommencer);
-
-        /* Selection par défaut des boutons radio*/
-        joueur_joueur.setSelected(true);
 
         /* Adding */
         Dimension taille_marge = new Dimension(taille_fenetre.width, (int) (height * ratio_marge));
@@ -112,29 +112,9 @@ class PanelOptions extends JPanel {
 
 
     private class OptionPanel extends JPanel {
-        private ButtonGroup creerDifficulteButton(JPanel parent, Dimension size) {
-            ButtonGroup _group = new ButtonGroup();
 
-            JRadioButton _facile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile",
-                    size, _group);
-            JRadioButton _normale = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale",
-                    size, _group);
-            JRadioButton _difficile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/difficile",
-                    size, _group);
-
-            _facile.setActionCommand(String.valueOf(IA_FACILE));
-            _normale.setActionCommand(String.valueOf(IA_NORMAL));
-            _difficile.setActionCommand(String.valueOf(IA_DIFFICILE));
-
-            parent.add(_facile);
-            parent.add(_normale);
-            parent.add(_difficile);
-
-
-            _facile.setSelected(true);
-
-            return _group;
-        }
+        CarreCouleur carreJ1;
+        CarreCouleur carreJ2;
 
         private JPanel creerButtonRadioPanel() {
             JPanel _e = new JPanel();
@@ -173,98 +153,108 @@ class PanelOptions extends JPanel {
             setPreferredSize(taille_total_panel);
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-            double height = taille_total_panel.height;
-
-            double ratio_marge = 0.10;
-            double height_panel = height - (height * ratio_marge) * 4;
-            double taille_restante = height_panel / 3;
-
             double width_bouton = (taille_total_panel.width - taille_total_panel.width * 0.1) / 3;
-            double height_titre = taille_restante - width_bouton * RATIO_BOUTON_CLASSIQUE_INVERSE;
-
             Dimension taille_bouton = new Dimension((int) (width_bouton), (int) (width_bouton * RATIO_BOUTON_CLASSIQUE_INVERSE));
-            Dimension taille_titre = new Dimension(taille_total_panel.width, (int) height_titre);
-            Dimension taille_panel = new Dimension(taille_total_panel.width, (int) (taille_restante));
 
-            JPanel j_vs_j = creerPanelRadio(taille_panel);
-            JPanel j_vs_ia = creerPanelRadio(taille_panel);
-            JPanel ia_vs_ia = creerPanelRadio(taille_panel);
+            JPanel titrePanel = creerTitre(TITRE_PANEL, 45, new Dimension(taille_total_panel.width, (int) (taille_total_panel.height * 0.20)));
 
 
-            JPanel versus_titre = creerTitre(TITRE_SECTION1, 30, taille_titre);
-            JPanel IA_titre = creerTitre(TITRE_SECTION2, 30, taille_titre);
-            JPanel IAvIA_titre = creerTitre(TITRE_SECTION3, 30, taille_titre);
+            Dimension taille_titre_panel = new Dimension(taille_total_panel.width, (int) (taille_total_panel.height * 0.15));
 
-            JPanel versus_panel = creerButtonRadioPanel();
-            JPanel IA_panel = creerButtonRadioPanel();
-            JPanel IA_IA_panel = creerButtonRadioPanel();
+            JPanel groupeCommence = creerPanelRadio(new Dimension(taille_total_panel.width, (int) (taille_total_panel.height * 0.25)));
+            JPanel quiCommenceTitre = creerTitre(TITRE_SECTION2, 30, taille_titre_panel);
+            JPanel quiCommencePanelBouton = creerButtonRadioPanel();
 
-            /* Boutons*/
-            adversaires_boutons = new ButtonGroup();
-            boutons_IA = creerDifficulteButton(IA_panel, taille_bouton);
-            boutons_IA_IA = creerDifficulteButton(IA_IA_panel, taille_bouton);
+            quiCommenceRadioGroupe = new ButtonGroup();
+            BoutonRadio joueur1Commence = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/commence_j1",
+                    taille_bouton, quiCommenceRadioGroupe);
+            joueur1Commence.setSelected(true);
+            BoutonRadio joueur2Commence = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/commence_j2",
+                    taille_bouton, quiCommenceRadioGroupe);
+            joueur1Commence.setActionCommand("0");
+            joueur2Commence.setActionCommand("1");
 
-            joueur_joueur = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_joueur",
-                    taille_bouton, adversaires_boutons);
-            joueur_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia",
-                    taille_bouton, adversaires_boutons);
-            ia_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/ia_contre_ia",
-                    taille_bouton, adversaires_boutons);
+            quiCommencePanelBouton.add(joueur1Commence);
+            quiCommencePanelBouton.add(joueur2Commence);
 
-            joueur_joueur.setActionCommand("0");
-            joueur_ia.setActionCommand("1");
-            ia_ia.setActionCommand("2");
+            groupeCommence.add(quiCommenceTitre);
+            groupeCommence.add(quiCommencePanelBouton);
 
+            JPanel changerCouleursPanel = creerPanelRadio(new Dimension(taille_total_panel.width, (int) (taille_total_panel.height * 0.35)));
+            JPanel changerCouleursTitre = creerTitre(TITRE_SECTION3, 30, taille_titre_panel);
 
-            joueur_joueur.addActionListener(e -> {
-                j_vs_ia.setVisible(false);
-                ia_vs_ia.setVisible(false);
-            });
+            JPanel changerCouleursPanelBouton = new JPanel();
+            changerCouleursPanelBouton.setOpaque(false);
+            changerCouleursPanelBouton.setLayout(new GridBagLayout());
+            Dimension taille_panel_bouton = new Dimension((int) (taille_total_panel.width * 0.5), (int) (taille_total_panel.height * 0.15));
+            changerCouleursPanelBouton.setMaximumSize(taille_panel_bouton);
+            changerCouleursPanelBouton.setPreferredSize(taille_panel_bouton);
 
-            joueur_ia.addActionListener(e -> {
-                j_vs_ia.setVisible(true);
-                ia_vs_ia.setVisible(false);
-                changeTexte(IA_titre, TITRE_SECTION2);
-            });
+            Bouton changer = new Bouton(CHEMIN_RESSOURCE + "/bouton/changer_couleurs.png", CHEMIN_RESSOURCE + "/bouton/changer_couleurs_hover.png",
+                    taille_bouton, PanelChoix.this::actionChangementCouleur);
 
-            ia_ia.addActionListener(e -> {
-                j_vs_ia.setVisible(true);
-                ia_vs_ia.setVisible(true);
-                changeTexte(IA_titre, TITRE_SECTION2 + " 1");
-            });
+            changerCouleursPanelBouton.add(changer);
 
-            /* Add dans les sous-panel */
-            versus_panel.add(joueur_joueur);
-            versus_panel.add(joueur_ia);
-            versus_panel.add(ia_ia);
+            Dimension tailleCarre = new Dimension((int) (taille_total_panel.width * 0.2), (int) (taille_total_panel.height * 0.10));
+            carreJ1 = new CarreCouleur("Joueur 1", BLEU, tailleCarre);
+            carreJ2 = new CarreCouleur("Joueur 2", ROUGE, tailleCarre);
+            JPanel carres = new JPanel();
+            carres.setOpaque(false);
 
-            j_vs_j.add(versus_titre);
-            j_vs_j.add(versus_panel);
+            carres.add(carreJ1);
+            carres.add(carreJ2);
 
-            j_vs_ia.add(IA_titre);
-            j_vs_ia.add(IA_panel);
+            changerCouleursPanel.add(changerCouleursTitre);
+            changerCouleursPanel.add(changerCouleursPanelBouton);
+            changerCouleursPanel.add(carres);
 
-            ia_vs_ia.add(IAvIA_titre);
-            ia_vs_ia.add(IA_IA_panel);
-
-            Dimension taille_separateur = new Dimension(taille_total_panel.width, (int) (height * ratio_marge));
+            Dimension taille_separateur = new Dimension(taille_total_panel.width, (int) (taille_total_panel.height * 0.05));
+            add(titrePanel);
             addSeparateur(this, taille_separateur);
-            add(j_vs_j);
+            add(groupeCommence);
             addSeparateur(this, taille_separateur);
-            add(j_vs_ia);
-            addSeparateur(this, taille_separateur);
-            add(ia_vs_ia);
-            addSeparateur(this, taille_separateur);
-
-            j_vs_ia.setVisible(false);
-            ia_vs_ia.setVisible(false);
+            add(changerCouleursPanel);
         }
 
+        public class CarreCouleur extends JPanel {
+            Dimension tailleCarre;
 
-        public void changeTexte(JPanel _jp, String texte) {
-            for (Component jc : _jp.getComponents()) {
-                JLabel label = (JLabel) jc;
-                label.setText(texte);
+            Color couleur;
+
+            public CarreCouleur(String numJoueur, Color couleur, Dimension tailleCarre) {
+                this.tailleCarre = tailleCarre;
+                this.couleur = couleur;
+                setOpaque(false);
+                setLayout(new GridBagLayout());
+                JLabel texte = new JLabel(numJoueur);
+                texte.setForeground(Color.white);
+                texte.setFont(lilly_belle);
+                setMaximumSize(tailleCarre);
+                setPreferredSize(tailleCarre);
+                add(texte);
+            }
+
+            public void changerCouleur(Color couleur) {
+                this.couleur = couleur;
+                repaint();
+            }
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.clearRect(0, 0, tailleCarre.width, tailleCarre.height);
+                g.setColor(couleur);
+                g.fillRect(0, 0, tailleCarre.width, tailleCarre.height);
+            }
+        }
+
+        public void switchCouleur() {
+            if(!joueur1EstBleu) {
+                carreJ1.changerCouleur(ROUGE);
+                carreJ2.changerCouleur(BLEU);
+            } else {
+                carreJ1.changerCouleur(BLEU);
+                carreJ2.changerCouleur(ROUGE);
             }
         }
 
@@ -281,9 +271,13 @@ class PanelOptions extends JPanel {
      * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonRetourMenu(ActionEvent e) {
-        son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("menu");
+    }
+
+    public void actionChangementCouleur(ActionEvent e) {
+        joueur1EstBleu = !joueur1EstBleu;
+        contenu.switchCouleur();
     }
 
     private void addSeparateur(JPanel parent, Dimension taille) {
@@ -298,22 +292,16 @@ class PanelOptions extends JPanel {
      */
     public void actionBoutonCommencer(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        int ia_mode2 = 0;
-        int ia_mode1 = 0;
+        ConfigurationPartie config = new ConfigurationPartie(ia_mode1, ia_mode2);
 
-        switch (Integer.parseInt(adversaires_boutons.getSelection().getActionCommand())) {
-            case 2:
-                ia_mode1 = Integer.parseInt(boutons_IA.getSelection().getActionCommand());
-                ia_mode2 = Integer.parseInt(boutons_IA_IA.getSelection().getActionCommand());
-                break;
-            case 1:
-                ia_mode1 = Integer.parseInt(boutons_IA.getSelection().getActionCommand());
-                break;
-            default:
-                break;
-        }
+        config.setJoueur1Bleu(joueur1EstBleu);
 
-        f.setPanel(new PanelChoix(taille_fenetre, new ConfigurationPartie(ia_mode1, ia_mode2)));
+        // vaut 0 ou 1
+        int quiCommence = Integer.parseInt(quiCommenceRadioGroupe.getSelection().getActionCommand());
+
+        config.setIndexJoueurCommence(quiCommence);
+
+        f.setPanel(new PanelPlateau(getSize(), config));
     }
 
     @Override
