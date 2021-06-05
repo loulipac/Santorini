@@ -52,4 +52,11 @@ public class EcouteurDeSouris extends MouseAdapter {
             jg.repaint();
         }
     }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        super.mouseExited(e);
+        jg.setCase_sous_souris(null);
+        jg.repaint();
+    }
 }

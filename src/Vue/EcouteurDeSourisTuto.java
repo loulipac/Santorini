@@ -67,4 +67,13 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
             pt.changerEtape();
         }
     }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+        super.mouseExited(e);
+        pt.getJg().setCase_sous_souris(null);
+        pt.getJg().repaint();
+    }
+
+
 }

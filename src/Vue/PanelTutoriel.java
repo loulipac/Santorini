@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Classe générant la fenêtre Tutoriel.
  */
-public class PanelTutoriel extends JPanel implements Observateur {
+public class PanelTutoriel extends Panels implements Observateur {
     private final LecteurSon son_bouton;
     JeuTuto jeu_tuto;
     JeuGraphiqueTuto jg;
@@ -37,6 +37,9 @@ public class PanelTutoriel extends JPanel implements Observateur {
      * @see PanelTutoriel#initialiserPanel()
      */
     public PanelTutoriel(Dimension _taille_fenetre) {
+
+        is_finish_draw = false;
+
         this.taille_fenetre = _taille_fenetre;
         son_bouton = new LecteurSon("menu_click.wav");
 
@@ -57,6 +60,8 @@ public class PanelTutoriel extends JPanel implements Observateur {
 
         setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("sword", new Point(0, 0)));
 
+        jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu_tuto, jg, PanelTutoriel.this));
+        is_finish_draw = true;
     }
 
     /**

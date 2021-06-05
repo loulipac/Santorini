@@ -17,7 +17,7 @@ import java.util.ArrayList;
 /**
  * Classe générant la fenêtre de jeu.
  */
-public class PanelPlateau extends JPanel implements Observateur {
+public class PanelPlateau extends Panels implements Observateur {
 
     private Jeu jeu;
     private JeuGraphique jg;

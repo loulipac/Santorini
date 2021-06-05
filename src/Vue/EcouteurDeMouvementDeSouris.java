@@ -16,7 +16,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     JeuGraphique jg;
     Jeu jeu;
-    PanelPlateau pp;
+    Panels p;
     int largeur_plateau;
     int hauteur_plateau;
     Cursor c_pas_bleu;
@@ -44,10 +44,10 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     /**
      * Constructeur qui génère un ensemble de curseur.
      */
-    public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg, PanelPlateau pp) {
+    public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg, Panels p) {
         this.jg = jg;
         this.jeu = j;
-        this.pp = pp;
+        this.p = p;
         this.numJoueurBleu = (j.getConfigurationPartie().isJoueur1Bleu() ? JOUEUR1 : JOUEUR2);
         c_defaut_gris = creerCurseurGenerique("defaut_gris", HAUT_GAUCHE);
         c_defaut_rouge = creerCurseurGenerique("defaut_rouge", HAUT_GAUCHE);
@@ -102,7 +102,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
             int pos_x = e.getX() / jg.getTailleCase();
             int pos_y = e.getY() / jg.getTailleCase();
             Point position = new Point(pos_y, pos_x);
-            if (pos_x > 5 || pos_y > 5) {
+            if (pos_x > 4 || pos_y > 4) {
                 return;
             }
 
@@ -117,10 +117,12 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
             if (jeu.getSituation() == PLACEMENT) {
 
-                setCursor((jg.getJeu().estAtteignable(position)), c_hand_gris, c_hand_rouge, c_hand_bleu);
-                jg.setCase_sous_souris(new Point(pos_x, pos_y));
-                jg.repaint();
-            }
+                    setCursor((jg.getJeu().estAtteignable(position)), c_hand_gris, c_hand_rouge, c_hand_bleu);
+                    jg.setCase_sous_souris(new Point(pos_x, pos_y));
+                    jg.repaint();
+                }
+
+
             if (jeu.getSituation() == DEPLACEMENT) {
 
                 if (jg.getJeu().estAtteignable(position)) {
@@ -157,6 +159,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
             jg.setCursor(gris);
         }
     }
+
 
 
 }

@@ -14,7 +14,7 @@ import java.awt.*;
 public class JeuGraphique extends JComponent {
     private final Plateau plateau;
     private Jeu jeu;
-    private int taille_case;
+    protected int taille_case;
     private final Image case_claire;
     private final Image case_fonce;
     private final Image coupole;
