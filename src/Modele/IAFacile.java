@@ -35,7 +35,7 @@ public class IAFacile implements IA {
         }
     }
 
-    private Point joueDeplacement() {
+    protected Point joueDeplacement() {
         Point batisseur = batisseurs.get(index_batisseur);
         ArrayList<Point> accessibles = j.getPlateau().getCasesAccessibles(batisseur);
         Point case_random = accessibles.get(random.nextInt(accessibles.size()));
@@ -43,20 +43,20 @@ public class IAFacile implements IA {
         return case_random;
     }
 
-    private Point joueConstruction() {
+     protected Point joueConstruction() {
         Point batisseur = batisseurs.get(index_batisseur);
         ArrayList<Point> construction_possible = j.getPlateau().getConstructionsPossible(batisseur);
         Point  case_random = construction_possible.get(random.nextInt(construction_possible.size()));
         return case_random;
     }
 
-    private Point joueSelection() {
+    protected Point joueSelection() {
         index_batisseur = random.nextInt(2);
         Point batisseur = batisseurs.get(index_batisseur);
         return batisseur;
     }
 
-    private Point jouePlacement() {
+    protected Point jouePlacement() {
         int colonnes = j.getPlateau().getColonnes();
         int lignes = j.getPlateau().getLignes();
         Point case_alea = null;
