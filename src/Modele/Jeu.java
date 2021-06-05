@@ -78,7 +78,7 @@ public class Jeu {
             case 1 -> new IAFacile(this);
             case 2 -> new IAFacile(this);
             case 3 -> new IAFacile(this);
-            default ->  null;
+            default -> null;
         };
     }
 
@@ -87,7 +87,7 @@ public class Jeu {
      */
     public void jouer(Point position) {
         cmd = null;
-        situation = plateau.estBatisseur(position,getJoueur_en_cours()) && situation == DEPLACEMENT ? SELECTION: situation;
+        situation = plateau.estBatisseur(position, getJoueur_en_cours()) && situation == DEPLACEMENT ? SELECTION : situation;
         switch (situation) {
             case PLACEMENT -> jouePlacement(position);
             case SELECTION -> joueSelection(position);
@@ -102,7 +102,7 @@ public class Jeu {
         if (plateau.estLibre(position)) {
             cmd = new CoupDeplacer(joueurs[i_joueurs], null, position);
             plateau.ajouterJoueur(position, joueurs[i_joueurs]);
-            if(netUser != null) netUser.sendAction(position);
+            if (netUser != null) netUser.sendAction(position);
             getJoueur_en_cours().addBatisseur(position);
             nombre_batisseurs++;
             verificationNbBatisseur();
@@ -193,7 +193,24 @@ public class Jeu {
         changerJoueur();
         batisseur_en_cours = null;
         MAJObservateur();
+        if (checkPerdu()) {
+            return;
+        }
         iaJoue();
+    }
+
+    private boolean checkPerdu() {
+        ArrayList<Point> batisseur_joueur = getJoueur_en_cours().getBatisseurs();
+        if(batisseur_joueur.size() < 2) return false;
+        if (plateau.getCasesAccessibles(batisseur_joueur.get(0)).isEmpty() &&
+                plateau.getCasesAccessibles(batisseur_joueur.get(1)).isEmpty()
+        ) {
+            gagnant = joueurs[(i_joueurs + 1) % joueurs.length];
+            jeu_fini = true;
+            observateur.miseAjour();
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -242,7 +259,7 @@ public class Jeu {
     }
 
     private void sendMove(Point position) {
-        if(netUser != null && !netUser.isSet_local_change()) netUser.sendAction(position);
+        if (netUser != null && !netUser.isSet_local_change()) netUser.sendAction(position);
     }
 
     public void accelererIA(double index_acceleration) {
@@ -273,21 +290,19 @@ public class Jeu {
     }
 
     public boolean annuler() {
-        if (histo.peutAnnuler()){
+        if (histo.peutAnnuler()) {
             histo.annuler();
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
 
     public boolean refaire() {
-        if (histo.peutRefaire()){
+        if (histo.peutRefaire()) {
             histo.refaire();
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
