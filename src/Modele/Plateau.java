@@ -283,8 +283,10 @@ public class Plateau {
             if (case_existe_droite && peutConstruire(new Point(batisseurs.x - 1, batisseurs.y + 1), batisseurs)) {
                 constructions_possibles.add(new Point(l - 1, c + 1));
             }
-            if (peutConstruire(new Point(batisseurs.x - 1, batisseurs.y), batisseurs))
+            if (peutConstruire(new Point(batisseurs.x - 1, batisseurs.y), batisseurs)) {
                 constructions_possibles.add(new Point(l - 1, c));
+            }
+
         }
         if (case_existe_bas) {
             if (case_existe_gauche && peutConstruire(new Point(batisseurs.x + 1, batisseurs.y - 1), batisseurs)) {
@@ -293,9 +295,12 @@ public class Plateau {
             if (case_existe_droite && peutConstruire(new Point(batisseurs.x + 1, batisseurs.y + 1), batisseurs)) {
                 constructions_possibles.add(new Point(l + 1, c + 1));
             }
-            if (peutConstruire(new Point(batisseurs.x + 1, batisseurs.y), batisseurs))
+            if (peutConstruire(new Point(batisseurs.x + 1, batisseurs.y), batisseurs)) {
                 constructions_possibles.add(new Point(l + 1, c));
+            }
+
         }
+
         if (case_existe_gauche && peutConstruire(new Point(batisseurs.x, batisseurs.y - 1), batisseurs)) {
             constructions_possibles.add(new Point(batisseurs.x, batisseurs.y - 1));
         }
@@ -359,7 +364,6 @@ public class Plateau {
     private int getCase(Point position) {
         return cases[position.x][position.y];
     }
-
 
     public int getLignes() {
         return lignes;
