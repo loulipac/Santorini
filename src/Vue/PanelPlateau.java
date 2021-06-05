@@ -747,11 +747,18 @@ public class PanelPlateau extends JPanel implements Observer {
 
     public void actionBoutonNouvelle(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.setPanel(new PanelPlateau(taille_fenetre, ia1_mode, ia2_mode));
+        if(netUser != null) {
+            f.setPanel(new LobbyPanel(netUser));
+        } else {
+            f.setPanel(new PanelPlateau(taille_fenetre, ia1_mode, ia2_mode));
+        }
     }
 
     public void actionQuitter(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        if(netUser != null) {
+            netUser.deconnexion();
+        }
         f.displayPanel("menu");
     }
 
