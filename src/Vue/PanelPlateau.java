@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Classe générant la fenêtre de jeu.
  */
-public class PanelPlateau extends JPanel implements Observateur {
+public class PanelPlateau extends Panels implements Observateur {
 
     private Jeu jeu;
     private JeuGraphique jg;
@@ -36,7 +36,6 @@ public class PanelPlateau extends JPanel implements Observateur {
     Image colonne_fin;
     ParametrePanel pp;
     VictoirePanel victoire_panel;
-    boolean is_finish_draw;
     IO netUser;
 
     /**
@@ -48,6 +47,30 @@ public class PanelPlateau extends JPanel implements Observateur {
         this.taille_fenetre = _taille_fenetre;
         this.ia1_mode = ia1_mode;
         this.ia2_mode = ia2_mode;
+        is_finish_draw = false;
+        try {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
+
+        } catch (IOException | FontFormatException e) {
+            System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
+        }
+        lilly_belle = new Font("Lily Script One", Font.PLAIN, 40);
+        initialiserPanel();
+
+        colonne_rouge = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
+        colonne_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
+        colonne_fin = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_berger.png");
+        arriere_plan = Utile.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
+    }
+
+    /**
+     * Initialise la fenêtre de jeu et charge la police et les images en mémoire.
+     *
+     * @see PanelPlateau#initialiserPanel()
+     */
+    public PanelPlateau(Dimension _taille_fenetre) {
+        this.taille_fenetre = _taille_fenetre;
         is_finish_draw = false;
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();

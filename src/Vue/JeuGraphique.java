@@ -13,7 +13,7 @@ import java.awt.*;
 public class JeuGraphique extends JComponent {
     private final Plateau plateau;
     private Jeu jeu;
-    private int taille_case;
+    protected int taille_case;
     private final Image case_claire;
     private final Image case_fonce;
     private final Image coupole;
@@ -26,21 +26,21 @@ public class JeuGraphique extends JComponent {
     private final Image batisseur_bleu_selectionne;
     private final Image batisseur_bleu_transparent;
     private final Image batisseur_rouge_transparent;
-    private final Image pas_rouge;
-    private final Image pas_rouge_hover;
-    private final Image pas_bleu;
-    private final Image pas_bleu_hover;
+    protected final Image pas_rouge;
+    protected final Image pas_rouge_hover;
+    protected final Image pas_bleu;
+    protected final Image pas_bleu_hover;
     private final Image outil_bleu;
     private final Image outil_rouge;
-    private final Image etage_1_tmp;
-    private final Image etage_1_tmp_transparent;
-    private final Image etage_2_tmp;
-    private final Image etage_2_tmp_transparent;
-    private final Image etage_3_tmp;
-    private final Image etage_3_tmp_transparent;
-    private final Image coupole_tmp;
-    private final Image coupole_tmp_transparent;
-    private Point case_sous_souris;
+    protected final Image etage_1_tmp;
+    protected final Image etage_1_tmp_transparent;
+    protected final Image etage_2_tmp;
+    protected final Image etage_2_tmp_transparent;
+    protected final Image etage_3_tmp;
+    protected final Image etage_3_tmp_transparent;
+    protected final Image coupole_tmp;
+    protected final Image coupole_tmp_transparent;
+    protected Point case_sous_souris;
 
     /**
      * Constructeur de JeuGraphique, charge les images en mémoire.
@@ -167,7 +167,7 @@ public class JeuGraphique extends JComponent {
         }
     }
 
-    private void setPreviewBatiment(Graphics2D drawable, Point constructions_autour, Image etage_1_tmp_transparent, Image etage_2_tmp_transparent, Image etage_3_tmp_transparent, Image coupole_tmp_transparent) {
+    protected void setPreviewBatiment(Graphics2D drawable, Point constructions_autour, Image etage_1_tmp_transparent, Image etage_2_tmp_transparent, Image etage_3_tmp_transparent, Image coupole_tmp_transparent) {
         Image batiment;
         switch (plateau.getTypeBatiments(constructions_autour)) {
             case VIDE -> batiment = etage_1_tmp_transparent;

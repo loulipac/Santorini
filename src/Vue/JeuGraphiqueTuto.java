@@ -6,6 +6,7 @@ import Patterns.Observateur;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
 
 import static Modele.Constante.*;
 
@@ -31,6 +32,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         this.num_etape = num_etape;
         this.o = o;
         timer = new Timer(VITESSE_BASE, e -> animationEtapes());
+
     }
 
     /**
@@ -58,17 +60,62 @@ public class JeuGraphiqueTuto extends JeuGraphique {
                 break;
             case 6:
                 dessinerRectangle(drawable, new Point(1, 2), c_fond, c_bordure);
+                afficherBatisseurs(new Point(1,1), drawable);
                 break;
-            case 8, 10, 17:
+            case 8 :
                 dessinerRectangle(drawable, new Point(2, 2), c_fond, c_bordure);
+                afficherBatiments(new Point(1, 2), drawable);
                 break;
-            case 12, 15:
+
+            case 10, 17:
+                dessinerRectangle(drawable, new Point(2, 2), c_fond, c_bordure);
+                afficherBatisseurs(new Point(1, 2), drawable);
+                break;
+            case 12:
                 dessinerRectangle(drawable, new Point(3, 3), c_fond, c_bordure);
+                afficherBatiments(new Point(2, 2), drawable);
+                break;
+            case 15:
+                dessinerRectangle(drawable, new Point(3, 3), c_fond, c_bordure);
+                afficherBatiments(new Point(2, 2), drawable);
                 break;
             default:
                 break;
         }
     }
+
+
+    private void afficherBatiments(Point position, Graphics2D drawable){
+        int x = position.x;
+        int y = position.y;
+        ArrayList<Point> cases_acessibles = jeu_tuto.getPlateau().getCasesAccessibles(position);
+
+        for (Point pos : cases_acessibles) {
+            if(case_sous_souris != null && new Point(case_sous_souris.y, case_sous_souris.x).equals(pos)) {
+                setPreviewBatiment(drawable, pos, etage_1_tmp, etage_2_tmp, etage_3_tmp, coupole_tmp);
+            } else {
+                setPreviewBatiment(drawable, pos, etage_1_tmp_transparent, etage_2_tmp_transparent, etage_3_tmp_transparent, coupole_tmp_transparent);
+            }
+        }
+    }
+
+
+    private void afficherBatisseurs(Point position, Graphics2D drawable){
+        Image pas_joueur = jeu_tuto.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? pas_bleu : pas_rouge;
+        Image pas_joueur_hover = jeu_tuto.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? pas_bleu_hover : pas_rouge_hover;
+
+        ArrayList<Point> cases_acessibles = jeu_tuto.getPlateau().getCasesAccessibles(position);
+
+        for (Point pos : cases_acessibles) {
+            if(case_sous_souris != null && new Point(case_sous_souris.y, case_sous_souris.x).equals(pos)) {
+                drawable.drawImage(pas_joueur_hover, pos.y * taille_case, pos.x * taille_case, taille_case, taille_case, null);
+            } else {
+                drawable.drawImage(pas_joueur, pos.y * taille_case, pos.x * taille_case, taille_case, taille_case, null);
+            }
+        }
+    }
+
+
 
     /**
      * Redirige vers des sous-fonction d'animation en fonction du numéro d'étape
