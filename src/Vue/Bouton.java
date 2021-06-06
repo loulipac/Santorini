@@ -59,6 +59,8 @@ public class Bouton extends JButton {
         if(image.equals(this.image) && imageHover.equals(this.imageHover)) {
             return;
         }
+        this.image = image;
+        this.imageHover = imageHover;
         ImageIcon iconButton = scaleImage(image, hauteur, largeur);
         setIcon(iconButton);
         ImageIcon iconButtonHover = scaleImage(imageHover, hauteur, largeur);

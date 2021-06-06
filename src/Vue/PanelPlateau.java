@@ -271,7 +271,7 @@ public class PanelPlateau extends JPanel implements Observer {
             JPanel panel_vit_ia = null;
             JPanel vit_ia_bouton = null;
 
-            if (ia1_mode != 0) {
+            if (config.getIaMode1() != 0) {
                 // titre IA
                 panel_ia = creerTitre("IA", TITRE_TAILLE, size_pane);
 
@@ -325,7 +325,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
             add(panel_historique);
             add(histo_bouton);
-            if (ia1_mode != 0) {
+            if (config.getIaMode1() != 0) {
                 add(panel_ia);
                 add(ia_bouton);
                 add(panel_vit_ia);
