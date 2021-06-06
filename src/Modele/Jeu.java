@@ -348,9 +348,9 @@ public class Jeu {
     }
 
     public Joueur getJoueurType_en_cours() {
-        if (joueur_en_cours == j1.getNum_joueur()) {
+        if (joueur_en_cours == JOUEUR1) {
             return j1;
-        } else if (joueur_en_cours == j2.getNum_joueur()) {
+        } else if (joueur_en_cours == JOUEUR2) {
             return j2;
         } else {
             return null;
@@ -447,6 +447,6 @@ public class Jeu {
     }
 
     public static int getAutreJoueur(int joueur){
-        return (joueur % Constante.JOUEUR2) + Constante.JOUEUR1;
+        return (joueur == JOUEUR2 ? JOUEUR1: JOUEUR2);
     }
 }
