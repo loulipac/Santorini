@@ -126,7 +126,7 @@ public class Jeu {
     }
 
     public void setBatisseursJoueur(ArrayList<Point> batisseursJoueur) {
-        getJoueurType_en_cours().batisseurs = batisseursJoueur;
+        getJoueur_en_cours().batisseurs = batisseursJoueur;
     }
 
 
@@ -167,9 +167,9 @@ public class Jeu {
     }
 
     public void verificationNbBatisseur() {
-        if (nombre_batisseurs == 4) {
-            plateau.cases = new int[][]{{8, 2, 17, 1, 0}, {17, 2, 9, 0, 0}, {0, 3, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}};
-        }
+//        if (nombre_batisseurs == 4) {
+//            plateau.setCases(new int[][]{{8, 2, 17, 1, 0}, {17, 2, 9, 0, 0}, {0, 3, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}});
+//        }
         if (nombre_batisseurs % 2 == 0) {
             finTour();
         }
@@ -275,8 +275,8 @@ public class Jeu {
      * Si c'est le cas, le jeu s'arrête et l'observateur est notifié de la victoire.
      */
     public void victoireJoueur() {
-        if (batisseur_en_cours != null && plateau.getTypeBatiments(batisseur_en_cours) == Plateau.TOIT) {
-            gagnant = getJoueurType_en_cours();
+        if (batisseur_en_cours != null && plateau.getTypeBatiments(batisseur_en_cours) == TOIT) {
+            gagnant = getJoueur_en_cours();
             jeu_fini = true;
             observateur.miseAjour();
         }
@@ -350,21 +350,11 @@ public class Jeu {
         return joueurs[i_joueurs];
     }
 
-    public Joueur getJoueurType_en_cours() {
-        if (joueur_en_cours == JOUEUR1) {
-            return j1;
-        } else if (joueur_en_cours == JOUEUR2) {
-            return j2;
-        } else {
-            return null;
-        }
-    }
-
-    public void updateBatisseur(int index_batisseur, Point newPos, int joueur) {
-        if (joueur == j1.getNum_joueur()) {
-            j1.getBatisseurs().set(index_batisseur, newPos);
-        } else if (joueur_en_cours == j2.getNum_joueur()) {
-            j2.getBatisseurs().set(index_batisseur, newPos);
+    public void updateBatisseur(int index_batisseur, Point newPos, int numJoueur) {
+        if (numJoueur == joueurs[0].getNum_joueur()) {
+            joueurs[0].getBatisseurs().set(index_batisseur, newPos);
+        } else if (numJoueur == joueurs[1].getNum_joueur()) {
+            joueurs[1].getBatisseurs().set(index_batisseur, newPos);
         }
     }
 

@@ -145,8 +145,8 @@ public class JeuSimulation {
     }
 
     public void joueConstruction(Point position) {
-        if (plateau.peutConstruire(position, batisseur_en_cours)
-                && plateau.ameliorerBatiment(position)) {
+        if (plateau.peutConstruire(position, batisseur_en_cours)) {
+            plateau.ameliorerBatiment(position);
             // fin du tour
             batisseur_en_cours = null;
         }

@@ -141,6 +141,10 @@ public class Plateau {
         return getTypeBatisseurs(position) == joueur.getNum_joueur();
     }
 
+    public boolean estBatisseur(Point position, int numJoueur) {
+        return getTypeBatisseurs(position) == numJoueur;
+    }
+
 
     public ArrayList<Point> rechercherBatisseurs(int joueur) {
         ArrayList<Point> batisseurs = new ArrayList<Point>();
@@ -189,6 +193,10 @@ public class Plateau {
      */
     public void ajouterJoueur(Point position, Joueur joueur) {
         setCase(position, (getTypeBatiments(position) | joueur.getNum_joueur()));
+    }
+
+    public void ajouterJoueur(Point position, int numJoueur) {
+        setCase(position, (getTypeBatiments(position) | numJoueur));
     }
 
     /**
@@ -380,6 +388,14 @@ public class Plateau {
     
     public int getLignes() {
         return lignes;
+    }
+
+    public int getColonnes() {
+        return colonnes;
+    }
+
+    public void setCases(int[][] cases) {
+        this.cases = cases;
     }
 
     public int getCase(Point position) {

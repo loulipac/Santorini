@@ -43,7 +43,7 @@ public class Constante {
             {100, 50, 25, 12, 0},
             {0, 100, 50, 25, 12},
             {0, 0, 100, 50, 25},
-            {0, 0, 0, 0, 100}
+            {0, 0, 0, 0, 100},
             {0, 0, 0, 100, 50},
     };
     public static final int PLATEAU_LIGNES = 5;

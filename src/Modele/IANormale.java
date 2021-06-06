@@ -57,14 +57,12 @@ public class IANormale extends IAFacile {
 
     public ArrayList<Point> deplacementGagnant(){
 
-        int moi = j.getJoueur_en_cours();
-
         ArrayList<Point> mesBatisseurs;
         ArrayList<Point> casesAccessibles;
 
         ArrayList<Point> sequenceGagnante = new ArrayList<>();
 
-        mesBatisseurs = j.getBatisseurs(moi); //lui même ?
+        mesBatisseurs = j.getBatisseurs(); //lui même ?
 
         for (Point batisseurActuel : mesBatisseurs){
             casesAccessibles = j.getPlateau().getCasesAccessibles(batisseurActuel);
@@ -94,8 +92,7 @@ public class IANormale extends IAFacile {
 
     public ArrayList<Point> contre(){
 
-        int moi = j.getJoueur_en_cours();
-        int adversaire = j.getAutreJoueur(j.getJoueur_en_cours());
+        int adversaire = Jeu.getAutreJoueur(j.getJoueur_en_cours().getNum_joueur());
 
         ArrayList<Point> mesBatisseurs;
         ArrayList<Point> casesAccessibles;
@@ -104,7 +101,7 @@ public class IANormale extends IAFacile {
 
         ArrayList<Point> contre = new ArrayList<>();
 
-        mesBatisseurs = j.getBatisseurs(moi);
+        mesBatisseurs = j.getBatisseurs();
 
         for (Point batisseurActuel : mesBatisseurs){
             casesAccessibles = j.getPlateau().getCasesAccessibles(batisseurActuel);

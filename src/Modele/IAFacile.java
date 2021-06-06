@@ -54,7 +54,7 @@ public class IAFacile implements IA {
      *
      * @return position de la case à construire
      */
-    private Point joueConstruction() {
+    public Point joueConstruction() {
         Point batisseur = batisseurs.get(index_batisseur);
         ArrayList<Point> construction_possible = j.getPlateau().getConstructionsPossible(batisseur);
         return construction_possible.get(random.nextInt(construction_possible.size()));
@@ -79,7 +79,7 @@ public class IAFacile implements IA {
      *
      * @return position du batisseur à poser
      */
-    private Point jouePlacement() {
+    public Point jouePlacement() {
         Point case_alea;
         do {
             case_alea = new Point(
