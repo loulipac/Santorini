@@ -59,15 +59,18 @@ public class IADifficile implements IA {
         boolean jeu_fini = impossibleDeJouer_j1 || impossibleDeJouer_j2 || aGagne_j1 || aGagne_j2;
 
         boolean est_joueur_maximise = joueur_en_cours == joueur_maximise;
+        boolean est_sur_toit;
 
         meilleur_score = est_joueur_maximise ? Float.MIN_VALUE : Float.MAX_VALUE;
 //        if (jeu_fini) {
 ////            System.out.println("Jeu est fini");
 //            return 100000000;
 //        }
+        int multi = jeu_fini ? (profondeur_max - profondeur_en_cours + 1) : 1;
+//        int multi = 1;
 
         if (profondeur_en_cours == profondeur_max || jeu_fini) {
-            return calculerHeuristique(plateau, autre_joueur, 1);
+            return multi*calculerHeuristique(plateau, autre_joueur, 1,profondeur_en_cours);
         }
 
         ArrayList<Point> batisseurs = new ArrayList<>(plateau.rechercherBatisseurs(joueur_en_cours));
@@ -81,17 +84,22 @@ public class IADifficile implements IA {
                 for (Point construction : nouveau_plateau.getConstructionsPossible(deplacement)) {
                     Coups coup_actuel = new Coups(batisseur, deplacement, construction);
 
-                    nouveau_plateau.ameliorerBatiment(construction);
+                    est_sur_toit = plateau.getTypeBatiments(deplacement)== TOIT;
+                    if(!est_sur_toit){
+                        nouveau_plateau.ameliorerBatiment(construction);
+                    }
 
                     score_actuel = minimax(nouveau_plateau, joueur_maximise, autre_joueur, profondeur_en_cours + 1);
 
-                    nouveau_plateau.degraderBatiment(construction);
+                    if(!est_sur_toit){
+                        nouveau_plateau.degraderBatiment(construction);
+                    }
 
                     if ((est_joueur_maximise && score_actuel > meilleur_score) || (!est_joueur_maximise && score_actuel < meilleur_score)) {
                             meilleur_score = score_actuel;
                             if(profondeur_en_cours == 0) {
-                            meilleur_coup = coup_actuel;
-                            System.out.println(meilleur_score);
+                                meilleur_coup = coup_actuel;
+                              System.out.println(meilleur_score);
                             }
                     }
                 }
@@ -170,12 +178,13 @@ public class IADifficile implements IA {
         return heuristique_joueur;
     }
 
-    private float calculerHeuristique(Plateau plateau, int joueur_evalue, int strategie) {
+    private float calculerHeuristique(Plateau plateau, int joueur_evalue, int strategie, int profondeur) {
 
         int poidsDifferenceDesHauteurs, poidsMobiliteVerticale,poidsCaseCentrale ,poidsMenaceNiveau2;
         poidsDifferenceDesHauteurs = poidsMobiliteVerticale = poidsCaseCentrale = poidsMenaceNiveau2 = 0;
 
         int autre_joueur = Jeu.getAutreJoueur(joueur_evalue);
+
 
         switch (strategie) {
             case 1:
@@ -189,11 +198,11 @@ public class IADifficile implements IA {
         float diff_hauteur = poidsDifferenceDesHauteurs * (calculerHeuristiqueDifferenceDesHauteurs(plateau, joueur_evalue) - calculerHeuristiqueDifferenceDesHauteurs(plateau, autre_joueur));
         float mobilite_verticale =  poidsMobiliteVerticale * (calculerHeuristiqueMobiliteVerticale(plateau, joueur_evalue) - calculerHeuristiqueMobiliteVerticale(plateau, autre_joueur));
         float case_centrale = + poidsCaseCentrale * (calculerHeuristiqueCaseCentrale(plateau, joueur_evalue) - calculerHeuristiqueCaseCentrale(plateau, autre_joueur));
-        float menace =  poidsMenaceNiveau2 * (calculerHeuristiqueMenaceNiveau2(plateau, joueur_evalue));
+        float menace =  poidsMenaceNiveau2 * (calculerHeuristiqueMenaceNiveau2(plateau, joueur_evalue) - calculerHeuristiqueMenaceNiveau2(plateau, autre_joueur));
 
 //        System.out.println();
 //        System.out.println();
-//        System.out.println("Print heuristique");
+//        System.out.println("Print heuristique, profondeur : "+profondeur);
 //        System.out.println(plateau);
 //        System.out.println("diff hauteur :"+diff_hauteur);
 //        System.out.println("mobilite_verticale :"+mobilite_verticale);

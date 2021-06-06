@@ -18,6 +18,8 @@ public class Plateau {
      */
     public Plateau() {
         cases = new int[PLATEAU_LIGNES][PLATEAU_COLONNES];
+        lignes =PLATEAU_LIGNES;
+        colonnes=PLATEAU_COLONNES;
     }
 
     public Plateau(Plateau plateau) {

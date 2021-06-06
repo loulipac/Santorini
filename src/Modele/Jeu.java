@@ -76,7 +76,7 @@ public class Jeu {
     public Jeu(Observateur o) {
         this(o, new ConfigurationPartie(0, 0));
     }
-    
+
     public void setSimulation(boolean statut) {
         in_simulation = statut;
     }
@@ -168,7 +168,18 @@ public class Jeu {
 
     public void verificationNbBatisseur() {
 //        if (nombre_batisseurs == 4) {
-//            plateau.setCases(new int[][]{{8, 2, 17, 1, 0}, {17, 2, 9, 0, 0}, {0, 3, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}});
+//            plateau.cases = new int[][]{
+//                    {8, 2, 17, 1, 0},
+//                    {17, 2, 9, 0, 0},
+//                    {0, 3, 0, 0, 0},
+//                    {0, 0, 0, 0, 0},
+//                    {0, 0, 0, 0, 0}};
+////            plateau.cases = new int[][]{
+////                    {8, 1, 16, 0, 0},
+////                    {0, 0, 2, 1, 1},
+////                    {0, 0, 3, 18, 9},
+////                    {0, 0, 0, 4, 3},
+////                    {0, 0, 0, 0, 0}};
 //        }
         if (nombre_batisseurs % 2 == 0) {
             finTour();
