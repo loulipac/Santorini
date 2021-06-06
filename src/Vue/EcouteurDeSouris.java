@@ -42,15 +42,14 @@ public class EcouteurDeSouris extends MouseAdapter {
         if (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueur_en_cours().getNum_joueur())
             return;
         Joueur joueur_en_cours = jeu.getJoueur_en_cours();
-        if (joueur_en_cours.getClass() != JoueurIA.class) {
-            if (e.getX() <= (jg.getTailleCase() * PLATEAU_COLONNES) && e.getY() <= (jg.getTailleCase() * PLATEAU_LIGNES)) {
-                ((JoueurHumain) joueur_en_cours).joue(new Point(
-                        e.getY() / jg.getTailleCase(),
-                        e.getX() / jg.getTailleCase()
-                ));
-                jg.repaint();
-            }
+        if (joueur_en_cours.getClass() != JoueurIA.class &&
+                e.getX() <= (jg.getTailleCase() * PLATEAU_COLONNES) &&
+                e.getY() <= (jg.getTailleCase() * PLATEAU_LIGNES)) {
+            ((JoueurHumain) joueur_en_cours).joue(new Point(
+                    e.getY() / jg.getTailleCase(),
+                    e.getX() / jg.getTailleCase()
+            ));
+            jg.repaint();
         }
-
     }
 }
