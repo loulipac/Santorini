@@ -94,21 +94,11 @@ public class Jeu {
     public void jouer(Point position) {
         cmd = null;
         switch (situation) {
-            case PLACEMENT:
-                jouePlacement(position);
-                break;
-            case SELECTION:
-                joueSelection(position);
-                break;
-            case DEPLACEMENT:
-                joueDeplacement(position);
-                break;
-            case CONSTRUCTION:
-                joueConstruction(position);
-                break;
-            default:
-                System.err.println("Unknown situation");
-                break;
+            case PLACEMENT -> jouePlacement(position);
+            case SELECTION -> joueSelection(position);
+            case DEPLACEMENT -> joueDeplacement(position);
+            case CONSTRUCTION -> joueConstruction(position);
+            default -> System.err.println("Unknown situation");
         }
         histo.store(cmd);
     }
@@ -314,9 +304,9 @@ public class Jeu {
     }
 
     public Joueur getJoueurType_en_cours() {
-        if (joueur_en_cours == j1.getNum_joueur()) {
+        if (joueur_en_cours == JOUEUR1) {
             return j1;
-        } else if (joueur_en_cours == j2.getNum_joueur()) {
+        } else if (joueur_en_cours == JOUEUR2) {
             return j2;
         } else {
             return null;
@@ -377,6 +367,6 @@ public class Jeu {
     }
 
     public static int getAutreJoueur(int joueur){
-        return (joueur % Constante.JOUEUR2) + Constante.JOUEUR1;
+        return (joueur == JOUEUR2 ? JOUEUR1: JOUEUR2);
     }
 }
