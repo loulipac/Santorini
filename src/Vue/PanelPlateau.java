@@ -5,6 +5,7 @@ import static Modele.Constante.*;
 import Modele.ConfigurationPartie;
 import Reseau.Reseau;
 import Modele.Jeu;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
@@ -42,7 +43,6 @@ public class PanelPlateau extends JPanel implements Observer {
         this.taille_fenetre = _taille_fenetre;
         this.config = config;
         this.lilyScriptOne = new Font("Lily Script One", Font.PLAIN, 40);
-
         initialiserPanel();
     }
 
@@ -131,9 +131,9 @@ public class PanelPlateau extends JPanel implements Observer {
      * @see JeuGraphique
      * @see Jeu
      */
-    public class JGamePanel extends JPanel {
-        int taille_margin;
-        float taille_h;
+    private class JGamePanel extends JPanel {
+        private final int taille_margin;
+        private final float taille_h;
 
         /**
          * Constructeur pour JGamePanel. Rajoute des components au JPanel.
@@ -226,13 +226,13 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     private class SidePanelRight extends JPanel {
-        Bouton acceleration;
-        ArrayList<Integer> niveauAcceleration;
+        private Bouton acceleration;
+        private ArrayList<Integer> niveauAcceleration;
         int index_acceleration;
         static final int TITRE_TAILLE = 30;
-        Dimension size;
-        Bouton histo_annuler;
-        Bouton histo_refaire;
+        private final Dimension size;
+        private final Bouton histo_annuler;
+        private final Bouton histo_refaire;
 
         public SidePanelRight(Dimension size) {
             this.size = size;
@@ -245,7 +245,7 @@ public class PanelPlateau extends JPanel implements Observer {
             Dimension size_pane_button = new Dimension(size.width, (int) (height + (size.height * 0.05)));
             Dimension size_button = new Dimension((int) (height * RATIO_BOUTON_PETIT), height);
 
-            JPanel panel_historique = creerTitre("Historique", TITRE_TAILLE, size_pane);
+            JPanel panel_historique = creerTitre("Historique", size_pane);
 
             JPanel histo_bouton = new JPanel();
             histo_bouton.setOpaque(false);
@@ -267,7 +267,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
             if (config.getIaMode1() != 0) {
                 // titre IA
-                panel_ia = creerTitre("IA", TITRE_TAILLE, size_pane);
+                panel_ia = creerTitre("IA", size_pane);
 
                 // boutons
                 // boutons
@@ -283,7 +283,7 @@ public class PanelPlateau extends JPanel implements Observer {
                 ia_bouton.add(on_off_ia);
 
                 // titre
-                panel_vit_ia = creerTitre("Vitesse IA", TITRE_TAILLE, size_pane);
+                panel_vit_ia = creerTitre("Vitesse IA", size_pane);
 
                 // boutons
                 vit_ia_bouton = new JPanel();
@@ -336,10 +336,10 @@ public class PanelPlateau extends JPanel implements Observer {
             histo_refaire.setEnabled(jeu.getHistorique().peutRefaire());
         }
 
-        private JPanel creerTitre(String _t, int _fs, Dimension _s) {
+        private JPanel creerTitre(String _t, Dimension _s) {
             JPanel _jpan = new JPanel();
             JLabel _lab = new JLabel(_t);
-            _lab.setFont(new Font("Lily Script One", Font.PLAIN, _fs));
+            _lab.setFont(new Font("Lily Script One", Font.PLAIN, SidePanelRight.TITRE_TAILLE));
             _lab.setForeground(new Color(103, 69, 42));
             _jpan.setLayout(new GridBagLayout());
             _jpan.setOpaque(false);
@@ -348,7 +348,6 @@ public class PanelPlateau extends JPanel implements Observer {
             _jpan.setMaximumSize(_s);
             return _jpan;
         }
-
 
         public void ralentirIA(ActionEvent e) {
             index_acceleration--;
@@ -651,7 +650,7 @@ public class PanelPlateau extends JPanel implements Observer {
     /**
      * Crée un JPanel modifié qui ajoute le logo et le texte designant quel joueur joue.
      */
-    public class TopPanel extends JPanel {
+    private class TopPanel extends JPanel {
         /**
          * Constructeur de TopPanel. Ajoute les élements et définis les valeurs des propriétés de chacuns.
          */
@@ -679,7 +678,7 @@ public class PanelPlateau extends JPanel implements Observer {
     /**
      * Action d'un bouton pour recréer une nouvelle partie. Ramène au lobby dans le cas d'une partie en réseau.
      */
-    public void actionBoutonNouvelle(ActionEvent e) {
+    private void actionBoutonNouvelle(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         if (netUser != null) {
             f.setPanel(new LobbyPanel(netUser));
@@ -691,7 +690,7 @@ public class PanelPlateau extends JPanel implements Observer {
     /**
      * Action d'un bouton pour revenir au menu. Déconnecte l'utilisateur du réseau.
      */
-    public void actionQuitter(ActionEvent e) {
+    private void actionQuitter(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         if (netUser != null) {
             netUser.deconnexion();
@@ -702,21 +701,15 @@ public class PanelPlateau extends JPanel implements Observer {
     /**
      * Action d'un bouton pour sauvegarder dans un fichier la partie en cours, ferme les paramètres.
      */
-    public void actionBoutonSauvergarder(ActionEvent e) {
+    private void actionBoutonSauvergarder(ActionEvent e) {
         jeu.sauvegarder();
         pp.setVisible(false);
-    }
-
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        Utile.dessineDecorationPlateau(g, getSize(), this, jeu.estJeufini(), config, jeu.getJoueur_en_cours().getNum_joueur());
     }
 
     /**
      * Change le statut de l'IA, à savoir si elle doit être en pause ou en marche. Change aussi le bouton pause/play.
      */
-    public void switchOnOffIA(ActionEvent e) {
+    private void switchOnOffIA(ActionEvent e) {
         jeu.iaSwitch();
         if (jeu.getIa_statut()) {
             on_off_ia.changeImage(CHEMIN_RESSOURCE + "/bouton/running.png", CHEMIN_RESSOURCE + "/bouton/running_hover.png");
@@ -745,6 +738,11 @@ public class PanelPlateau extends JPanel implements Observer {
         victoire_panel.changeTexte(victoire_panel.tmp_reflexion_j2, "n secondes pour le joueur 2");
     }
 
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Utile.dessineDecorationPlateau(g, getSize(), this, jeu.estJeufini(), config, jeu.getJoueur_en_cours().getNum_joueur());
+    }
     /**
      * Modifie le texte qui affiche quel joueur doit jouer.
      */
