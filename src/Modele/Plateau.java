@@ -142,16 +142,20 @@ public class Plateau {
 
     public ArrayList<Point> rechercherBatisseurs(int joueur) {
         ArrayList<Point> batisseurs = new ArrayList<Point>();
-        for (int i = 0; i < lignes; i++) {
-            for (int j = 0; j < colonnes; j++) {
+        int nb_batisseurs = 0;
+        for (int i = 0; i < lignes && nb_batisseurs < 2; i++) {
+            for (int j = 0; j < colonnes && nb_batisseurs < 2; j++) {
                 Point point = new Point(j, i);
                 if (estBatisseur(point, joueur)) {
                     batisseurs.add(point);
+                    nb_batisseurs++;
                 }
             }
         }
         return batisseurs;
     }
+
+
 
     /**
      * Vérifie que la case de la grille ne contient pas de joueur.
