@@ -10,6 +10,9 @@ import java.io.FileInputStream;
 import static Modele.Constante.CHEMIN_RESSOURCE;
 
 public class Utile {
+    private static BufferedImage bg;
+    private static BufferedImage column;
+    private static BufferedImage parchemin;
 
     public static Dimension conserverRatio(Dimension imageSize, Dimension boundary) {
         double widthRatio = boundary.getWidth() / imageSize.getWidth();
@@ -26,18 +29,14 @@ public class Utile {
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         try {
-            GraphicsConfiguration gfx = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
+            if(bg == null) bg = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/base.png"));
 
-            BufferedImage img = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/base.png"));
-
-            BufferedImage newImage = Utile.toCompatibleImage(img);
-
-            Dimension img_dim = new Dimension(img.getWidth(), img.getHeight());
+            Dimension img_dim = new Dimension(bg.getWidth(), bg.getHeight());
             Dimension taille_max = new Dimension((int) (taille_fenetre.width * 0.7), (int) (taille_fenetre.height * 0.7));
             Dimension taille_redimensionnee = Utile.conserverRatio(img_dim, taille_max);
 
             g2d.drawImage(
-                    newImage,
+                    bg,
                     taille_fenetre.width / 2 - ((int) (taille_redimensionnee.getWidth() / 2)),
                     taille_fenetre.height / 2 - ((int) (taille_redimensionnee.getHeight() / 2)),
                     taille_redimensionnee.width,
@@ -45,10 +44,10 @@ public class Utile {
                     o
             );
 
-            BufferedImage img_colonnes = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
-            img_colonnes = Utile.toCompatibleImage(img_colonnes);
+            if(column == null) column = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
+
             g.drawImage(
-                    img_colonnes,
+                    column,
                     0,
                     0,
                     taille_fenetre.width,
@@ -96,10 +95,10 @@ public class Utile {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         try {
-            BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/bg_regles.png"));
-            bg_panel = Utile.toCompatibleImage(bg_panel);
+            if(parchemin == null) parchemin = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/bg_regles.png"));
+
             g2d.drawImage(
-                    bg_panel,
+                    parchemin,
                     0,
                     0,
                     taille_fenetre.width,

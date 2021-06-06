@@ -56,6 +56,9 @@ public class Bouton extends JButton {
     }
 
     public void changeImage(String image, String imageHover) {
+        if(image.equals(this.image) && imageHover.equals(this.imageHover)) {
+            return;
+        }
         ImageIcon iconButton = scaleImage(image, hauteur, largeur);
         setIcon(iconButton);
         ImageIcon iconButtonHover = scaleImage(imageHover, hauteur, largeur);
@@ -66,8 +69,8 @@ public class Bouton extends JButton {
         hauteur = height;
         largeur = width;
         setSize(width, height);
-        setIcon(scaleImage(image, getSize().width, getSize().height));
-        setRolloverIcon(scaleImage(imageHover, getSize().width, getSize().height));
+        setIcon(scaleImage(image, hauteur, largeur));
+        setRolloverIcon(scaleImage(imageHover, hauteur, largeur));
     }
 
 

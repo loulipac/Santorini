@@ -25,7 +25,6 @@ public class Fenetre extends JFrame {
 
     public Fenetre() {
         setTitle("Santorini");
-        last_size = DEFAULT_FENETRE_TAILLE;
         setMinimumSize(DEFAULT_FENETRE_TAILLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -38,7 +37,7 @@ public class Fenetre extends JFrame {
         options = new PanelOptions(getSize());
         regles = new PanelRegles(getSize());
         tutoriel = new PanelTutoriel(getSize());
-        multi = new PanelMultijoueur(this);
+        multi = new PanelMultijoueur();
 
         panelPrincipal.add(menu, "menu");
         panelPrincipal.add(options, "options");
@@ -54,21 +53,9 @@ public class Fenetre extends JFrame {
         setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("sword", new Point(0, 0)));
 
         setVisible(true);
-        addComponentListener(new ComponentAdapter() {
-            public void componentResized(ComponentEvent componentEvent) {
-                if(!last_size.equals(getSize())) {
-                    should_resize = true;
-                } else {
-                    should_resize = false;
-                }
-            }
-        });
 
         // musique.joueSon(true);
     }
-
-    Dimension last_size;
-    public boolean should_resize = false;
 
     public void setPanel(JPanel p) {
         JPanel tmp_shown = shown;

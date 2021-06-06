@@ -4,6 +4,7 @@ import IO.Client;
 import IO.Server;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
@@ -29,15 +30,11 @@ public class PanelMultijoueur extends JPanel {
     Bouton bHeberger;
 
     Bouton bRetour;
-    Fenetre f;
-
-    boolean first = true;
 
     final String TITRE_REJOINDRE = "Rejoindre une partie";
     final String TITRE_HEBERGER = "Héberger une partie";
 
-    public PanelMultijoueur(Fenetre f) {
-        this.f = f;
+    public PanelMultijoueur() {
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
@@ -54,6 +51,7 @@ public class PanelMultijoueur extends JPanel {
     private void initialiserComposant() {
         setLayout(null);
         logoPanel = new JPanel();
+        logoPanel.setLayout(new GridBagLayout());
         logoPanel.setOpaque(false);
         logo = new JLabel();
         logoPanel.add(logo);
@@ -170,9 +168,6 @@ public class PanelMultijoueur extends JPanel {
         super.paintComponent(g);
         Dimension taille_fenetre = getSize();
         Utile.dessineBackground(g, taille_fenetre, this);
-
-        if(!first && !f.should_resize) return;
-        first = false;
 
         double logo_size = 0.30;
 
@@ -315,12 +310,16 @@ public class PanelMultijoueur extends JPanel {
         );
     }
 
+    private ImageIcon logoImage;
+
     private void setLogoSize(double ratio) {
-        ImageIcon logo_img = new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo_hd.png");
-        double ratio_logo_img = (double) logo_img.getIconWidth() / logo_img.getIconHeight();
-        double taille_logo = getSize().height * (ratio / 2);
-        ImageIcon logo_resize = new ImageIcon(logo_img.getImage().getScaledInstance((int) (taille_logo * ratio_logo_img), (int) (taille_logo), Image.SCALE_SMOOTH));
-        logo.setIcon(logo_resize);
+        if(logoImage == null) {
+            logoImage = new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo_hd.png");
+            double ratio_logo_img = (double) logoImage.getIconWidth() / logoImage.getIconHeight();
+            double taille_logo = getSize().height * (ratio / 2);
+            ImageIcon logo_resize = new ImageIcon(logoImage.getImage().getScaledInstance((int) (taille_logo * ratio_logo_img), (int) (taille_logo), Image.SCALE_SMOOTH));
+            logo.setIcon(logo_resize);
+        }
         Dimension logoPanel_taille = new Dimension(getSize().width, (int) (getSize().height * ratio));
         logoPanel.setSize(logoPanel_taille);
         logoPanel.setBounds(
