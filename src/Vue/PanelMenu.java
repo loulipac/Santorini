@@ -9,16 +9,21 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 class PanelMenu extends JPanel {
-    private final Bouton bFullScreen;
-    private final Bouton bSon;
+    private Bouton bFullScreen;
+    private Bouton bSon;
     private final LecteurSon son_bouton;
-    boolean maximized = false;
-    boolean muted = false;
+    private boolean maximized = false;
+    private boolean muted = false;
     private final Dimension taille_fenetre;
+
 
     public PanelMenu(Dimension _taille_fenetre) {
         taille_fenetre = _taille_fenetre;
         son_bouton = new LecteurSon("menu_click.wav");
+        initialiserComposant();
+    }
+
+    private void initialiserComposant() {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JLayeredPane main_panel = new JLayeredPane();
@@ -119,29 +124,32 @@ class PanelMenu extends JPanel {
         setBackground(new Color(47, 112, 162));
     }
 
-
     private void addMargin(JPanel parent, Dimension taille) {
         parent.add(Box.createRigidArea(taille));
     }
 
     /**
      * Remplace le contenu de la fenetre par les options
-     *
-     * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
-    public void actionBoutonJouer(ActionEvent e) {
+    private void actionBoutonJouer(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("options");
     }
 
-    public void actionBoutonJouerLigne(ActionEvent e) {
+    /**
+     * Affiche le panel de jeu en ligne
+     */
+    private void actionBoutonJouerLigne(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("multi");
     }
 
-    public void actionCharger(ActionEvent e) {
+    /**
+     * Affiche un interface pour choisir un fichier, et charge une partie si un ficheir est choisi.
+     */
+    private void actionCharger(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
 
         JFileChooser chooser = new JFileChooser(SAVES_PATH);
@@ -156,43 +164,35 @@ class PanelMenu extends JPanel {
     }
 
     /**
-     * Remplace le contenu de la fenetre par le plateau du jeu
-     *
-     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     * Remplace le contenu de la fenetre par le plateau du jeu.
      */
-    public void actionBoutonTutoriel(ActionEvent e) {
+    private void actionBoutonTutoriel(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("tutoriel");
     }
 
     /**
-     * Remplace le contenu de la fenetre par les règles du jeu
-     *
-     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     * Remplace le contenu de la fenetre par les règles du jeu.s
      */
-    public void actionBoutonRegles(ActionEvent e) {
+    private void actionBoutonRegles(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("regles");
     }
 
     /**
-     * Ferme la fenetre
-     *
-     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     * Quitte le jeu et ferme la fenêtre.
      */
-    public void actionBoutonQuitter(ActionEvent e) {
+    private void actionBoutonQuitter(ActionEvent e) {
         son_bouton.joueSon(false);
         System.exit(0);
     }
 
     /**
      * Met la fenêtre en fullscreen ou non.
-     *
-     * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
-    public void actionFullscreen(ActionEvent e) {
+    private void actionFullscreen(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.dispose();
         if (maximized) {
@@ -213,10 +213,8 @@ class PanelMenu extends JPanel {
 
     /**
      * Met la fenêtre en fullscreen ou non.
-     *
-     * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
-    public void actionSon(ActionEvent e) {
+    private void actionSon(ActionEvent e) {
         if (muted) {
             bSon.changeImage(CHEMIN_RESSOURCE + "/bouton/son_on.png", CHEMIN_RESSOURCE + "/bouton/son_on_hover.png");
             muted = false;
@@ -239,7 +237,7 @@ class PanelMenu extends JPanel {
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Utile.dessineBackground(g, getSize(), this);
     }
