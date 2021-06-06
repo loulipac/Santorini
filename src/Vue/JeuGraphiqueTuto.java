@@ -44,77 +44,57 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     public void paintComponent(Graphics g) {
         Graphics2D drawable = (Graphics2D) g;
         drawable.clearRect(0, 0, getTailleCase() * PLATEAU_COLONNES, getTailleCase() * PLATEAU_LIGNES);
-
         super.paintComponent(g);
-
+        jeu_tuto.setSituation(ATTENTE);
         switch (num_etape) {
             case 2:
+                jeu_tuto.setSituation(PLACEMENT);
                 dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
                 dessinerRectangle(drawable, new Point(3, 2), c_fond, c_bordure);
                 break;
-            case 3, 9, 13, 16:
+            case 3, 13, 16:
                 timerSet(true);
                 break;
+
             case 5:
-                dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
+                ActionsInitialisation(drawable, SELECTION, new Point(1,1),new Point(1,1));
                 break;
             case 6:
-                dessinerRectangle(drawable, new Point(1, 2), c_fond, c_bordure);
-                afficherBatisseurs(new Point(1,1), drawable);
+                ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,1),new Point(1,2));
                 break;
             case 8 :
-                dessinerRectangle(drawable, new Point(2, 2), c_fond, c_bordure);
-                afficherBatiments(new Point(1, 2), drawable);
+                ActionsInitialisation(drawable, CONSTRUCTION, new Point(1,2),new Point(2,2));
                 break;
-
-            case 10, 17:
-                dessinerRectangle(drawable, new Point(2, 2), c_fond, c_bordure);
-                afficherBatisseurs(new Point(1, 2), drawable);
+            case 9:
+                timerSet(true);
+                break;
+            case 10:
+                ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
                 break;
             case 12:
-                dessinerRectangle(drawable, new Point(3, 3), c_fond, c_bordure);
-                afficherBatiments(new Point(2, 2), drawable);
+                ActionsInitialisation(drawable, CONSTRUCTION, new Point(2,2),new Point(3,3));
                 break;
             case 15:
-                dessinerRectangle(drawable, new Point(3, 3), c_fond, c_bordure);
-                afficherBatiments(new Point(2, 2), drawable);
+                ActionsInitialisation(drawable, CONSTRUCTION, new Point(4,2),new Point(3,3));
+                break;
+            case 17:
+                ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
                 break;
             default:
                 break;
         }
+        repaint();
     }
 
+    /**
+     * Initialise la position et la situation du batisseur qui va jouer, puis dessine la case bleu (objectif de l'étape)
+     */
+    private void ActionsInitialisation(Graphics2D drawable, int typeAction, Point pointDepart, Point pointArrivee){
+        jeu_tuto.setBatisseur_en_cours(pointDepart);
+        jeu_tuto.setSituation(typeAction);
+        dessinerRectangle(drawable, pointArrivee, c_fond, c_bordure);
 
-    private void afficherBatiments(Point position, Graphics2D drawable){
-        int x = position.x;
-        int y = position.y;
-        ArrayList<Point> cases_acessibles = jeu_tuto.getPlateau().getCasesAccessibles(position);
-
-        for (Point pos : cases_acessibles) {
-            if(case_sous_souris != null && new Point(case_sous_souris.y, case_sous_souris.x).equals(pos)) {
-                setPreviewBatiment(drawable, pos, etage_1_tmp, etage_2_tmp, etage_3_tmp, coupole_tmp);
-            } else {
-                setPreviewBatiment(drawable, pos, etage_1_tmp_transparent, etage_2_tmp_transparent, etage_3_tmp_transparent, coupole_tmp_transparent);
-            }
-        }
     }
-
-
-    private void afficherBatisseurs(Point position, Graphics2D drawable){
-        Image pas_joueur = jeu_tuto.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? pas_bleu : pas_rouge;
-        Image pas_joueur_hover = jeu_tuto.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? pas_bleu_hover : pas_rouge_hover;
-
-        ArrayList<Point> cases_acessibles = jeu_tuto.getPlateau().getCasesAccessibles(position);
-
-        for (Point pos : cases_acessibles) {
-            if(case_sous_souris != null && new Point(case_sous_souris.y, case_sous_souris.x).equals(pos)) {
-                drawable.drawImage(pas_joueur_hover, pos.y * taille_case, pos.x * taille_case, taille_case, taille_case, null);
-            } else {
-                drawable.drawImage(pas_joueur, pos.y * taille_case, pos.x * taille_case, taille_case, taille_case, null);
-            }
-        }
-    }
-
 
 
     /**
