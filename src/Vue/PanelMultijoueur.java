@@ -28,10 +28,16 @@ public class PanelMultijoueur extends JPanel {
     JTextField nom_heberger;
     Bouton bHeberger;
 
+    Bouton bRetour;
+    Fenetre f;
+
+    boolean first = true;
+
     final String TITRE_REJOINDRE = "Rejoindre une partie";
     final String TITRE_HEBERGER = "Héberger une partie";
 
-    public PanelMultijoueur() {
+    public PanelMultijoueur(Fenetre f) {
+        this.f = f;
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
@@ -71,6 +77,10 @@ public class PanelMultijoueur extends JPanel {
                 1,
                 1, this::actionRejoindre);
 
+        bRetour = new Bouton(CHEMIN_RESSOURCE + "/bouton/retour.png", CHEMIN_RESSOURCE + "/bouton/retour_hover.png",
+                1,
+                1, this::actionRetour);
+
 
         rejoindrePanel.add(titreRejoindre);
         rejoindrePanel.add(placeholder_nom_rejoindre);
@@ -101,6 +111,7 @@ public class PanelMultijoueur extends JPanel {
         add(logoPanel);
         add(rejoindrePanel);
         add(hebergerPanel);
+        add(bRetour);
         setBackground(new Color(47, 112, 162));
     }
 
@@ -149,16 +160,40 @@ public class PanelMultijoueur extends JPanel {
         }
     }
 
+    public void actionRetour(ActionEvent e) {
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.displayPanel("menu");
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        double logo_size = 0.30;
-
         Dimension taille_fenetre = getSize();
         Utile.dessineBackground(g, taille_fenetre, this);
+
+        if(!first && !f.should_resize) return;
+        first = false;
+
+        double logo_size = 0.30;
+
         setLogoSize(logo_size);
         drawRejoindre(logo_size);
         drawHeberger(logo_size);
+
+        bRetour.setTaille(
+                (int) (taille_fenetre.width * 0.2),
+                (int) (taille_fenetre.height * 0.07)
+        );
+
+        bRetour.changeImage(CHEMIN_RESSOURCE + "/bouton/retour.png", CHEMIN_RESSOURCE + "/bouton/retour_hover.png");
+
+
+        bRetour.setBounds(
+                (int) ((taille_fenetre.width / 2) - (bRetour.getWidth() * 0.5)),
+                (int) (taille_fenetre.height - taille_fenetre.height * 0.20),
+                bRetour.getWidth(),
+                bRetour.getHeight()
+        );
     }
 
     private void drawRejoindre(double logo_size) {
