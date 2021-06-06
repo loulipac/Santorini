@@ -2,13 +2,9 @@ package Vue;
 
 import static Modele.Constante.*;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 public class PanelRegles extends JPanel {
     private static final String TITRE_SECTION1 = "Comment jouer ?";
@@ -27,18 +23,10 @@ public class PanelRegles extends JPanel {
             Le bâtisseur peut poser un dôme en haut de la tour pour bloquer son adversaire.
             On considère une tour de 3 étages et un dôme comme une "Tour Complète".""";
 
-    Font lilly_belle;
-    Font lohit_bengali;
-    Dimension taille_fenetre;
+    private final Font lilly_belle;
+    private final Dimension taille_fenetre;
 
     public PanelRegles(Dimension _taille_fenetre) {
-        try {
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/Lora-Regular.ttf")));
-        } catch (IOException | FontFormatException e) {
-            System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
-        }
         lilly_belle = new Font("Lily Script One", Font.PLAIN, 26);
         taille_fenetre = _taille_fenetre;
         initialiserPanel();
@@ -47,11 +35,9 @@ public class PanelRegles extends JPanel {
     /**
      * Ajoute tous les composants au panel
      */
-    public void initialiserPanel() {
+    private void initialiserPanel() {
         setBackground(new Color(47, 112, 162));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        /* Boutons */
 
         /* Panel */
         Dimension taille_panel = new Dimension((int) (taille_fenetre.width * 0.6), (int) (taille_fenetre.height * 0.8));
@@ -68,6 +54,7 @@ public class PanelRegles extends JPanel {
     }
 
     private class LignePanel extends JPanel {
+
         public LignePanel(Dimension taille_panel, String image_path, String titre, String texte) {
             setOpaque(false);
             setMaximumSize(taille_panel);
@@ -99,6 +86,7 @@ public class PanelRegles extends JPanel {
             add(contenu);
             addMargin(this, new Dimension((int) (taille_panel.width * ratio_marge), taille_panel.height));
         }
+
         private JLabel creerTitre(String titre) {
             JLabel _e = new JLabel(titre);
             _e.setFont(lilly_belle);
@@ -116,13 +104,19 @@ public class PanelRegles extends JPanel {
             _e.setWrapStyleWord(true);
             return _e;
         }
+
+        private JLabel creerImage(String _in, Dimension _t) {
+            ImageIcon _imIcon = new ImageIcon(_in);
+            Image _im = _imIcon.getImage();
+            Dimension _nt = Utile.conserverRatio(new Dimension(_imIcon.getIconWidth(), _imIcon.getIconHeight()), _t);
+            Image _nim = _im.getScaledInstance(_nt.width, _nt.height, java.awt.Image.SCALE_SMOOTH);
+            return new JLabel(new ImageIcon(_nim));
+        }
     }
 
     private class ReglesPanel extends JPanel {
-        private final Dimension taille_panel;
 
         public ReglesPanel(Dimension taille_panel) {
-            this.taille_panel = taille_panel;
 
             setMaximumSize(taille_panel);
             setPreferredSize(taille_panel);
@@ -181,44 +175,21 @@ public class PanelRegles extends JPanel {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            try {
-                BufferedImage bg_regles = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/bg_regles.png"));
-                g2d.drawImage(
-                        bg_regles,
-                        0,
-                        0,
-                        taille_panel.width,
-                        taille_panel.height,
-                        this
-                );
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Erreur image de fond: " + e.getMessage());
-            }
+            Utile.dessinePanelBackground(g, getSize(), null);
         }
     }
 
-    public void actionBoutonRetourMenu(ActionEvent e) {
+    /**
+     * Retourne au menu principal.
+     */
+    private void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("menu");
     }
 
-    public JLabel creerImage(String _in, Dimension _t) {
-        ImageIcon _imIcon = new ImageIcon(_in);
-        Image _im = _imIcon.getImage();
-        Dimension _nt = Utile.conserverRatio(new Dimension(_imIcon.getIconWidth(), _imIcon.getIconHeight()), _t);
-        Image _nim = _im.getScaledInstance(_nt.width, _nt.height, java.awt.Image.SCALE_SMOOTH);
-        return new JLabel(new ImageIcon(_nim));
-    }
-
     @Override
-    public void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Utile.dessineBackground(g, getSize(), this);
     }
-
 }
