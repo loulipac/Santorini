@@ -9,7 +9,7 @@ import static Modele.Constante.JOUEUR1;
  * Classe gérant les cases de la grille dont les constructions de bâtiment et la pose de batisseurs.
  */
 public class Plateau {
-    private int[][] cases;
+    public int[][] cases;
     private int lignes;
     private int colonnes;
 

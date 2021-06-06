@@ -32,6 +32,8 @@ public class Jeu {
 
     Joueur j1, j2;
 
+
+
     /**
      * Instantie une classe jeu.
      *
@@ -127,7 +129,7 @@ public class Jeu {
     public void joueDeplacement(Point position) {
         Point prevPos = batisseur_en_cours;
         if (avancer(position, batisseur_en_cours)) {
-            getJoueurType_en_cours().getBatisseurs().set(getJoueurType_en_cours().getBatisseurs().indexOf(prevPos), position);
+//            getJoueurType_en_cours().getBatisseurs().set(getJoueurType_en_cours().getBatisseurs().indexOf(prevPos), position);
 
             cmd = new CoupDeplacer(joueur_en_cours, prevPos, batisseur_en_cours);
             situation = CONSTRUCTION;
@@ -151,6 +153,9 @@ public class Jeu {
     }
 
     public void checkBuilderNumber() {
+        if (nombre_batisseurs == 4) {
+            plateau.cases = new int[][]{{8, 2, 17, 1, 0}, {17, 2, 9, 0, 0}, {0, 3, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}};
+        }
         if (nombre_batisseurs % 2 == 0) {
             finTour();
         }
@@ -165,11 +170,10 @@ public class Jeu {
      * @return le batisseur du joueur s'il existe à cette position
      */
     private Point choisirBatisseur(Point position) {
-        int index = getJoueurType_en_cours().getBatisseurs().indexOf(position);
-        if(index == -1) return null;
-        return getJoueurType_en_cours().getBatisseurs().get(index);
-        //return plateau.estBatisseur(position, joueur_en_cours) ? position : null;
-
+//        int index = getJoueurType_en_cours().getBatisseurs().indexOf(position);
+//        if(index == -1) return null;
+//        return getJoueurType_en_cours().getBatisseurs().get(index);
+        return plateau.estBatisseur(position, joueur_en_cours) ? position : null;
     }
 
     /**
