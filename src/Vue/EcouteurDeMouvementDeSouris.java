@@ -115,7 +115,11 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 return;
             }
 
-            if (jeu.getSituation() == PLACEMENT) {
+                if(jeu.getSituation() == ATTENTE){
+                    jg.setCursor(c_hourglass);
+                }
+
+                if (jeu.getSituation() == PLACEMENT) {
 
                     setCursor((jg.getJeu().estAtteignable(position)), c_hand_gris, c_hand_rouge, c_hand_bleu);
                     jg.setCase_sous_souris(new Point(pos_x, pos_y));
