@@ -4,49 +4,42 @@ import Reseau.Client;
 import Reseau.Server;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
 
 import static Modele.Constante.*;
 
 public class PanelMultijoueur extends JPanel {
-    JPanel logoPanel;
-    JLabel logo;
-    PanelParchemin rejoindrePanel, hebergerPanel;
-    JLabel titreRejoindre, titreHeberger;
-    Font lilly_belle_texte, lilly_belle_titre;
+    private JPanel logoPanel;
+    private JLabel logo;
+    private PanelParchemin rejoindrePanel;
+    private PanelParchemin hebergerPanel;
+    private JLabel titreRejoindre;
+    private JLabel titreHeberger;
+    private final Font lilly_belle_texte;
+    private final Font lilly_belle_titre;
+    private ImageIcon logoImage;
 
-    JLabel placeholder_nom_rejoindre;
-    JTextField nom_rejoindre;
-    JLabel placeholder_ip;
-    JTextField ip;
-    Bouton bRejoindre;
+    private JLabel placeholder_nom_rejoindre;
+    private JTextField nom_rejoindre;
+    private JLabel placeholder_ip;
+    private JTextField ip;
+    private Bouton bRejoindre;
 
-    JLabel placeholder_nom_heberger;
-    JTextField nom_heberger;
-    Bouton bHeberger;
+    private JLabel placeholder_nom_heberger;
+    private JTextField nom_heberger;
+    private Bouton bHeberger;
 
-    Bouton bRetour;
+    private Bouton bRetour;
 
-    final String TITRE_REJOINDRE = "Rejoindre une partie";
-    final String TITRE_HEBERGER = "Héberger une partie";
+    private static final String TITRE_REJOINDRE = "Rejoindre une partie";
+    private static final String TITRE_HEBERGER = "Héberger une partie";
 
     public PanelMultijoueur() {
-        try {
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/Lora-Regular.ttf")));
-        } catch (IOException | FontFormatException e) {
-            System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
-        }
         lilly_belle_texte = new Font("Lily Script One", Font.PLAIN, 20);
         lilly_belle_titre = new Font("Lily Script One", Font.PLAIN, 30);
         initialiserComposant();
     }
-
 
     private void initialiserComposant() {
         setLayout(null);
@@ -113,7 +106,7 @@ public class PanelMultijoueur extends JPanel {
         setBackground(new Color(47, 112, 162));
     }
 
-    private class PanelParchemin extends JPanel {
+    private static class PanelParchemin extends JPanel {
         public PanelParchemin() {
             setOpaque(false);
             setLayout(new BorderLayout());
@@ -126,7 +119,10 @@ public class PanelMultijoueur extends JPanel {
         }
     }
 
-    public void actionRejoindre(ActionEvent e) {
+    /**
+     * Récupère l'IP et le nom de l'utilisateur et connecte le client au serveur. Affiche le lobbyPanel.
+     */
+    private void actionRejoindre(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
 
         if (nom_rejoindre.getText().equals("") && ip.getText().equals("")) {
@@ -144,7 +140,10 @@ public class PanelMultijoueur extends JPanel {
         }
     }
 
-    public void actionHeberger(ActionEvent e) {
+    /**
+     * Démarre un serveur et affiche le lobbyPanel.
+     */
+    private void actionHeberger(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
 
         if (!nom_heberger.getText().equals("")) {
@@ -158,7 +157,10 @@ public class PanelMultijoueur extends JPanel {
         }
     }
 
-    public void actionRetour(ActionEvent e) {
+    /**
+     * Retourne au menu principal.
+     */
+    private void actionRetour(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("menu");
     }
@@ -184,7 +186,7 @@ public class PanelMultijoueur extends JPanel {
 
 
         bRetour.setBounds(
-                (int) ((taille_fenetre.width / 2) - (bRetour.getWidth() * 0.5)),
+                (taille_fenetre.width / 2) - (int) (bRetour.getWidth() * 0.5),
                 (int) (taille_fenetre.height - taille_fenetre.height * 0.20),
                 bRetour.getWidth(),
                 bRetour.getHeight()
@@ -310,10 +312,8 @@ public class PanelMultijoueur extends JPanel {
         );
     }
 
-    private ImageIcon logoImage;
-
     private void setLogoSize(double ratio) {
-        if(logoImage == null) {
+        if (logoImage == null) {
             logoImage = new ImageIcon(CHEMIN_RESSOURCE + "/logo/logo_hd.png");
             double ratio_logo_img = (double) logoImage.getIconWidth() / logoImage.getIconHeight();
             double taille_logo = getSize().height * (ratio / 2);
