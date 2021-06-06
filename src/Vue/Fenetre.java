@@ -54,6 +54,7 @@ public class Fenetre extends JFrame {
 
         // Change le curseur de la fenêtre
         setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("sword", new Point(0, 0)));
+        Utile.chargerFontLily();
 
         setVisible(true);
 

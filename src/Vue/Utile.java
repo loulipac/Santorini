@@ -1,27 +1,41 @@
 package Vue;
 
+import Modele.ConfigurationPartie;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import static Modele.Constante.CHEMIN_RESSOURCE;
+import static Modele.Constante.*;
 
 public class Utile {
     private static BufferedImage bg;
     private static BufferedImage column;
     private static BufferedImage parchemin;
+    private static BufferedImage parcheminVictoire;
+    private static BufferedImage arrierePlanPlateau;
+    private static BufferedImage colonneFin;
+    private static BufferedImage colonneBleu;
+    private static BufferedImage colonneRouge;
+
+    private static final String ERREUR_IMAGE_FOND = "Erreur image de fond: ";
+
+    /**
+     * Utile ne dois jamais être instancié et seulement utilisé par ses fonctions statiques.
+     */
+    private Utile() {
+    }
 
     /**
      * Permet de redimensionner une taille d'image selon une taille max tout en gardant le bon ratio de l'image.
      *
      * @param tailleImage taille de l'image
      * @param tailleMax   taille max atteignable
-     * @return
+     * @return la Dimension redimensionnée selon la taille max
      */
     public static Dimension conserverRatio(Dimension tailleImage, Dimension tailleMax) {
         double largeurRatio = tailleMax.getWidth() / tailleImage.getWidth();
@@ -43,7 +57,7 @@ public class Utile {
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         try {
-            if(bg == null) bg = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/base.png"));
+            if (bg == null) bg = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/base.png"));
 
             Dimension img_dim = new Dimension(bg.getWidth(), bg.getHeight());
             Dimension taille_max = new Dimension((int) (tailleFenetre.width * 0.7), (int) (tailleFenetre.height * 0.7));
@@ -58,7 +72,7 @@ public class Utile {
                     o
             );
 
-            if(column == null) column = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
+            if (column == null) column = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/columns.png"));
 
             g.drawImage(
                     column,
@@ -70,34 +84,8 @@ public class Utile {
             );
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Erreur image de fond: " + e.getMessage());
+            System.out.println(ERREUR_IMAGE_FOND + e.getMessage());
         }
-    }
-
-    /**
-     * Adapte une image par rapport à l'environnement graphique.
-     *
-     * @param image l'image à adapter
-     * @return l'image adapter
-     */
-    private static BufferedImage toCompatibleImage(BufferedImage image) {
-        GraphicsConfiguration gfxConfig = GraphicsEnvironment.
-                getLocalGraphicsEnvironment().getDefaultScreenDevice().
-                getDefaultConfiguration();
-
-
-        if (image.getColorModel().equals(gfxConfig.getColorModel()))
-            return image;
-
-        BufferedImage newImage = gfxConfig.createCompatibleImage(
-                image.getWidth(), image.getHeight(), image.getTransparency());
-
-        Graphics2D g2d = newImage.createGraphics();
-
-        g2d.drawImage(image, 0, 0, null);
-        g2d.dispose();
-
-        return newImage;
     }
 
     /**
@@ -112,7 +100,7 @@ public class Utile {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         try {
-            if(parchemin == null) parchemin = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/bg_regles.png"));
+            if (parchemin == null) parchemin = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/bg_regles.png"));
 
             g2d.drawImage(
                     parchemin,
@@ -124,12 +112,98 @@ public class Utile {
             );
         } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Erreur image de fond: " + e.getMessage());
+            System.err.println(ERREUR_IMAGE_FOND + e.getMessage());
         }
     }
 
     /**
-     * Change une image en mémoire depuis son nom.
+     * Dessine le background style parchemin sur une JPanel de victoire.
+     *
+     * @param tailleFenetre taille du dessin parcheminVictoire
+     */
+    public static void dessineParcheminVictoire(Graphics g, Dimension tailleFenetre, ImageObserver o) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        try {
+            if (parcheminVictoire == null)
+                parcheminVictoire = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/parchemin.png"));
+
+            g2d.drawImage(
+                    parcheminVictoire,
+                    0,
+                    0,
+                    (int) tailleFenetre.getWidth(),
+                    (int) tailleFenetre.getHeight(),
+                    o
+            );
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println(ERREUR_IMAGE_FOND + e.getMessage());
+        }
+    }
+
+
+    /**
+     * Dessine le background et la bannière suur le panel plateau.
+     *
+     * @param tailleFenetre    taille de la zone de dessin
+     * @param estFini          si le jeu est fini
+     * @param config           configuration de la partie
+     * @param numJoueurEnCours numéro du joueur en cours
+     */
+    public static void dessineDecorationPlateau(Graphics g, Dimension tailleFenetre, ImageObserver o, boolean estFini, ConfigurationPartie config, int numJoueurEnCours) {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        try {
+            if (arrierePlanPlateau == null)
+                arrierePlanPlateau = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png"));
+            g2d.drawImage(
+                    arrierePlanPlateau,
+                    0,
+                    0,
+                    (int) tailleFenetre.getWidth(),
+                    (int) tailleFenetre.getHeight(),
+                    o
+            );
+
+            if (colonneFin == null)
+                colonneFin = ImageIO.read(new File(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_berger.png"));
+            if (colonneRouge == null)
+                colonneRouge = ImageIO.read(new File(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png"));
+            if (colonneBleu == null)
+                colonneBleu = ImageIO.read(new File(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png"));
+
+            Image colonne;
+            if (estFini) {
+                colonne = colonneFin;
+            } else {
+                int numJoueur = (config.isJoueur1Bleu() ? JOUEUR1 : JOUEUR2);
+                colonne = (numJoueurEnCours == numJoueur ? colonneBleu : colonneRouge);
+            }
+
+            g2d.drawImage(
+                    colonne,
+                    0,
+                    0,
+                    (int) (tailleFenetre.getWidth()), (int) (tailleFenetre.getHeight() * 0.20),
+                    o
+            );
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(ERREUR_IMAGE_FOND + e.getMessage());
+        }
+    }
+
+
+    /**
+     * Charge une image en mémoire depuis son nom.
      *
      * @param _name nom de l'image (url entière depuis la racine)
      * @return l'image chargé.
@@ -142,6 +216,19 @@ public class Utile {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Charge en mémoire la police Lily Script One.
+     */
+    public static void chargerFontLily() {
+        try {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
+
+        } catch (IOException | FontFormatException e) {
+            System.err.println("Erreur : La police \"LilyScriptOne\" est introuvable ");
+        }
     }
 
 

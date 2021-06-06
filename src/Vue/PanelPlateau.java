@@ -5,16 +5,11 @@ import static Modele.Constante.*;
 import Modele.ConfigurationPartie;
 import Reseau.Reseau;
 import Modele.Jeu;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -24,53 +19,50 @@ public class PanelPlateau extends JPanel implements Observer {
 
     private Jeu jeu;
     private JeuGraphique jg;
-    Font lilly_belle;
-    JLabel jt;
-    Dimension taille_fenetre;
-    int ia1_mode;
-    int ia2_mode;
-    Bouton on_off_ia;
-    Image colonne_rouge;
-    Image colonne_bleu;
-    Image arriere_plan;
-    Image colonne_fin;
-    ParametrePanel pp;
-    VictoirePanel victoire_panel;
-    boolean is_finish_draw;
-    Reseau netUser;
-    ConfigurationPartie config;
+    private Reseau netUser;
+    private final ConfigurationPartie config;
+
+    private final Dimension taille_fenetre;
+
+    private final Font lilyScriptOne;
+
+    private ParametrePanel pp;
+    private VictoirePanel victoire_panel;
+    private JLabel jt;
+    private Bouton on_off_ia;
 
 
     /**
      * Initialise la fenêtre de jeu et charge la police et les images en mémoire.
      *
-     * @see PanelPlateau#initialiserPanel()
+     * @param _taille_fenetre taille de la fenêtre
+     * @param config          classe de configuration de la partie
      */
     public PanelPlateau(Dimension _taille_fenetre, ConfigurationPartie config) {
         this.taille_fenetre = _taille_fenetre;
         this.config = config;
-        is_finish_draw = false;
-        try {
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
+        this.lilyScriptOne = new Font("Lily Script One", Font.PLAIN, 40);
 
-        } catch (IOException | FontFormatException e) {
-            System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
-        }
-        lilly_belle = new Font("Lily Script One", Font.PLAIN, 40);
         initialiserPanel();
-
-        colonne_rouge = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
-        colonne_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
-        colonne_fin = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_berger.png");
-        arriere_plan = Utile.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
     }
 
+    /**
+     * Constructeur de PanelPlateau chargeant une partie déjà existante.
+     *
+     * @param _taille_fenetre taille de la fenêtre
+     * @param filename        nom du fichier à charger
+     */
     public PanelPlateau(Dimension _taille_fenetre, String filename) {
         this(_taille_fenetre, new ConfigurationPartie(0, 0));
         jeu.charger(filename);
     }
 
+    /**
+     * Constructeur de PanelPlateau prenant en paramètre un netUser, donc soit un client ou un serveur.
+     *
+     * @param _taille_fenetre taille de la fenêtre
+     * @param netUser         client ou serveur
+     */
     public PanelPlateau(Dimension _taille_fenetre, Reseau netUser) {
         this(_taille_fenetre, new ConfigurationPartie(0, 0));
         this.netUser = netUser;
@@ -114,9 +106,11 @@ public class PanelPlateau extends JPanel implements Observer {
         main_panel.add(pp, JLayeredPane.POPUP_LAYER);
         main_panel.add(victoire_panel, JLayeredPane.POPUP_LAYER);
         add(main_panel);
-        is_finish_draw = true;
     }
 
+    /**
+     * Classe gérant les actions "ECHAP" pour afficher les paramètres
+     */
     private class ActionEchap extends AbstractAction {
         public ActionEchap() {
             super();
@@ -181,7 +175,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
             jeu = new Jeu(PanelPlateau.this, config);
             jg = new JeuGraphique(jeu);
-            if (ia2_mode == 0) {
+            if (config.getIaMode2() == 0) {
                 jg.addMouseListener(new EcouteurDeSouris(jg, jeu, PanelPlateau.this));
             }
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg, PanelPlateau.this));
@@ -235,7 +229,7 @@ public class PanelPlateau extends JPanel implements Observer {
         Bouton acceleration;
         ArrayList<Integer> niveauAcceleration;
         int index_acceleration;
-        final int TITRE_TAILLE = 30;
+        static final int TITRE_TAILLE = 30;
         Dimension size;
         Bouton histo_annuler;
         Bouton histo_refaire;
@@ -336,36 +330,10 @@ public class PanelPlateau extends JPanel implements Observer {
         @Override
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-            g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            try {
-                BufferedImage bg_regles = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/bg_regles.png"));
-                g2d.drawImage(
-                        bg_regles,
-                        0,
-                        0,
-                        size.width,
-                        size.height,
-                        this
-                );
-            } catch (Exception e) {
-                e.printStackTrace();
-                System.out.println("Erreur image de fond: " + e.getMessage());
-            }
+            Utile.dessinePanelBackground(g, size, null);
 
-            if(jeu.getHistorique().peutAnnuler()){
-                histo_annuler.setEnabled(true);
-            }
-            else
-                histo_annuler.setEnabled(false);
-            if(jeu.getHistorique().peutRefaire()){
-                histo_refaire.setEnabled(true);
-            }
-            else
-                histo_refaire.setEnabled(false);
-
+            histo_annuler.setEnabled(jeu.getHistorique().peutAnnuler());
+            histo_refaire.setEnabled(jeu.getHistorique().peutRefaire());
         }
 
         private JPanel creerTitre(String _t, int _fs, Dimension _s) {
@@ -424,6 +392,7 @@ public class PanelPlateau extends JPanel implements Observer {
     }
 
     private class ParametrePanel extends JPanel {
+
         private class BackgroundPanel extends JPanel {
             public BackgroundPanel(Dimension taille) {
                 super();
@@ -436,26 +405,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
             @Override
             protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                try {
-                    BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/bg_regles.png"));
-                    g2d.drawImage(
-                            bg_panel,
-                            0,
-                            0,
-                            getWidth(),
-                            getHeight(),
-                            this
-                    );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.err.println("Erreur image de fond: " + e.getMessage());
-                }
+                Utile.dessinePanelBackground(g, getSize(), null);
             }
         }
 
@@ -472,7 +422,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
             JLabel parametres_texte = new JLabel("Paramètres");
             parametres_texte.setForeground(new Color(82, 60, 43));
-            parametres_texte.setFont(lilly_belle);
+            parametres_texte.setFont(lilyScriptOne);
             parametres_texte.setAlignmentX(CENTER_ALIGNMENT);
 
             double ratio_marge = 0.03;
@@ -568,7 +518,6 @@ public class PanelPlateau extends JPanel implements Observer {
             g2d.setComposite(AlphaComposite.SrcOver);
         }
 
-
     }
 
     private class VictoirePanel extends JPanel {
@@ -585,26 +534,7 @@ public class PanelPlateau extends JPanel implements Observer {
 
             @Override
             protected void paintComponent(Graphics g) {
-                super.paintComponent(g);
-                Graphics2D g2d = (Graphics2D) g;
-                g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-                g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-                g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-                try {
-                    BufferedImage bg_panel = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/parchemin.png"));
-                    g2d.drawImage(
-                            bg_panel,
-                            0,
-                            0,
-                            getWidth(),
-                            getHeight(),
-                            this
-                    );
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    System.err.println("Erreur image de fond: " + e.getMessage());
-                }
+                Utile.dessineParcheminVictoire(g, getSize(), null);
             }
         }
 
@@ -740,77 +670,52 @@ public class PanelPlateau extends JPanel implements Observer {
             jt.setAlignmentX(CENTER_ALIGNMENT);
             jt.setAlignmentY(CENTER_ALIGNMENT);
             jt.setOpaque(false);
-            jt.setFont(lilly_belle);
+            jt.setFont(lilyScriptOne);
             jt.setForeground(Color.WHITE);
             add(jt);
         }
     }
 
+    /**
+     * Action d'un bouton pour recréer une nouvelle partie. Ramène au lobby dans le cas d'une partie en réseau.
+     */
     public void actionBoutonNouvelle(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        if(netUser != null) {
+        if (netUser != null) {
             f.setPanel(new LobbyPanel(netUser));
         } else {
-            f.setPanel(new PanelPlateau(taille_fenetre, new ConfigurationPartie(this.ia1_mode, this.ia2_mode)));
+            f.setPanel(new PanelPlateau(taille_fenetre, config));
         }
     }
 
+    /**
+     * Action d'un bouton pour revenir au menu. Déconnecte l'utilisateur du réseau.
+     */
     public void actionQuitter(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        if(netUser != null) {
+        if (netUser != null) {
             netUser.deconnexion();
         }
         f.displayPanel("menu");
     }
 
+    /**
+     * Action d'un bouton pour sauvegarder dans un fichier la partie en cours, ferme les paramètres.
+     */
     public void actionBoutonSauvergarder(ActionEvent e) {
         jeu.sauvegarder();
         pp.setVisible(false);
     }
 
-    /**
-     * Dessine l'image de fond et la bannière (colonne).
-     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        try {
-            g2d.drawImage(
-                    arriere_plan,
-                    0,
-                    0,
-                    getWidth(),
-                    getHeight(),
-                    this
-            );
-            Image colonne;
-            if (jeu.estJeufini()) {
-                colonne = colonne_fin;
-            } else {
-                colonne = (jeu.getJoueur_en_cours().getNum_joueur() == (config.isJoueur1Bleu() ? JOUEUR1 : JOUEUR2) ? colonne_bleu : colonne_rouge);
-            }
-
-            // float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre
-
-            g2d.drawImage(
-                    colonne,
-                    0,
-                    0,
-                    getWidth(), (int) (getHeight() * 0.20),
-                    this
-            );
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Erreur image de fond: " + e.getMessage());
-        }
+        Utile.dessineDecorationPlateau(g, getSize(), this, jeu.estJeufini(), config, jeu.getJoueur_en_cours().getNum_joueur());
     }
 
+    /**
+     * Change le statut de l'IA, à savoir si elle doit être en pause ou en marche. Change aussi le bouton pause/play.
+     */
     public void switchOnOffIA(ActionEvent e) {
         jeu.iaSwitch();
         if (jeu.getIa_statut()) {
@@ -820,9 +725,12 @@ public class PanelPlateau extends JPanel implements Observer {
         }
     }
 
+    /**
+     * Affiche le panel de victoire avec les textes correspondant au gagnant
+     */
     private void changeVictory() {
-        String nom_joueur = "";
-        if(netUser != null) {
+        String nom_joueur;
+        if (netUser != null) {
             if (netUser.getNumJoueur() == jeu.getJoueur_en_cours().getNum_joueur()) nom_joueur = netUser.getNomJoueur();
             else nom_joueur = netUser.getNomAdversaire();
         } else {
@@ -845,14 +753,14 @@ public class PanelPlateau extends JPanel implements Observer {
         if (jeu.estJeufini()) {
             changeVictory();
         } else {
-            if(netUser != null) {
-                if (netUser.getNumJoueur() == jeu.getJoueur_en_cours().getNum_joueur()) jt.setText("C'est au tour de " + netUser.getNomJoueur());
+            if (netUser != null) {
+                if (netUser.getNumJoueur() == jeu.getJoueur_en_cours().getNum_joueur())
+                    jt.setText("C'est au tour de " + netUser.getNomJoueur());
                 else jt.setText("C'est au tour de " + netUser.getNomAdversaire());
             } else {
                 jt.setText(jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
             }
         }
-
         repaint();
     }
 }
