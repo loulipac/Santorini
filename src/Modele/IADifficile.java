@@ -61,12 +61,12 @@ public class IADifficile implements IA {
         boolean est_joueur_maximise = joueur_en_cours == joueur_maximise;
 
         meilleur_score = est_joueur_maximise ? Float.MIN_VALUE : Float.MAX_VALUE;
-        if (jeu_fini) {
-            System.out.println("Jeu est fini");
-            return Float.MAX_VALUE;
-        }
+//        if (jeu_fini) {
+////            System.out.println("Jeu est fini");
+//            return 100000000;
+//        }
 
-        if (profondeur_en_cours == profondeur_max) {
+        if (profondeur_en_cours == profondeur_max || jeu_fini) {
             return calculerHeuristique(plateau, autre_joueur, 1);
         }
 
@@ -87,9 +87,12 @@ public class IADifficile implements IA {
 
                     nouveau_plateau.degraderBatiment(construction);
 
-                    if ((profondeur_en_cours == 0) && ((est_joueur_maximise && score_actuel > meilleur_score) || (!est_joueur_maximise && score_actuel < meilleur_score)) ) {
+                    if ((est_joueur_maximise && score_actuel > meilleur_score) || (!est_joueur_maximise && score_actuel < meilleur_score)) {
                             meilleur_score = score_actuel;
+                            if(profondeur_en_cours == 0) {
                             meilleur_coup = coup_actuel;
+                            System.out.println(meilleur_score);
+                            }
                     }
                 }
             }
@@ -188,14 +191,14 @@ public class IADifficile implements IA {
         float case_centrale = + poidsCaseCentrale * (calculerHeuristiqueCaseCentrale(plateau, joueur_evalue) - calculerHeuristiqueCaseCentrale(plateau, autre_joueur));
         float menace =  poidsMenaceNiveau2 * (calculerHeuristiqueMenaceNiveau2(plateau, joueur_evalue));
 
-        System.out.println();
-        System.out.println();
-        System.out.println("Print heuristique");
-        System.out.println(plateau);
-        System.out.println("diff hauteur :"+diff_hauteur);
-        System.out.println("mobilite_verticale :"+mobilite_verticale);
-        System.out.println("case_centrale :"+case_centrale);
-        System.out.println("menace :"+menace);
+//        System.out.println();
+//        System.out.println();
+//        System.out.println("Print heuristique");
+//        System.out.println(plateau);
+//        System.out.println("diff hauteur :"+diff_hauteur);
+//        System.out.println("mobilite_verticale :"+mobilite_verticale);
+//        System.out.println("case_centrale :"+case_centrale);
+//        System.out.println("menace :"+menace);
 
         return diff_hauteur+mobilite_verticale+case_centrale+menace;
     }

@@ -10,6 +10,8 @@ import static Modele.Constante.*;
  */
 public class Plateau {
     private int[][] cases;
+    private int lignes;
+    private int colonnes;
 
     /**
      * Instantie un objet Plateau.

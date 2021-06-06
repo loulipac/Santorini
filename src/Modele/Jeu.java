@@ -167,6 +167,9 @@ public class Jeu {
     }
 
     public void verificationNbBatisseur() {
+        if (nombre_batisseurs == 4) {
+            plateau.cases = new int[][]{{8, 2, 17, 1, 0}, {17, 2, 9, 0, 0}, {0, 3, 0, 0, 0}, {0, 0, 0, 0, 0}, {0, 0, 0, 0, 0}};
+        }
         if (nombre_batisseurs % 2 == 0) {
             finTour();
         }
