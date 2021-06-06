@@ -16,7 +16,7 @@ public abstract class Reseau {
     protected Thread thread;
     protected boolean statut_modification = false;
 
-    public Reseau(String username, int numJoueur) {
+    protected Reseau(String username, int numJoueur) {
         this.nomJoueur = username;
         this.numJoueur = numJoueur;
     }
