@@ -9,7 +9,7 @@ import static Modele.Constante.*;
  * Classe gérant les cases de la grille dont les constructions de bâtiment et la pose de batisseurs.
  */
 public class Plateau {
-    private int[][] cases;
+    public int[][] cases;
     private int lignes;
     private int colonnes;
 
@@ -126,6 +126,7 @@ public class Plateau {
     public void ameliorerBatiment(Point position) {
         setCase(position, getCase(position) + 1);
     }
+
     public boolean degraderBatiment(Point position) {
         setCase(position, getCase(position) - 1);
         return true;
