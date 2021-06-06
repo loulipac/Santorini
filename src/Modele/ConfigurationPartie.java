@@ -1,12 +1,10 @@
 package Modele;
 
 public class ConfigurationPartie {
-    int iaMode1;
-    int iaMode2;
-
-    int indexJoueurCommence;
-
-    boolean joueur1Bleu;
+    private final int iaMode1;
+    private final int iaMode2;
+    private int indexJoueurCommence;
+    private boolean joueur1Bleu;
 
     public ConfigurationPartie(int iaMode1, int iaMode2) {
         this.iaMode1 = iaMode1;
@@ -26,6 +24,7 @@ public class ConfigurationPartie {
     public void setIndexJoueurCommence(int indexJoueurCommence) {
         this.indexJoueurCommence = indexJoueurCommence;
     }
+
     public int getIaMode1() {
         return iaMode1;
     }
