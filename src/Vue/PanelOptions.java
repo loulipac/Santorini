@@ -5,50 +5,33 @@ import Modele.ConfigurationPartie;
 import static Modele.Constante.*;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
 
 class PanelOptions extends JPanel {
     private static final String TITRE_SECTION1 = "Mode de jeu";
     private static final String TITRE_SECTION2 = "Difficulté de l'IA";
     private static final String TITRE_SECTION3 = "Difficulté de l'IA 2";
 
-    private Bouton bRetour;
-    private Bouton bCommencer;
-
     private final LecteurSon son_bouton;
-    Font lilly_belle;
-    Font lohit_bengali;
-    JRadioButton joueur_joueur;
-    JRadioButton joueur_ia;
-    JRadioButton ia_ia;
-    Dimension taille_fenetre;
+    private JRadioButton joueur_joueur;
+    private final Dimension taille_fenetre;
 
-    ButtonGroup adversaires_boutons;
-    ButtonGroup boutons_IA;
-    ButtonGroup boutons_IA_IA;
+    private ButtonGroup adversaires_boutons;
+    private ButtonGroup boutons_IA;
+    private ButtonGroup boutons_IA_IA;
 
 
     public PanelOptions(Dimension _taille_fenetre) {
+        this.taille_fenetre = _taille_fenetre;
         son_bouton = new LecteurSon("menu_click.wav");
-        try {
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
-        } catch (IOException | FontFormatException e) {
-            System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
-        }
-        lilly_belle = new Font("Lily Script One", Font.PLAIN, 20);
-        taille_fenetre = _taille_fenetre;
         initialiserPanel();
     }
 
     /**
      * Ajoute tous les composants au panel
      */
-    public void initialiserPanel() {
+    private void initialiserPanel() {
         setBackground(new Color(47, 112, 162));
         BoxLayout boxlayout = new BoxLayout(this, BoxLayout.Y_AXIS);
         setLayout(boxlayout);
@@ -84,9 +67,9 @@ class PanelOptions extends JPanel {
         bouton_bas.setMaximumSize(new Dimension(taille_fenetre.width, (int) (height * ratio_bouton_bas)));
         Dimension taille_bouton = new Dimension((int) (width_bouton), (int) (width_bouton * RATIO_BOUTON_CLASSIQUE_INVERSE));
         bouton_bas.setBorder(null);
-        bCommencer = new Bouton(CHEMIN_RESSOURCE + "/bouton/commencer_la_partie.png", CHEMIN_RESSOURCE + "/bouton/commencer_la_partie_hover.png",
+        Bouton bCommencer = new Bouton(CHEMIN_RESSOURCE + "/bouton/commencer_la_partie.png", CHEMIN_RESSOURCE + "/bouton/commencer_la_partie_hover.png",
                 taille_bouton, this::actionBoutonCommencer);
-        bRetour = new Bouton(CHEMIN_RESSOURCE + "/bouton/retour.png", CHEMIN_RESSOURCE + "/bouton/retour_hover.png",
+        Bouton bRetour = new Bouton(CHEMIN_RESSOURCE + "/bouton/retour.png", CHEMIN_RESSOURCE + "/bouton/retour_hover.png",
                 taille_bouton, this::actionBoutonRetourMenu);
 
         bouton_bas.add(bRetour);
@@ -110,90 +93,36 @@ class PanelOptions extends JPanel {
 
     }
 
-
     private class OptionPanel extends JPanel {
-        private ButtonGroup creerDifficulteButton(JPanel parent, Dimension size) {
-            ButtonGroup _group = new ButtonGroup();
-
-            JRadioButton _facile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile",
-                    size, _group);
-            JRadioButton _normale = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale",
-                    size, _group);
-            JRadioButton _difficile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/difficile",
-                    size, _group);
-
-            _facile.setActionCommand(String.valueOf(IA_FACILE));
-            _normale.setActionCommand(String.valueOf(IA_NORMAL));
-            _difficile.setActionCommand(String.valueOf(IA_DIFFICILE));
-
-            parent.add(_facile);
-            parent.add(_normale);
-            parent.add(_difficile);
-
-
-            _facile.setSelected(true);
-
-            return _group;
-        }
-
-        private JPanel creerButtonRadioPanel() {
-            JPanel _e = new JPanel();
-            _e.setOpaque(false);
-            return _e;
-        }
-
-        private JPanel creerTitre(String _t, int _fs, Dimension _s) {
-            JPanel _jpan = new JPanel();
-            JLabel _lab = new JLabel(_t);
-            _lab.setFont(new Font("Lily Script One", Font.PLAIN, _fs));
-            _lab.setForeground(new Color(103, 69, 42));
-            _jpan.setLayout(new GridBagLayout());
-            _jpan.setOpaque(false);
-            _jpan.add(_lab);
-            _jpan.setPreferredSize(_s);
-            _jpan.setMaximumSize(_s);
-            return _jpan;
-        }
-
-        private JPanel creerPanelRadio(Dimension _t) {
-            JPanel _j = new JPanel();
-            _j.setOpaque(false);
-            _j.setLayout(new BoxLayout(_j, BoxLayout.Y_AXIS));
-            _j.setPreferredSize(_t);
-            _j.setMaximumSize(_t);
-            _j.setMinimumSize(_t);
-            return _j;
-        }
 
         public OptionPanel(Dimension _taille_panel) {
-            Dimension taille_total_panel = _taille_panel;
             setOpaque(false);
-            setMinimumSize(taille_total_panel);
-            setMaximumSize(taille_total_panel);
-            setPreferredSize(taille_total_panel);
+            setMinimumSize(_taille_panel);
+            setMaximumSize(_taille_panel);
+            setPreferredSize(_taille_panel);
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-            double height = taille_total_panel.height;
+            double height = _taille_panel.height;
 
             double ratio_marge = 0.10;
             double height_panel = height - (height * ratio_marge) * 4;
             double taille_restante = height_panel / 3;
 
-            double width_bouton = (taille_total_panel.width - taille_total_panel.width * 0.1) / 3;
+            double width_bouton = (_taille_panel.width - _taille_panel.width * 0.1) / 3;
             double height_titre = taille_restante - width_bouton * RATIO_BOUTON_CLASSIQUE_INVERSE;
 
             Dimension taille_bouton = new Dimension((int) (width_bouton), (int) (width_bouton * RATIO_BOUTON_CLASSIQUE_INVERSE));
-            Dimension taille_titre = new Dimension(taille_total_panel.width, (int) height_titre);
-            Dimension taille_panel = new Dimension(taille_total_panel.width, (int) (taille_restante));
+            Dimension taille_titre = new Dimension(_taille_panel.width, (int) height_titre);
+            Dimension taille_panel = new Dimension(_taille_panel.width, (int) (taille_restante));
 
             JPanel j_vs_j = creerPanelRadio(taille_panel);
             JPanel j_vs_ia = creerPanelRadio(taille_panel);
             JPanel ia_vs_ia = creerPanelRadio(taille_panel);
 
 
-            JPanel versus_titre = creerTitre(TITRE_SECTION1, 30, taille_titre);
-            JPanel IA_titre = creerTitre(TITRE_SECTION2, 30, taille_titre);
-            JPanel IAvIA_titre = creerTitre(TITRE_SECTION3, 30, taille_titre);
+            JPanel versus_titre = creerTitre(TITRE_SECTION1, taille_titre);
+            JPanel IA_titre = creerTitre(TITRE_SECTION2, taille_titre);
+            JPanel IAvIA_titre = creerTitre(TITRE_SECTION3, taille_titre);
 
             JPanel versus_panel = creerButtonRadioPanel();
             JPanel IA_panel = creerButtonRadioPanel();
@@ -206,9 +135,9 @@ class PanelOptions extends JPanel {
 
             joueur_joueur = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_joueur",
                     taille_bouton, adversaires_boutons);
-            joueur_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia",
+            JRadioButton joueur_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/joueur_contre_ia",
                     taille_bouton, adversaires_boutons);
-            ia_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/ia_contre_ia",
+            JRadioButton ia_ia = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/ia_contre_ia",
                     taille_bouton, adversaires_boutons);
 
             joueur_joueur.setActionCommand("0");
@@ -247,7 +176,7 @@ class PanelOptions extends JPanel {
             ia_vs_ia.add(IAvIA_titre);
             ia_vs_ia.add(IA_IA_panel);
 
-            Dimension taille_separateur = new Dimension(taille_total_panel.width, (int) (height * ratio_marge));
+            Dimension taille_separateur = new Dimension(_taille_panel.width, (int) (height * ratio_marge));
             addSeparateur(this, taille_separateur);
             add(j_vs_j);
             addSeparateur(this, taille_separateur);
@@ -258,6 +187,59 @@ class PanelOptions extends JPanel {
 
             j_vs_ia.setVisible(false);
             ia_vs_ia.setVisible(false);
+        }
+
+        private ButtonGroup creerDifficulteButton(JPanel parent, Dimension size) {
+            ButtonGroup _group = new ButtonGroup();
+
+            JRadioButton _facile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/facile",
+                    size, _group);
+            JRadioButton _normale = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/normale",
+                    size, _group);
+            JRadioButton _difficile = new BoutonRadio(CHEMIN_RESSOURCE + "/bouton/difficile",
+                    size, _group);
+
+            _facile.setActionCommand(String.valueOf(IA_FACILE));
+            _normale.setActionCommand(String.valueOf(IA_NORMAL));
+            _difficile.setActionCommand(String.valueOf(IA_DIFFICILE));
+
+            parent.add(_facile);
+            parent.add(_normale);
+            parent.add(_difficile);
+
+
+            _facile.setSelected(true);
+
+            return _group;
+        }
+
+        private JPanel creerButtonRadioPanel() {
+            JPanel _e = new JPanel();
+            _e.setOpaque(false);
+            return _e;
+        }
+
+        private JPanel creerTitre(String _t, Dimension _s) {
+            JPanel _jpan = new JPanel();
+            JLabel _lab = new JLabel(_t);
+            _lab.setFont(new Font("Lily Script One", Font.PLAIN, 30));
+            _lab.setForeground(new Color(103, 69, 42));
+            _jpan.setLayout(new GridBagLayout());
+            _jpan.setOpaque(false);
+            _jpan.add(_lab);
+            _jpan.setPreferredSize(_s);
+            _jpan.setMaximumSize(_s);
+            return _jpan;
+        }
+
+        private JPanel creerPanelRadio(Dimension _t) {
+            JPanel _j = new JPanel();
+            _j.setOpaque(false);
+            _j.setLayout(new BoxLayout(_j, BoxLayout.Y_AXIS));
+            _j.setPreferredSize(_t);
+            _j.setMaximumSize(_t);
+            _j.setMinimumSize(_t);
+            return _j;
         }
 
 
@@ -275,28 +257,23 @@ class PanelOptions extends JPanel {
         }
     }
 
+    private void addSeparateur(JPanel parent, Dimension taille) {
+        parent.add(Box.createRigidArea(taille));
+    }
+
     /**
-     * Change l'affichage de la fenetre par le menu
-     *
-     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     * Change l'affichage de la fenetre par le menu.
      */
-    public void actionBoutonRetourMenu(ActionEvent e) {
+    private void actionBoutonRetourMenu(ActionEvent e) {
         son_bouton.joueSon(false);
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("menu");
     }
 
-    private void addSeparateur(JPanel parent, Dimension taille) {
-        parent.add(Box.createRigidArea(taille));
-    }
-
-
     /**
-     * Change l'affichage de la fenetre par le plateau
-     *
-     * @param e Evenement declenché lors du clique de la souris sur le bouton
+     * Change l'affichage de la fenetre par le plateau.
      */
-    public void actionBoutonCommencer(ActionEvent e) {
+    private void actionBoutonCommencer(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         int ia_mode2 = 0;
         int ia_mode1 = 0;
@@ -317,7 +294,7 @@ class PanelOptions extends JPanel {
     }
 
     @Override
-    public void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Utile.dessineBackground(g, getSize(), this);
     }
