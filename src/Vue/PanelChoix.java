@@ -20,23 +20,17 @@ public class PanelChoix extends JPanel {
     private final Color BLEU = new Color(70, 153, 206);
     private final Color ROUGE = new Color(224, 98, 98);
 
-    private Bouton bRetour;
-    private Bouton bCommencer;
+    private final Font lilly_belle;
+    private final Dimension taille_fenetre;
+    private ButtonGroup quiCommenceRadioGroupe;
 
-    Font lilly_belle;
-    Dimension taille_fenetre;
-    ButtonGroup quiCommenceRadioGroupe;
-
-    int ia_mode1, ia_mode2;
-
-    boolean joueur1EstBleu = true;
-
-    OptionPanel contenu;
+    private boolean joueur1EstBleu = true;
+    private OptionPanel contenu;
+    private final ConfigurationPartie config;
 
 
     public PanelChoix(Dimension _taille_fenetre, ConfigurationPartie config) {
-        this.ia_mode1 = config.getIaMode1();
-        this.ia_mode2 = config.getIaMode2();
+        this.config = config;
         taille_fenetre = _taille_fenetre;
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -87,9 +81,9 @@ public class PanelChoix extends JPanel {
         bouton_bas.setMaximumSize(new Dimension(taille_fenetre.width, (int) (height * ratio_bouton_bas)));
         Dimension taille_bouton = new Dimension((int) (width_bouton), (int) (width_bouton * RATIO_BOUTON_CLASSIQUE_INVERSE));
         bouton_bas.setBorder(null);
-        bCommencer = new Bouton(CHEMIN_RESSOURCE + "/bouton/commencer_la_partie.png", CHEMIN_RESSOURCE + "/bouton/commencer_la_partie_hover.png",
+        Bouton bCommencer = new Bouton(CHEMIN_RESSOURCE + "/bouton/commencer_la_partie.png", CHEMIN_RESSOURCE + "/bouton/commencer_la_partie_hover.png",
                 taille_bouton, this::actionBoutonCommencer);
-        bRetour = new Bouton(CHEMIN_RESSOURCE + "/bouton/retour.png", CHEMIN_RESSOURCE + "/bouton/retour_hover.png",
+        Bouton bRetour = new Bouton(CHEMIN_RESSOURCE + "/bouton/retour.png", CHEMIN_RESSOURCE + "/bouton/retour_hover.png",
                 taille_bouton, this::actionBoutonRetourMenu);
 
         bouton_bas.add(bRetour);
@@ -107,14 +101,12 @@ public class PanelChoix extends JPanel {
         addSeparateur(this, taille_marge);
         add(bouton_bas);
         addSeparateur(this, taille_marge);
-
     }
-
 
     private class OptionPanel extends JPanel {
 
-        CarreCouleur carreJ1;
-        CarreCouleur carreJ2;
+        private final CarreCouleur carreJ1;
+        private final CarreCouleur carreJ2;
 
         private JPanel creerButtonRadioPanel() {
             JPanel _e = new JPanel();
@@ -146,22 +138,21 @@ public class PanelChoix extends JPanel {
         }
 
         public OptionPanel(Dimension _taille_panel) {
-            Dimension taille_total_panel = _taille_panel;
             setOpaque(false);
-            setMinimumSize(taille_total_panel);
-            setMaximumSize(taille_total_panel);
-            setPreferredSize(taille_total_panel);
+            setMinimumSize(_taille_panel);
+            setMaximumSize(_taille_panel);
+            setPreferredSize(_taille_panel);
             setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-            double width_bouton = (taille_total_panel.width - taille_total_panel.width * 0.1) / 3;
+            double width_bouton = (_taille_panel.width - _taille_panel.width * 0.1) / 3;
             Dimension taille_bouton = new Dimension((int) (width_bouton), (int) (width_bouton * RATIO_BOUTON_CLASSIQUE_INVERSE));
 
-            JPanel titrePanel = creerTitre(TITRE_PANEL, 45, new Dimension(taille_total_panel.width, (int) (taille_total_panel.height * 0.20)));
+            JPanel titrePanel = creerTitre(TITRE_PANEL, 45, new Dimension(_taille_panel.width, (int) (_taille_panel.height * 0.20)));
 
 
-            Dimension taille_titre_panel = new Dimension(taille_total_panel.width, (int) (taille_total_panel.height * 0.15));
+            Dimension taille_titre_panel = new Dimension(_taille_panel.width, (int) (_taille_panel.height * 0.15));
 
-            JPanel groupeCommence = creerPanelRadio(new Dimension(taille_total_panel.width, (int) (taille_total_panel.height * 0.25)));
+            JPanel groupeCommence = creerPanelRadio(new Dimension(_taille_panel.width, (int) (_taille_panel.height * 0.25)));
             JPanel quiCommenceTitre = creerTitre(TITRE_SECTION2, 30, taille_titre_panel);
             JPanel quiCommencePanelBouton = creerButtonRadioPanel();
 
@@ -180,13 +171,13 @@ public class PanelChoix extends JPanel {
             groupeCommence.add(quiCommenceTitre);
             groupeCommence.add(quiCommencePanelBouton);
 
-            JPanel changerCouleursPanel = creerPanelRadio(new Dimension(taille_total_panel.width, (int) (taille_total_panel.height * 0.35)));
+            JPanel changerCouleursPanel = creerPanelRadio(new Dimension(_taille_panel.width, (int) (_taille_panel.height * 0.35)));
             JPanel changerCouleursTitre = creerTitre(TITRE_SECTION3, 30, taille_titre_panel);
 
             JPanel changerCouleursPanelBouton = new JPanel();
             changerCouleursPanelBouton.setOpaque(false);
             changerCouleursPanelBouton.setLayout(new GridBagLayout());
-            Dimension taille_panel_bouton = new Dimension((int) (taille_total_panel.width * 0.5), (int) (taille_total_panel.height * 0.15));
+            Dimension taille_panel_bouton = new Dimension((int) (_taille_panel.width * 0.5), (int) (_taille_panel.height * 0.15));
             changerCouleursPanelBouton.setMaximumSize(taille_panel_bouton);
             changerCouleursPanelBouton.setPreferredSize(taille_panel_bouton);
 
@@ -195,7 +186,7 @@ public class PanelChoix extends JPanel {
 
             changerCouleursPanelBouton.add(changer);
 
-            Dimension tailleCarre = new Dimension((int) (taille_total_panel.width * 0.2), (int) (taille_total_panel.height * 0.10));
+            Dimension tailleCarre = new Dimension((int) (_taille_panel.width * 0.2), (int) (_taille_panel.height * 0.10));
             carreJ1 = new CarreCouleur("Joueur 1", BLEU, tailleCarre);
             carreJ2 = new CarreCouleur("Joueur 2", ROUGE, tailleCarre);
             JPanel carres = new JPanel();
@@ -208,7 +199,7 @@ public class PanelChoix extends JPanel {
             changerCouleursPanel.add(changerCouleursPanelBouton);
             changerCouleursPanel.add(carres);
 
-            Dimension taille_separateur = new Dimension(taille_total_panel.width, (int) (taille_total_panel.height * 0.05));
+            Dimension taille_separateur = new Dimension(_taille_panel.width, (int) (_taille_panel.height * 0.05));
             add(titrePanel);
             addSeparateur(this, taille_separateur);
             add(groupeCommence);
@@ -234,7 +225,7 @@ public class PanelChoix extends JPanel {
                 add(texte);
             }
 
-            public void changerCouleur(Color couleur) {
+            private void changerCouleur(Color couleur) {
                 this.couleur = couleur;
                 repaint();
             }
@@ -248,8 +239,8 @@ public class PanelChoix extends JPanel {
             }
         }
 
-        public void switchCouleur() {
-            if(!joueur1EstBleu) {
+        private void switchCouleur() {
+            if (!joueur1EstBleu) {
                 carreJ1.changerCouleur(ROUGE);
                 carreJ2.changerCouleur(BLEU);
             } else {
@@ -267,15 +258,16 @@ public class PanelChoix extends JPanel {
 
     /**
      * Change l'affichage de la fenetre par le menu
-     *
-     * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
-    public void actionBoutonRetourMenu(ActionEvent e) {
+    private void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("menu");
     }
 
-    public void actionChangementCouleur(ActionEvent e) {
+    /**
+     * Change la couleur des carrées représentant la couleur du joueur
+     */
+    private void actionChangementCouleur(ActionEvent e) {
         joueur1EstBleu = !joueur1EstBleu;
         contenu.switchCouleur();
     }
@@ -287,12 +279,9 @@ public class PanelChoix extends JPanel {
 
     /**
      * Change l'affichage de la fenetre par le plateau
-     *
-     * @param e Evenement declenché lors du clique de la souris sur le bouton
      */
     public void actionBoutonCommencer(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        ConfigurationPartie config = new ConfigurationPartie(ia_mode1, ia_mode2);
 
         config.setJoueur1Bleu(joueur1EstBleu);
 
