@@ -7,24 +7,25 @@ import Reseau.Client;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
 
 import static Modele.Constante.CHEMIN_RESSOURCE;
 import static Modele.Constante.RATIO_BOUTON_CLASSIQUE_INVERSE;
 
 public class LobbyPanel extends JPanel {
-    Reseau netUser;
-    JPanel fondPanel;
-    JLabel titreLobby;
+    private final Reseau netUser;
+    private JPanel fondPanel;
+    private JLabel titreLobby;
 
-    JLabel nom_hote, nom_client;
-    JLabel versus;
-    Bouton demarrer;
-    Bouton pret;
-    Font lilly_belle_texte, lilly_belle_titre;
+    private JLabel nom_hote;
+    private JLabel nom_client;
+    private JLabel versus;
+    private Bouton demarrer;
+    private Bouton pret;
+    private final Font lilly_belle_texte;
+    private final Font lilly_belle_titre;
 
-    JLabel ip_hote, client_ready;
+    private JLabel ip_hote;
+    private JLabel client_ready;
 
     boolean pret_bool = false;
 
@@ -32,13 +33,6 @@ public class LobbyPanel extends JPanel {
     public LobbyPanel(Reseau netUser) {
         this.netUser = netUser;
         netUser.setLobby(this);
-        try {
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
-            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/Lora-Regular.ttf")));
-        } catch (IOException | FontFormatException e) {
-            System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
-        }
         lilly_belle_texte = new Font("Lily Script One", Font.PLAIN, 30);
         lilly_belle_titre = new Font("Lily Script One", Font.PLAIN, 50);
         initialiserComposant();
@@ -104,6 +98,10 @@ public class LobbyPanel extends JPanel {
         if (netUser.getClass() == Client.class) netUser.envoyerNomUtilisateur();
     }
 
+    /**
+     * Affiche le nom de l'adversaire dans le label correspondant.
+     * @param nom nom de l'adversaire
+     */
     public void setAdversaireNom(String nom) {
         if (netUser.getClass() == Server.class) nom_client.setText(nom);
         if (netUser.getClass() == Client.class) nom_hote.setText(nom);
@@ -111,7 +109,7 @@ public class LobbyPanel extends JPanel {
         client_ready.setForeground(Color.BLACK);
     }
 
-    private class PanelParchemin extends JPanel {
+    private static class PanelParchemin extends JPanel {
         public PanelParchemin() {
             setOpaque(false);
             setLayout(new BorderLayout());
@@ -124,7 +122,10 @@ public class LobbyPanel extends JPanel {
         }
     }
 
-    public void actionStart(ActionEvent e) {
+    /**
+     * Démarre la partie si le client est pret.
+     */
+    private void actionStart(ActionEvent e) {
         if (((Server) netUser).estClientPret()) {
             Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
             netUser.demarrerPartie();
@@ -132,15 +133,20 @@ public class LobbyPanel extends JPanel {
         }
     }
 
+    /**
+     * Démarre la partie pour le client.
+     */
     public void startClientGame() {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.setPanel(new PanelPlateau(getSize(), netUser));
     }
 
-    public void actionPret(ActionEvent e) {
+    /**
+     * Met le client prêt ou non et envoie au serveur si le client est prêt ou non.
+     */
+    private void actionPret(ActionEvent e) {
         if (!pret_bool) {
             pret.changeImage(CHEMIN_RESSOURCE + "/bouton/pret_active.png", CHEMIN_RESSOURCE + "/bouton/pret_active_hover.png");
-            System.out.println("changeImage");
         } else {
             pret.changeImage(CHEMIN_RESSOURCE + "/bouton/pret.png", CHEMIN_RESSOURCE + "/bouton/pret.png");
         }
@@ -149,6 +155,11 @@ public class LobbyPanel extends JPanel {
         setClient_ready(pret_bool);
     }
 
+    /**
+     * Met la croix en vert quand le client est prêt.
+     *
+     * @param status vrai si le client est prêt
+     */
     public void setClient_ready(boolean status) {
         if (!status) {
             client_ready.setForeground(Color.BLACK);
