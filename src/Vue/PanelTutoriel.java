@@ -431,6 +431,7 @@ public class PanelTutoriel extends Panels implements Observateur {
     @Override
     public void miseAjour() {
         num_etape++;
+        changerEtape();
         jg.chargerEtape(num_etape);
         panel_jeu.panel_gauche.panel_info.changerTexte(num_etape);
 
