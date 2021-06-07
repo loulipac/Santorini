@@ -72,7 +72,7 @@ public class Constante {
             "Tu es le joueur bleu, positionne par exemple tes 2 bâtisseurs sur les cases indiquées.",
             """
                C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !
-               Voyons où il les place.""",
+               Voyons où il les place. (Suivant)""",
             """
                C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !
                Voyons où il les place.""",
@@ -87,6 +87,9 @@ public class Constante {
             "A toi de jouer, construis le rez-de-chaussée sur la case en dessous du personnage.",
             """
                Génial! Tu as effectué tes deux actions, ton tour est maintenant fini.
+               C’est à ton adversaire de jouer. (Suivant)""",
+            """
+               Génial! Tu as effectué tes deux actions, ton tour est maintenant fini.
                C’est à ton adversaire de jouer.""",
             "C’est de nouveau ton tour, clique sur ton personnage.",
             "Essaie de monter sur le premier étage que tu as construit au tour d’avant.",
@@ -98,7 +101,7 @@ public class Constante {
                 Construit un étage sur la case en diagonale à droite.""",
             """
                Génial !
-               Maintenant avançons un peu dans la partie !""",
+               Maintenant avançons un peu dans la partie ! (Suivant)""",
             """
                Génial !
                Maintenant avançons un peu dans la partie !""",
@@ -108,7 +111,7 @@ public class Constante {
                Pour éviter cela, place un dôme au-dessus de la tour.""",
             """
             Il ne gagnera pas ce tour là !
-            Avançons encore dans la partie.""",
+            Avançons encore dans la partie. (Suivant)""",
             """
             Il ne gagnera pas ce tour là !
             Avançons encore dans la partie.""",
