@@ -27,7 +27,7 @@ public class Fenetre extends JFrame {
      * Initialise les JPanels ne nécessitant pas d'être créer selon des options.
      */
     public Fenetre() {
-        setTitle("Santorini");
+        setTitle(NOM_JEU);
         setMinimumSize(DEFAULT_FENETRE_TAILLE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -54,7 +54,7 @@ public class Fenetre extends JFrame {
 
         // Change le curseur de la fenêtre
         setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("sword", new Point(0, 0)));
-        Utile.chargerFontLily();
+        Utile.chargerFont();
 
         Image icone = Toolkit.getDefaultToolkit().getImage(CHEMIN_RESSOURCE + "/icone/logo-icone.png");
         setIconImage(icone);

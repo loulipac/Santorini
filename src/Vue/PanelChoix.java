@@ -13,7 +13,6 @@ import static Utile.Constante.*;
 import static Utile.Constante.CHEMIN_RESSOURCE;
 
 public class PanelChoix extends JPanel {
-
     private static final String TITRE_PANEL = "Options de partie";
     private static final String TITRE_SECTION2 = "Qui commence ?";
     private static final String TITRE_SECTION3 = "Changer les couleurs";

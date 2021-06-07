@@ -46,7 +46,7 @@ public class PanelPlateau extends Panels implements Observateur {
     public PanelPlateau(Dimension _taille_fenetre, ConfigurationPartie config) {
         this.taille_fenetre = _taille_fenetre;
         this.config = config;
-        this.lilyScriptOne = new Font("Lily Script One", Font.PLAIN, 40);
+        this.lilyScriptOne = new Font(LILY_SCRIPT, Font.PLAIN, 40);
         initialiserPanel();
     }
 

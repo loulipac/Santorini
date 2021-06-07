@@ -29,7 +29,7 @@ public class PanelRegles extends JPanel {
     private final Dimension taille_fenetre;
 
     public PanelRegles(Dimension _taille_fenetre) {
-        lilly_belle = new Font("Lily Script One", Font.PLAIN, 26);
+        lilly_belle = new Font(LILY_SCRIPT, Font.PLAIN, 26);
         taille_fenetre = _taille_fenetre;
         initialiserPanel();
     }
@@ -100,7 +100,7 @@ public class PanelRegles extends JPanel {
             JTextArea _e = new JTextArea(contenu);
             _e.setOpaque(false);
             _e.setEditable(false);
-            _e.setFont(new Font("Lora", Font.PLAIN, 14));
+            _e.setFont(new Font(LORA, Font.PLAIN, 14));
             _e.setForeground(new Color(56, 56, 56));
             _e.setLineWrap(true);
             _e.setWrapStyleWord(true);
@@ -137,7 +137,7 @@ public class PanelRegles extends JPanel {
 
             JPanel panel_titre = new JPanel();
             JLabel titre = new JLabel("Règles");
-            titre.setFont(new Font("Lily Script One", Font.PLAIN, 45));
+            titre.setFont(new Font(LILY_SCRIPT, Font.PLAIN, 45));
             panel_titre.setLayout(new GridBagLayout());
             panel_titre.setOpaque(false);
             panel_titre.setMaximumSize(new Dimension(taille_panel.width, (int) (taille_panel.height * ratio_titre)));

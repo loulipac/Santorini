@@ -9,8 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import static Utile.Constante.CHEMIN_RESSOURCE;
-import static Utile.Constante.RATIO_BOUTON_CLASSIQUE_INVERSE;
+import static Utile.Constante.*;
 
 public class LobbyPanel extends JPanel {
     private final Reseau netUser;
@@ -28,8 +27,8 @@ public class LobbyPanel extends JPanel {
     public LobbyPanel(Reseau netUser) {
         this.netUser = netUser;
         netUser.setLobby(this);
-        lilly_belle_texte = new Font("Lily Script One", Font.PLAIN, 30);
-        lilly_belle_titre = new Font("Lily Script One", Font.PLAIN, 50);
+        lilly_belle_texte = new Font(LILY_SCRIPT, Font.PLAIN, 30);
+        lilly_belle_titre = new Font(LILY_SCRIPT, Font.PLAIN, 50);
         initialiserComposant();
     }
 
