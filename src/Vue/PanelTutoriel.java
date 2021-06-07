@@ -1,10 +1,13 @@
 package Vue;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
-import Modele.Constante;
+import Listener.EcouteurDeMouvementDeSouris;
+import Listener.EcouteurDeSourisTuto;
+import Utile.Constante;
 import Modele.JeuTuto;
 import Patterns.Observateur;
+import Utile.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -403,7 +406,7 @@ public class PanelTutoriel extends Panels implements Observateur {
             if (jeu_tuto.estJeufini()) {
                 colonne = colonne_fin;
             } else {
-                colonne = (jeu_tuto.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? colonne_bleu : colonne_rouge);
+                colonne = (jeu_tuto.getJoueurEnCours().getNum_joueur() == JOUEUR1 ? colonne_bleu : colonne_rouge);
             }
 
             // float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre

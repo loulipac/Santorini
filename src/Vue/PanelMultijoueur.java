@@ -2,12 +2,13 @@ package Vue;
 
 import Reseau.Client;
 import Reseau.Server;
+import Utile.Utile;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 public class PanelMultijoueur extends JPanel {
     private JPanel logoPanel;

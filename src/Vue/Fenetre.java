@@ -1,11 +1,12 @@
 package Vue;
 
-import static Modele.Constante.*;
+import Listener.EcouteurDeMouvementDeSouris;
+import Utile.*;
+
+import static Utile.Constante.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 /**
  * Crée une fenêtre pour le menu principal du jeu.
@@ -14,14 +15,13 @@ import java.awt.event.ComponentEvent;
 public class Fenetre extends JFrame {
 
     CardLayout pileCarte;
-    JPanel panelPrincipal;
+    JPanel panelPrincipal,shown;
     PanelMenu menu;
     PanelOptions options;
     PanelRegles regles;
     PanelTutoriel tutoriel;
     PanelMultijoueur multi;
     LecteurSon musique;
-    JPanel shown;
 
     /**
      * Initialise les JPanels ne nécessitant pas d'être créer selon des options.

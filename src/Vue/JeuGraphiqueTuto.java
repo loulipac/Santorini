@@ -6,9 +6,8 @@ import Patterns.Observateur;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
-import java.util.ArrayList;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 public class JeuGraphiqueTuto extends JeuGraphique {
     JeuTuto jeu_tuto;
@@ -17,7 +16,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     Color c_bordure = creerCouleur(80, 186, 245, 1f);
     Point clic_prec;
     Timer timer;
-    static final int VITESSE_BASE = 1000;
+    static final int VITESSE_BASE = 750;
     Observateur o;
 
     /**
@@ -52,10 +51,9 @@ public class JeuGraphiqueTuto extends JeuGraphique {
                 dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
                 dessinerRectangle(drawable, new Point(3, 2), c_fond, c_bordure);
                 break;
-            case 3, 13, 16:
+            case 3, 9, 15, 19:
                 timerSet(true);
                 break;
-
             case 5:
                 ActionsInitialisation(drawable, SELECTION, new Point(1,1),new Point(1,1));
                 break;
@@ -65,19 +63,22 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             case 8 :
                 ActionsInitialisation(drawable, CONSTRUCTION, new Point(1,2),new Point(2,2));
                 break;
-            case 9:
-                timerSet(true);
-                break;
             case 10:
+                ActionsInitialisation(drawable, SELECTION, new Point(1,2),new Point(1,2));
+                break;
+            case 11:
                 ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
                 break;
-            case 12:
+            case 13:
                 ActionsInitialisation(drawable, CONSTRUCTION, new Point(2,2),new Point(3,3));
                 break;
-            case 15:
+            case 17:
                 ActionsInitialisation(drawable, CONSTRUCTION, new Point(4,2),new Point(3,3));
                 break;
-            case 17:
+            case 20:
+                ActionsInitialisation(drawable, SELECTION, new Point(1,2),new Point(1,2));
+                break;
+            case 21:
                 ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
                 break;
             default:
@@ -90,7 +91,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
      * Initialise la position et la situation du batisseur qui va jouer, puis dessine la case bleu (objectif de l'étape)
      */
     private void ActionsInitialisation(Graphics2D drawable, int typeAction, Point pointDepart, Point pointArrivee){
-        jeu_tuto.setBatisseur_en_cours(pointDepart);
+        jeu_tuto.setBatisseurEnCours(pointDepart);
         jeu_tuto.setSituation(typeAction);
         dessinerRectangle(drawable, pointArrivee, c_fond, c_bordure);
 
@@ -104,8 +105,8 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         switch (num_etape) {
             case 3 -> animationEtape3();
             case 9 -> animationEtape9();
-            case 13 -> animationEtape13();
-            case 16 -> animationEtape16();
+            case 15 -> animationEtape15();
+            case 19 -> animationEtape19();
             default -> timerSet(false);
         }
         repaint();
@@ -155,7 +156,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     /**
      * Effectue l'animation pour une étape donnée
      */
-    public void animationEtape13() {
+    public void animationEtape15() {
         Point[] pos_J2 = {
                 new Point(1, 3),
                 new Point(1, 2),
@@ -216,7 +217,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     /**
      * Effectue l'animation pour une étape donnée
      */
-    public void animationEtape16() {
+    public void animationEtape19() {
         Point[] pos_J2 = {
                 new Point(2, 2),
                 new Point(1,3),

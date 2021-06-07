@@ -4,7 +4,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.*;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 public class Server extends Reseau {
     private ServerSocket serverSocket;

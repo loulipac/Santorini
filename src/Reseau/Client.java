@@ -5,7 +5,7 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 public class Client extends Reseau {
     private Socket clientSocket;

@@ -3,8 +3,8 @@ package Modele;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static Modele.Constante.*;
-import static Modele.Constante.CONSTRUCTION;
+import static Utile.Constante.*;
+import static Utile.Constante.CONSTRUCTION;
 
 public class JeuSimulation {
     Plateau plateau;

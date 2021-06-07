@@ -3,15 +3,14 @@ package Modele;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 /**
  * Classe gérant les cases de la grille dont les constructions de bâtiment et la pose de batisseurs.
  */
 public class Plateau {
     public int[][] cases;
-    private int lignes;
-    private int colonnes;
+    private final int colonnes, lignes;
 
     /**
      * Instantie un objet Plateau.
@@ -129,9 +128,8 @@ public class Plateau {
         setCase(position, getCase(position) + 1);
     }
 
-    public boolean degraderBatiment(Point position) {
+    public void degraderBatiment(Point position) {
         setCase(position, getCase(position) - 1);
-        return true;
     }
 
     /**

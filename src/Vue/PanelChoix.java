@@ -1,6 +1,7 @@
 package Vue;
 
-import Modele.ConfigurationPartie;
+import Utile.ConfigurationPartie;
+import Utile.Utile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,8 +9,8 @@ import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
 
-import static Modele.Constante.*;
-import static Modele.Constante.CHEMIN_RESSOURCE;
+import static Utile.Constante.*;
+import static Utile.Constante.CHEMIN_RESSOURCE;
 
 public class PanelChoix extends JPanel {
 
@@ -261,7 +262,7 @@ public class PanelChoix extends JPanel {
      */
     private void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.displayPanel("menu");
+        f.displayPanel("options");
     }
 
     /**
