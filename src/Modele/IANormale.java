@@ -2,6 +2,7 @@ package Modele;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
 
 import static Modele.Constante.*;
@@ -57,20 +58,20 @@ public class IANormale extends IAFacile {
 
     public ArrayList<Point> deplacementGagnant(){
 
-        ArrayList<Point> mesBatisseurs;
-        ArrayList<Point> casesAccessibles;
+        ArrayList<Point> mes_batisseurs;
+        ArrayList<Point> cases_accessibles;
 
-        ArrayList<Point> sequenceGagnante = new ArrayList<>();
+        ArrayList<Point> sequence_gagnante = new ArrayList<>();
 
-        mesBatisseurs = j.getBatisseurs(); //lui même ?
+        mes_batisseurs = j.getBatisseurs(); //lui même ?
 
-        for (Point batisseurActuel : mesBatisseurs){
-            casesAccessibles = j.getPlateau().getCasesAccessibles(batisseurActuel);
-            for(Point caseAccActuel : casesAccessibles){
-                if(j.getPlateau().getTypeBatiments(caseAccActuel) == 3){ // 3 = étage 3 ?
-                    sequenceGagnante.add(batisseurActuel);
-                    sequenceGagnante.add(caseAccActuel);
-                    return sequenceGagnante;
+        for (Point batisseur_actuel : mes_batisseurs){
+            cases_accessibles = j.getPlateau().getCasesAccessibles(batisseur_actuel);
+            for(Point case_acc_actuel : cases_accessibles){
+                if(j.getPlateau().getTypeBatiments(case_acc_actuel) == 3){ // 3 = étage 3 ?
+                    sequence_gagnante.add(batisseur_actuel);
+                    sequence_gagnante.add(case_acc_actuel);
+                    return sequence_gagnante;
                 }
             }
         }
@@ -92,34 +93,34 @@ public class IANormale extends IAFacile {
 
     public ArrayList<Point> contre(){
 
-        int adversaire = Jeu.getAutreJoueur(j.getJoueur_en_cours().getNum_joueur());
 
-        ArrayList<Point> mesBatisseurs;
-        ArrayList<Point> casesAccessibles;
-        ArrayList<Point> casesConstructible;
-        ArrayList<Point> casesVoisine;
+        ArrayList<Point> mes_batisseurs;
+        ArrayList<Point> cases_accessibles;
+        ArrayList<Point> cases_constructible;
+        ArrayList<Point> cases_voisine;
 
         ArrayList<Point> contre = new ArrayList<>();
 
-        mesBatisseurs = j.getBatisseurs();
+        mes_batisseurs = j.getBatisseurs();
 
-        for (Point batisseurActuel : mesBatisseurs){
-            casesAccessibles = j.getPlateau().getCasesAccessibles(batisseurActuel);
+        for (Point batisseur_actuel : mes_batisseurs){
+            cases_accessibles = j.getPlateau().getCasesAccessibles(batisseur_actuel);
 
-            for(Point caseAccActuel : casesAccessibles){
-                casesConstructible = j.getPlateau().getConstructionsPossible(caseAccActuel);
+            for(Point case_acc_actuel : cases_accessibles){
+                cases_constructible = j.getPlateau().getConstructionsPossible(case_acc_actuel);
 
-                for(Point typeBatimentActuel : casesConstructible){
+                for(Point type_batiment_actuel : cases_constructible){
 
-                    if(j.getPlateau().getTypeBatiments(typeBatimentActuel) == 3){
-                        casesVoisine = j.getPlateau().getCasesVoisines(typeBatimentActuel);
+                    if(j.getPlateau().getTypeBatiments(type_batiment_actuel) == 3){
+                        cases_voisine = j.getPlateau().getCasesVoisines(type_batiment_actuel);
 
-                        for(Point caseVoisineActuel : casesVoisine){
-                            if(j.getPlateau().estBatisseur(caseVoisineActuel,adversaire) && j.getPlateau().getTypeBatiments(caseVoisineActuel) == 2 ){
+                        for(Point case_voisine_actuel : cases_voisine){
+
+                            if(j.getPlateau().estBatisseur(case_voisine_actuel,adversaire) && j.getPlateau().getTypeBatiments(case_voisine_actuel) == 2 ){
                                     // CONTRE !
-                                contre.add(batisseurActuel); // quel batisseur ?
-                                contre.add(caseAccActuel); // où bouger ?
-                                contre.add(typeBatimentActuel); // où construire ?
+                                contre.add(batisseur_actuel); // quel batisseur ?
+                                contre.add(case_acc_actuel); // où bouger ?
+                                contre.add(type_batiment_actuel); // où construire ?
 
                                 return contre;
 
