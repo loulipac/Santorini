@@ -51,7 +51,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
                 dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
                 dessinerRectangle(drawable, new Point(3, 2), c_fond, c_bordure);
                 break;
-            case 3, 13, 16:
+            case 3, 9, 13, 16:
                 timerSet(true);
                 break;
 
@@ -64,9 +64,6 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             case 8 :
                 ActionsInitialisation(drawable, CONSTRUCTION, new Point(1,2),new Point(2,2));
                 break;
-            case 9:
-                timerSet(true);
-                break;
             case 10:
                 ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
                 break;
@@ -77,6 +74,9 @@ public class JeuGraphiqueTuto extends JeuGraphique {
                 ActionsInitialisation(drawable, CONSTRUCTION, new Point(4,2),new Point(3,3));
                 break;
             case 18:
+                ActionsInitialisation(drawable, SELECTION, new Point(1,2),new Point(1,2));
+                break;
+            case 19:
                 ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
                 break;
             default:

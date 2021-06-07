@@ -101,7 +101,7 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2,3),1);
                 construireBatiment(new Point(3,3),4);
                 break;
-            case 18:
+            case 18,19:
                 this.getPlateau().ajouterJoueur(new Point(1, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
@@ -113,7 +113,7 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2,3),2);
                 construireBatiment(new Point(3,3),4);
                 break;
-            case 19:
+            case 20:
                 this.getPlateau().ajouterJoueur(new Point(2, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
@@ -146,6 +146,7 @@ public class JeuTuto extends Jeu {
             case 12 -> joueEtape12(position);
             case 15 -> joueEtape15(position);
             case 18 -> joueEtape18(position);
+            case 19 -> joueEtape19(position);
             default -> {}
         }
     }
@@ -231,8 +232,17 @@ public class JeuTuto extends Jeu {
      * @see JeuTuto#joueEtape2
      */
     public void joueEtape18(Point position) {
-        if (position.equals(new Point(2, 2))) {
+        if (position.equals(new Point(1, 2))) {
             clic_etapes[18]++;
+        }
+    }
+
+    /**
+     * @see JeuTuto#joueEtape2
+     */
+    public void joueEtape19(Point position) {
+        if (position.equals(new Point(2, 2))) {
+            clic_etapes[19]++;
         }
     }
 

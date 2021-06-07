@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import Modele.Plateau;
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 import java.awt.*;
 

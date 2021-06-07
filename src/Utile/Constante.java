@@ -107,7 +107,8 @@ public class Constante {
             Avançons encore dans la partie.""",
             """
                 Tu as la possibilité de gagner, profites-en !
-                Déplace ton pion sur la tour à 3 étages.""",
+                Clique sur ton personnage""",
+            "Déplace ton pion sur la tour à 3 étages.",
             """
                 C’est gagné !
                 Le tutoriel est fini, tu es maintenant un pro de ce jeu.
