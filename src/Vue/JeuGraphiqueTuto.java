@@ -16,7 +16,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     Color c_bordure = creerCouleur(80, 186, 245, 1f);
     Point clic_prec;
     Timer timer;
-    static final int VITESSE_BASE = 1000;
+    static final int VITESSE_BASE = 750;
     Observateur o;
 
     /**
