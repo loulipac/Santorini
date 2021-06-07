@@ -9,15 +9,12 @@ import static Modele.Constante.*;
 public class IADifficile implements IA {
 
     private Jeu jeu;
-    private ArrayList<Coups> coups_liste;
-    private Coups coups;
     private Plateau plateau;
     private final Random random;
     private Coups meilleur_coup;
     private final int profondeur_max = 3;
 
     public IADifficile(Jeu _jeu) {
-        coups_liste = new ArrayList<>();
         jeu = _jeu;
         plateau = jeu.getPlateau();
         random = new Random();
@@ -43,25 +40,23 @@ public class IADifficile implements IA {
     }
 
 
-    public float minimax(Plateau plateau, int joueur_maximise, int joueur_en_cours, int profondeur_en_cours) {
+    public float minimax(Plateau plateau, int joueur_maximise, int joueur_en_cours, int profondeur_en_cours, ArrayList<Point> batisseurs_j1, ArrayList<Point> batisseurs_j2) {
 
         float score_actuel,meilleur_score;
         int autre_joueur = Jeu.getAutreJoueur(joueur_en_cours);
+        ArrayList<Point> batisseurs_en_cours = joueur_en_cours == JOUEUR1 ? batisseurs_j1 : batisseurs_j2 ;
 
-        ArrayList<Point> batisseurs_j1 = plateau.rechercherBatisseurs(JOUEUR1);
-        ArrayList<Point> batisseurs_j2 = plateau.rechercherBatisseurs(JOUEUR2);
-
+        boolean est_sur_toit;
         boolean impossibleDeJouer_j1 = plateau.getCasesAccessibles(batisseurs_j1.get(0)).isEmpty() && plateau.getCasesAccessibles(batisseurs_j1.get(1)).isEmpty();
         boolean impossibleDeJouer_j2 = plateau.getCasesAccessibles(batisseurs_j2.get(0)).isEmpty() && plateau.getCasesAccessibles(batisseurs_j2.get(1)).isEmpty();
         boolean aGagne_j1 = (plateau.getTypeBatiments(batisseurs_j1.get(0)) == 3) || (plateau.getTypeBatiments(batisseurs_j1.get(1)) == 3);
         boolean aGagne_j2 = (plateau.getTypeBatiments(batisseurs_j2.get(0)) == 3) || (plateau.getTypeBatiments(batisseurs_j2.get(1)) == 3);
-
         boolean jeu_fini = impossibleDeJouer_j1 || impossibleDeJouer_j2 || aGagne_j1 || aGagne_j2;
-
         boolean est_joueur_maximise = joueur_en_cours == joueur_maximise;
-        boolean est_sur_toit;
 
         meilleur_score = est_joueur_maximise ? Float.MIN_VALUE : Float.MAX_VALUE;
+
+
 //        if (jeu_fini) {
 ////            System.out.println("Jeu est fini");
 //            return 100000000;
@@ -73,9 +68,8 @@ public class IADifficile implements IA {
             return multi*calculerHeuristique(plateau, autre_joueur, 1,profondeur_en_cours);
         }
 
-        ArrayList<Point> batisseurs = new ArrayList<>(plateau.rechercherBatisseurs(joueur_en_cours));
 
-        for (Point batisseur : batisseurs) {
+        for (Point batisseur : batisseurs_en_cours) {
             for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
 
                 Plateau nouveau_plateau = new Plateau(plateau);
@@ -86,11 +80,15 @@ public class IADifficile implements IA {
                     Coups coup_actuel = new Coups(batisseur, deplacement, construction);
 
                     est_sur_toit = plateau.getTypeBatiments(deplacement)== TOIT;
+
                     if(!est_sur_toit){
                         nouveau_plateau.ameliorerBatiment(construction);
                     }
+                    batisseurs_en_cours.set(batisseurs_en_cours.indexOf(batisseur),deplacement);
 
-                    score_actuel = minimax(nouveau_plateau, joueur_maximise, autre_joueur, profondeur_en_cours + 1);
+                    score_actuel = minimax(nouveau_plateau, joueur_maximise, autre_joueur, profondeur_en_cours + 1, batisseurs_j1, batisseurs_j2);
+
+                    batisseurs_en_cours.set(batisseurs_en_cours.indexOf(deplacement),batisseur);
 
                     if(!est_sur_toit){
                         nouveau_plateau.degraderBatiment(construction);
@@ -114,13 +112,13 @@ public class IADifficile implements IA {
 
         for (Point batisseur : plateau.rechercherBatisseurs(joueur_evalue)) {
             switch (plateau.getTypeBatiments(batisseur)) {
-                case 3:
+                case TOIT:
                     heuristique_joueur += 1000;
                     break;
-                case 2:
+                case ETAGE:
                     heuristique_joueur += 60;
                     break;
-                case 1:
+                case RDC:
                     heuristique_joueur += 40;
                     break;
                 default:
@@ -168,9 +166,9 @@ public class IADifficile implements IA {
         float heuristique_joueur = 0;
 
         for (Point batisseur : plateau.rechercherBatisseurs(joueur_evalue)) {
-            if (plateau.getTypeBatiments(batisseur) == 2) {
+            if (plateau.getTypeBatiments(batisseur) == ETAGE) {
                 for (Point case_voisine : plateau.getCasesAccessibles(batisseur)) {
-                    if (plateau.getTypeBatiments(case_voisine) == 3) {
+                    if (plateau.getTypeBatiments(case_voisine) == TOIT) {
                         heuristique_joueur += 500;
                     }
                 }
@@ -220,7 +218,7 @@ public class IADifficile implements IA {
             case PLACEMENT:
                 return jouePlacement();
             case SELECTION:
-                minimax(plateau, jeu.getJoueurEnCours().getNum_joueur(), jeu.getJoueurEnCours().getNum_joueur(), 0);
+                minimax(plateau, jeu.getJoueurEnCours().getNum_joueur(), jeu.getJoueurEnCours().getNum_joueur(), 0, new ArrayList<>(jeu.getBatisseursJoueur(JOUEUR1)), new ArrayList<>(jeu.getBatisseursJoueur(JOUEUR2)));
                 return meilleur_coup.batisseur;
             case DEPLACEMENT:
                 return meilleur_coup.deplacement;
