@@ -166,12 +166,23 @@ public class PanelRegles extends JPanel {
                     taille_bouton.width,
                     taille_bouton.height,
                     PanelRegles.this::actionBoutonRetourMenu);
+            Bouton bTuto = new Bouton(CHEMIN_RESSOURCE + "/bouton/suivre_tutoriel.png", CHEMIN_RESSOURCE + "/bouton/suivre_tutoriel_hover.png",
+                    taille_bouton.width,
+                    taille_bouton.height,
+                    PanelRegles.this::actionTutoriel);
+
+            JPanel boutonsBas = new JPanel();
+            boutonsBas.setOpaque(false);
+            boutonsBas.setMaximumSize(new Dimension(taille_panel.width, taille_bouton.height));
+            boutonsBas.setPreferredSize(new Dimension(taille_panel.width, taille_bouton.height));
+            boutonsBas.add(bRetour);
+            boutonsBas.add(bTuto);
 
             add(panel_titre);
             add(sous_panel_1);
             add(sous_panel_2);
             add(sous_panel_3);
-            add(bRetour);
+            add(boutonsBas);
         }
 
         @Override
@@ -187,6 +198,14 @@ public class PanelRegles extends JPanel {
     private void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         f.displayPanel("menu");
+    }
+
+    /**
+     * Affiche le tutoriel.
+     */
+    private void actionTutoriel(ActionEvent e) {
+        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        f.displayPanel("tutoriel");
     }
 
     @Override

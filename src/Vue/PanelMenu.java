@@ -68,18 +68,9 @@ class PanelMenu extends JPanel {
         Bouton bCharger = new Bouton(CHEMIN_RESSOURCE + "/bouton/charger_partie.png", CHEMIN_RESSOURCE + "/bouton/charger_partie_hover.png",
                 taille_bouton.width, taille_bouton.height, this::actionCharger);
 
-        Bouton bTutoriel = new Bouton(CHEMIN_RESSOURCE + "/bouton/tutoriel_medium.png", CHEMIN_RESSOURCE + "/bouton/tutoriel_medium_hover.png",
-                (taille_bouton.width) / 2, taille_bouton.height, this::actionBoutonTutoriel);
-        Bouton bRegles = new Bouton(CHEMIN_RESSOURCE + "/bouton/regles_medium.png", CHEMIN_RESSOURCE + "/bouton/regles_medium_hover.png",
-                (taille_bouton.width) / 2, taille_bouton.height, this::actionBoutonRegles);
+        Bouton bReglesTutoriel = new Bouton(CHEMIN_RESSOURCE + "/bouton/regles_tutoriel.png", CHEMIN_RESSOURCE + "/bouton/regles_tutoriel_hover.png",
+                taille_bouton.width, taille_bouton.height, this::actionBoutonRegles);
 
-        JPanel tuto_regles = new JPanel();
-        tuto_regles.setOpaque(false);
-        tuto_regles.setLayout(new GridLayout(1, 2));
-        tuto_regles.setMaximumSize(taille_bouton);
-        tuto_regles.setPreferredSize(taille_bouton);
-        tuto_regles.add(bTutoriel);
-        tuto_regles.add(bRegles);
 
         Bouton bQuitter = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter.png", CHEMIN_RESSOURCE + "/bouton/quitter_hover.png",
                 taille_bouton.width, taille_bouton.height, this::actionBoutonQuitter);
@@ -122,7 +113,7 @@ class PanelMenu extends JPanel {
         addMargin(main_contenu, taille_margin);
         main_contenu.add(bCharger);
         addMargin(main_contenu, taille_margin);
-        main_contenu.add(tuto_regles);
+        main_contenu.add(bReglesTutoriel);
         addMargin(main_contenu, taille_margin);
         main_contenu.add(bQuitter);
         addMargin(main_contenu, new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * ratio_footer)));
@@ -171,15 +162,6 @@ class PanelMenu extends JPanel {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             f.setPanel(new PanelPlateau(getSize(), chooser.getSelectedFile().getName()));
         }
-    }
-
-    /**
-     * Remplace le contenu de la fenetre par le plateau du jeu.
-     */
-    private void actionBoutonTutoriel(ActionEvent e) {
-        son_bouton.joueSon(false);
-        Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.displayPanel("tutoriel");
     }
 
     /**
