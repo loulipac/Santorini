@@ -262,7 +262,7 @@ public class PanelChoix extends JPanel {
      */
     private void actionBoutonRetourMenu(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
-        f.displayPanel("menu");
+        f.displayPanel("options");
     }
 
     /**

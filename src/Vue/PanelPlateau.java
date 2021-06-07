@@ -696,6 +696,7 @@ public class PanelPlateau extends Panels implements Observateur {
      */
     private void actionQuitter(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
+        jeu.desactiverIA();
         if (netUser != null) {
             netUser.deconnexion();
         }

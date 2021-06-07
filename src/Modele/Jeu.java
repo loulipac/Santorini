@@ -393,6 +393,16 @@ public class Jeu {
         }
     }
 
+    public void desactiverIA() {
+        this.ia_statut = false;
+        for (Joueur j : joueurs) {
+            if (j.getClass() == JoueurIA.class) {
+                ((JoueurIA) j).timerIaSet(ia_statut);
+            }
+        }
+
+    }
+
     public Joueur getGagnant() {
         return gagnant;
     }
