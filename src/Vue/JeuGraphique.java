@@ -80,11 +80,11 @@ public class JeuGraphique extends JComponent {
 
     @Override
     public void paintComponent(Graphics g) {
-
         super.paintComponent(g);
-        // Graphics 2D est le vrai type de l'objet passé en paramètre
-        // Le cast permet d'avoir acces a un peu plus de primitives de dessin
         Graphics2D drawable = (Graphics2D) g;
+        drawable.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        drawable.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+        drawable.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         taille_case = getSize().height / PLATEAU_LIGNES;
 
@@ -95,14 +95,12 @@ public class JeuGraphique extends JComponent {
         }
 
         // On efface tout
-        int nouvelle_origine = 0;
         drawable.clearRect(
-                nouvelle_origine,
+                0,
                 0,
                 taille_case * PLATEAU_COLONNES,
-                taille_case * PLATEAU_LIGNES + nouvelle_origine
+                taille_case * PLATEAU_LIGNES
         );
-
 
         Point batisseur_en_cours = jeu.getBatisseurEnCours();
         int batisseurs_ligne = batisseur_en_cours != null ? batisseur_en_cours.x : -1;
@@ -111,63 +109,78 @@ public class JeuGraphique extends JComponent {
         Image image_batisseurs;
         Image image_case;
 
-        for (int l = 0; l < PLATEAU_LIGNES; l++) {
-            for (int c = 0; c < PLATEAU_COLONNES; c++) {
-                Point position = new Point(l, c);
-                Point position_case = new Point(
-                        c * taille_case + nouvelle_origine,
-                        l * taille_case
-                );
-                image_case = ((l + c) % 2 == 0) ? case_claire : case_fonce;
-                drawable.drawImage(image_case, position_case.x, position_case.y, taille_case, taille_case, null);
-
+        for (int y = 0; y < PLATEAU_LIGNES; y++) {
+            for (int x = 0; x < PLATEAU_COLONNES; x++) {
+                Point position = new Point(y, x);
+                image_case = ((y + x) % 2 == 0) ? case_claire : case_fonce;
+                drawable.drawImage(image_case, position.y * taille_case, position.x * taille_case, taille_case, taille_case, null);
 
                 afficher_batiment(drawable, position, null, etage_1, etage_2, etage_3, coupole);
-                if (plateau.getTypeBatisseurs(position) > 0) {
-                    if (deplacement_batisseur != null && position.equals(deplacement_batisseur[1])) continue;
 
-                    boolean batisseur_selectionne = (batisseurs_ligne == l && batisseurs_colonne == c);
+                if (plateau.getTypeBatisseurs(position) <= 0 || (deplacement_batisseur != null && position.equals(deplacement_batisseur[1]))) continue;
 
-                    if (plateau.getTypeBatisseurs(position) == numero_joueur_bleu) {
-                        image_batisseurs = batisseur_selectionne ? batisseur_bleu_selectionne : batisseur_bleu;
+                boolean batisseur_selectionne = (batisseurs_ligne == y && batisseurs_colonne == x);
+
+                if (plateau.getTypeBatisseurs(position) == numero_joueur_bleu) {
+                    image_batisseurs = batisseur_selectionne ? batisseur_bleu_selectionne : batisseur_bleu;
+                } else {
+                    image_batisseurs = batisseur_selectionne ? batisseur_rouge_selectionne : batisseur_rouge;
+                }
+
+                drawable.drawImage(image_batisseurs, position.y * taille_case, position.x * taille_case, taille_case, taille_case, null);
+            }
+        }
+
+        switch (jeu.getSituation()) {
+            case PLACEMENT:
+                if (case_sous_souris == null) break;
+
+                Image batisseur = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? batisseur_bleu_transparent : batisseur_rouge_transparent;
+                if (plateau.estLibre(case_sous_souris)) {
+                    drawable.drawImage(batisseur, case_sous_souris.y * taille_case, case_sous_souris.x * taille_case, taille_case, taille_case, null);
+                }
+                break;
+
+            case SELECTION:
+                if (case_sous_souris == null) break;
+
+                Image image_batisseurs_select = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? batisseur_bleu_selectionne : batisseur_rouge_selectionne;
+                if (plateau.estBatisseur(case_sous_souris, jeu.getJoueurEnCours())) {
+                    drawable.drawImage(image_batisseurs_select, case_sous_souris.y * taille_case, case_sous_souris.x * taille_case, taille_case, taille_case, null);
+                }
+                break;
+
+            case DEPLACEMENT:
+                if(batisseur_en_cours == null) break;
+
+                Image pas_joueur = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? pas_bleu : pas_rouge;
+                Image pas_joueur_hover = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? pas_bleu_hover : pas_rouge_hover;
+
+                for (Point case_autour : plateau.getCasesAccessibles(batisseur_en_cours)) {
+                    if (case_sous_souris != null && case_sous_souris.equals(case_autour)) {
+                        drawable.drawImage(pas_joueur_hover, case_autour.y * taille_case, case_autour.x * taille_case, taille_case, taille_case, null);
                     } else {
-                        image_batisseurs = batisseur_selectionne ? batisseur_rouge_selectionne : batisseur_rouge;
+                        drawable.drawImage(pas_joueur, case_autour.y * taille_case, case_autour.x * taille_case, taille_case, taille_case, null);
                     }
+                }
+                break;
 
-                    drawable.drawImage(image_batisseurs, position_case.x, position_case.y, taille_case, taille_case, null);
-                }
-            }
-        }
-        if (jeu.getSituation() == PLACEMENT && case_sous_souris != null) {
-            Image batisseur = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? batisseur_bleu_transparent : batisseur_rouge_transparent;
-            if (case_sous_souris != null && plateau.estLibre(new Point(case_sous_souris.y, case_sous_souris.x))) {
-                drawable.drawImage(batisseur, case_sous_souris.x * taille_case, case_sous_souris.y * taille_case, taille_case, taille_case, null);
-            }
-        } else if(jeu.getSituation() == SELECTION) {
-            Image image_batisseurs_select = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? batisseur_bleu_selectionne : batisseur_rouge_selectionne;
-            if (case_sous_souris != null && plateau.estBatisseur(new Point(case_sous_souris.y, case_sous_souris.x), jeu.getJoueurEnCours())) {
-                drawable.drawImage(image_batisseurs_select, case_sous_souris.x * taille_case, case_sous_souris.y * taille_case, taille_case, taille_case, null);
-            }
-        } else if (jeu.getSituation() == DEPLACEMENT) {
-            Image pas_joueur = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? pas_bleu : pas_rouge;
-            Image pas_joueur_hover = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? pas_bleu_hover : pas_rouge_hover;
+            case CONSTRUCTION:
+                if (jeu.estJeufini() || batisseur_en_cours == null) break;
 
-            for (Point case_autour : plateau.getCasesAccessibles(jeu.getBatisseurEnCours())) {
-                if (case_sous_souris != null && new Point(case_sous_souris.y, case_sous_souris.x).equals(case_autour)) {
-                    drawable.drawImage(pas_joueur_hover, case_autour.y * taille_case, case_autour.x * taille_case, taille_case, taille_case, null);
-                } else {
-                    drawable.drawImage(pas_joueur, case_autour.y * taille_case, case_autour.x * taille_case, taille_case, taille_case, null);
+                for (Point constructions_autour : plateau.getConstructionsPossible(batisseur_en_cours)) {
+                    if (case_sous_souris != null && case_sous_souris.equals(constructions_autour)) {
+                        afficher_batiment(drawable, constructions_autour, etage_1_tmp, etage_2_tmp, etage_3_tmp, coupole_tmp, null);
+                    } else {
+                        afficher_batiment(drawable, constructions_autour, etage_1_tmp_transparent, etage_2_tmp_transparent, etage_3_tmp_transparent, coupole_tmp_transparent, null);
+                    }
                 }
-            }
-        } else if (jeu.getSituation() == CONSTRUCTION && !jeu.estJeufini()) {
-            for (Point constructions_autour : plateau.getConstructionsPossible(jeu.getBatisseurEnCours())) {
-                if (case_sous_souris != null && new Point(case_sous_souris.y, case_sous_souris.x).equals(constructions_autour)) {
-                    afficher_batiment(drawable, constructions_autour, etage_1_tmp, etage_2_tmp, etage_3_tmp, coupole_tmp, null);
-                } else {
-                    afficher_batiment(drawable, constructions_autour, etage_1_tmp_transparent, etage_2_tmp_transparent, etage_3_tmp_transparent, coupole_tmp_transparent, null);
-                }
-            }
+                break;
+
+            default:
+                break;
         }
+
         if (deplacement_batisseur != null) {
             image_batisseurs = plateau.getTypeBatisseurs(deplacement_batisseur[1]) == numero_joueur_bleu ? batisseur_bleu_selectionne : batisseur_rouge_selectionne;
             drawable.drawImage(image_batisseurs, deplacement_batisseur[0].y, deplacement_batisseur[0].x, taille_case, taille_case, null);

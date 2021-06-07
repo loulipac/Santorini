@@ -104,14 +104,14 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 break;
             case PLACEMENT:
                 setCursor((jg.getJeu().estAtteignable(position)), c_hand_gris, c_hand_rouge, c_hand_bleu);
-                jg.setCase_sous_souris(new Point(pos_x, pos_y));
+                jg.setCase_sous_souris(position);
                 jg.repaint();
                 return;
 
             case DEPLACEMENT, CONSTRUCTION:
                 if (jg.getJeu().estAtteignable(position) && !jg.getJeu().getPlateau().estBatisseur(position, jeu.getJoueurEnCours())) {
                     setCursor(true, null, c_hand_rouge, c_hand_bleu);
-                    jg.setCase_sous_souris(new Point(pos_x, pos_y));
+                    jg.setCase_sous_souris(position);
                     jg.repaint();
                     return;
                 }
@@ -120,7 +120,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
             case SELECTION:
                 if (jg.getJeu().getPlateau().estBatisseur(position, jeu.getJoueurEnCours())) {
                     setCursor(true, null, c_hand_rouge, c_hand_bleu);
-                    jg.setCase_sous_souris(new Point(pos_x, pos_y));
+                    jg.setCase_sous_souris(position);
                     jg.repaint();
                     return;
                 }
@@ -128,7 +128,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
             default: break;
         }
-        jg.setCase_sous_souris(new Point(pos_x, pos_y));
+        jg.setCase_sous_souris(position);
         jg.repaint();
         setCursor(true, null, c_defaut_rouge, c_defaut_bleu);
 
