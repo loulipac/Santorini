@@ -143,6 +143,11 @@ public class JeuGraphique extends JComponent {
             if (case_sous_souris != null && plateau.estLibre(new Point(case_sous_souris.y, case_sous_souris.x))) {
                 drawable.drawImage(batisseur, case_sous_souris.x * taille_case, case_sous_souris.y * taille_case, taille_case, taille_case, null);
             }
+        } else if(jeu.getSituation() == SELECTION) {
+            Image image_batisseurs_select = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? batisseur_bleu_selectionne : batisseur_rouge_selectionne;
+            if (case_sous_souris != null && plateau.estBatisseur(new Point(case_sous_souris.y, case_sous_souris.x), jeu.getJoueurEnCours())) {
+                drawable.drawImage(image_batisseurs_select, case_sous_souris.x * taille_case, case_sous_souris.y * taille_case, taille_case, taille_case, null);
+            }
         } else if (jeu.getSituation() == DEPLACEMENT) {
             Image pas_joueur = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? pas_bleu : pas_rouge;
             Image pas_joueur_hover = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? pas_bleu_hover : pas_rouge_hover;
