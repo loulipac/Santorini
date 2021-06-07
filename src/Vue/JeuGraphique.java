@@ -42,6 +42,7 @@ public class JeuGraphique extends JComponent {
     private Jeu jeu;
     protected int taille_case;
     private Point case_sous_souris;
+    private Point[] deplacement_batisseur;
     int numero_joueur_bleu;
 
     /**
@@ -79,12 +80,19 @@ public class JeuGraphique extends JComponent {
 
     @Override
     public void paintComponent(Graphics g) {
+
         super.paintComponent(g);
         // Graphics 2D est le vrai type de l'objet passé en paramètre
         // Le cast permet d'avoir acces a un peu plus de primitives de dessin
         Graphics2D drawable = (Graphics2D) g;
 
         taille_case = getSize().height / PLATEAU_LIGNES;
+
+        if (jeu.getDeplacement_en_cours() != null) {
+            deplacement_batisseur = jeu.getDeplacement_en_cours();
+            new Animation(deplacement_batisseur, taille_case, this);
+            jeu.resetDeplacement_en_cours();
+        }
 
         // On efface tout
         int nouvelle_origine = 0;
@@ -115,8 +123,8 @@ public class JeuGraphique extends JComponent {
 
 
                 afficher_batiment(drawable, position, null, etage_1, etage_2, etage_3, coupole);
-
                 if (plateau.getTypeBatisseurs(position) > 0) {
+                    if (deplacement_batisseur != null && position.equals(deplacement_batisseur[1])) continue;
 
                     boolean batisseur_selectionne = (batisseurs_ligne == l && batisseurs_colonne == c);
 
@@ -155,6 +163,10 @@ public class JeuGraphique extends JComponent {
                 }
             }
         }
+        if (deplacement_batisseur != null) {
+            image_batisseurs = plateau.getTypeBatisseurs(deplacement_batisseur[1]) == numero_joueur_bleu ? batisseur_bleu_selectionne : batisseur_rouge_selectionne;
+            drawable.drawImage(image_batisseurs, deplacement_batisseur[0].y, deplacement_batisseur[0].x, taille_case, taille_case, null);
+        }
     }
 
     /**
@@ -189,6 +201,10 @@ public class JeuGraphique extends JComponent {
 
     public void setCase_sous_souris(Point case_sous_souris) {
         this.case_sous_souris = case_sous_souris;
+    }
+
+    public void resetBatisseur() {
+        deplacement_batisseur = null;
     }
 
 }

@@ -30,6 +30,7 @@ public class Jeu {
     private Commande cmd;
     private Joueur gagnant;
     private Joueur[] joueurs;
+    private Point[] deplacement_en_cours;
     Reseau netUser;
 
     ConfigurationPartie configurationPartie;
@@ -42,6 +43,7 @@ public class Jeu {
     public Jeu(Observateur o, ConfigurationPartie config) {
         joueurs = new Joueur[2];
         plateau = new Plateau();
+        deplacement_en_cours = null;
         jeu_fini = false;
         ia_statut = true;
         batisseur_en_cours = null;
@@ -141,6 +143,9 @@ public class Jeu {
             ArrayList<Point> batisseurs_en_cours = getJoueurEnCours().getBatisseurs();
             batisseurs_en_cours.set(batisseurs_en_cours.indexOf(prevPos), position);
 
+            deplacement_en_cours = new Point[2];
+            deplacement_en_cours[0] = prevPos;
+            deplacement_en_cours[1] = batisseur_en_cours;
             cmd = new CoupDeplacer(joueurs[i_joueurs], prevPos, batisseur_en_cours);
             situation = CONSTRUCTION;
             sendMove(position);
@@ -451,6 +456,14 @@ public class Jeu {
 
     public Reseau getNetUser() {
         return netUser;
+    }
+
+    public Point[] getDeplacement_en_cours() {
+        return deplacement_en_cours;
+    }
+
+    public void resetDeplacement_en_cours() {
+        deplacement_en_cours = null;
     }
 
     @Override
