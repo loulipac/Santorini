@@ -6,7 +6,6 @@ import Patterns.Observateur;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
-import java.util.ArrayList;
 
 import static Modele.Constante.*;
 
@@ -90,7 +89,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
      * Initialise la position et la situation du batisseur qui va jouer, puis dessine la case bleu (objectif de l'étape)
      */
     private void ActionsInitialisation(Graphics2D drawable, int typeAction, Point pointDepart, Point pointArrivee){
-        jeu_tuto.setBatisseur_en_cours(pointDepart);
+        jeu_tuto.setBatisseurEnCours(pointDepart);
         jeu_tuto.setSituation(typeAction);
         dessinerRectangle(drawable, pointArrivee, c_fond, c_bordure);
 

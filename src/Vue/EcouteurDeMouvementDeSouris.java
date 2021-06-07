@@ -92,7 +92,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
      * Définis le curseur selon sa position sur la grille et la situation du jeu.
      *
      * @see Jeu#getSituation()
-     * @see Jeu#getJoueur_en_cours()
+     * @see Jeu#getJoueurEnCours()
      */
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -106,11 +106,11 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 return;
             }
 
-            if(jeu.getJoueur_en_cours().getClass() == JoueurIA.class) {
+            if(jeu.getJoueurEnCours().getClass() == JoueurIA.class) {
                 jg.setCursor(c_hourglass);
                 return;
             }
-            if (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueur_en_cours().getNum_joueur()) {
+            if (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueurEnCours().getNum_joueur()) {
                 jg.setCursor(c_hourglass);
                 return;
             }
@@ -131,7 +131,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
                 if (jg.getJeu().estAtteignable(position)) {
                     setCursor(true, null, c_hand_rouge, c_hand_bleu);
-                } else if (jg.getJeu().getPlateau().estBatisseur(position, jeu.getJoueur_en_cours())) {
+                } else if (jg.getJeu().getPlateau().estBatisseur(position, jeu.getJoueurEnCours())) {
                     setCursor(true, null, c_defaut_rouge, c_defaut_bleu);
                 } else {
                     jg.setCursor(c_defaut_gris);
@@ -147,14 +147,14 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 jg.repaint();
             }
             if(jeu.getSituation() == SELECTION) {
-                setCursor((jg.getJeu().getPlateau().estBatisseur(position, jeu.getJoueur_en_cours())), c_defaut_gris, c_hand_rouge, c_hand_bleu);
+                setCursor((jg.getJeu().getPlateau().estBatisseur(position, jeu.getJoueurEnCours())), c_defaut_gris, c_hand_rouge, c_hand_bleu);
             }
         }
     }
 
     private void setCursor(boolean condition, Cursor gris, Cursor rouge, Cursor bleu) {
         if(condition) {
-            if (jeu.getJoueur_en_cours().getNum_joueur() == numJoueurBleu) {
+            if (jeu.getJoueurEnCours().getNum_joueur() == numJoueurBleu) {
                 jg.setCursor(bleu);
             } else {
                 jg.setCursor(rouge);

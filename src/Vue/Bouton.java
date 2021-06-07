@@ -5,10 +5,8 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 
 public class Bouton extends JButton {
-    int largeur;
-    int hauteur;
-    String image;
-    String imageHover;
+    int largeur, hauteur;
+    String image, imageHover;
 
     public Bouton(String image, String imageHover, int largeur, int hauteur, ActionListener action) {
         this(image, imageHover, largeur, hauteur);

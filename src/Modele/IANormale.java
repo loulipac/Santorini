@@ -2,7 +2,6 @@ package Modele;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
 
 import static Modele.Constante.*;
 import static Modele.Constante.CONSTRUCTION;
@@ -92,7 +91,7 @@ public class IANormale extends IAFacile {
 
     public ArrayList<Point> contre(){
 
-        int adversaire = Jeu.getAutreJoueur(j.getJoueur_en_cours().getNum_joueur());
+        int adversaire = Jeu.getAutreJoueur(j.getJoueurEnCours().getNum_joueur());
 
         ArrayList<Point> mesBatisseurs;
         ArrayList<Point> casesAccessibles;

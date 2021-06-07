@@ -24,7 +24,7 @@ public class JoueurIA extends Joueur {
         Point jeu_ia = ia.joue();
         jeu.jouer(jeu_ia);
         jeu.MAJObservateur();
-        if(jeu.getJoueur_en_cours().getNum_joueur() != num_joueur) timer.stop();
+        if(jeu.getJoueurEnCours().getNum_joueur() != num_joueur) timer.stop();
     }
 
     /**

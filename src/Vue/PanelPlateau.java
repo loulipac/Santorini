@@ -712,7 +712,7 @@ public class PanelPlateau extends Panels implements Observateur {
      */
     private void switchOnOffIA(ActionEvent e) {
         jeu.iaSwitch();
-        if (jeu.getIa_statut()) {
+        if (jeu.getIaStatut()) {
             on_off_ia.changeImage(CHEMIN_RESSOURCE + "/bouton/running.png", CHEMIN_RESSOURCE + "/bouton/running_hover.png");
         } else {
             on_off_ia.changeImage(CHEMIN_RESSOURCE + "/bouton/stop.png", CHEMIN_RESSOURCE + "/bouton/stop_hover.png");
@@ -725,7 +725,7 @@ public class PanelPlateau extends Panels implements Observateur {
     private void changeVictory() {
         String nom_joueur;
         if (netUser != null) {
-            if (netUser.getNumJoueur() == jeu.getJoueur_en_cours().getNum_joueur()) nom_joueur = netUser.getNomJoueur();
+            if (netUser.getNumJoueur() == jeu.getJoueurEnCours().getNum_joueur()) nom_joueur = netUser.getNomJoueur();
             else nom_joueur = netUser.getNomAdversaire();
         } else {
             nom_joueur = jeu.getGagnant().getNum_joueur() == JOUEUR1 ? "Joueur 1" : "Joueur 2";
@@ -734,7 +734,7 @@ public class PanelPlateau extends Panels implements Observateur {
 
         victoire_panel.setVisible(true);
         victoire_panel.changeTexte(victoire_panel.titre_victoire, "Victoire de " + nom_joueur);
-        victoire_panel.changeTexte(victoire_panel.nb_tours, jeu.getNb_tours() + " tours passés");
+        victoire_panel.changeTexte(victoire_panel.nb_tours, jeu.getNbTours() + " tours passés");
         victoire_panel.changeTexte(victoire_panel.tmp_reflexion_j1, "n secondes pour le joueur 1");
         victoire_panel.changeTexte(victoire_panel.tmp_reflexion_j2, "n secondes pour le joueur 2");
     }
@@ -742,7 +742,7 @@ public class PanelPlateau extends Panels implements Observateur {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Utile.dessineDecorationPlateau(g, getSize(), this, jeu.estJeufini(), config, jeu.getJoueur_en_cours().getNum_joueur());
+        Utile.dessineDecorationPlateau(g, getSize(), this, jeu.estJeufini(), config, jeu.getJoueurEnCours().getNum_joueur());
     }
     /**
      * Modifie le texte qui affiche quel joueur doit jouer.
@@ -753,11 +753,11 @@ public class PanelPlateau extends Panels implements Observateur {
             changeVictory();
         } else {
             if (netUser != null) {
-                if (netUser.getNumJoueur() == jeu.getJoueur_en_cours().getNum_joueur())
+                if (netUser.getNumJoueur() == jeu.getJoueurEnCours().getNum_joueur())
                     jt.setText("C'est au tour de " + netUser.getNomJoueur());
                 else jt.setText("C'est au tour de " + netUser.getNomAdversaire());
             } else {
-                jt.setText(jeu.getJoueur_en_cours().getNum_joueur() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
+                jt.setText(jeu.getJoueurEnCours().getNum_joueur() == JOUEUR1 ? "C'est au tour du Joueur 1" : "C'est au tour du Joueur 2");
             }
         }
         repaint();

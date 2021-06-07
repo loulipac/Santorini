@@ -77,6 +77,7 @@ public class IADifficile implements IA {
 
         for (Point batisseur : batisseurs) {
             for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
+
                 Plateau nouveau_plateau = new Plateau(plateau);
                 nouveau_plateau.enleverJoueur(batisseur);
                 nouveau_plateau.ajouterJoueur(deplacement, joueur_en_cours);
@@ -99,7 +100,7 @@ public class IADifficile implements IA {
                             meilleur_score = score_actuel;
                             if(profondeur_en_cours == 0) {
                                 meilleur_coup = coup_actuel;
-                              System.out.println(meilleur_score);
+//                              System.out.println(meilleur_score);
                             }
                     }
                 }
@@ -219,7 +220,7 @@ public class IADifficile implements IA {
             case PLACEMENT:
                 return jouePlacement();
             case SELECTION:
-                minimax(plateau, jeu.getJoueur_en_cours().getNum_joueur(), jeu.getJoueur_en_cours().getNum_joueur(), 0);
+                minimax(plateau, jeu.getJoueurEnCours().getNum_joueur(), jeu.getJoueurEnCours().getNum_joueur(), 0);
                 return meilleur_coup.batisseur;
             case DEPLACEMENT:
                 return meilleur_coup.deplacement;

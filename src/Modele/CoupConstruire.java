@@ -27,7 +27,7 @@ public class CoupConstruire extends Commande {
         }
         jeu.setSituation(situation);
         jeu.changerJoueur();
-        jeu.setBatisseur_en_cours(batisseur_en_cours);
+        jeu.setBatisseurEnCours(batisseur_en_cours);
         jeu.MAJObservateur();
         jeu.iaJoue();
     }

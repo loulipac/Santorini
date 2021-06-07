@@ -3,8 +3,6 @@ package Modele;
 import static Modele.Constante.*;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Objects;
 
 public class CoupDeplacer extends Commande {
@@ -36,17 +34,17 @@ public class CoupDeplacer extends Commande {
         if (coup == PLACEMENT) {
             jeu.setSituation(PLACEMENT);
             int value = type == REDO ? 1 : -1;
-            jeu.setNombre_batisseurs(jeu.getNombre_batisseurs() + value);
+            jeu.setNombreBatisseurs(jeu.getNombreBatisseurs() + value);
             if (type == REDO) {
                 jeu.verificationNbBatisseur();
             } else { // UNDO
-                if (jeu.getNombre_batisseurs() % 2 == 1) {
+                if (jeu.getNombreBatisseurs() % 2 == 1) {
                     jeu.finTour();
                 }
             }
         } else {
-            jeu.setBatisseur_en_cours(positions[type]);
-            if (type == UNDO && jeu.estJeufini()) jeu.setJeu_fini(false);
+            jeu.setBatisseurEnCours(positions[type]);
+            if (type == UNDO && jeu.estJeufini()) jeu.setJeuFini(false);
             else if (type == REDO) jeu.victoireJoueur();
             int situation = type == REDO ? CONSTRUCTION : SELECTION;
             jeu.setSituation(situation);
