@@ -1,11 +1,13 @@
-package Vue;
+package Ecouteur;
 
 import Modele.Jeu;
 import Modele.Joueur;
 import Modele.JoueurHumain;
 import Modele.JoueurIA;
+import Vue.JeuGraphique;
+import Vue.PanelPlateau;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;

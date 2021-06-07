@@ -1,6 +1,6 @@
 package Vue;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;

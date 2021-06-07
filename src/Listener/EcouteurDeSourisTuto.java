@@ -1,10 +1,12 @@
-package Vue;
+package Ecouteur;
+
+import Vue.PanelTutoriel;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 public class EcouteurDeSourisTuto extends MouseAdapter {
     PanelTutoriel pt;
@@ -27,11 +29,11 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        this.largeur_plateau = pt.jg.getTailleCase() * PLATEAU_COLONNES;
-        this.hauteur_plateau = pt.jg.getTailleCase() * PLATEAU_LIGNES;
-        Point pos_souris = new Point(e.getY() / pt.jg.getTailleCase(),e.getX() / pt.jg.getTailleCase());
+        this.largeur_plateau = pt.getJg().getTailleCase() * PLATEAU_COLONNES;
+        this.hauteur_plateau = pt.getJg().getTailleCase() * PLATEAU_LIGNES;
+        Point pos_souris = new Point(e.getY() / pt.getJg().getTailleCase(),e.getX() / pt.getJg().getTailleCase());
 
-        switch (pt.num_etape) {
+        switch (pt.getNum_etape()) {
             case 2 -> actionEtape(2,pos_souris,2);
             case 5 -> actionEtape(5,pos_souris,1);
             case 6 -> actionEtape(6,pos_souris,1);
@@ -44,7 +46,7 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
                 break;
             }
         }
-        this.pt.jg.repaint();
+        this.pt.getJg().repaint();
     }
 
     /**
