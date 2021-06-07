@@ -31,6 +31,7 @@ public abstract class Joueur {
     public ArrayList<Point> getBatisseurs() {
         return batisseurs;
     }
+    
 
     @Override
     public boolean equals(Object o) {

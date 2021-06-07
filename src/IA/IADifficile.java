@@ -43,7 +43,7 @@ public class IADifficile implements IA {
     }
 
 
-    public float minimax(Plateau plateau, int joueur_maximise, int joueur_en_cours, int profondeur_en_cours, ArrayList<Point> batisseurs_j1, ArrayList<Point> batisseurs_j2) {
+    public float minimax(Plateau plateau, int joueur_maximise, int joueur_en_cours, int profondeur_en_cours,  ArrayList<Point> batisseurs_j1,  ArrayList<Point> batisseurs_j2) {
 
         float score_actuel,meilleur_score;
         int autre_joueur = Jeu.getAutreJoueur(joueur_en_cours);
@@ -57,32 +57,28 @@ public class IADifficile implements IA {
         boolean jeu_fini = impossibleDeJouer_j1 || impossibleDeJouer_j2 || aGagne_j1 || aGagne_j2;
         boolean est_joueur_maximise = joueur_en_cours == joueur_maximise;
 
-        meilleur_score = est_joueur_maximise ? Float.MIN_VALUE : Float.MAX_VALUE;
+        meilleur_score = est_joueur_maximise ? -10000000000000.f : 10000000000000.f;
 
-
-//        if (jeu_fini) {
-////            System.out.println("Jeu est fini");
-//            return 100000000;
-//        }
         int multi = jeu_fini ? (profondeur_max - profondeur_en_cours + 1) : 1;
-//        int multi = 1;
 
         if (profondeur_en_cours == profondeur_max || jeu_fini) {
-            return multi*calculerHeuristique(plateau, autre_joueur, 1,profondeur_en_cours);
+//            int val_test = joueur_en_cours == joueur_maximise ? -1: 1 ;
+//            return val_test * multi * calculerHeuristique(plateau, autre_joueur, 1, profondeur_en_cours);
+            return multi * calculerHeuristique(plateau, joueur_maximise, 1, profondeur_en_cours);
         }
-
 
         for (Point batisseur : batisseurs_en_cours) {
             for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
 
                 Plateau nouveau_plateau = new Plateau(plateau);
+
                 nouveau_plateau.enleverJoueur(batisseur);
                 nouveau_plateau.ajouterJoueur(deplacement, joueur_en_cours);
 
                 for (Point construction : nouveau_plateau.getConstructionsPossible(deplacement)) {
                     Coups coup_actuel = new Coups(batisseur, deplacement, construction);
 
-                    est_sur_toit = plateau.getTypeBatiments(deplacement)== TOIT;
+                    est_sur_toit = plateau.getTypeBatiments(deplacement) == TOIT;
 
                     if(!est_sur_toit){
                         nouveau_plateau.ameliorerBatiment(construction);
@@ -99,9 +95,8 @@ public class IADifficile implements IA {
 
                     if ((est_joueur_maximise && score_actuel > meilleur_score) || (!est_joueur_maximise && score_actuel < meilleur_score)) {
                             meilleur_score = score_actuel;
-                            if(profondeur_en_cours == 0) {
+                            if (profondeur_en_cours == 0) {
                                 meilleur_coup = coup_actuel;
-//                              System.out.println(meilleur_score);
                             }
                     }
                 }
@@ -180,12 +175,12 @@ public class IADifficile implements IA {
         return heuristique_joueur;
     }
 
-    private float calculerHeuristique(Plateau plateau, int joueur_evalue, int strategie, int profondeur) {
+    private float calculerHeuristique(Plateau plateau, int joueur_maximise, int strategie, int profondeur) {
 
         int poidsDifferenceDesHauteurs, poidsMobiliteVerticale,poidsCaseCentrale ,poidsMenaceNiveau2;
         poidsDifferenceDesHauteurs = poidsMobiliteVerticale = poidsCaseCentrale = poidsMenaceNiveau2 = 0;
 
-        int autre_joueur = Jeu.getAutreJoueur(joueur_evalue);
+        int autre_joueur = Jeu.getAutreJoueur(joueur_maximise);
 
 
         switch (strategie) {
@@ -197,10 +192,10 @@ public class IADifficile implements IA {
                 break;
         }
 
-        float diff_hauteur = poidsDifferenceDesHauteurs * (calculerHeuristiqueDifferenceDesHauteurs(plateau, joueur_evalue) - calculerHeuristiqueDifferenceDesHauteurs(plateau, autre_joueur));
-        float mobilite_verticale =  poidsMobiliteVerticale * (calculerHeuristiqueMobiliteVerticale(plateau, joueur_evalue) - calculerHeuristiqueMobiliteVerticale(plateau, autre_joueur));
-        float case_centrale = + poidsCaseCentrale * (calculerHeuristiqueCaseCentrale(plateau, joueur_evalue) - calculerHeuristiqueCaseCentrale(plateau, autre_joueur));
-        float menace =  poidsMenaceNiveau2 * (calculerHeuristiqueMenaceNiveau2(plateau, joueur_evalue) - calculerHeuristiqueMenaceNiveau2(plateau, autre_joueur));
+        float diff_hauteur = poidsDifferenceDesHauteurs * (calculerHeuristiqueDifferenceDesHauteurs(plateau, joueur_maximise) - calculerHeuristiqueDifferenceDesHauteurs(plateau, autre_joueur));
+        float mobilite_verticale =  poidsMobiliteVerticale * (calculerHeuristiqueMobiliteVerticale(plateau, joueur_maximise) - calculerHeuristiqueMobiliteVerticale(plateau, autre_joueur));
+        float case_centrale = + poidsCaseCentrale * (calculerHeuristiqueCaseCentrale(plateau, joueur_maximise) - calculerHeuristiqueCaseCentrale(plateau, autre_joueur));
+        float menace =  poidsMenaceNiveau2 * (calculerHeuristiqueMenaceNiveau2(plateau, joueur_maximise) - calculerHeuristiqueMenaceNiveau2(plateau, autre_joueur));
 
 //        System.out.println();
 //        System.out.println();
