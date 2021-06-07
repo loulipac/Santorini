@@ -103,6 +103,9 @@ public class Constante {
             Il ne gagnera pas ce tour là !
             Avançons encore dans la partie.""",
             """
+            Il ne gagnera pas ce tour là !
+            Avançons encore dans la partie.""",
+            """
                 Tu as la possibilité de gagner, profites-en !
                 Déplace ton pion sur la tour à 3 étages.""",
             """

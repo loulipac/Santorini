@@ -76,7 +76,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             case 15:
                 ActionsInitialisation(drawable, CONSTRUCTION, new Point(4,2),new Point(3,3));
                 break;
-            case 17:
+            case 18:
                 ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
                 break;
             default:
@@ -104,7 +104,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             case 3 -> animationEtape3();
             case 9 -> animationEtape9();
             case 13 -> animationEtape13();
-            case 16 -> animationEtape16();
+            case 17 -> animationEtape17();
             default -> timerSet(false);
         }
         repaint();
@@ -215,7 +215,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     /**
      * Effectue l'animation pour une étape donnée
      */
-    public void animationEtape16() {
+    public void animationEtape17() {
         Point[] pos_J2 = {
                 new Point(2, 2),
                 new Point(1,3),

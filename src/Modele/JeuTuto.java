@@ -89,7 +89,7 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2,3),1);
                 construireBatiment(new Point(3,3),3);
                 break;
-            case 16:
+            case 16, 17:
                 this.getPlateau().ajouterJoueur(new Point(2, 1), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
@@ -100,7 +100,7 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2,3),1);
                 construireBatiment(new Point(3,3),4);
                 break;
-            case 17:
+            case 18:
                 this.getPlateau().ajouterJoueur(new Point(1, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
@@ -112,7 +112,7 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2,3),2);
                 construireBatiment(new Point(3,3),4);
                 break;
-            case 18:
+            case 19:
                 this.getPlateau().ajouterJoueur(new Point(2, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
@@ -144,7 +144,7 @@ public class JeuTuto extends Jeu {
             case 10 -> joueEtape10(position);
             case 12 -> joueEtape12(position);
             case 15 -> joueEtape15(position);
-            case 17 -> joueEtape17(position);
+            case 18 -> joueEtape18(position);
             default -> {}
         }
     }
@@ -229,9 +229,9 @@ public class JeuTuto extends Jeu {
     /**
      * @see JeuTuto#joueEtape2
      */
-    public void joueEtape17(Point position) {
+    public void joueEtape18(Point position) {
         if (position.equals(new Point(2, 2))) {
-            clic_etapes[17]++;
+            clic_etapes[18]++;
         }
     }
 
