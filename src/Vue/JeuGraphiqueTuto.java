@@ -46,43 +46,22 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         super.paintComponent(g);
         jeu_tuto.setSituation(ATTENTE);
         switch (num_etape) {
-            case 2:
+            case 2 -> {
                 jeu_tuto.setSituation(PLACEMENT);
                 dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
                 dessinerRectangle(drawable, new Point(3, 2), c_fond, c_bordure);
-                break;
-            case 4, 11, 17, 21:
-                timerSet(true);
-                break;
-            case 6:
-                ActionsInitialisation(drawable, SELECTION, new Point(1,1),new Point(1,1));
-                break;
-            case 7:
-                ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,1),new Point(1,2));
-                break;
-            case 9 :
-                ActionsInitialisation(drawable, CONSTRUCTION, new Point(1,2),new Point(2,2));
-                break;
-            case 12:
-                ActionsInitialisation(drawable, SELECTION, new Point(1,2),new Point(1,2));
-                break;
-            case 13:
-                ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
-                break;
-            case 15:
-                ActionsInitialisation(drawable, CONSTRUCTION, new Point(2,2),new Point(3,3));
-                break;
-            case 19:
-                ActionsInitialisation(drawable, CONSTRUCTION, new Point(4,2),new Point(3,3));
-                break;
-            case 22:
-                ActionsInitialisation(drawable, SELECTION, new Point(1,2),new Point(1,2));
-                break;
-            case 23:
-                ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
-                break;
-            default:
-                break;
+            }
+            case 4, 11, 17, 21 -> timerSet(true);
+            case 6 -> ActionsInitialisation(drawable, SELECTION, new Point(1,1),new Point(1,1));
+            case 7 -> ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,1),new Point(1,2));
+            case 9  -> ActionsInitialisation(drawable, CONSTRUCTION, new Point(1,2),new Point(2,2));
+            case 12 -> ActionsInitialisation(drawable, SELECTION, new Point(1,2),new Point(1,2));
+            case 13 -> ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
+            case 15 -> ActionsInitialisation(drawable, CONSTRUCTION, new Point(2,2),new Point(3,3));
+            case 19 -> ActionsInitialisation(drawable, CONSTRUCTION, new Point(4,2),new Point(3,3));
+            case 22 -> ActionsInitialisation(drawable, SELECTION, new Point(1,2),new Point(1,2));
+            case 23 -> ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
+            default -> {}
         }
         repaint();
     }
