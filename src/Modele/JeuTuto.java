@@ -156,12 +156,16 @@ public class JeuTuto extends Jeu {
     /**
      * Modifie le plateau en fonction de la position des clics de la souris
      *
+     * @param num_etape le numéro de l'étape
      * @param pos_clic la case cliquée par la souris
+     * @param pos_valide1 la case permettant de valider l'étape
+     * @param pos_valide2 la case permettant de valider l'étape
+     * @param condition détermine s'il faut ajouter un pion ou non
      */
     public void verifieEtape(int num_etape, Point pos_clic, Point pos_valide1, Point pos_valide2, String condition) {
         if (!pos_clic.equals(clic_prec) && (pos_clic.equals(pos_valide1) || pos_clic.equals(pos_valide2))) {
             clic_prec = pos_clic;
-            if(condition.equals("ajouterJoueur")) {
+            if(condition == "ajouterJoueur") {
                 this.getPlateau().ajouterJoueur(pos_clic, this.getJ1());
             }
             clic_etapes[num_etape]++;
