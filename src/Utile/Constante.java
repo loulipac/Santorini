@@ -74,6 +74,9 @@ public class Constante {
                C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !
                Voyons où il les place.""",
             """
+               C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !
+               Voyons où il les place.""",
+            """
                 A chaque tour, tu dois déplacer un de tes pions.
                 Pour cela, tu dois cliquer sur le bâtisseur que tu veux déplacer, puis choisir une des cases adjacentes sur laquelle tu veux aller.""",
             "C’est à toi de jouer, clique sur le personnage.",
