@@ -93,6 +93,7 @@ public class IANormale extends IAFacile {
 
     public ArrayList<Point> contre(){
 
+        int adversaire = Jeu.getAutreJoueur(j.getJoueur_en_cours().getNum_joueur());
 
         ArrayList<Point> mes_batisseurs;
         ArrayList<Point> cases_accessibles;
