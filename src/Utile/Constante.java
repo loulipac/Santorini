@@ -85,7 +85,8 @@ public class Constante {
             """
                Génial! Tu as effectué tes deux actions, ton tour est maintenant fini.
                C’est à ton adversaire de jouer.""",
-            "C’est de nouveau ton tour, essaie de monter sur le premier étage que tu as construit au tour d’avant",
+            "C’est de nouveau ton tour, clique sur ton personnage.",
+            "Essaie de monter sur le premier étage que tu as construit au tour d’avant.",
             """
                 Bien joué !
                 N’oublie pas, tu ne peux monter que d’un étage à la fois mais tu peux descendre de n’importe quel étage.""",
@@ -110,7 +111,7 @@ public class Constante {
             Avançons encore dans la partie.""",
             """
                 Tu as la possibilité de gagner, profites-en !
-                Clique sur ton personnage""",
+                Clique sur ton personnage.""",
             "Déplace ton pion sur la tour à 3 étages.",
             """
                 C’est gagné !
