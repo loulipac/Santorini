@@ -95,6 +95,9 @@ public class Constante {
             """
                Génial !
                Maintenant avançons un peu dans la partie !""",
+            """
+               Génial !
+               Maintenant avançons un peu dans la partie !""",
             "Le premier qui arrive sur un bâtiment de 3 étages gagne la partie, mais pour contrer ça tu peux construire un dôme sur le bâtiment, ce qui empêche de monter dessus.",
             """
                Attention, ton adversaire va gagner !

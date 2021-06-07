@@ -51,7 +51,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
                 dessinerRectangle(drawable, new Point(1, 1), c_fond, c_bordure);
                 dessinerRectangle(drawable, new Point(3, 2), c_fond, c_bordure);
                 break;
-            case 3, 9, 13, 17:
+            case 3, 9, 14, 18:
                 timerSet(true);
                 break;
             case 5:
@@ -69,13 +69,13 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             case 12:
                 ActionsInitialisation(drawable, CONSTRUCTION, new Point(2,2),new Point(3,3));
                 break;
-            case 15:
+            case 16:
                 ActionsInitialisation(drawable, CONSTRUCTION, new Point(4,2),new Point(3,3));
                 break;
-            case 18:
+            case 19:
                 ActionsInitialisation(drawable, SELECTION, new Point(1,2),new Point(1,2));
                 break;
-            case 19:
+            case 20:
                 ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
                 break;
             default:
@@ -102,10 +102,8 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         switch (num_etape) {
             case 3 -> animationEtape3();
             case 9 -> animationEtape9();
-            case 13 -> animationEtape13();
-            case 17 -> {
-                animationEtape17();
-            }
+            case 14 -> animationEtape14();
+            case 18 -> animationEtape18();
             default -> timerSet(false);
         }
         repaint();
@@ -155,7 +153,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     /**
      * Effectue l'animation pour une étape donnée
      */
-    public void animationEtape13() {
+    public void animationEtape14() {
         Point[] pos_J2 = {
                 new Point(1, 3),
                 new Point(1, 2),
@@ -216,7 +214,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     /**
      * Effectue l'animation pour une étape donnée
      */
-    public void animationEtape17() {
+    public void animationEtape18() {
         Point[] pos_J2 = {
                 new Point(2, 2),
                 new Point(1,3),
