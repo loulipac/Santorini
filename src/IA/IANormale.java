@@ -6,7 +6,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static Utile.Constante.*;
-import static Utile.Constante.CONSTRUCTION;
 
 public class IANormale extends IAFacile {
     Jeu j;
@@ -36,7 +35,7 @@ public class IANormale extends IAFacile {
 
         ArrayList<Point> sequenceContre = contre();
 
-        if(sequenceContre != null){
+        if (sequenceContre != null) {
             //System.out.println("contre !");
             return switch (j.getSituation()) {
                 case PLACEMENT -> super.jouePlacement();
@@ -45,7 +44,7 @@ public class IANormale extends IAFacile {
                 case CONSTRUCTION -> sequenceContre.get(2);
                 default -> null;
             };
-        }else{
+        } else {
             //System.out.println("random");
             return super.joue();
         }
@@ -53,10 +52,11 @@ public class IANormale extends IAFacile {
 
     /**
      * regarde si le déplacement d'un batisseur ami peut faire gagner la partie
+     *
      * @return {le batisseur, le Point sur lequel se déplacer pour gagner}, null sinon.
      */
 
-    public ArrayList<Point> deplacementGagnant(){
+    public ArrayList<Point> deplacementGagnant() {
 
         ArrayList<Point> mesBatisseurs;
         ArrayList<Point> casesAccessibles;
@@ -65,10 +65,10 @@ public class IANormale extends IAFacile {
 
         mesBatisseurs = j.getBatisseurs(); //lui même ?
 
-        for (Point batisseurActuel : mesBatisseurs){
+        for (Point batisseurActuel : mesBatisseurs) {
             casesAccessibles = j.getPlateau().getCasesAccessibles(batisseurActuel);
-            for(Point caseAccActuel : casesAccessibles){
-                if(j.getPlateau().getTypeBatiments(caseAccActuel) == 3){ // 3 = étage 3 ?
+            for (Point caseAccActuel : casesAccessibles) {
+                if (j.getPlateau().getTypeBatiments(caseAccActuel) == 3) { // 3 = étage 3 ?
                     sequenceGagnante.add(batisseurActuel);
                     sequenceGagnante.add(caseAccActuel);
                     return sequenceGagnante;
@@ -80,18 +80,19 @@ public class IANormale extends IAFacile {
 
     /**
      * Pour chaque batisseur B,
-     *  Pour chaque cases accessible A par le batisseur B,
-     *   Pour chaque cases constructible C par le batisseur B depuis la cases accesible A,
-     *    Si la case C est d'étage trois
-     *      Pour chaque cases voisines V de la case C (d'étage 3 si vous avez suivi..)
-     *       Si la case V est occupé par un batisseur ennemi ET qu'il est perché sur un étage 2..
-     *        CONTRE !
+     * Pour chaque cases accessible A par le batisseur B,
+     * Pour chaque cases constructible C par le batisseur B depuis la cases accesible A,
+     * Si la case C est d'étage trois
+     * Pour chaque cases voisines V de la case C (d'étage 3 si vous avez suivi..)
+     * Si la case V est occupé par un batisseur ennemi ET qu'il est perché sur un étage 2..
+     * CONTRE !
      * Sinon null
+     *
      * @return une séquence de trois coups, {Batisseur B,Case accessible A,Case constructible C}
      * qui contre un deplacement gagnant de l'adversaire au prochain tour. null sinon.
      */
 
-    public ArrayList<Point> contre(){
+    public ArrayList<Point> contre() {
 
         int adversaire = Jeu.getAutreJoueur(j.getJoueurEnCours().getNum_joueur());
 
@@ -104,20 +105,20 @@ public class IANormale extends IAFacile {
 
         mesBatisseurs = j.getBatisseurs();
 
-        for (Point batisseurActuel : mesBatisseurs){
+        for (Point batisseurActuel : mesBatisseurs) {
             casesAccessibles = j.getPlateau().getCasesAccessibles(batisseurActuel);
 
-            for(Point caseAccActuel : casesAccessibles){
+            for (Point caseAccActuel : casesAccessibles) {
                 casesConstructible = j.getPlateau().getConstructionsPossible(caseAccActuel);
 
-                for(Point typeBatimentActuel : casesConstructible){
+                for (Point typeBatimentActuel : casesConstructible) {
 
-                    if(j.getPlateau().getTypeBatiments(typeBatimentActuel) == 3){
+                    if (j.getPlateau().getTypeBatiments(typeBatimentActuel) == 3) {
                         casesVoisine = j.getPlateau().getCasesVoisines(typeBatimentActuel);
 
-                        for(Point caseVoisineActuel : casesVoisine){
-                            if(j.getPlateau().estBatisseur(caseVoisineActuel,adversaire) && j.getPlateau().getTypeBatiments(caseVoisineActuel) == 2 ){
-                                    // CONTRE !
+                        for (Point caseVoisineActuel : casesVoisine) {
+                            if (j.getPlateau().estBatisseur(caseVoisineActuel, adversaire) && j.getPlateau().getTypeBatiments(caseVoisineActuel) == 2) {
+                                // CONTRE !
                                 contre.add(batisseurActuel); // quel batisseur ?
                                 contre.add(caseAccActuel); // où bouger ?
                                 contre.add(typeBatimentActuel); // où construire ?
