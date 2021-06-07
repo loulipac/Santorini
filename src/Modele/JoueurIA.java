@@ -1,5 +1,7 @@
 package Modele;
 
+import IA.IA;
+
 import javax.swing.*;
 import java.awt.*;
 

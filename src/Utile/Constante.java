@@ -1,4 +1,4 @@
-package Modele;
+package Utile;
 
 import java.awt.*;
 
@@ -9,7 +9,7 @@ public class Constante {
     private Constante() {
     }
 
-    public static final String CHEMIN_RESSOURCE = "./src/Ressources";
+    public static final String CHEMIN_RESSOURCE = "./ressources";
     public static final String SAVES_PATH = "./saves/";
 
     public static final Dimension FENETRE_1920x1080 = new Dimension(1920, 1080);

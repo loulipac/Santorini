@@ -1,9 +1,10 @@
 package Vue;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 import Modele.Plateau;
 import Modele.Jeu;
+import Utile.Utile;
 
 import javax.swing.*;
 import java.awt.*;

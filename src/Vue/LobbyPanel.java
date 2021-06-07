@@ -3,13 +3,14 @@ package Vue;
 import Reseau.Reseau;
 import Reseau.Server;
 import Reseau.Client;
+import Utile.Utile;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import static Modele.Constante.CHEMIN_RESSOURCE;
-import static Modele.Constante.RATIO_BOUTON_CLASSIQUE_INVERSE;
+import static Utile.Constante.CHEMIN_RESSOURCE;
+import static Utile.Constante.RATIO_BOUTON_CLASSIQUE_INVERSE;
 
 public class LobbyPanel extends JPanel {
     private final Reseau netUser;

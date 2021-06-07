@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 public class JeuGraphiqueTuto extends JeuGraphique {
     JeuTuto jeu_tuto;

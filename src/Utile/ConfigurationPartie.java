@@ -1,4 +1,4 @@
-package Modele;
+package Utile;
 
 public class ConfigurationPartie {
     private final int iaMode1;

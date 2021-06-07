@@ -1,11 +1,14 @@
 package Vue;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
-import Modele.ConfigurationPartie;
+import Listener.EcouteurDeMouvementDeSouris;
+import Listener.EcouteurDeSouris;
+import Utile.ConfigurationPartie;
 import Reseau.Reseau;
 import Modele.Jeu;
 import Patterns.Observateur;
+import Utile.Utile;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;

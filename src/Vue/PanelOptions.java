@@ -1,8 +1,9 @@
 package Vue;
 
-import Modele.ConfigurationPartie;
+import Utile.ConfigurationPartie;
+import Utile.*;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 import javax.swing.*;
 import java.awt.*;

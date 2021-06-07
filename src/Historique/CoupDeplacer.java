@@ -1,6 +1,9 @@
-package Modele;
+package Historique;
 
-import static Modele.Constante.*;
+import Modele.Jeu;
+import Modele.Joueur;
+
+import static Utile.Constante.*;
 
 import java.awt.Point;
 import java.util.Objects;

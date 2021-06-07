@@ -1,4 +1,6 @@
-package Modele;
+package Historique;
+
+import Modele.Jeu;
 
 import java.awt.*;
 import java.io.File;
@@ -7,7 +9,7 @@ import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 public class Historique {
     private Stack<Commande> passe;

@@ -1,9 +1,10 @@
 package Modele;
 
 import Patterns.Observateur;
+import Utile.Constante;
 
 import java.awt.*;
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 public class JeuTuto extends Jeu {
     int num_etape;

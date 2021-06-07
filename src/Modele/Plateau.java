@@ -3,7 +3,7 @@ package Modele;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 /**
  * Classe gérant les cases de la grille dont les constructions de bâtiment et la pose de batisseurs.

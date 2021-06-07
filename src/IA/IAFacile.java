@@ -1,10 +1,12 @@
-package Modele;
+package IA;
+
+import Modele.Jeu;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 public class IAFacile implements IA {
     Jeu j;

@@ -1,11 +1,12 @@
 package Vue;
 
-import static Modele.Constante.*;
+import Listener.EcouteurDeMouvementDeSouris;
+import Utile.*;
+
+import static Utile.Constante.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 
 /**
  * Crée une fenêtre pour le menu principal du jeu.

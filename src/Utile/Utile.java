@@ -1,6 +1,4 @@
-package Vue;
-
-import Modele.ConfigurationPartie;
+package Utile;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -10,7 +8,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 public class Utile {
     private static BufferedImage bg;

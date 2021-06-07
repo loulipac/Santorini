@@ -1,6 +1,8 @@
 package Vue;
 
-import static Modele.Constante.*;
+import Utile.*;
+
+import static Utile.Constante.*;
 
 import javax.sound.sampled.*;
 import javax.swing.*;

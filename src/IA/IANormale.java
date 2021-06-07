@@ -1,10 +1,12 @@
-package Modele;
+package IA;
+
+import Modele.Jeu;
 
 import java.awt.*;
 import java.util.ArrayList;
 
-import static Modele.Constante.*;
-import static Modele.Constante.CONSTRUCTION;
+import static Utile.Constante.*;
+import static Utile.Constante.CONSTRUCTION;
 
 public class IANormale extends IAFacile {
     Jeu j;

@@ -1,4 +1,4 @@
-package Modele;
+package IA;
 
 import java.awt.*;
 

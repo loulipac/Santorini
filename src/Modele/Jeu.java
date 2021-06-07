@@ -1,14 +1,17 @@
 package Modele;
 
+import Historique.*;
+import IA.*;
 import Patterns.Observateur;
 import Reseau.Reseau;
-import Vue.LecteurSon;
+import Utile.ConfigurationPartie;
+import Utile.LecteurSon;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
 /**
  * Classe permettant de gérer tout le processus d'une partie en éditant les valeurs du plateau.

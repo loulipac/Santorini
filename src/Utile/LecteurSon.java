@@ -1,4 +1,4 @@
-package Vue;
+package Utile;
 
 import static Utile.Constante.*;
 

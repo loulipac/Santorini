@@ -1,10 +1,13 @@
 package Vue;
 
-import static Modele.Constante.*;
+import static Utile.Constante.*;
 
-import Modele.Constante;
+import Listener.EcouteurDeMouvementDeSouris;
+import Listener.EcouteurDeSourisTuto;
+import Utile.Constante;
 import Modele.JeuTuto;
 import Patterns.Observateur;
+import Utile.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
