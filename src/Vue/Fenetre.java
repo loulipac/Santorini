@@ -56,6 +56,9 @@ public class Fenetre extends JFrame {
         setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("sword", new Point(0, 0)));
         Utile.chargerFontLily();
 
+        Image icone = Toolkit.getDefaultToolkit().getImage(CHEMIN_RESSOURCE + "/icone/logo-icone.png");
+        setIconImage(icone);
+
         setVisible(true);
 
         // musique.joueSon(true);
