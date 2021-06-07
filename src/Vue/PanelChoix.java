@@ -276,7 +276,6 @@ public class PanelChoix extends JPanel {
         parent.add(Box.createRigidArea(taille));
     }
 
-
     /**
      * Change l'affichage de la fenetre par le plateau
      */

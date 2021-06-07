@@ -9,9 +9,7 @@ import java.awt.event.MouseEvent;
 import static Utile.Constante.*;
 
 public class EcouteurDeSourisTuto extends MouseAdapter {
-    PanelTutoriel pt;
-    int largeur_plateau;
-    int hauteur_plateau;
+    private final PanelTutoriel pt;
 
     /**
      * Constructeur de EcouteurDeSourisTuto. Utilise un PanelTutoriel.
@@ -25,12 +23,9 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
     /**
      * Ecouteur de souris personnalisé pour le tutoriel, permettant de récupérer les clics pour chacunes des étapes
      *
-     * @param e evenement lorsqu'un clic intervient (contient la position du clic par exemple)
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        this.largeur_plateau = pt.getJg().getTailleCase() * PLATEAU_COLONNES;
-        this.hauteur_plateau = pt.getJg().getTailleCase() * PLATEAU_LIGNES;
         Point pos_souris = new Point(e.getY() / pt.getJg().getTailleCase(),e.getX() / pt.getJg().getTailleCase());
 
         switch (pt.getNum_etape()) {
@@ -44,9 +39,7 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
             case 19 -> actionEtape(19,pos_souris,1);
             case 22 -> actionEtape(22,pos_souris,1);
             case 23 -> actionEtape(23,pos_souris,1);
-            default -> {
-                break;
-            }
+            default -> { /* DO NOTHING */ }
         }
         this.pt.getJg().repaint();
     }
@@ -72,6 +65,10 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
         }
     }
 
+    /**
+     * Evènement quand la souris sort de la grille de jeu, permet d'effacer les hovers sur la grille
+     * (tel que le batisseur en transparence lors du placement).
+     */
     @Override
     public void mouseExited(MouseEvent e) {
         super.mouseExited(e);

@@ -19,16 +19,13 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     private final JeuGraphique jg;
     private final Jeu jeu;
     private final Panels p;
-    private final Cursor c_defaut_gris;
     private final Cursor c_defaut_rouge;
     private final Cursor c_defaut_bleu;
     private final Cursor c_hand_rouge;
     private final Cursor c_hand_bleu;
     private final Cursor c_hand_gris;
     private final Cursor c_hourglass;
-
-    int numJoueurBleu;
-
+    private final int numJoueurBleu;
     static final Point CENTRE = new Point(16, 16);
     static final Point HAUT_GAUCHE = new Point(0, 0);
 
@@ -40,7 +37,6 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         this.jeu = j;
         this.p = p;
         this.numJoueurBleu = (j.getConfigurationPartie().isJoueur1Bleu() ? JOUEUR1 : JOUEUR2);
-        c_defaut_gris = creerCurseurGenerique("defaut_gris", HAUT_GAUCHE);
         c_defaut_rouge = creerCurseurGenerique("defaut_rouge", HAUT_GAUCHE);
         c_defaut_bleu = creerCurseurGenerique("defaut_bleu", HAUT_GAUCHE);
         c_hand_rouge = creerCurseurGenerique("hand_rouge", CENTRE);
@@ -80,17 +76,16 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
      */
     @Override
     public void mouseMoved(MouseEvent e) {
-        if (e.getX() > (jg.getTailleCase() * PLATEAU_COLONNES) || e.getY() > (jg.getTailleCase() * PLATEAU_LIGNES))
+
+        if (e.getX() > (jg.getTailleCase() * PLATEAU_COLONNES) ||
+                e.getY() > (jg.getTailleCase() * PLATEAU_LIGNES))
             return;
 
         int pos_x = e.getX() / jg.getTailleCase();
         int pos_y = e.getY() / jg.getTailleCase();
         Point position = new Point(pos_y, pos_x);
-
-        if (pos_x > 4 || pos_y > 4) {
-            return;
-        }
-
+        if ((pos_x > 4) || (pos_y > 4)) return;
+        
         if ((jeu.getJoueurEnCours().getClass() == JoueurIA.class) ||
                 (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueurEnCours().getNum_joueur())
         ) {
@@ -126,7 +121,8 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 }
                 break;
 
-            default: break;
+            default:
+                break;
         }
         jg.setCase_sous_souris(position);
         jg.repaint();

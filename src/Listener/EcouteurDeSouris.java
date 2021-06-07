@@ -29,7 +29,7 @@ public class EcouteurDeSouris extends MouseAdapter {
     public EcouteurDeSouris(JeuGraphique jg, Jeu _jeu, PanelPlateau _pp) {
         this.jg = jg;
         this.pp = _pp;
-        jeu = _jeu;
+        this.jeu = _jeu;
     }
 
     /**
@@ -40,14 +40,12 @@ public class EcouteurDeSouris extends MouseAdapter {
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        if (pp.isParametreVisible()) return;
-        if (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueurEnCours().getNum_joueur())
+        if (pp.isParametreVisible() || (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueurEnCours().getNum_joueur()))
             return;
-        Joueur joueur_en_cours = jeu.getJoueurEnCours();
-        if (joueur_en_cours.getClass() != JoueurIA.class &&
+        if (jeu.getJoueurEnCours().getClass() != JoueurIA.class &&
                 e.getX() <= (jg.getTailleCase() * PLATEAU_COLONNES) &&
                 e.getY() <= (jg.getTailleCase() * PLATEAU_LIGNES)) {
-            ((JoueurHumain) joueur_en_cours).joue(new Point(
+            ((JoueurHumain) jeu.getJoueurEnCours()).joue(new Point(
                     e.getY() / jg.getTailleCase(),
                     e.getX() / jg.getTailleCase()
             ));
@@ -55,6 +53,10 @@ public class EcouteurDeSouris extends MouseAdapter {
         }
     }
 
+    /**
+     * Evènement quand la souris sort de la grille de jeu, permet d'effacer les hovers sur la grille
+     * (tel que le batisseur en transparence lors du placement).
+     */
     @Override
     public void mouseExited(MouseEvent e) {
         super.mouseExited(e);

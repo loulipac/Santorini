@@ -54,7 +54,7 @@ public class CoupDeplacer extends Commande {
             }
         } else {
             jeu.setBatisseurEnCours(positions[type]);
-            jeu.setDeplacement_en_cours(positions[i], positions[type]);
+            jeu.setDeplacementEnCours(positions[i], positions[type]);
             if (type == UNDO && jeu.estJeufini()) jeu.setJeuFini(false);
             else if (type == REDO) jeu.victoireJoueur();
             int situation = type == REDO ? CONSTRUCTION : SELECTION;
