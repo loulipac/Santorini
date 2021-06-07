@@ -25,6 +25,7 @@ public class JeuTuto extends Jeu {
      * @param etape le numéro d'étape
      */
     public void chargerEtape(int etape) {
+        this.clic_prec = new Point(PLATEAU_LIGNES, PLATEAU_COLONNES);
         this.num_etape = etape;
         this.getPlateau().RAZ();
         //
@@ -138,16 +139,16 @@ public class JeuTuto extends Jeu {
      */
     public void joueEtape(int num_etape, Point position) {
         switch (num_etape) {
-            case 2 -> joueEtape2(position);
-            case 6 -> joueEtape6(position);
-            case 7 -> joueEtape7(position);
-            case 9 -> joueEtape9(position);
-            case 12 -> joueEtape12(position);
-            case 13 -> joueEtape13(position);
-            case 15 -> joueEtape15(position);
-            case 19 -> joueEtape19(position);
-            case 22 -> joueEtape22(position);
-            case 23 -> joueEtape23(position);
+            case 2 -> verifieEtape(2, position, new Point(1, 1), new Point(3, 2), "ajouterJoueur");
+            case 6 -> verifieEtape(6, position, new Point(1, 1), null, null);
+            case 7 -> verifieEtape(7, position, new Point(1, 2), null, "ajouterJoueur");
+            case 9 -> verifieEtape(9, position, new Point(2, 2), null, "ajouterJoueur");
+            case 12 -> verifieEtape(12, position, new Point(1, 2), null, "ajouterJoueur");
+            case 13 -> verifieEtape(13, position, new Point(2, 2), null, "ajouterJoueur");
+            case 15 -> verifieEtape(15, position, new Point(3, 3), null, null);
+            case 19 -> verifieEtape(19, position, new Point(3, 3), null, null);
+            case 22 -> verifieEtape(22, position, new Point(1, 2), null, null);
+            case 23 -> verifieEtape(23, position, new Point(2, 2), null, null);
             default -> {}
         }
     }
@@ -155,105 +156,15 @@ public class JeuTuto extends Jeu {
     /**
      * Modifie le plateau en fonction de la position des clics de la souris
      *
-     * @param position la case cliquée par la souris
+     * @param pos_clic la case cliquée par la souris
      */
-    public void joueEtape2(Point position) {
-        if (!position.equals(clic_prec) && position.equals(new Point(1, 1))) {
-            clic_prec = position;
-            this.getPlateau().ajouterJoueur(position, this.getJ1());
-            clic_etapes[2]++;
-        } else if (!position.equals(clic_prec) && position.equals(new Point(3, 2))) {
-            clic_prec = position;
-            this.getPlateau().ajouterJoueur(position, this.getJ1());
-            clic_etapes[2]++;
-        }
-    }
-
-    /**
-     * @see JeuTuto#joueEtape2
-     */
-    public void joueEtape6(Point position) {
-        if (position.equals(new Point(1, 1))) {
-            this.getPlateau().ajouterJoueur(position, this.getJ1());
-            clic_etapes[6]++;
-        }
-    }
-
-    /**
-     * @see JeuTuto#joueEtape2
-     */
-    public void joueEtape7(Point position) {
-        if (position.equals(new Point(1, 2))) {
-            this.getPlateau().ajouterJoueur(position, this.getJ1());
-            clic_etapes[7]++;
-        }
-    }
-
-    /**
-     * @see JeuTuto#joueEtape2
-     */
-    public void joueEtape9(Point position) {
-        if (position.equals(new Point(2, 2))) {
-            this.getPlateau().ajouterJoueur(position, this.getJ1());
-            clic_etapes[9]++;
-        }
-    }
-
-    /**
-     * @see JeuTuto#joueEtape2
-     */
-    public void joueEtape12(Point position) {
-        if (position.equals(new Point(1, 2))) {
-            this.getPlateau().ajouterJoueur(position, this.getJ1());
-            clic_etapes[12]++;
-        }
-    }
-
-    /**
-     * @see JeuTuto#joueEtape2
-     */
-    public void joueEtape13(Point position) {
-        if (position.equals(new Point(2, 2))) {
-            this.getPlateau().ajouterJoueur(position, this.getJ1());
-            clic_etapes[13]++;
-        }
-    }
-
-    /**
-     * @see JeuTuto#joueEtape2
-     */
-    public void joueEtape15(Point position) {
-        if (position.equals(new Point(3, 3))) {
-            construireBatiment(position, 1);
-            clic_etapes[15]++;
-        }
-    }
-
-    /**
-     * @see JeuTuto#joueEtape2
-     */
-    public void joueEtape19(Point position) {
-        if (position.equals(new Point(3, 3))) {
-            construireBatiment(position, 3);
-            clic_etapes[19]++;
-        }
-    }
-
-    /**
-     * @see JeuTuto#joueEtape2
-     */
-    public void joueEtape22(Point position) {
-        if (position.equals(new Point(1, 2))) {
-            clic_etapes[22]++;
-        }
-    }
-
-    /**
-     * @see JeuTuto#joueEtape2
-     */
-    public void joueEtape23(Point position) {
-        if (position.equals(new Point(2, 2))) {
-            clic_etapes[23]++;
+    public void verifieEtape(int num_etape, Point pos_clic, Point pos_valide1, Point pos_valide2, String condition) {
+        if (!pos_clic.equals(clic_prec) && (pos_clic.equals(pos_valide1) || pos_clic.equals(pos_valide2))) {
+            clic_prec = pos_clic;
+            if(condition.equals("ajouterJoueur")) {
+                this.getPlateau().ajouterJoueur(pos_clic, this.getJ1());
+            }
+            clic_etapes[num_etape]++;
         }
     }
 

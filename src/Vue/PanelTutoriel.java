@@ -89,6 +89,7 @@ public class PanelTutoriel extends Panels implements Observateur {
     }
 
     public void actionBoutonSuivant(ActionEvent e) {
+        jg.getJeu_tuto().setClic_etape(num_etape,0);
         this.num_etape += 1;
         if (this.num_etape < Constante.TEXTE_ETAPES.length) {
             changerEtape();
@@ -98,6 +99,7 @@ public class PanelTutoriel extends Panels implements Observateur {
     }
 
     public void actionBoutonPrecedent(ActionEvent e) {
+        jg.getJeu_tuto().setClic_etape(num_etape,0);
         this.num_etape -= 1;
         if (this.num_etape >= 0) {
             changerEtape();
@@ -145,7 +147,6 @@ public class PanelTutoriel extends Panels implements Observateur {
 
             jeu_tuto = new JeuTuto(PanelTutoriel.this);
             jg = new JeuGraphiqueTuto(jeu_tuto, num_etape, PanelTutoriel.this);
-//            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu_tuto, jg));
             jg.addMouseListener(new EcouteurDeSourisTuto(PanelTutoriel.this));
 
             panel_gauche = new PanelGauche(size);
