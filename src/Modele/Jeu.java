@@ -143,9 +143,7 @@ public class Jeu {
             ArrayList<Point> batisseurs_en_cours = getJoueurEnCours().getBatisseurs();
             batisseurs_en_cours.set(batisseurs_en_cours.indexOf(prevPos), position);
 
-            deplacement_en_cours = new Point[2];
-            deplacement_en_cours[0] = prevPos;
-            deplacement_en_cours[1] = batisseur_en_cours;
+            setDeplacement_en_cours(prevPos, batisseur_en_cours);
             cmd = new CoupDeplacer(joueurs[i_joueurs], prevPos, batisseur_en_cours);
             situation = CONSTRUCTION;
             sendMove(position);
@@ -489,8 +487,18 @@ public class Jeu {
         return deplacement_en_cours;
     }
 
-    public void resetDeplacement_en_cours() {
-        deplacement_en_cours = null;
+    public void setDeplacement_en_cours(Point prevPos, Point newPos) {
+        if (prevPos != null && newPos != null) {
+            deplacement_en_cours = new Point[2];
+            deplacement_en_cours[0] = (Point) prevPos.clone();
+            deplacement_en_cours[1] = (Point) newPos.clone();
+        } else {
+            deplacement_en_cours = null;
+        }
+    }
+
+    public void setDeplacement_en_cours() {
+        setDeplacement_en_cours(null, null);
     }
 
     @Override

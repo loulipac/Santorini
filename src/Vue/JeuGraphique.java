@@ -91,7 +91,7 @@ public class JeuGraphique extends JComponent {
         if (jeu.getDeplacement_en_cours() != null) {
             deplacement_batisseur = jeu.getDeplacement_en_cours();
             new Animation(deplacement_batisseur, taille_case, this);
-            jeu.resetDeplacement_en_cours();
+            jeu.setDeplacement_en_cours();
         }
 
         // On efface tout

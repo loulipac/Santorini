@@ -34,6 +34,7 @@ public class TestHistorique implements Observateur {
     @Test
     public void testUndo() {
         Jeu game = new Jeu(this);
+        Jeu g2 = new Jeu(this);
 
         for (Point move : moves) game.jouer(move);
         Assertions.assertFalse(game.equals(new Jeu(this)));
@@ -53,9 +54,9 @@ public class TestHistorique implements Observateur {
             g2.jouer(move);
         }
 
-        for (int i = 0; i < 3; i++) g1.annuler();
+        for (Point move : moves) g1.annuler();
         Assertions.assertFalse(g1.equals(g2));
-        for (int i = 0; i < 3; i++) g1.refaire();
+        for (Point move : moves) g1.refaire();
         Assertions.assertTrue(g1.equals(g2));
         Assertions.assertTrue(g1.getHistorique().equals(g2.getHistorique()));
         Assertions.assertTrue(g1.getHistorique().peutAnnuler());
