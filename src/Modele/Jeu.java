@@ -398,6 +398,15 @@ public class Jeu {
         return getJoueurEnCours().getBatisseurs();
     }
 
+    public ArrayList<Point> getBatisseursJoueur(int joueur) {
+        if(joueur == JOUEUR1){
+            return getJ1().getBatisseurs();
+        }
+        else {
+            return getJ2().getBatisseurs();
+        }
+    }
+
     public boolean getIaStatut() {
         return ia_statut;
     }
