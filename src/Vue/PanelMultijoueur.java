@@ -37,8 +37,8 @@ public class PanelMultijoueur extends JPanel {
     private static final String TITRE_HEBERGER = "Héberger une partie";
 
     public PanelMultijoueur() {
-        lilly_belle_texte = new Font("Lily Script One", Font.PLAIN, 20);
-        lilly_belle_titre = new Font("Lily Script One", Font.PLAIN, 30);
+        lilly_belle_texte = new Font(LILY_SCRIPT, Font.PLAIN, 20);
+        lilly_belle_titre = new Font(LILY_SCRIPT, Font.PLAIN, 30);
         initialiserComposant();
     }
 

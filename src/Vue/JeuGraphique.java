@@ -13,8 +13,30 @@ import java.awt.*;
  * Classe dessinant les cases du plateau.
  */
 public class JeuGraphique extends JComponent {
-    private final Image case_claire, case_fonce, coupole, etage_1, etage_2, etage_3, batisseur_bleu, batisseur_rouge, batisseur_rouge_selectionne, batisseur_bleu_selectionne, batisseur_bleu_transparent, batisseur_rouge_transparent,
-                        pas_rouge, pas_rouge_hover, pas_bleu, pas_bleu_hover, etage_1_tmp, etage_1_tmp_transparent, etage_2_tmp, etage_2_tmp_transparent, etage_3_tmp, etage_3_tmp_transparent, coupole_tmp, coupole_tmp_transparent;
+    private final Image case_claire;
+    private final Image case_fonce;
+    private final Image coupole;
+    private final Image etage_1;
+    private final Image etage_2;
+    private final Image etage_3;
+    private final Image batisseur_bleu;
+    private final Image batisseur_rouge;
+    private final Image batisseur_rouge_selectionne;
+    private final Image batisseur_bleu_selectionne;
+    private final Image batisseur_bleu_transparent;
+    private final Image batisseur_rouge_transparent;
+    private final Image pas_rouge;
+    private final Image pas_rouge_hover;
+    private final Image pas_bleu;
+    private final Image pas_bleu_hover;
+    private final Image etage_1_tmp;
+    private final Image etage_1_tmp_transparent;
+    private final Image etage_2_tmp;
+    private final Image etage_2_tmp_transparent;
+    private final Image etage_3_tmp;
+    private final Image etage_3_tmp_transparent;
+    private final Image coupole_tmp;
+    private final Image coupole_tmp_transparent;
 
     private final Plateau plateau;
     private Jeu jeu;
@@ -78,7 +100,8 @@ public class JeuGraphique extends JComponent {
         int batisseurs_ligne = batisseur_en_cours != null ? batisseur_en_cours.x : -1;
         int batisseurs_colonne = batisseur_en_cours != null ? batisseur_en_cours.y : -1;
 
-        Image image_batisseurs, image_case;
+        Image image_batisseurs;
+        Image image_case;
 
         for (int l = 0; l < PLATEAU_LIGNES; l++) {
             for (int c = 0; c < PLATEAU_COLONNES; c++) {
@@ -91,7 +114,7 @@ public class JeuGraphique extends JComponent {
                 drawable.drawImage(image_case, position_case.x, position_case.y, taille_case, taille_case, null);
 
 
-                afficher_batiment(drawable,position,null,etage_1,etage_2,etage_3,coupole);
+                afficher_batiment(drawable, position, null, etage_1, etage_2, etage_3, coupole);
 
                 if (plateau.getTypeBatisseurs(position) > 0) {
 
@@ -107,9 +130,9 @@ public class JeuGraphique extends JComponent {
                 }
             }
         }
-        if(jeu.getSituation() == PLACEMENT && case_sous_souris != null) {
+        if (jeu.getSituation() == PLACEMENT && case_sous_souris != null) {
             Image batisseur = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? batisseur_bleu_transparent : batisseur_rouge_transparent;
-            if(case_sous_souris != null && plateau.estLibre(new Point(case_sous_souris.y, case_sous_souris.x))) {
+            if (case_sous_souris != null && plateau.estLibre(new Point(case_sous_souris.y, case_sous_souris.x))) {
                 drawable.drawImage(batisseur, case_sous_souris.x * taille_case, case_sous_souris.y * taille_case, taille_case, taille_case, null);
             }
         } else if (jeu.getSituation() == DEPLACEMENT) {
@@ -126,9 +149,9 @@ public class JeuGraphique extends JComponent {
         } else if (jeu.getSituation() == CONSTRUCTION && !jeu.estJeufini()) {
             for (Point constructions_autour : plateau.getConstructionsPossible(jeu.getBatisseurEnCours())) {
                 if (case_sous_souris != null && new Point(case_sous_souris.y, case_sous_souris.x).equals(constructions_autour)) {
-                    afficher_batiment(drawable, constructions_autour, etage_1_tmp, etage_2_tmp, etage_3_tmp, coupole_tmp,null);
+                    afficher_batiment(drawable, constructions_autour, etage_1_tmp, etage_2_tmp, etage_3_tmp, coupole_tmp, null);
                 } else {
-                    afficher_batiment(drawable, constructions_autour, etage_1_tmp_transparent, etage_2_tmp_transparent, etage_3_tmp_transparent, coupole_tmp_transparent,null);
+                    afficher_batiment(drawable, constructions_autour, etage_1_tmp_transparent, etage_2_tmp_transparent, etage_3_tmp_transparent, coupole_tmp_transparent, null);
                 }
             }
         }
@@ -136,6 +159,7 @@ public class JeuGraphique extends JComponent {
 
     /**
      * Affiche sur la grille la preview du bâtiment à construire.
+     *
      * @param constructions_autour position sur la grille où dessiner la preview
      */
     private void afficher_batiment(Graphics2D drawable, Point constructions_autour, Image image_vide, Image image_rdc, Image image_etage, Image image_toit, Image image_coupole) {

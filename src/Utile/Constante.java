@@ -12,10 +12,7 @@ public class Constante {
     public static final String CHEMIN_RESSOURCE = "./ressources";
     public static final String SAVES_PATH = "./saves/";
 
-    public static final Dimension FENETRE_1920x1080 = new Dimension(1920, 1080);
     public static final Dimension FENETRE_1600x900 = new Dimension(1600, 900);
-    public static final Dimension FENETRE_1366x768 = new Dimension(1366, 768);
-    public static final Dimension FENETRE_1024x768 = new Dimension(1024, 768);
     public static final Dimension DEFAULT_FENETRE_TAILLE = FENETRE_1600x900;
 
     public static final int SELECTION = 0;
@@ -52,13 +49,19 @@ public class Constante {
     public static final Point CASE_CENTRALE = new Point(2, 2);
     public static final int POIDS_BASE = 1;
 
-    public static final double RATIO_BOUTON_CLASSIQUE = (double) 508/98;
-    public static final double RATIO_BOUTON_CLASSIQUE_INVERSE = (double) 98/508;
-    public static final double RATIO_BOUTON_PETIT = (double) 259/216;
+    public static final double RATIO_BOUTON_CLASSIQUE = (double) 508 / 98;
+    public static final double RATIO_BOUTON_CLASSIQUE_INVERSE = (double) 98 / 508;
+    public static final double RATIO_BOUTON_PETIT = (double) 259 / 216;
 
     public static final String ECHAP_KEY = "echap";
 
     public static final int PORT = 16518;
+
+    public static final String NOM_JEU = "Santorini";
+
+    public static final String ERREUR_IMAGE_FOND = "Erreur image de fond: ";
+    public static final String LILY_SCRIPT = "Lily Script One";
+    public static final String LORA = "Lora";
 
     public static final String[] TEXTE_ETAPES = {
             """

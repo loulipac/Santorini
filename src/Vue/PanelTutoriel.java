@@ -22,17 +22,13 @@ import java.io.IOException;
  */
 public class PanelTutoriel extends Panels implements Observateur {
     private final LecteurSon son_bouton;
-    JeuTuto jeu_tuto;
-    JeuGraphiqueTuto jg;
-    Font lilly_belle;
-    JLabel jt;
-    Dimension taille_fenetre;
-    Image colonne_rouge;
-    Image colonne_bleu;
-    Image arriere_plan;
-    Image colonne_fin;
-    PanelJeu panel_jeu;
-    int num_etape;
+    private JeuTuto jeu_tuto;
+    private JeuGraphiqueTuto jg;
+    private Font lilly_belle;
+    private JLabel jt;
+    private final Dimension taille_fenetre;
+    private PanelJeu panel_jeu;
+    private int num_etape;
 
     /**
      * Initialise la fenêtre Tutoriel et charge la police et les images en mémoire.
@@ -49,17 +45,13 @@ public class PanelTutoriel extends Panels implements Observateur {
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
-
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/Lora-Regular.ttf")));
         } catch (IOException | FontFormatException e) {
-            System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
+            System.err.println("Erreur : Un fichier de police est introuvable ou non valide.");
         }
-        lilly_belle = new Font("Lily Script One", Font.PLAIN, 40);
-        initialiserPanel();
 
-        colonne_rouge = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_rouge.png");
-        colonne_bleu = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_bleu.png");
-        colonne_fin = Utile.readImage(CHEMIN_RESSOURCE + "/assets_recurrents/colonne_berger.png");
-        arriere_plan = Utile.readImage(CHEMIN_RESSOURCE + "/artwork/fond_de_jeu.png");
+        lilly_belle = new Font(LILY_SCRIPT, Font.PLAIN, 40);
+        initialiserPanel();
 
         setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("sword", new Point(0, 0)));
 
@@ -97,21 +89,19 @@ public class PanelTutoriel extends Panels implements Observateur {
     }
 
     public void actionBoutonSuivant(ActionEvent e) {
-        this.num_etape+=1;
-        if(this.num_etape < Constante.TEXTE_ETAPES.length) {
+        this.num_etape += 1;
+        if (this.num_etape < Constante.TEXTE_ETAPES.length) {
             changerEtape();
-        }
-        else {
+        } else {
             this.num_etape = Constante.TEXTE_ETAPES.length;
         }
     }
 
     public void actionBoutonPrecedent(ActionEvent e) {
-        this.num_etape-=1;
-        if(this.num_etape >= 0) {
+        this.num_etape -= 1;
+        if (this.num_etape >= 0) {
             changerEtape();
-        }
-        else this.num_etape = 0;
+        } else this.num_etape = 0;
     }
 
     public void actionBoutonRetourMenu(ActionEvent e) {
@@ -123,7 +113,7 @@ public class PanelTutoriel extends Panels implements Observateur {
     public void changerEtape() {
         panel_jeu.panel_gauche.panel_info.changerTexte(num_etape);
         jg.chargerEtape(num_etape);
-        jt.setText("Tutoriel : Etape " + (num_etape+1) + "/" + TEXTE_ETAPES.length);
+        jt.setText("Tutoriel : Etape " + (num_etape + 1) + "/" + TEXTE_ETAPES.length);
     }
 
     /**
@@ -227,7 +217,7 @@ public class PanelTutoriel extends Panels implements Observateur {
             public PanelInfo(Dimension size) {
                 setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
                 // Polices
-                lilly_belle = new Font("Lily Script One", Font.PLAIN, 20);
+                lilly_belle = new Font(LILY_SCRIPT, Font.PLAIN, 20);
 
                 // Dimensions
                 int bouton_height = (int) (size.height * 0.1);
@@ -237,7 +227,7 @@ public class PanelTutoriel extends Panels implements Observateur {
 
                 pos_parchemin = new Dimension(0, 0);
                 pos_personnage = new Dimension(0, pos_parchemin.height + taille_parchemin.height - taille_personnage.height * 3 / 4);
-                panel_texte_taille = new Dimension(size.width*2/3, taille_parchemin.height);
+                panel_texte_taille = new Dimension(size.width * 2 / 3, taille_parchemin.height);
                 size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
                 texte_bulle_taille = new Dimension(panel_texte_taille.width, panel_texte_taille.height - 2 * size_bouton.height);
 
@@ -275,9 +265,9 @@ public class PanelTutoriel extends Panels implements Observateur {
                 panel_bouton.setOpaque(false);
                 panel_bouton.add(precedent);
                 panel_bouton.add(suivant);
-                panel_bouton.setPreferredSize(new Dimension(panel_texte_taille.width,size_bouton.height));
-                panel_bouton.setMaximumSize(new Dimension(panel_texte_taille.width,size_bouton.height));
-                panel_bouton.setMinimumSize(new Dimension(panel_texte_taille.width,size_bouton.height));
+                panel_bouton.setPreferredSize(new Dimension(panel_texte_taille.width, size_bouton.height));
+                panel_bouton.setMaximumSize(new Dimension(panel_texte_taille.width, size_bouton.height));
+                panel_bouton.setMinimumSize(new Dimension(panel_texte_taille.width, size_bouton.height));
 
                 add(Box.createRigidArea(new Dimension(size.width, 10)));
 
@@ -350,7 +340,7 @@ public class PanelTutoriel extends Panels implements Observateur {
 
             panel_info = new PanelInfo(size);
             add(panel_parametres);
-            add(Box.createRigidArea(new Dimension(size.width, size.height/20)));
+            add(Box.createRigidArea(new Dimension(size.width, size.height / 20)));
             add(panel_info);
         }
     }
@@ -372,7 +362,7 @@ public class PanelTutoriel extends Panels implements Observateur {
             setMaximumSize(size);
             setMinimumSize(size);
 
-            jt = new JLabel("Tutoriel : Etape " + (num_etape+1) + "/" + TEXTE_ETAPES.length);
+            jt = new JLabel("Tutoriel : Etape " + (num_etape + 1) + "/" + TEXTE_ETAPES.length);
             jt.setAlignmentX(CENTER_ALIGNMENT);
             jt.setAlignmentY(CENTER_ALIGNMENT);
             jt.setOpaque(false);
@@ -388,41 +378,9 @@ public class PanelTutoriel extends Panels implements Observateur {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-        try {
-            g2d.drawImage(
-                    arriere_plan,
-                    0,
-                    0,
-                    getWidth(),
-                    getHeight(),
-                    this
-            );
-            Image colonne;
-            if (jeu_tuto.estJeufini()) {
-                colonne = colonne_fin;
-            } else {
-                colonne = (jeu_tuto.getJoueurEnCours().getNum_joueur() == JOUEUR1 ? colonne_bleu : colonne_rouge);
-            }
-
-            // float meme_ratio = (float) getWidth()/1232*191; //sert à garder le meme ratio hauteur/largeur au changement de largeur de la fenetre
-
-            g2d.drawImage(
-                    colonne,
-                    0,
-                    0,
-                    getWidth(), (int) (getHeight() * 0.20),
-                    this
-            );
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("Erreur image de fond: " + e.getMessage());
-        }
+        ConfigurationPartie emptyConfig = new ConfigurationPartie(0, 0);
+        emptyConfig.setJoueur1Bleu(true);
+        Utile.dessineDecorationPlateau(g, getSize(), this, false, emptyConfig, JOUEUR1);
     }
 
     /**

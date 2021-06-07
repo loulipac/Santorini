@@ -20,8 +20,6 @@ public class Utile {
     private static BufferedImage colonneBleu;
     private static BufferedImage colonneRouge;
 
-    private static final String ERREUR_IMAGE_FOND = "Erreur image de fond: ";
-
     /**
      * Utile ne dois jamais être instancié et seulement utilisé par ses fonctions statiques.
      */
@@ -219,13 +217,13 @@ public class Utile {
     /**
      * Charge en mémoire la police Lily Script One.
      */
-    public static void chargerFontLily() {
+    public static void chargerFont() {
         try {
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
-
+            ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/Lora-Regular.ttf")));
         } catch (IOException | FontFormatException e) {
-            System.err.println("Erreur : La police \"LilyScriptOne\" est introuvable ");
+            System.err.println("Erreur : Un fichier de police est introuvable ou non valide.");
         }
     }
 
