@@ -27,13 +27,18 @@ public class IAFacile implements IA {
      * @return la position (x, y) du coup
      */
     public Point joue() {
-        return switch (j.getSituation()) {
-            case PLACEMENT -> jouePlacement();
-            case SELECTION -> joueSelection();
-            case DEPLACEMENT -> joueDeplacement();
-            case CONSTRUCTION -> joueConstruction();
-            default -> null;
-        };
+        switch (j.getSituation()) {
+            case PLACEMENT:
+                return jouePlacement();
+            case SELECTION:
+                return joueSelection();
+            case DEPLACEMENT:
+                return joueDeplacement();
+            case CONSTRUCTION:
+                return joueConstruction();
+            default:
+                return null;
+        }
     }
 
     /**

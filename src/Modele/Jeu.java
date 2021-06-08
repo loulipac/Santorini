@@ -86,12 +86,16 @@ public class Jeu {
     }
 
     private IA setIA(int ia_mode) {
-        return switch (ia_mode) {
-            case 1 -> new IAFacile(this);
-            case 2 -> new IANormale(this);
-            case 3 -> new IADifficile(this);
-            default -> null;
-        };
+        switch (ia_mode) {
+            case 1:
+                return new IAFacile(this);
+            case 2:
+                return new IANormale(this);
+            case 3:
+                return new IADifficile(this);
+            default:
+                return null;
+        }
     }
 
     /**
@@ -101,11 +105,21 @@ public class Jeu {
         cmd = null;
         situation = plateau.estBatisseur(position, getJoueurEnCours()) && situation == DEPLACEMENT ? SELECTION : situation;
         switch (situation) {
-            case PLACEMENT -> jouePlacement(position);
-            case SELECTION -> joueSelection(position);
-            case DEPLACEMENT -> joueDeplacement(position);
-            case CONSTRUCTION -> joueConstruction(position);
-            default -> System.err.println("Unknown situation");
+            case PLACEMENT:
+                jouePlacement(position);
+                break;
+            case SELECTION:
+                joueSelection(position);
+                break;
+            case DEPLACEMENT:
+                joueDeplacement(position);
+                break;
+            case CONSTRUCTION:
+                joueConstruction(position);
+                break;
+            default:
+                System.err.println("Unknown situation");
+                break;
         }
         histo.stocker(cmd);
     }
@@ -240,13 +254,18 @@ public class Jeu {
      * @return vrai s'il on peut atteindre la case
      */
     public boolean estAtteignable(Point position) {
-        return switch (situation) {
-            case DEPLACEMENT -> (batisseurEnCours != null) && plateau.deplacementPossible(position, batisseurEnCours);
-            case CONSTRUCTION -> (batisseurEnCours != null) && plateau.peutConstruire(position, batisseurEnCours);
-            case SELECTION -> plateau.estBatisseur(position, joueurs[iJoueurs]);
-            case PLACEMENT -> nombreBatisseurs < 4;
-            default -> false;
-        };
+        switch (situation) {
+            case DEPLACEMENT:
+                return (batisseurEnCours != null) && plateau.deplacementPossible(position, batisseurEnCours);
+            case CONSTRUCTION:
+                return (batisseurEnCours != null) && plateau.peutConstruire(position, batisseurEnCours);
+            case SELECTION:
+                return plateau.estBatisseur(position, joueurs[iJoueurs]);
+            case PLACEMENT:
+                return nombreBatisseurs < 4;
+            default:
+                return false;
+        }
     }
 
     /**
@@ -258,6 +277,7 @@ public class Jeu {
 
     /**
      * Met à jour les observateurs.
+     *
      * @see PanelPlateau#miseAjour()
      */
     public void MAJObservateur() {

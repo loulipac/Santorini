@@ -17,7 +17,7 @@ public class LecteurSon {
      * Constructeur de LecteurSon qui charge un son en mémoire.
      */
     public LecteurSon(String sound) {
-        fichier = new File(CHEMIN_RESSOURCE + "/sons/" + sound);
+        //fichier = new File(CHEMIN_RESSOURCE + "/sons/" + sound);
     }
 
     /**
@@ -27,14 +27,14 @@ public class LecteurSon {
      */
     public void joueSon(boolean loop) {
         try {
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(fichier.toURI().toURL());
+            /*AudioInputStream audioIn = AudioSystem.getAudioInputStream(fichier.toURI().toURL());
             Clip clip = AudioSystem.getClip();
             clip.open(audioIn);
             if (!loop) {
                 clip.start();
             } else {
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
-            }
+            }*/
         } catch (Exception ex) {
             System.err.println(ex);
         }

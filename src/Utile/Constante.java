@@ -115,6 +115,7 @@ public class Constante {
 
     /**
      * Position de la case centrale. Utilisé pour l'heuristique de l'IA difficile.
+     *
      * @see IA.IADifficile
      */
     public static final Point CASE_CENTRALE = new Point(2, 2);
@@ -151,6 +152,7 @@ public class Constante {
 
     /**
      * Texte lancé lors d'une erreur de chargement d'une image.
+     *
      * @see Utile
      */
     public static final String ERREUR_IMAGE_FOND = "Erreur image de fond: ";
@@ -167,6 +169,7 @@ public class Constante {
 
     /**
      * Nom du fichier de bruit de construction utilisé dans Jeu.
+     *
      * @see Modele.Jeu
      */
     public static final String SON_CONSTRUCTION = "son_construction.wav";
@@ -175,67 +178,49 @@ public class Constante {
      * Tableau du scénario des différentes étapes du tutoriel.
      */
     public static final String[] TEXTE_ETAPES = {
-            """
-                Bienvenue dans le tutoriel de Santorini !
-                C’est ici que tu vas apprendre à devenir un pro de ce jeu.
-                Mais avant d’en devenir un, commençons par voir les bases.
-                On y va ?""",
-            """
-                Commençons à jouer !
-                Au début du jeu, chaque joueur doit placer ses deux pions où il veut sur le plateau.""",
+            "Bienvenue dans le tutoriel de Santorini !\n" +
+                    "C’est ici que tu vas apprendre à devenir un pro de ce jeu.\n" +
+                    "Mais avant d’en devenir un, commençons par voir les bases.\n" +
+                    "On y va ?",
+            "Commençons à jouer !\n" +
+                    "Au début du jeu, chaque joueur doit placer ses deux pions où il veut sur le plateau.",
             "Tu es le joueur bleu, positionne par exemple tes 2 bâtisseurs sur les cases indiquées.",
-            """
-               C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !
-               Voyons où il les place. (Suivant)""",
-            """
-               C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !
-               Voyons où il les place.""",
-            """
-                A chaque tour, tu dois déplacer un de tes pions.
-                Pour cela, tu dois cliquer sur le bâtisseur que tu veux déplacer, puis choisir une des cases adjacentes sur laquelle tu veux aller.""",
+            "C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !\n" +
+                    "Voyons où il les place. (Suivant)",
+            "C’est au tour de ton adversaire, le joueur rouge, de placer ses deux bâtisseurs !\n" +
+                    "Voyons où il les place.",
+            "A chaque tour, tu dois déplacer un de tes pions.\n" +
+                    "Pour cela, tu dois cliquer sur le bâtisseur que tu veux déplacer, puis choisir une des cases adjacentes sur laquelle tu veux aller.",
             "C’est à toi de jouer, clique sur le personnage.",
             "Clique sur la case de droite adjacente à ton bâtisseur pour le déplacer.",
-            """
-              Super ! Il faut ensuite construire l’étage d’un bâtiment sur une des cases autour du personnage.
-              Dans un même tour, seul le personnage que tu as déplacé précédemment peut construire un étage.""",
+            "Super ! Il faut ensuite construire l’étage d’un bâtiment sur une des cases autour du personnage.\n" +
+                    "Dans un même tour, seul le personnage que tu as déplacé précédemment peut construire un étage.",
             "A toi de jouer, construis le rez-de-chaussée sur la case en dessous du personnage.",
-            """
-               Génial! Tu as effectué tes deux actions, ton tour est maintenant fini.
-               C’est à ton adversaire de jouer. (Suivant)""",
-            """
-               Génial! Tu as effectué tes deux actions, ton tour est maintenant fini.
-               C’est à ton adversaire de jouer.""",
+            "Génial! Tu as effectué tes deux actions, ton tour est maintenant fini.\n" +
+                    "C’est à ton adversaire de jouer. (Suivant)",
+            "Génial! Tu as effectué tes deux actions, ton tour est maintenant fini.\n" +
+                    "C’est à ton adversaire de jouer.",
             "C’est de nouveau ton tour, clique sur ton personnage.",
             "Essaie de monter sur le premier étage que tu as construit au tour d’avant.",
-            """
-                Bien joué !
-                N’oublie pas, tu ne peux monter que d’un étage à la fois mais tu peux descendre de n’importe quel étage.""",
-            """
-                Tu peux voir qu’il n'est pas possible de construire sur ta propre case.
-                Construit un étage sur la case en diagonale à droite.""",
-            """
-               Génial !
-               Maintenant avançons un peu dans la partie ! (Suivant)""",
-            """
-               Génial !
-               Maintenant avançons un peu dans la partie !""",
+            "Bien joué !\n" +
+                    "N’oublie pas, tu ne peux monter que d’un étage à la fois mais tu peux descendre de n’importe quel étage.",
+            "Tu peux voir qu’il n'est pas possible de construire sur ta propre case.\n" +
+                    "Construit un étage sur la case en diagonale à droite.",
+            "Génial !\n" +
+                    "Maintenant avançons un peu dans la partie ! (Suivant)",
+            "Génial !\n" +
+                    "Maintenant avançons un peu dans la partie !",
             "Le premier qui arrive sur un bâtiment de 3 étages gagne la partie, mais pour contrer ça tu peux construire un dôme sur le bâtiment, ce qui empêche de monter dessus.",
-            """
-               Attention, ton adversaire va gagner !
-               Pour éviter cela, place un dôme au-dessus de la tour.""",
-            """
-            Il ne gagnera pas ce tour là !
-            Avançons encore dans la partie. (Suivant)""",
-            """
-            Il ne gagnera pas ce tour là !
-            Avançons encore dans la partie.""",
-            """
-                Tu as la possibilité de gagner, profites-en !
-                Clique sur ton personnage.""",
+            "Attention, ton adversaire va gagner !\n" +
+                    "Pour éviter cela, place un dôme au-dessus de la tour.",
+            "Il ne gagnera pas ce tour là !\n" +
+                    "Avançons encore dans la partie.(Suivant)",
+            "Il ne gagnera pas ce tour là!\n" +
+                    "Avançons encore dans la partie.",
+            "Tu as la possibilité de gagner, profites - en!\n" +
+                    "Clique sur ton personnage.",
             "Déplace ton pion sur la tour à 3 étages.",
-            """
-                C’est gagné !
-                Le tutoriel est fini, tu es maintenant un pro de ce jeu.
-                Amuse toi bien !"""
+            "C’est gagné ! Le tutoriel est fini, tu es maintenant un pro de ce jeu.\n" +
+                    "Amuse toi bien !"
     };
 }

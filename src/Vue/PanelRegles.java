@@ -12,18 +12,15 @@ public class PanelRegles extends JPanel {
     private static final String TITRE_SECTION1 = "Comment jouer ?";
     private static final String TITRE_SECTION2 = "Déplacement";
     private static final String TITRE_SECTION3 = "Construction";
-    private static final String CONTENU_SECTION1 = """
-            Ce jeu se joue à 2 joueurs au tour par tour.
-            Le but du jeu est de monter le plus vite possible au sommet d'une tour de 3 étages qu'il faut construire.
-            Chaque joueur dispose de 2 bâtisseur qu'il place sur le plateau au début de la partie.
-            A chaque tour, le joueur doit sélectionner un bâtisseur à déplacer et construire un étage dans les cases adjacentes.""";
-    private static final String CONTENU_SECTION2 = """
-            Le bâtisseur choisi peut se déplacer sur un des emplacements proposés.
-            Le bâtisseur ne peut monter que d'un étage à la fois et ne peut pas se déplacer sur un dôme.""";
-    private static final String CONTENU_SECTION3 = """
-            Un bâtisseur peut construire un étage sur les emplacements proposés.
-            Le bâtisseur peut poser un dôme en haut de la tour pour bloquer son adversaire.
-            On considère une tour de 3 étages et un dôme comme une "Tour Complète".""";
+    private static final String CONTENU_SECTION1 = "Ce jeu se joue à 2 joueurs au tour par tour.\n" +
+            "Le but du jeu est de monter le plus vite possible au sommet d'une tour de 3 étages qu'il faut construire.\n" +
+            "Chaque joueur dispose de 2 bâtisseur qu'il place sur le plateau au début de la partie.\n" +
+            "A chaque tour, le joueur doit sélectionner un bâtisseur à déplacer et construire un étage dans les cases adjacentes.";
+    private static final String CONTENU_SECTION2 = "Le bâtisseur choisi peut se déplacer sur un des emplacements proposés.\\n" +
+            "Le bâtisseur ne peut monter que d'un étage à la fois et ne peut pas se déplacer sur un dôme.";
+    private static final String CONTENU_SECTION3 = "Un bâtisseur peut construire un étage sur les emplacements proposés.\n" +
+            "Le bâtisseur peut poser un dôme en haut de la tour pour bloquer son adversaire.\n" +
+            "On considère une tour de 3 étages et un dôme comme une \"Tour Complète\".";
 
     private final Font lilly_belle;
     private final Dimension taille_fenetre;

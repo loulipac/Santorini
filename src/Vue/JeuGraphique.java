@@ -117,7 +117,8 @@ public class JeuGraphique extends JComponent {
 
                 afficher_batiment(drawable, position, null, etage_1, etage_2, etage_3, coupole);
 
-                if (plateau.getTypeBatisseurs(position) <= 0 || (deplacement_batisseur != null && position.equals(deplacement_batisseur[1]))) continue;
+                if (plateau.getTypeBatisseurs(position) <= 0 || (deplacement_batisseur != null && position.equals(deplacement_batisseur[1])))
+                    continue;
 
                 boolean batisseur_selectionne = (batisseurs_ligne == y && batisseurs_colonne == x);
 
@@ -151,7 +152,7 @@ public class JeuGraphique extends JComponent {
                 break;
 
             case DEPLACEMENT:
-                if(batisseur_en_cours == null) break;
+                if (batisseur_en_cours == null) break;
 
                 Image pas_joueur = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? pas_bleu : pas_rouge;
                 Image pas_joueur_hover = jeu.getJoueurEnCours().getNum_joueur() == numero_joueur_bleu ? pas_bleu_hover : pas_rouge_hover;
@@ -195,12 +196,24 @@ public class JeuGraphique extends JComponent {
     private void afficher_batiment(Graphics2D drawable, Point constructions_autour, Image image_vide, Image image_rdc, Image image_etage, Image image_toit, Image image_coupole) {
         Image batiment;
         switch (plateau.getTypeBatiments(constructions_autour)) {
-            case VIDE -> batiment = image_vide;
-            case RDC -> batiment = image_rdc;
-            case ETAGE -> batiment = image_etage;
-            case TOIT -> batiment = image_toit;
-            case COUPOLE -> batiment = image_coupole;
-            default -> batiment = null;
+            case VIDE:
+                batiment = image_vide;
+                break;
+            case RDC:
+                batiment = image_rdc;
+                break;
+            case ETAGE:
+                batiment = image_etage;
+                break;
+            case TOIT:
+                batiment = image_toit;
+                break;
+            case COUPOLE:
+                batiment = image_coupole;
+                break;
+            default:
+                batiment = null;
+                break;
         }
         drawable.drawImage(batiment, constructions_autour.y * taille_case, constructions_autour.x * taille_case, taille_case, taille_case, null);
     }

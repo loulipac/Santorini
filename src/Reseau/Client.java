@@ -10,6 +10,7 @@ import static Utile.Constante.*;
 /**
  * Classe client gérant la connexion à un serveur grâce à une ip et communiquant avec ce dernier via des messages.
  * Voir la classe abstraite Reseau pour une description des méthodes.
+ *
  * @see Reseau
  * @see Message
  */
@@ -19,7 +20,8 @@ public class Client extends Reseau {
 
     /**
      * Connecte le client à un serveur depuis l'IP de l'hôte
-     * @param ipHote ip de l'hôte
+     *
+     * @param ipHote   ip de l'hôte
      * @param username nom d'utilisateur du client
      */
     public Client(String ipHote, String username) {
@@ -45,18 +47,27 @@ public class Client extends Reseau {
     public void analyserMessage(Message _message) {
         synchronized (this) {
             switch (_message.getCode()) {
-                case Message.DECO -> {
+                case Message.DECO:
                     thread.interrupt();
                     try {
                         clientSocket.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
-                case Message.START -> demarrerPartie();
-                case Message.MOVE -> jouerCoupLocal((Point) _message.getContenu());
-                case Message.UNAME -> setAdversaireNom((String) _message.getContenu());
-                default -> System.out.println("Unknown code operation.");
+                    break;
+
+                case Message.START:
+                    demarrerPartie();
+                    break;
+                case Message.MOVE:
+                    jouerCoupLocal((Point) _message.getContenu());
+                    break;
+                case Message.UNAME:
+                    setAdversaireNom((String) _message.getContenu());
+                    break;
+                default:
+                    System.out.println("Unknown code operation.");
+                    break;
             }
         }
     }
@@ -123,6 +134,7 @@ public class Client extends Reseau {
 
     /**
      * Envoie au serveur, que le client est prêt ou non.
+     *
      * @param status si le client est prêt ou non
      */
     public void sendReady(boolean status) {

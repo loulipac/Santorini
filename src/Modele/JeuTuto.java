@@ -39,30 +39,40 @@ public class JeuTuto extends Jeu {
         //
 
         switch (etape) {
-            case 3, 4:
+            case 3:
+            case 4:
                 this.getPlateau().ajouterJoueur(new Point(1, 1), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
                 break;
-            case 5, 6, 7:
+                
+            case 5:
+            case 6:
+            case 7:
                 this.getPlateau().ajouterJoueur(new Point(1, 1), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ2());
                 this.getPlateau().ajouterJoueur(new Point(1, 3), this.getJ2());
                 break;
-            case 8, 9:
+
+            case 8:
+            case 9:
                 this.getPlateau().ajouterJoueur(new Point(1, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ2());
                 this.getPlateau().ajouterJoueur(new Point(1, 3), this.getJ2());
                 break;
-            case 10, 11:
+
+            case 10:
+            case 11:
                 this.getPlateau().ajouterJoueur(new Point(1, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ2());
                 this.getPlateau().ajouterJoueur(new Point(1, 3), this.getJ2());
                 construireBatiment(new Point(2, 2), 1);
                 break;
-            case 12, 13:
+
+            case 12:
+            case 13:
                 this.getPlateau().ajouterJoueur(new Point(1, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
@@ -70,7 +80,9 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2, 2), 1);
                 construireBatiment(new Point(3, 3), 1);
                 break;
-            case 14, 15:
+
+            case 14:
+            case 15:
                 this.getPlateau().ajouterJoueur(new Point(2, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
@@ -78,7 +90,9 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2, 2), 1);
                 construireBatiment(new Point(3, 3), 1);
                 break;
-            case 16, 17:
+
+            case 16:
+            case 17:
                 this.getPlateau().ajouterJoueur(new Point(2, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(3, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
@@ -86,7 +100,9 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2, 2), 1);
                 construireBatiment(new Point(3, 3), 2);
                 break;
-            case 18, 19:
+
+            case 18:
+            case 19:
                 this.getPlateau().ajouterJoueur(new Point(2, 1), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
@@ -97,7 +113,9 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2, 3), 1);
                 construireBatiment(new Point(3, 3), 3);
                 break;
-            case 20, 21:
+
+            case 20:
+            case 21:
                 this.getPlateau().ajouterJoueur(new Point(2, 1), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
@@ -108,7 +126,9 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2, 3), 1);
                 construireBatiment(new Point(3, 3), 4);
                 break;
-            case 22, 23:
+
+            case 22:
+            case 23:
                 this.getPlateau().ajouterJoueur(new Point(1, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 3), this.getJ2());
@@ -120,6 +140,7 @@ public class JeuTuto extends Jeu {
                 construireBatiment(new Point(2, 3), 2);
                 construireBatiment(new Point(3, 3), 4);
                 break;
+
             case 24:
                 this.getPlateau().ajouterJoueur(new Point(2, 2), this.getJ1());
                 this.getPlateau().ajouterJoueur(new Point(4, 2), this.getJ1());
@@ -145,17 +166,38 @@ public class JeuTuto extends Jeu {
      */
     public void joueEtape(int num_etape, Point position) {
         switch (num_etape) {
-            case 2 -> verifieEtape(2, position, new Point(1, 1), new Point(3, 2), AJOUTER_JOUEUR);
-            case 6 -> verifieEtape(6, position, new Point(1, 1), null, null);
-            case 7 -> verifieEtape(7, position, new Point(1, 2), null, AJOUTER_JOUEUR);
-            case 9 -> verifieEtape(9, position, new Point(2, 2), null, AJOUTER_JOUEUR);
-            case 12 -> verifieEtape(12, position, new Point(1, 2), null, AJOUTER_JOUEUR);
-            case 13 -> verifieEtape(13, position, new Point(2, 2), null, AJOUTER_JOUEUR);
-            case 15 -> verifieEtape(15, position, new Point(3, 3), null, null);
-            case 19 -> verifieEtape(19, position, new Point(3, 3), null, null);
-            case 22 -> verifieEtape(22, position, new Point(1, 2), null, null);
-            case 23 -> verifieEtape(23, position, new Point(2, 2), null, null);
-            default -> { /* NE RIEN FAIRE */}
+            case 2:
+                verifieEtape(2, position, new Point(1, 1), new Point(3, 2), AJOUTER_JOUEUR);
+                break;
+            case 6:
+                verifieEtape(6, position, new Point(1, 1), null, null);
+                break;
+            case 7:
+                verifieEtape(7, position, new Point(1, 2), null, AJOUTER_JOUEUR);
+                break;
+            case 9:
+                verifieEtape(9, position, new Point(2, 2), null, AJOUTER_JOUEUR);
+                break;
+            case 12:
+                verifieEtape(12, position, new Point(1, 2), null, AJOUTER_JOUEUR);
+                break;
+            case 13:
+                verifieEtape(13, position, new Point(2, 2), null, AJOUTER_JOUEUR);
+                break;
+            case 15:
+                verifieEtape(15, position, new Point(3, 3), null, null);
+                break;
+            case 19:
+                verifieEtape(19, position, new Point(3, 3), null, null);
+                break;
+            case 22:
+                verifieEtape(22, position, new Point(1, 2), null, null);
+                break;
+            case 23:
+                verifieEtape(23, position, new Point(2, 2), null, null);
+                break;
+            default:
+                break;
         }
     }
 

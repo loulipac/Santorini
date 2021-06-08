@@ -24,26 +24,36 @@ public class IANormale extends IAFacile {
 
         if (sequenceGagnante != null) {
             //System.out.println("déplacement gagnant !");
-            return switch (j.getSituation()) {
-                case PLACEMENT -> super.jouePlacement();
-                case SELECTION -> sequenceGagnante.get(0);
-                case DEPLACEMENT -> sequenceGagnante.get(1);
-                case CONSTRUCTION -> super.joueConstruction();
-                default -> null;
-            };
+            switch (j.getSituation()) {
+                case PLACEMENT:
+                    return super.jouePlacement();
+                case SELECTION:
+                    return sequenceGagnante.get(0);
+                case DEPLACEMENT:
+                    return sequenceGagnante.get(1);
+                case CONSTRUCTION:
+                    return super.joueConstruction();
+                default:
+                    return null;
+            }
         }
 
         ArrayList<Point> sequenceContre = contre();
 
         if (sequenceContre != null) {
             //System.out.println("contre !");
-            return switch (j.getSituation()) {
-                case PLACEMENT -> super.jouePlacement();
-                case SELECTION -> sequenceContre.get(0);
-                case DEPLACEMENT -> sequenceContre.get(1);
-                case CONSTRUCTION -> sequenceContre.get(2);
-                default -> null;
-            };
+            switch (j.getSituation()) {
+                case PLACEMENT:
+                    return super.jouePlacement();
+                case SELECTION:
+                    return sequenceContre.get(0);
+                case DEPLACEMENT:
+                    return sequenceContre.get(1);
+                case CONSTRUCTION:
+                    return sequenceContre.get(2);
+                default:
+                    return null;
+            }
         } else {
             //System.out.println("random");
             return super.joue();

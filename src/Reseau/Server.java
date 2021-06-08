@@ -9,6 +9,7 @@ import static Utile.Constante.*;
 /**
  * Classe serveur gérant la connexion d'un client grâce à l'adresse ip du joueur-serveur et communiquant avec ce dernier via des messages.
  * Voir la classe abstraite Reseau pour une description des méthodes.
+ *
  * @see Reseau
  * @see Message
  */
@@ -39,11 +40,21 @@ public class Server extends Reseau {
     public void analyserMessage(Message _message) {
         synchronized (this) {
             switch (_message.getCode()) {
-                case Message.DECO -> deconnexion();
-                case Message.MOVE -> jouerCoupLocal((Point) _message.getContenu());
-                case Message.UNAME -> setAdversaireNom((String) _message.getContenu());
-                case Message.RDY -> setClientReadyStatus((Boolean) _message.getContenu());
-                default -> System.out.println("Unknown code operation.");
+                case Message.DECO:
+                    deconnexion();
+                    break;
+                case Message.MOVE:
+                    jouerCoupLocal((Point) _message.getContenu());
+                    break;
+                case Message.UNAME:
+                    setAdversaireNom((String) _message.getContenu());
+                    break;
+                case Message.RDY:
+                    setClientReadyStatus((Boolean) _message.getContenu());
+                    break;
+                default:
+                    System.out.println("Unknown code operation.");
+                    break;
             }
         }
     }
@@ -163,7 +174,7 @@ public class Server extends Reseau {
     }
 
     // GETTER
-    
+
     public boolean estClientPret() {
         return client_pret;
     }

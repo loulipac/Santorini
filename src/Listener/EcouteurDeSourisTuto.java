@@ -26,17 +26,38 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
         Point pos_souris = new Point(e.getY() / pt.getJg().getTailleCase(), e.getX() / pt.getJg().getTailleCase());
 
         switch (pt.getNum_etape()) {
-            case 2 -> actionEtape(2, pos_souris, 2);
-            case 6 -> actionEtape(6, pos_souris, 1);
-            case 7 -> actionEtape(7, pos_souris, 1);
-            case 9 -> actionEtape(9, pos_souris, 1);
-            case 12 -> actionEtape(12, pos_souris, 1);
-            case 13 -> actionEtape(13, pos_souris, 1);
-            case 15 -> actionEtape(15, pos_souris, 1);
-            case 19 -> actionEtape(19, pos_souris, 1);
-            case 22 -> actionEtape(22, pos_souris, 1);
-            case 23 -> actionEtape(23, pos_souris, 1);
-            default -> { /* DO NOTHING */ }
+            case 2:
+                actionEtape(2, pos_souris, 2);
+                break;
+            case 6:
+                actionEtape(6, pos_souris, 1);
+                break;
+            case 7:
+                actionEtape(7, pos_souris, 1);
+                break;
+            case 9:
+                actionEtape(9, pos_souris, 1);
+                break;
+            case 12:
+                actionEtape(12, pos_souris, 1);
+                break;
+            case 13:
+                actionEtape(13, pos_souris, 1);
+                break;
+            case 15:
+                actionEtape(15, pos_souris, 1);
+                break;
+            case 19:
+                actionEtape(19, pos_souris, 1);
+                break;
+            case 22:
+                actionEtape(22, pos_souris, 1);
+                break;
+            case 23:
+                actionEtape(23, pos_souris, 1);
+                break;
+            default:
+                break;
         }
         this.pt.getJg().repaint();
     }

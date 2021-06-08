@@ -99,7 +99,8 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
                 jg.repaint();
                 return;
 
-            case DEPLACEMENT, CONSTRUCTION:
+            case DEPLACEMENT:
+            case CONSTRUCTION:
                 if (jg.getJeu().estAtteignable(position) && !jg.getJeu().getPlateau().estBatisseur(position, jeu.getJoueurEnCours())) {
                     setCursor(true, null, c_hand_rouge, c_hand_bleu);
                     jg.setCase_sous_souris(position);
