@@ -5,6 +5,7 @@ import Vue.PanelTutoriel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import static Utile.Constante.*;
 
 public class EcouteurDeSourisTuto extends MouseAdapter {
     private final PanelTutoriel pt;
@@ -38,6 +39,7 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
             case 23 -> actionEtape(23, pos_souris, 1);
             default -> { /* DO NOTHING */ }
         }
+        this.pt.getJg().getJeu_tuto().setSituation(SELECTION);
         this.pt.getJg().repaint();
     }
 
