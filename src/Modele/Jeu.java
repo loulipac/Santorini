@@ -374,19 +374,33 @@ public class Jeu {
      * Charge grâce à l'historique une partie depuis un fichier.
      */
     public void charger(Scanner lecteur) {
-        RAZ();
         histo.charger(lecteur);
+    }
+
+    public void charger(String filename) {
+        histo.charger(filename);
     }
 
     /**
      * Remet à zéro une partie. C'est à dire de remettre les règles de la partie comme au départ.
      */
-    private void RAZ() {
+    public void RAZ() {
         plateau.RAZ();
         situation = PLACEMENT;
         batisseurEnCours = null;
         nombreBatisseurs = 0;
         iJoueurs = configurationPartie.getIndexJoueurCommence();
+        if (configurationPartie.getIaMode2() != 0) {
+            joueurs[0] = new JoueurIA(this, JOUEUR1, setIA(configurationPartie.getIaMode1()), vitesse_ia);
+            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(configurationPartie.getIaMode2()), vitesse_ia);
+        } else if (configurationPartie.getIaMode1() != 0) {
+            joueurs[0] = new JoueurHumain(this, JOUEUR1);
+            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(configurationPartie.getIaMode1()), vitesse_ia);
+        } else {
+            joueurs[0] = new JoueurHumain(this, JOUEUR1);
+            joueurs[1] = new JoueurHumain(this, JOUEUR2);
+        }
+        MAJObservateur();
     }
 
     /**
@@ -513,6 +527,10 @@ public class Jeu {
         return configurationPartie;
     }
 
+    public void setConfigurationPartie(ConfigurationPartie config) {
+        configurationPartie = config;
+    }
+
     public Reseau getNetUser() {
         return netUser;
     }
@@ -548,9 +566,14 @@ public class Jeu {
         Jeu j = (Jeu) o;
 
         return getJoueurEnCours().equals(j.getJoueurEnCours()) &&
+                getJ1().equals(j.getJ1()) &&
+                getJ1().getClass() == j.getJ1().getClass() &&
+                getJ2().equals(j.getJ2()) &&
+                getJ2().getClass() == j.getJ2().getClass() &&
                 situation == j.situation &&
                 nombreBatisseurs == j.nombreBatisseurs &&
                 Objects.equals(batisseurEnCours, j.batisseurEnCours) &&
-                plateau.equals(j.plateau);
+                plateau.equals(j.plateau) &&
+                configurationPartie.equals(j.configurationPartie);
     }
 }

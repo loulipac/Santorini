@@ -1,6 +1,7 @@
 import Modele.Jeu;
 import Patterns.Observateur;
 
+import Utile.ConfigurationPartie;
 import Vue.PanelPlateau;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -73,6 +74,12 @@ public class TestHistorique implements Observateur {
         Jeu g1 = new Jeu(this);
         Jeu g2 = new Jeu(this);
 
+        ConfigurationPartie config = new ConfigurationPartie(3, 2);
+        config.setIndexJoueurCommence(1);
+        g2.setConfigurationPartie(config);
+
+        Assertions.assertFalse(g1.getConfigurationPartie().equals(g2.getConfigurationPartie()));
+
         for (Point move : moves) {
             g1.jouer(move);
         }
@@ -82,21 +89,11 @@ public class TestHistorique implements Observateur {
 
         String filename = g1.sauvegarder();
 
-        try {
-            File fichier = new File(SAVES_PATH + filename);
-            Scanner lecteur = new Scanner(fichier);
-            lecteur.nextLine();
-            g2.charger(lecteur);
 
-            Assertions.assertTrue(g1.equals(g2));
-            Assertions.assertTrue(g1.getHistorique().equals(g2.getHistorique()));
-        } catch (FileNotFoundException ex) {
-            System.out.println("Le fichier " + filename + " n'existe pas");
-            ex.printStackTrace();
-        } catch (Exception ex) {
-            System.out.println("Le fichier n'a pas le bon format");
-            ex.printStackTrace();
-        }
+        g2.charger(filename);
+
+        Assertions.assertTrue(g1.equals(g2));
+        Assertions.assertTrue(g1.getHistorique().equals(g2.getHistorique()));
     }
 
     @Override

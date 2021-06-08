@@ -1,6 +1,8 @@
 package Historique;
 
 import Modele.Jeu;
+import Utile.ConfigurationPartie;
+import Vue.PanelPlateau;
 
 import java.awt.*;
 import java.io.File;
@@ -120,6 +122,35 @@ public class Historique {
         for (int i = 0; i < nbAnnuler; i++) annuler();
 
         lecteur.close();
+    }
+
+    public void charger(String filename) {
+        try {
+            File fichier = new File(SAVES_PATH + filename);
+            Scanner lecteur = new Scanner(fichier);
+
+            String[] param = lecteur.nextLine().split(" ");
+            int ia1_mode = Integer.parseInt(param[0]);
+            int ia2_mode = Integer.parseInt(param[1]);
+            int index_start = Integer.parseInt(param[2]);
+            boolean j1_blue = Boolean.parseBoolean(param[3]);
+
+            ConfigurationPartie config = new ConfigurationPartie(ia1_mode, ia2_mode);
+            config.setIndexJoueurCommence(index_start);
+            config.setJoueur1Bleu(j1_blue);
+
+            jeu.setConfigurationPartie(config);
+            jeu.RAZ();
+
+            charger(lecteur);
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Le fichier " + filename + " n'existe pas");
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            System.out.println("Le fichier n'a pas le bon format");
+            ex.printStackTrace();
+        }
     }
 
     @Override

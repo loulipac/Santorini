@@ -46,4 +46,16 @@ public class ConfigurationPartie {
     public int getIndexJoueurCommence() {
         return indexJoueurCommence;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof ConfigurationPartie)) return false;
+
+        ConfigurationPartie c = (ConfigurationPartie) o;
+
+        return iaMode1 == c.iaMode1 &&
+                iaMode2 == c.iaMode2 &&
+                indexJoueurCommence == c.indexJoueurCommence &&
+                joueur1Bleu == c.joueur1Bleu;
+    }
 }

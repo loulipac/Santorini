@@ -196,9 +196,7 @@ public class PanelPlateau extends Panels implements Observateur {
 
             jeu = new Jeu(PanelPlateau.this, config);
             jg = new JeuGraphique(jeu);
-            if (config.getIaMode2() == 0) {
-                jg.addMouseListener(new EcouteurDeSouris(jg, jeu, PanelPlateau.this));
-            }
+            jg.addMouseListener(new EcouteurDeSouris(jg, jeu, PanelPlateau.this));
             jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg, PanelPlateau.this));
 
             SidePanelRight side_panel = new SidePanelRight(size);
@@ -516,15 +514,15 @@ public class PanelPlateau extends Panels implements Observateur {
         }
 
         public void actionCharger(ActionEvent e) {
-//            JFileChooser chooser = new JFileChooser(SAVES_PATH);
-//            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-//                    "Sauvegardes", "sav");
-//            chooser.setFileFilter(filter);
-//            int returnVal = chooser.showOpenDialog(this);
-//            if (returnVal == JFileChooser.APPROVE_OPTION) {
-//                jeu.charger(chooser.getSelectedFile().getName());
-//                pp.setVisible(false);
-//            }
+            JFileChooser chooser = new JFileChooser(SAVES_PATH);
+            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+                    "Sauvegardes", "sav");
+            chooser.setFileFilter(filter);
+            int returnVal = chooser.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                jeu.charger(chooser.getSelectedFile().getName());
+                pp.setVisible(false);
+            }
         }
 
 
