@@ -11,18 +11,31 @@ import java.util.*;
 
 import static Utile.Constante.*;
 
+/**
+ * Classe composé de 2 piles de commande, l'une servant à stocker les commandes effectuées,
+ * l'autre à stocker les commandes annulées.
+ * Elle permet aussi de sauvegarder une partie ainsi que d'en charger une.
+ */
 public class Historique {
     private Stack<Commande> passe;
     private Stack<Commande> futur;
-
     private Jeu jeu;
 
+    /**
+     * Constructeur de l'historique.
+     * @param jeu objet sur lequel les commandes sont effectuées
+     */
     public Historique(Jeu jeu) {
         passe = new Stack<>();
         futur = new Stack<>();
         this.jeu = jeu;
     }
 
+    /**
+     * Stockage d'une commande.
+     * Efface entièrement le contenu des commandes annulées.
+     * @param cmd commande à stocker
+     */
     public void stocker(Commande cmd) {
         if (cmd == null) return;
         passe.push(cmd);
@@ -37,18 +50,28 @@ public class Historique {
         return !futur.isEmpty();
     }
 
+    /**
+     * Annulation de la dernière commande effectuée.
+     */
     public void annuler() {
         Commande cmd = passe.pop();
         cmd.desexecute(jeu);
         futur.push(cmd);
     }
 
+    /**
+     * Exécution de la dernière commande annulée.
+     */
     public void refaire() {
         Commande cmd = futur.pop();
         cmd.execute(jeu);
         passe.push(cmd);
     }
 
+    /**
+     * Sauvegarde l'avancement du jeu dans un fichier *.sav.
+     * @return le nom du fichier créé
+     */
     public String sauvegarder() {
         try {
             String passeStr = passe.toString();
@@ -71,6 +94,10 @@ public class Historique {
         return null;
     }
 
+    /**
+     * Chargement d'une partie à partir d'un fichier.
+     * @param nom_fichier
+     */
     public void charger(String nom_fichier) {
         try {
             File fichier = new File(SAVES_PATH + nom_fichier);

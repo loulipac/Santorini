@@ -7,10 +7,19 @@ import static Utile.Constante.*;
 
 import java.awt.Point;
 
+/**
+ * Classe représentant les coups de construction effectués dans le jeu.
+ */
 public class CoupConstruire extends Commande {
     private Point position;
     private Point batisseur;
 
+    /**
+     * Constructeur du coup.
+     * @param joueur joueur ayant effectué le coup
+     * @param position position à laquelle l'étage a été construit
+     * @param batisseur position du batisseur ayant effectué la construction
+     */
     public CoupConstruire(Joueur joueur, Point position, Point batisseur) {
         super(joueur);
         this.position = position;
@@ -18,10 +27,12 @@ public class CoupConstruire extends Commande {
     }
 
     @Override
-    public void action(Jeu jeu, int type) {
+    protected void action(Jeu jeu, int type) {
+        // MAJ du plateau du jeu
         int valeur = type == REDO ? 1 : -1;
         jeu.getPlateau().MAJEtage(position, valeur);
 
+        // MAJ de la situation du jeu
         int situation = CONSTRUCTION;
         Point batisseur_en_cours = batisseur;
         if (type == REDO) {

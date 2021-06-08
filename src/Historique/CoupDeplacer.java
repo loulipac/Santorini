@@ -10,10 +10,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 
+/**
+ * Classe représentant les coups de déplacement/placement effectués dans le jeu.
+ */
 public class CoupDeplacer extends Commande {
     private Point[] positions;
     private int coup;
 
+    /**
+     * Constructeur du coup.
+     * @param joueur joueur ayant effectué le coup
+     * @param pPos ancienne position du batisseur
+     * @param nPos nouvelle position du batisseur
+     */
     public CoupDeplacer(Joueur joueur, Point pPos, Point nPos) {
         super(joueur);
         positions = new Point[2];
@@ -23,7 +32,8 @@ public class CoupDeplacer extends Commande {
     }
 
     @Override
-    public void action(Jeu jeu, int type) {
+    protected void action(Jeu jeu, int type) {
+        // MAJ du plateau du jeu
         if (positions[type] != null) {
             jeu.getPlateau().ajouterJoueur(positions[type], joueur);
         }
@@ -32,6 +42,7 @@ public class CoupDeplacer extends Commande {
             jeu.getPlateau().enleverJoueur(positions[i]);
         }
 
+        // MAJ des batisseurs du joueur ayant effectué l'action
         ArrayList<Point> batisseurs = joueur.getBatisseurs();
         int index = batisseurs.indexOf(positions[i]);
         if (index != -1) {
@@ -41,6 +52,7 @@ public class CoupDeplacer extends Commande {
         }
         batisseurs.removeAll(Collections.singleton(null));
 
+        // MAJ de la situation du jeu
         if (coup == PLACEMENT) {
             jeu.setSituation(PLACEMENT);
             int value = type == REDO ? 1 : -1;
