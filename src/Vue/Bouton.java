@@ -117,5 +117,13 @@ public class Bouton extends JButton {
         setRolloverIcon(scaleImage(imageHover, hauteur, largeur));
     }
 
+    // GETTER
 
+    public String getImage() {
+        return image;
+    }
+
+    public String getImageHover() {
+        return imageHover;
+    }
 }
