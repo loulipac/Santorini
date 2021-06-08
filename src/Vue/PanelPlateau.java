@@ -15,7 +15,10 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * Classe générant la fenêtre de jeu.
@@ -54,11 +57,25 @@ public class PanelPlateau extends Panels implements Observateur {
      * Constructeur de PanelPlateau chargeant une partie déjà existante.
      *
      * @param _taille_fenetre taille de la fenêtre
-     * @param filename        nom du fichier à charger
+     * @param lecteur        nom du fichier à charger
      */
-    public PanelPlateau(Dimension _taille_fenetre, String filename) {
-        this(_taille_fenetre, new ConfigurationPartie(0, 0));
-        jeu.charger(filename);
+    public PanelPlateau(Dimension _taille_fenetre, Scanner lecteur) {
+        String[] param = lecteur.nextLine().split(" ");
+        int ia1_mode = Integer.parseInt(param[0]);
+        int ia2_mode = Integer.parseInt(param[1]);
+        int index_start = Integer.parseInt(param[2]);
+        boolean j1_blue = Boolean.parseBoolean(param[3]);
+
+        ConfigurationPartie config = new ConfigurationPartie(ia1_mode, ia2_mode);
+        config.setIndexJoueurCommence(index_start);
+        config.setJoueur1Bleu(j1_blue);
+
+        this.taille_fenetre = _taille_fenetre;
+        this.config = config;
+        this.lilyScriptOne = new Font(LILY_SCRIPT, Font.PLAIN, 40);
+        initialiserPanel();
+
+        jeu.charger(lecteur);
     }
 
     /**
@@ -499,15 +516,15 @@ public class PanelPlateau extends Panels implements Observateur {
         }
 
         public void actionCharger(ActionEvent e) {
-            JFileChooser chooser = new JFileChooser(SAVES_PATH);
-            FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                    "Sauvegardes", "sav");
-            chooser.setFileFilter(filter);
-            int returnVal = chooser.showOpenDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                jeu.charger(chooser.getSelectedFile().getName());
-                pp.setVisible(false);
-            }
+//            JFileChooser chooser = new JFileChooser(SAVES_PATH);
+//            FileNameExtensionFilter filter = new FileNameExtensionFilter(
+//                    "Sauvegardes", "sav");
+//            chooser.setFileFilter(filter);
+//            int returnVal = chooser.showOpenDialog(this);
+//            if (returnVal == JFileChooser.APPROVE_OPTION) {
+//                jeu.charger(chooser.getSelectedFile().getName());
+//                pp.setVisible(false);
+//            }
         }
 
 

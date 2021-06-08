@@ -82,9 +82,19 @@ public class Historique {
             String futurStr = futurArray.toString();
             futurStr = futurStr.substring(1, futurStr.length() - 1);
 
+            int ia1_mode = jeu.getConfigurationPartie().getIaMode1();
+            int ia2_mode = jeu.getConfigurationPartie().getIaMode2();
+            int index_start = jeu.getConfigurationPartie().getIndexJoueurCommence();
+            boolean j1_blue = jeu.getConfigurationPartie().isJoueur1Bleu();
+
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-            String nom_fichier = "save_" + formatter.format(new Date()) + ".sav";
+            String prefix = "p_vs_p";
+            if (ia1_mode > 0) {
+                prefix = ia2_mode > 0 ? "ia_vs_ia" : "p_vs_ia";
+            }
+            String nom_fichier = prefix + "_" + formatter.format(new Date()) + ".sav";
             FileWriter fichier = new FileWriter(SAVES_PATH + nom_fichier);
+            fichier.write(ia1_mode + " " + ia2_mode + " " + index_start + " " + j1_blue + "\n");
             fichier.write(passeStr + ", " + futurStr + "\n" + futur.size());
             fichier.close();
             return nom_fichier;
@@ -96,29 +106,20 @@ public class Historique {
 
     /**
      * Chargement d'une partie à partir d'un fichier.
-     * @param nom_fichier
+     * @param lecteur
      */
-    public void charger(String nom_fichier) {
-        try {
-            File fichier = new File(SAVES_PATH + nom_fichier);
-            Scanner lecteur = new Scanner(fichier);
+    public void charger(Scanner lecteur) {
+        String[] points = lecteur.nextLine().split(", ");
 
-            String[] points = lecteur.nextLine().split(", ");
-            for (String point : points) {
-                String[] coord = point.split(" ");
-                jeu.jouer(new Point(Integer.parseInt(coord[0]), Integer.parseInt(coord[1])));
-            }
-
-            int nbAnnuler = Integer.parseInt(lecteur.nextLine());
-            for (int i = 0; i < nbAnnuler; i++) annuler();
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Le fichier " + nom_fichier + " n'existe pas");
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.out.println("Le fichier n'a pas le bon format");
-            e.printStackTrace();
+        for (String point : points) {
+            String[] coord = point.split(" ");
+            jeu.jouer(new Point(Integer.parseInt(coord[0]), Integer.parseInt(coord[1])));
         }
+
+        int nbAnnuler = Integer.parseInt(lecteur.nextLine());
+        for (int i = 0; i < nbAnnuler; i++) annuler();
+
+        lecteur.close();
     }
 
     @Override

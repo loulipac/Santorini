@@ -9,6 +9,9 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 class PanelMenu extends JPanel {
     private Bouton bFullScreen;
@@ -160,7 +163,17 @@ class PanelMenu extends JPanel {
 
         int returnVal = chooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            f.setPanel(new PanelPlateau(getSize(), chooser.getSelectedFile().getName()));
+            try {
+                File fichier = new File(SAVES_PATH + chooser.getSelectedFile().getName());
+                Scanner lecteur = new Scanner(fichier);
+                f.setPanel(new PanelPlateau(getSize(), lecteur));
+            } catch (FileNotFoundException ex) {
+                System.out.println("Le fichier " + chooser.getSelectedFile().getName() + " n'existe pas");
+                ex.printStackTrace();
+            } catch (Exception ex) {
+                System.out.println("Le fichier n'a pas le bon format");
+                ex.printStackTrace();
+            }
         }
     }
 

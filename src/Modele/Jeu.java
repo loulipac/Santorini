@@ -11,6 +11,7 @@ import Vue.PanelPlateau;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Scanner;
 
 import static Utile.Constante.*;
 
@@ -372,9 +373,9 @@ public class Jeu {
     /**
      * Charge grâce à l'historique une partie depuis un fichier.
      */
-    public void charger(String filename) {
+    public void charger(Scanner lecteur) {
         RAZ();
-        histo.charger(filename);
+        histo.charger(lecteur);
     }
 
     /**

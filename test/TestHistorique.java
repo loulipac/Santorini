@@ -1,10 +1,16 @@
 import Modele.Jeu;
 import Patterns.Observateur;
 
+import Vue.PanelPlateau;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import static Utile.Constante.SAVES_PATH;
 
 public class TestHistorique implements Observateur {
     private static Point[] moves = {
@@ -34,7 +40,6 @@ public class TestHistorique implements Observateur {
     @Test
     public void testUndo() {
         Jeu game = new Jeu(this);
-        Jeu g2 = new Jeu(this);
 
         for (Point move : moves) game.jouer(move);
         Assertions.assertFalse(game.equals(new Jeu(this)));
@@ -77,10 +82,21 @@ public class TestHistorique implements Observateur {
 
         String filename = g1.sauvegarder();
 
-        g2.charger(filename);
+        try {
+            File fichier = new File(SAVES_PATH + filename);
+            Scanner lecteur = new Scanner(fichier);
+            lecteur.nextLine();
+            g2.charger(lecteur);
 
-        Assertions.assertTrue(g1.equals(g2));
-        Assertions.assertTrue(g1.getHistorique().equals(g2.getHistorique()));
+            Assertions.assertTrue(g1.equals(g2));
+            Assertions.assertTrue(g1.getHistorique().equals(g2.getHistorique()));
+        } catch (FileNotFoundException ex) {
+            System.out.println("Le fichier " + filename + " n'existe pas");
+            ex.printStackTrace();
+        } catch (Exception ex) {
+            System.out.println("Le fichier n'a pas le bon format");
+            ex.printStackTrace();
+        }
     }
 
     @Override
