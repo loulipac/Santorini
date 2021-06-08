@@ -6,6 +6,16 @@ import Vue.LobbyPanel;
 import java.awt.*;
 import java.io.ObjectOutputStream;
 
+/**
+ * Classe abstraite composé d'élèment commun pour client et serveur.
+ * Elle comporte une réfèrence au jeu pour envoyer les coups joués en local.
+ * Le numéro et nom du joueur ainsi que le nom récupéré de l'adversaire.
+ * Posède un flux d'envoie pour l'envoie de messages.
+ * Modifie dynamiquement l'interface de LobbyPanel pour l'affichage du nom des joueurs.
+ * @see LobbyPanel#setAdversaireNom(String) 
+ * @see LobbyPanel#setClient_ready(boolean)
+ * @see Jeu
+ */
 public abstract class Reseau {
     private Jeu jeu;
     protected int numJoueur;
@@ -71,7 +81,8 @@ public abstract class Reseau {
         statut_modification = false;
     }
 
-    // SETTER GETTER
+    // SETTER / GETTER
+
     public String getNomJoueur() {
         return nomJoueur;
     }
