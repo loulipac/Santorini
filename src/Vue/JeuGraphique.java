@@ -88,8 +88,8 @@ public class JeuGraphique extends JComponent {
 
         taille_case = getSize().height / PLATEAU_LIGNES;
 
-        if (jeu.getDeplacement_en_cours() != null) {
-            deplacement_batisseur = jeu.getDeplacement_en_cours();
+        if (jeu.getDeplacementEnCours() != null) {
+            deplacement_batisseur = jeu.getDeplacementEnCours();
             new Animation(deplacement_batisseur, taille_case, this);
             jeu.setDeplacementEnCours();
         }

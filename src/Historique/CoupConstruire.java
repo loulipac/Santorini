@@ -32,7 +32,7 @@ public class CoupConstruire extends Commande {
         jeu.changerJoueur();
         jeu.setBatisseurEnCours(batisseur_en_cours);
         jeu.MAJObservateur();
-        jeu.iaJoue();
+        jeu.iaEssayeJouer();
     }
 
     @Override

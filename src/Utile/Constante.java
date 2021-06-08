@@ -23,6 +23,8 @@ public class Constante {
     public static final int JOUEUR2 = 16;
     public static final int ATTENTE = 32;
 
+    public static final int NOMBRE_BATISSEUR_JOUEUR = 2;
+
     public static final int UNDO = 1;
     public static final int REDO = 0;
 
@@ -62,6 +64,8 @@ public class Constante {
     public static final String ERREUR_IMAGE_FOND = "Erreur image de fond: ";
     public static final String LILY_SCRIPT = "Lily Script One";
     public static final String LORA = "Lora";
+
+    public static final String SON_CONSTRUCTION = "son_construction.wav";
 
     public static final String[] TEXTE_ETAPES = {
             """
