@@ -216,7 +216,8 @@ public class IADifficile implements IA {
             case PLACEMENT:
                 return jouePlacement();
             case SELECTION:
-                minimax(plateau, jeu.getJoueurEnCours().getNum_joueur(), jeu.getJoueurEnCours().getNum_joueur(), 0, new ArrayList<>(jeu.getBatisseursJoueur(JOUEUR1)), new ArrayList<>(jeu.getBatisseursJoueur(JOUEUR2)));
+                Plateau nouveau_plateau = new Plateau(plateau);
+                minimax(nouveau_plateau, jeu.getJoueurEnCours().getNum_joueur(), jeu.getJoueurEnCours().getNum_joueur(), 0, new ArrayList<>(jeu.getBatisseursJoueur(JOUEUR1)), new ArrayList<>(jeu.getBatisseursJoueur(JOUEUR2)));
                 return meilleur_coup.batisseur;
             case DEPLACEMENT:
                 return meilleur_coup.deplacement;
