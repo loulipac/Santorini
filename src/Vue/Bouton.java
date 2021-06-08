@@ -4,6 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+/**
+ * Classe créant un JButton personnalisé avec une image et une image survolé personnalisé ainsi qu'une taille prédéfini.
+ */
 public class Bouton extends JButton {
     private int largeur;
     private int hauteur;
