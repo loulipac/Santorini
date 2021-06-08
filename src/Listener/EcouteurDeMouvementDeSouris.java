@@ -15,7 +15,6 @@ import java.awt.event.MouseMotionListener;
  * Classe Listener qui gère les mouvements de souris pour définir le curseur.
  */
 public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
-
     private final JeuGraphique jg;
     private final Jeu jeu;
     private final Panels p;
@@ -70,9 +69,6 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     /**
      * Définis le curseur selon sa position sur la grille et la situation du jeu.
-     *
-     * @see Jeu#getSituation()
-     * @see Jeu#getJoueurEnCours()
      */
     @Override
     public void mouseMoved(MouseEvent e) {
@@ -85,7 +81,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         int pos_y = e.getY() / jg.getTailleCase();
         Point position = new Point(pos_y, pos_x);
         if ((pos_x > 4) || (pos_y > 4)) return;
-        
+
         if ((jeu.getJoueurEnCours().getClass() == JoueurIA.class) ||
                 (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueurEnCours().getNum_joueur())
         ) {
@@ -130,6 +126,9 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
 
     }
 
+    /**
+     * Met le curseur gris ou le curseur de la couleur du joueur selon la condition en paramètre.
+     */
     private void setCursor(boolean condition, Cursor gris, Cursor rouge, Cursor bleu) {
         if (condition) {
             if (jeu.getJoueurEnCours().getNum_joueur() == numJoueurBleu) {
@@ -141,7 +140,5 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
             jg.setCursor(gris);
         }
     }
-
-
 }
 
