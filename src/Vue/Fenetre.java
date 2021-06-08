@@ -49,7 +49,7 @@ public class Fenetre extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Change le curseur de la fenêtre
-        setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("sword", new Point(0, 0)));
+        setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("defaut_gris", new Point(0, 0)));
         Utile.chargerFont();
 
         Image icone = Toolkit.getDefaultToolkit().getImage(CHEMIN_RESSOURCE + "/icone/logo-icone.png");

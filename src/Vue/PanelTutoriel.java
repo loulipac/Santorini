@@ -55,7 +55,7 @@ public class PanelTutoriel extends Panels implements Observateur {
         lilly_belle = new Font(LILY_SCRIPT, Font.PLAIN, 40);
         initialiserPanel();
 
-        setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("sword", new Point(0, 0)));
+        setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("defaut_gris", new Point(0, 0)));
 
         jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu_tuto, jg, PanelTutoriel.this));
         is_finish_draw = true;
