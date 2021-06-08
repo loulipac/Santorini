@@ -9,8 +9,9 @@ import static Utile.Constante.*;
  * Classe gérant les cases de la grille dont les constructions de bâtiment et la pose de batisseurs.
  */
 public class Plateau {
-    public int[][] cases;
-    private final int colonnes, lignes;
+    private int[][] cases;
+    private final int colonnes;
+    private final int lignes;
 
     /**
      * Instantie un objet Plateau.
@@ -27,9 +28,7 @@ public class Plateau {
 
         cases = new int[lignes][colonnes];
         for (int i = 0; i < lignes; i++) {
-            for (int j = 0; j < colonnes; j++) {
-                cases[i][j] = plateau.cases[i][j];
-            }
+            System.arraycopy(plateau.cases[i], 0, cases[i], 0, colonnes);
         }
     }
 
@@ -381,7 +380,7 @@ public class Plateau {
         cases = new int[PLATEAU_LIGNES][PLATEAU_COLONNES];
     }
 
-    // GETTER
+    // GETTER / SETTER
 
     private void setCase(Point position, int valeur) {
         cases[position.x][position.y] = valeur;
@@ -393,10 +392,6 @@ public class Plateau {
 
     public int getColonnes() {
         return colonnes;
-    }
-
-    public void setCases(int[][] cases) {
-        this.cases = cases;
     }
 
     public int getCase(Point position) {

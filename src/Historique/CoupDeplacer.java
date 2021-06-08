@@ -6,6 +6,8 @@ import Modele.Joueur;
 import static Utile.Constante.*;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 public class CoupDeplacer extends Commande {
@@ -30,9 +32,14 @@ public class CoupDeplacer extends Commande {
             jeu.getPlateau().enleverJoueur(positions[i]);
         }
 
-//        ArrayList<Point> batisseurs = joueur.getBatisseurs();
-//        batisseurs.set(batisseurs.indexOf(positions[i]), positions[type]);
-//        batisseurs.removeAll(Collections.singleton(null));
+        ArrayList<Point> batisseurs = joueur.getBatisseurs();
+        int index = batisseurs.indexOf(positions[i]);
+        if (index != -1) {
+            batisseurs.set(index, positions[type]);
+        } else {
+            batisseurs.add(positions[type]);
+        }
+        batisseurs.removeAll(Collections.singleton(null));
 
         if (coup == PLACEMENT) {
             jeu.setSituation(PLACEMENT);
@@ -47,6 +54,7 @@ public class CoupDeplacer extends Commande {
             }
         } else {
             jeu.setBatisseurEnCours(positions[type]);
+            jeu.setDeplacementEnCours(positions[i], positions[type]);
             if (type == UNDO && jeu.estJeufini()) jeu.setJeuFini(false);
             else if (type == REDO) jeu.victoireJoueur();
             int situation = type == REDO ? CONSTRUCTION : SELECTION;
