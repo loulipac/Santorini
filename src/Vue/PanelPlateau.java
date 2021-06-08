@@ -29,6 +29,7 @@ public class PanelPlateau extends Panels implements Observateur {
     private JeuGraphique jg;
     private Reseau netUser;
     private final ConfigurationPartie config;
+    private JGamePanel jgame;
 
     private final Dimension taille_fenetre;
 
@@ -153,8 +154,8 @@ public class PanelPlateau extends Panels implements Observateur {
      * @see Jeu
      */
     private class JGamePanel extends JPanel {
-        private final int taille_margin;
-        private final float taille_h;
+        private int taille_margin;
+        private float taille_h;
 
         /**
          * Constructeur pour JGamePanel. Rajoute des components au JPanel.

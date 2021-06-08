@@ -332,6 +332,10 @@ public class Plateau {
         cases[position.x][position.y] = valeur;
     }
 
+    public void setBatiments(Point position, int valeur) {
+        cases[position.x][position.y] = getTypeBatisseurs(position)+valeur;
+    }
+
     public int getLignes() {
         return lignes;
     }

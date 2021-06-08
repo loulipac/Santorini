@@ -1,6 +1,7 @@
 package Vue;
 
 import Modele.JeuTuto;
+import Modele.Plateau;
 import Patterns.Observateur;
 
 import javax.swing.*;
@@ -44,6 +45,8 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         Graphics2D drawable = (Graphics2D) g;
         drawable.clearRect(0, 0, getTailleCase() * PLATEAU_COLONNES, getTailleCase() * PLATEAU_LIGNES);
         super.paintComponent(g);
+
+
         jeu_tuto.setSituation(ATTENTE);
         switch (num_etape) {
             case 2 -> {
@@ -55,12 +58,10 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             case 6 -> ActionsInitialisation(drawable, SELECTION, new Point(1,1),new Point(1,1));
             case 7 -> ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,1),new Point(1,2));
             case 9  -> ActionsInitialisation(drawable, CONSTRUCTION, new Point(1,2),new Point(2,2));
-            case 12 -> ActionsInitialisation(drawable, SELECTION, new Point(1,2),new Point(1,2));
-            case 13 -> ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
+            case 12, 22 -> ActionsInitialisation(drawable, SELECTION, new Point(1,2),new Point(1,2));
+            case 13, 23 -> ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
             case 15 -> ActionsInitialisation(drawable, CONSTRUCTION, new Point(2,2),new Point(3,3));
             case 19 -> ActionsInitialisation(drawable, CONSTRUCTION, new Point(4,2),new Point(3,3));
-            case 22 -> ActionsInitialisation(drawable, SELECTION, new Point(1,2),new Point(1,2));
-            case 23 -> ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
             default -> {}
         }
         repaint();
@@ -97,17 +98,18 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     public void animationEtape4() {
         Point pos_pion1 = new Point(1, 3);
         Point pos_pion2 = new Point(4, 2);
+        Plateau plateau = jeu_tuto.getPlateau();
+        boolean est_batisseurs = plateau.estBatisseur(pos_pion1, jeu_tuto.getJ2());
 
-        if (jeu_tuto.getPlateau().estBatisseur(pos_pion1, jeu_tuto.getJ2())
-                && jeu_tuto.getPlateau().estBatisseur(pos_pion2, jeu_tuto.getJ2())) {
+        if (est_batisseurs && plateau.estBatisseur(pos_pion2, jeu_tuto.getJ2())) {
             timerSet(false);
             o.miseAjour();
 
-        } else if (jeu_tuto.getPlateau().estBatisseur(pos_pion1, jeu_tuto.getJ2())) {
-            jeu_tuto.getPlateau().ajouterJoueur(pos_pion2, jeu_tuto.getJ2());
+        } else if (est_batisseurs) {
+            plateau.ajouterJoueur(pos_pion2, jeu_tuto.getJ2());
 
         } else {
-            jeu_tuto.getPlateau().ajouterJoueur(pos_pion1, jeu_tuto.getJ2());
+            plateau.ajouterJoueur(pos_pion1, jeu_tuto.getJ2());
         }
     }
 
@@ -117,18 +119,19 @@ public class JeuGraphiqueTuto extends JeuGraphique {
     public void animationEtape11() {
         Point pos_batiment = new Point(3, 3);
         Point nouv_pos_J2 = new Point(4, 3);
+        Plateau plateau = jeu_tuto.getPlateau();
+        boolean est_batisseurs = plateau.estBatisseur(nouv_pos_J2, jeu_tuto.getJ2());
 
-        if (jeu_tuto.getPlateau().estBatisseur(nouv_pos_J2, jeu_tuto.getJ2())
-                && jeu_tuto.getPlateau().estRDC(pos_batiment)) {
+        if (est_batisseurs && plateau.estRDC(pos_batiment)) {
             timerSet(false);
             o.miseAjour();
 
-        } else if (jeu_tuto.getPlateau().estBatisseur(nouv_pos_J2, jeu_tuto.getJ2())) {
-            jeu_tuto.construireBatiment(pos_batiment, 1);
+        } else if (est_batisseurs) {
+            plateau.setBatiments(pos_batiment,1);
 
         } else {
-            jeu_tuto.getPlateau().enleverJoueur(new Point(4, 2));
-            jeu_tuto.getPlateau().ajouterJoueur(nouv_pos_J2, jeu_tuto.getJ2());
+            plateau.enleverJoueur(new Point(4, 2));
+            plateau.ajouterJoueur(nouv_pos_J2, jeu_tuto.getJ2());
         }
     }
 

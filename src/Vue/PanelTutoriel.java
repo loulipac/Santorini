@@ -13,6 +13,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -147,81 +148,53 @@ public class PanelTutoriel extends Panels implements Observateur {
             setOpaque(false);
             setPreferredSize(new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * taille_h)));
 
-            Dimension size = new Dimension((int) (taille_fenetre.width * 0.2), (int) (taille_fenetre.height * taille_h));
-
             jeu_tuto = new JeuTuto(PanelTutoriel.this);
             jg = new JeuGraphiqueTuto(jeu_tuto, num_etape, PanelTutoriel.this);
             jg.addMouseListener(new EcouteurDeSourisTuto(PanelTutoriel.this));
 
-            size = new Dimension((int)(size.width * 1.1f), (int)(size.height * 1.05f));
-            panel_gauche = new PanelGauche(size);
-            panel_gauche.setMaximumSize(size);
-            panel_gauche.setPreferredSize(size);
+            Dimension dimension_panel_gauche = new Dimension((int)(taille_fenetre.width * 0.22f), (int)(taille_fenetre.height * taille_h * 1.05f));
+            panel_gauche = new PanelGauche(dimension_panel_gauche);
+            definirTaille(panel_gauche, dimension_panel_gauche);
 
             // Calcul de la taille de la grille selon la taille de la fenêtre
-
             int taille_case = ((int) (taille_fenetre.height * (taille_h - 0.1f))) / PLATEAU_LIGNES;
 
-            jg.setPreferredSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
-            jg.setMaximumSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
-            jg.setMinimumSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
+            definirTaille(jg, new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
 
-            int taille = taille_fenetre.width;
-
-            // place de la grille
-            taille -= taille_case * PLATEAU_COLONNES;
-
-            // place des menus
-            taille -= taille_fenetre.width * 0.4;
-
+            // place de la grille : taille_case * PLATEAU_COLONNE, taille // place des menus : taille_fenetre.width *0.4
+            int taille = (int)(taille_fenetre.width * 0.6)-(taille_case * PLATEAU_COLONNES);
             taille_marge = taille / 4;
 
-
-            int bouton_height = (int) (size.height * 0.1);
+            int bouton_height = (int) (dimension_panel_gauche.height * 0.1);
             Dimension size_bouton = new Dimension((int) ((bouton_height/1.5) * RATIO_BOUTON_CLASSIQUE), (int)(bouton_height/1.5));
 
             JPanel panel_parametres = new JPanel();
             panel_parametres.setOpaque(false);
-            panel_parametres.setPreferredSize(new Dimension(size.width, size_bouton.height));
-            panel_parametres.setMaximumSize(new Dimension(size.width, size_bouton.height));
+            panel_parametres.setPreferredSize(new Dimension(dimension_panel_gauche.width, size_bouton.height));
+            panel_parametres.setMaximumSize(new Dimension(dimension_panel_gauche.width, size_bouton.height));
 
-            Bouton bRetour = new Bouton(
-                    CHEMIN_RESSOURCE + "/bouton/quitter_partie.png",
-                    CHEMIN_RESSOURCE + "/bouton/quitter_partie_hover.png",
-                    size_bouton,
-                    PanelTutoriel.this::actionBoutonRetourMenu
-            );
+            Bouton bRetour = new Bouton(CHEMIN_RESSOURCE + "/bouton/quitter_partie.png",CHEMIN_RESSOURCE + "/bouton/quitter_partie_hover.png",size_bouton,PanelTutoriel.this::actionBoutonRetourMenu);
+            suivant = new Bouton(CHEMIN_RESSOURCE + "/bouton/suivant.png", CHEMIN_RESSOURCE + "/bouton/suivant_hover.png",size_bouton, PanelTutoriel.this::actionBoutonSuivant);
+            precedent = new Bouton(CHEMIN_RESSOURCE + "/bouton/precedent.png", CHEMIN_RESSOURCE + "/bouton/precedent_hover.png", size_bouton, PanelTutoriel.this::actionBoutonPrecedent);
 
             panel_parametres.add(bRetour);
-
-            JPanel jp_jg = new JPanel();
-
-            suivant = new Bouton(CHEMIN_RESSOURCE + "/bouton/suivant.png", CHEMIN_RESSOURCE + "/bouton/suivant_hover.png",
-                    size_bouton, PanelTutoriel.this::actionBoutonSuivant);
-            precedent = new Bouton(CHEMIN_RESSOURCE + "/bouton/precedent.png", CHEMIN_RESSOURCE + "/bouton/precedent_hover.png",
-                    size_bouton, PanelTutoriel.this::actionBoutonPrecedent);
-
             precedent.setEnabled(false);
-
             JPanel panel_bouton = new JPanel();
-
             panel_bouton.setOpaque(false);
             panel_bouton.add(precedent);
-           panel_bouton.add(Box.createRigidArea(new Dimension(size_bouton.width/2, size_bouton.height/2)));
+            panel_bouton.add(Box.createRigidArea(new Dimension(size_bouton.width/2, size_bouton.height/2)));
             panel_bouton.add(suivant);
-            panel_bouton.setPreferredSize(new Dimension(size_bouton.width*4, size_bouton.height));
-            panel_bouton.setMaximumSize(new Dimension(size_bouton.width*4, size_bouton.height));
-            panel_bouton.setMinimumSize(new Dimension(size_bouton.width*4, size_bouton.height));
+            definirTaille(panel_bouton, new Dimension(size_bouton.width*4, size_bouton.height));
             panel_bouton.setAlignmentX(CENTER_ALIGNMENT);
 
-
+            JPanel jp_jg = new JPanel();
             jp_jg.add(jg);
 
+            Dimension taille_pannel = new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES);
+
             jp_jg.add(panel_bouton);
-            jp_jg.add(Box.createRigidArea(new Dimension(size_bouton.width*3, size_bouton.height)));
-            jp_jg.setMinimumSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
-            jp_jg.setMaximumSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
-            jp_jg.setPreferredSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
+            jp_jg.add(Box.createRigidArea(taille_pannel));
+            definirTaille(jp_jg, taille_pannel);
             jp_jg.setOpaque(false);
 
             add(panel_gauche, BorderLayout.WEST);
@@ -230,6 +203,12 @@ public class PanelTutoriel extends Panels implements Observateur {
 
         }
 
+    }
+
+    private void definirTaille(JComponent panel, Dimension taille_panel){
+        panel.setMinimumSize(taille_panel);
+        panel.setMaximumSize(taille_panel);
+        panel.setPreferredSize(taille_panel);
     }
 
     private class PanelGauche extends JPanel {
@@ -270,26 +249,20 @@ public class PanelTutoriel extends Panels implements Observateur {
                 setOpaque(false);
                 setMaximumSize(size);
 
-                JPanel panel_texte = new JPanel();
-                panel_texte.setOpaque(false);
-                panel_texte.setMaximumSize(panel_texte_taille);
-                panel_texte.setMinimumSize(panel_texte_taille);
-                panel_texte.setPreferredSize(panel_texte_taille);
-                panel_texte.setAlignmentY(CENTER_ALIGNMENT);
+
                 texte_bulle = new JTextArea(TEXTE_ETAPES[0]);
                 texte_bulle.setOpaque(false);
                 texte_bulle.setEditable(false);
-
                 texte_bulle.setFont(lilly_belle);
                 texte_bulle.setForeground(new Color(82, 60, 43));
-
-                texte_bulle.setMaximumSize(texte_bulle_taille);
-                texte_bulle.setMinimumSize(texte_bulle_taille);
-                texte_bulle.setPreferredSize(texte_bulle_taille);
-
+                definirTaille(texte_bulle, texte_bulle_taille);
                 texte_bulle.setLineWrap(true);
                 texte_bulle.setWrapStyleWord(true);
 
+                JPanel panel_texte = new JPanel();
+                panel_texte.setOpaque(false);
+                definirTaille(panel_texte, panel_texte_taille);
+                panel_texte.setAlignmentY(CENTER_ALIGNMENT);
                 panel_texte.add(texte_bulle);
 
                 add(Box.createRigidArea(new Dimension(size.width, (int)(pos_parchemin.height*1.2f))));
@@ -357,10 +330,10 @@ public class PanelTutoriel extends Panels implements Observateur {
 
             setLayout(new GridBagLayout());
 
-            Dimension size = new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * taille_h));
-            setPreferredSize(size);
-            setMaximumSize(size);
-            setMinimumSize(size);
+            Dimension taille = new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * taille_h));
+            setPreferredSize(taille);
+            setMaximumSize(taille);
+            setMinimumSize(taille);
 
             jt = new JLabel("Tutoriel : Etape " + (num_etape + 1) + "/" + TEXTE_ETAPES.length);
             jt.setAlignmentX(CENTER_ALIGNMENT);
@@ -399,11 +372,11 @@ public class PanelTutoriel extends Panels implements Observateur {
         return jg;
     }
 
-    public int getNum_etape() {
+    public int getNumEtape() {
         return num_etape;
     }
 
-    public void setNum_etape(int num_etape) {
+    public void setNumEtape(int num_etape) {
         this.num_etape = num_etape;
     }
 }

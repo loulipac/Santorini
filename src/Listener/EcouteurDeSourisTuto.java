@@ -26,7 +26,7 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
     public void mousePressed(MouseEvent e) {
         Point pos_souris = new Point(e.getY() / pt.getJg().getTailleCase(), e.getX() / pt.getJg().getTailleCase());
 
-        switch (pt.getNum_etape()) {
+        switch (pt.getNumEtape()) {
             case 2 -> actionEtape(2, pos_souris, 2);
             case 6 -> actionEtape(6, pos_souris, 1);
             case 7 -> actionEtape(7, pos_souris, 1);
@@ -59,7 +59,7 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
             pt.getJg().viderClic_prec();
 
             // Passe à l'étape suivante
-            pt.setNum_etape(pt.getNum_etape() + 1);
+            pt.setNumEtape(pt.getNumEtape() + 1);
             pt.changerEtape();
         }
     }
