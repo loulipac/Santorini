@@ -2,6 +2,9 @@ package Reseau;
 
 import java.io.Serializable;
 
+/**
+ * Classe Message envoyé entre client et serveur, composé d'un code et d'un contenu variable (boolean, string ou même objets divers)
+ */
 public class Message implements Serializable {
     /**
      * Code de déconnexion
