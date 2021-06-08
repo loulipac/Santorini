@@ -9,7 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-class PanelOptions extends JPanel {
+public class PanelOptions extends JPanel {
     private static final String TITRE_SECTION1 = "Mode de jeu";
     private static final String TITRE_SECTION2 = "Difficulté de l'IA";
     private static final String TITRE_SECTION3 = "Difficulté de l'IA 2";
