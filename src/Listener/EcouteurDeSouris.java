@@ -1,7 +1,6 @@
 package Listener;
 
 import Modele.Jeu;
-import Modele.Joueur;
 import Modele.JoueurHumain;
 import Modele.JoueurIA;
 import Vue.JeuGraphique;
@@ -36,21 +35,21 @@ public class EcouteurDeSouris extends MouseAdapter {
      * Utilise getJeu().jouer de JeuGraphique pour effectuer une action à la case calculé depuis la position de la souris.
      *
      * @param e evenement lorsqu'un clic intervient (contient la position du clic par exemple)
-     * @see JeuGraphique#getJeu()
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        if (pp.isParametreVisible() || (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueurEnCours().getNum_joueur()))
+        if (pp.isParametreVisible() ||
+                (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueurEnCours().getNum_joueur()) ||
+                jeu.getJoueurEnCours().getClass() == JoueurIA.class ||
+                e.getX() > (jg.getTailleCase() * PLATEAU_COLONNES) ||
+                e.getY() > (jg.getTailleCase() * PLATEAU_LIGNES))
             return;
-        if (jeu.getJoueurEnCours().getClass() != JoueurIA.class &&
-                e.getX() <= (jg.getTailleCase() * PLATEAU_COLONNES) &&
-                e.getY() <= (jg.getTailleCase() * PLATEAU_LIGNES)) {
-            ((JoueurHumain) jeu.getJoueurEnCours()).joue(new Point(
-                    e.getY() / jg.getTailleCase(),
-                    e.getX() / jg.getTailleCase()
-            ));
-            jg.repaint();
-        }
+
+        ((JoueurHumain) jeu.getJoueurEnCours()).joue(new Point(
+                e.getY() / jg.getTailleCase(),
+                e.getX() / jg.getTailleCase()
+        ));
+        jg.repaint();
     }
 
     /**
