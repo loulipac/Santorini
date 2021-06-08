@@ -234,7 +234,7 @@ public class LobbyPanel extends JPanel {
                     (int) (parent.width * 0.4 * RATIO_BOUTON_CLASSIQUE_INVERSE)
             );
 
-            demarrer.changeImage(demarrer.image, demarrer.imageHover);
+            demarrer.changeImage(demarrer.getImage(), demarrer.getImageHover());
 
 
             demarrer.setBounds(

@@ -1,7 +1,6 @@
 package Listener;
 
 import Modele.Jeu;
-import Modele.Joueur;
 import Modele.JoueurHumain;
 import Modele.JoueurIA;
 import Vue.JeuGraphique;
@@ -29,32 +28,34 @@ public class EcouteurDeSouris extends MouseAdapter {
     public EcouteurDeSouris(JeuGraphique jg, Jeu _jeu, PanelPlateau _pp) {
         this.jg = jg;
         this.pp = _pp;
-        jeu = _jeu;
+        this.jeu = _jeu;
     }
 
     /**
      * Utilise getJeu().jouer de JeuGraphique pour effectuer une action à la case calculé depuis la position de la souris.
      *
      * @param e evenement lorsqu'un clic intervient (contient la position du clic par exemple)
-     * @see JeuGraphique#getJeu()
      */
     @Override
     public void mousePressed(MouseEvent e) {
-        if (pp.isParametreVisible()) return;
-        if (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueurEnCours().getNum_joueur())
+        if (pp.isParametreVisible() ||
+                (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueurEnCours().getNum_joueur()) ||
+                jeu.getJoueurEnCours().getClass() == JoueurIA.class ||
+                e.getX() > (jg.getTailleCase() * PLATEAU_COLONNES) ||
+                e.getY() > (jg.getTailleCase() * PLATEAU_LIGNES))
             return;
-        Joueur joueur_en_cours = jeu.getJoueurEnCours();
-        if (joueur_en_cours.getClass() != JoueurIA.class &&
-                e.getX() <= (jg.getTailleCase() * PLATEAU_COLONNES) &&
-                e.getY() <= (jg.getTailleCase() * PLATEAU_LIGNES)) {
-            ((JoueurHumain) joueur_en_cours).joue(new Point(
-                    e.getY() / jg.getTailleCase(),
-                    e.getX() / jg.getTailleCase()
-            ));
-            jg.repaint();
-        }
+
+        ((JoueurHumain) jeu.getJoueurEnCours()).joue(new Point(
+                e.getY() / jg.getTailleCase(),
+                e.getX() / jg.getTailleCase()
+        ));
+        jg.repaint();
     }
 
+    /**
+     * Evènement quand la souris sort de la grille de jeu, permet d'effacer les hovers sur la grille
+     * (tel que le batisseur en transparence lors du placement).
+     */
     @Override
     public void mouseExited(MouseEvent e) {
         super.mouseExited(e);

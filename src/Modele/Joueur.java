@@ -3,6 +3,10 @@ package Modele;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Classe abstraite Joueur englobant JoueurHumain et JoueurIA,
+ * comporte une référence à jeu, une liste de batisseur et un numéro de joueur.
+ */
 public abstract class Joueur {
     protected int num_joueur;
     protected Jeu jeu;
@@ -31,6 +35,8 @@ public abstract class Joueur {
     public ArrayList<Point> getBatisseurs() {
         return batisseurs;
     }
+
+    // OVERRIDE MÉTHODES HÉRITÉES
 
     @Override
     public boolean equals(Object o) {

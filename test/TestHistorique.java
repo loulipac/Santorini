@@ -1,10 +1,17 @@
 import Modele.Jeu;
 import Patterns.Observateur;
 
+import Utile.ConfigurationPartie;
+import Vue.PanelPlateau;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+
+import static Utile.Constante.SAVES_PATH;
 
 public class TestHistorique implements Observateur {
     private static Point[] moves = {
@@ -53,9 +60,9 @@ public class TestHistorique implements Observateur {
             g2.jouer(move);
         }
 
-        for (int i = 0; i < 3; i++) g1.annuler();
+        for (Point move : moves) g1.annuler();
         Assertions.assertFalse(g1.equals(g2));
-        for (int i = 0; i < 3; i++) g1.refaire();
+        for (Point move : moves) g1.refaire();
         Assertions.assertTrue(g1.equals(g2));
         Assertions.assertTrue(g1.getHistorique().equals(g2.getHistorique()));
         Assertions.assertTrue(g1.getHistorique().peutAnnuler());
@@ -67,6 +74,12 @@ public class TestHistorique implements Observateur {
         Jeu g1 = new Jeu(this);
         Jeu g2 = new Jeu(this);
 
+        ConfigurationPartie config = new ConfigurationPartie(3, 2);
+        config.setIndexJoueurCommence(1);
+        g2.setConfigurationPartie(config);
+
+        Assertions.assertFalse(g1.getConfigurationPartie().equals(g2.getConfigurationPartie()));
+
         for (Point move : moves) {
             g1.jouer(move);
         }
@@ -75,6 +88,7 @@ public class TestHistorique implements Observateur {
         g1.annuler();
 
         String filename = g1.sauvegarder();
+
 
         g2.charger(filename);
 

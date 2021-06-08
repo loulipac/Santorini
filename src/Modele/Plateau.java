@@ -9,27 +9,31 @@ import static Utile.Constante.*;
  * Classe gérant les cases de la grille dont les constructions de bâtiment et la pose de batisseurs.
  */
 public class Plateau {
-    public int[][] cases;
-    private final int colonnes, lignes;
+    private int[][] cases;
+    private final int colonnes;
+    private final int lignes;
 
     /**
      * Instantie un objet Plateau.
      */
     public Plateau() {
         cases = new int[PLATEAU_LIGNES][PLATEAU_COLONNES];
-        lignes =PLATEAU_LIGNES;
-        colonnes=PLATEAU_COLONNES;
+        lignes = PLATEAU_LIGNES;
+        colonnes = PLATEAU_COLONNES;
     }
 
+    /**
+     * Instantie un plateau depuis une copie d'un plateau.
+     *
+     * @param plateau classe plateau comprenant les informations de la grille de jeu.
+     */
     public Plateau(Plateau plateau) {
         lignes = plateau.lignes;
         colonnes = plateau.colonnes;
 
         cases = new int[lignes][colonnes];
         for (int i = 0; i < lignes; i++) {
-            for (int j = 0; j < colonnes; j++) {
-                cases[i][j] = plateau.cases[i][j];
-            }
+            System.arraycopy(plateau.cases[i], 0, cases[i], 0, colonnes);
         }
     }
 
@@ -128,6 +132,11 @@ public class Plateau {
         setCase(position, getCase(position) + 1);
     }
 
+    /**
+     * Dé-améliore le batiment à la position l c si c'est possible, considère qu'il n'y pas de batisseurs dessus (un TOIT devient un ETAGE).
+     *
+     * @param position la position sur la grille
+     */
     public void degraderBatiment(Point position) {
         setCase(position, getCase(position) - 1);
     }
@@ -136,33 +145,21 @@ public class Plateau {
      * Vérifie que l'on peut sélectionner le batisseur aux coordonnées (position) appartient au joueur.
      *
      * @param position la position sur la grille
-     * @param joueur   le numéro de joueur (joueur en cours)
+     * @param joueur   le joueur (joueur en cours)
      */
     public boolean estBatisseur(Point position, Joueur joueur) {
         return getTypeBatisseurs(position) == joueur.getNum_joueur();
     }
 
+    /**
+     * Vérifie que l'on peut sélectionner le batisseur aux coordonnées (position) appartient au joueur.
+     *
+     * @param position  la position sur la grille
+     * @param numJoueur le numéro de joueur (joueur en cours)
+     */
     public boolean estBatisseur(Point position, int numJoueur) {
         return getTypeBatisseurs(position) == numJoueur;
     }
-
-
-    public ArrayList<Point> rechercherBatisseurs(int joueur) {
-        ArrayList<Point> batisseurs = new ArrayList<Point>();
-        int nb_batisseurs = 0;
-        for (int i = 0; i < lignes && nb_batisseurs < 2; i++) {
-            for (int j = 0; j < colonnes && nb_batisseurs < 2; j++) {
-                Point point = new Point(j, i);
-                if (estBatisseur(point, joueur)) {
-                    batisseurs.add(point);
-                    nb_batisseurs++;
-                }
-            }
-        }
-        return batisseurs;
-    }
-
-
 
     /**
      * Vérifie que la case de la grille ne contient pas de joueur.
@@ -177,7 +174,7 @@ public class Plateau {
     /**
      * Vérifie que la case de la grille visé peut acceuillir le batisseur (deplacement vers le haut de uniquement 1 de hauteur).
      *
-     * @param position la position sur la grille
+     * @param position  la position sur la grille
      * @param batisseur position (x, y) d'un batisseur
      * @return si la case peut acceuillir un batisseur
      */
@@ -203,7 +200,7 @@ public class Plateau {
     /**
      * Vérifie que la distance entre le batisseur et le case cliqué est inférieur à 2 (en x et en y)
      *
-     * @param position la position sur la grille
+     * @param position  la position sur la grille
      * @param batisseur position (x, y) d'un batisseur
      * @return vrai s'il est possible d'atteindre la case
      */
@@ -214,142 +211,88 @@ public class Plateau {
     }
 
     /**
-     * Construit un tableau de cases accessible depuis la position d'un batisseur.
+     * Construit une liste de cases accessible depuis la position d'un batisseur.
      *
-     * @param batisseurs position (x, y) d'un batisseur
+     * @param batisseur position (x, y) d'un batisseur
      * @return un ensemble de case accessible
      */
-    public ArrayList<Point> getCasesAccessibles(Point batisseurs) {
+    public ArrayList<Point> getCasesAccessibles(Point batisseur) {
+
+        Point cases;
+        ArrayList<Point> cases_voisines = new ArrayList<>();
+        int l = batisseur.x;
+        int c = batisseur.y;
+
+        for (int i = -1; i < 2; i++) {
+            if(i+l < lignes && i+l>=0){
+                for (int j = -1; j < 2; j++) {
+                    cases = new Point(i+l, j+c);
+                    if(j+c<colonnes && j+c>= 0 && deplacementPossible(cases, batisseur)){
+                        cases_voisines.add(cases);
+                    }
+                }
+            }
+        }
+
+        return cases_voisines;
+    }
+
+    /**
+     * Construit une liste de case où une construction peut-être faite depuis la position d'un batisseur.
+     *
+     * @param batisseur position (x, y) d'un batisseur
+     * @return une ensemble de case où la construction est possible
+     */
+    public ArrayList<Point> getConstructionsPossible(Point batisseur) {
+
+        Point cases;
         ArrayList<Point> cases_acessibles = new ArrayList<>();
+        int l = batisseur.x;
+        int c = batisseur.y;
 
-        int l = batisseurs.x;
-        int c = batisseurs.y;
-
-        boolean case_existe_haut = l - 1 >= 0;
-        boolean case_existe_bas = l + 1 < PLATEAU_LIGNES;
-        boolean case_existe_droite = c + 1 < PLATEAU_COLONNES;
-        boolean case_existe_gauche = c - 1 >= 0;
-
-        if (case_existe_haut) {
-            if (case_existe_gauche && deplacementPossible(new Point(batisseurs.x - 1, batisseurs.y - 1), batisseurs)) {
-                cases_acessibles.add(new Point(l - 1, c - 1));
+        for (int i = -1; i < 2; i++) {
+            if(i+l < lignes && i+l>=0){
+                for (int j = -1; j < 2; j++) {
+                    cases = new Point(i+l, j+c);
+                    if(j+c<colonnes && j+c>= 0 && peutConstruire(cases, batisseur)){
+                        cases_acessibles.add(cases);
+                    }
+                }
             }
-            if (case_existe_droite && deplacementPossible(new Point(batisseurs.x - 1, batisseurs.y + 1), batisseurs)) {
-                cases_acessibles.add(new Point(l - 1, c + 1));
-            }
-            if (deplacementPossible(new Point(batisseurs.x - 1, batisseurs.y), batisseurs))
-                cases_acessibles.add(new Point(l - 1, c));
-        }
-        if (case_existe_bas) {
-            if (case_existe_gauche && deplacementPossible(new Point(batisseurs.x + 1, batisseurs.y - 1), batisseurs)) {
-                cases_acessibles.add(new Point(l + 1, c - 1));
-            }
-            if (case_existe_droite && deplacementPossible(new Point(batisseurs.x + 1, batisseurs.y + 1), batisseurs)) {
-                cases_acessibles.add(new Point(l + 1, c + 1));
-            }
-            if (deplacementPossible(new Point(batisseurs.x + 1, batisseurs.y), batisseurs))
-                cases_acessibles.add(new Point(l + 1, c));
-        }
-        if (case_existe_gauche && deplacementPossible(new Point(batisseurs.x, batisseurs.y - 1), batisseurs)) {
-            cases_acessibles.add(new Point(batisseurs.x, batisseurs.y - 1));
-        }
-        if (case_existe_droite && deplacementPossible(new Point(batisseurs.x, batisseurs.y + 1), batisseurs)) {
-            cases_acessibles.add(new Point(batisseurs.x, batisseurs.y + 1));
         }
         return cases_acessibles;
     }
 
     /**
-     * Construit un tableau de case où une construction peut-être faite depuis la position d'un batisseur.
+     * Construit une liste de toutes les cases voisines à un batisseur.
      *
-     * @param batisseurs position (x, y) d'un batisseur
-     * @return une ensemble de case où la construction est possible
+     * @param batisseur position (x, y) du batisseur
+     * @return une ensemble de case de case voisine au batisseur
      */
-    public ArrayList<Point> getConstructionsPossible(Point batisseurs) {
-        ArrayList<Point> constructions_possibles = new ArrayList<>();
-
-        int l = batisseurs.x;
-        int c = batisseurs.y;
-
-        boolean case_existe_haut = l - 1 >= 0;
-        boolean case_existe_bas = l + 1 < PLATEAU_LIGNES;
-        boolean case_existe_droite = c + 1 < PLATEAU_COLONNES;
-        boolean case_existe_gauche = c - 1 >= 0;
-
-        if (case_existe_haut) {
-            if (case_existe_gauche && peutConstruire(new Point(batisseurs.x - 1, batisseurs.y - 1), batisseurs)) {
-                constructions_possibles.add(new Point(l - 1, c - 1));
-            }
-            if (case_existe_droite && peutConstruire(new Point(batisseurs.x - 1, batisseurs.y + 1), batisseurs)) {
-                constructions_possibles.add(new Point(l - 1, c + 1));
-            }
-            if (peutConstruire(new Point(batisseurs.x - 1, batisseurs.y), batisseurs)) {
-                constructions_possibles.add(new Point(l - 1, c));
-            }
-
-        }
-        if (case_existe_bas) {
-            if (case_existe_gauche && peutConstruire(new Point(batisseurs.x + 1, batisseurs.y - 1), batisseurs)) {
-                constructions_possibles.add(new Point(l + 1, c - 1));
-            }
-            if (case_existe_droite && peutConstruire(new Point(batisseurs.x + 1, batisseurs.y + 1), batisseurs)) {
-                constructions_possibles.add(new Point(l + 1, c + 1));
-            }
-            if (peutConstruire(new Point(batisseurs.x + 1, batisseurs.y), batisseurs)) {
-                constructions_possibles.add(new Point(l + 1, c));
-            }
-
-        }
-
-        if (case_existe_gauche && peutConstruire(new Point(batisseurs.x, batisseurs.y - 1), batisseurs)) {
-            constructions_possibles.add(new Point(batisseurs.x, batisseurs.y - 1));
-        }
-        if (case_existe_droite && peutConstruire(new Point(batisseurs.x, batisseurs.y + 1), batisseurs)) {
-            constructions_possibles.add(new Point(batisseurs.x, batisseurs.y + 1));
-        }
-        return constructions_possibles;
-    }
-
     public ArrayList<Point> getCasesVoisines(Point batisseur) {
-        ArrayList<Point> cases_acessibles = new ArrayList<>();
-
+        Point cases;
+        ArrayList<Point> cases_voisines = new ArrayList<>();
         int l = batisseur.x;
         int c = batisseur.y;
 
-        boolean case_existe_haut = l - 1 >= 0;
-        boolean case_existe_bas = l + 1 < lignes;
-        boolean case_existe_droite = c + 1 < colonnes;
-        boolean case_existe_gauche = c - 1 >= 0;
+        for (int i = -1; i < 2; i++) {
+            if(i+l < lignes && i+l>=0){
+                for (int j = -1; j < 2; j++) {
+                    cases = new Point(i+l, j+c);
+                    if(j+c<colonnes && j+c>= 0){
+                        cases_voisines.add(cases);
+                    }
+                }
+            }
+        }
 
-        if (case_existe_haut) {
-            if (case_existe_gauche) {
-                cases_acessibles.add(new Point(l - 1, c - 1));
-            }
-            if (case_existe_droite) {
-                cases_acessibles.add(new Point(l - 1, c + 1));
-            }
-        }
-        if (case_existe_bas) {
-            if (case_existe_gauche) {
-                cases_acessibles.add(new Point(l + 1, c - 1));
-            }
-            if (case_existe_droite) {
-                cases_acessibles.add(new Point(l + 1, c + 1));
-            }
-        }
-        if (case_existe_gauche) {
-            cases_acessibles.add(new Point(batisseur.x, batisseur.y - 1));
-        }
-        if (case_existe_droite) {
-            cases_acessibles.add(new Point(batisseur.x, batisseur.y + 1));
-        }
-        return cases_acessibles;
+        return cases_voisines;
     }
 
     /**
      * Vérifie si un ouvrier peut construire sur la case de la grille en l et c
      *
-     * @param position la case (x, y) de la grille
+     * @param position  la case (x, y) de la grille
      * @param batisseur position (x, y) d'un batisseur
      * @return vrai si le batisseur peut construire ici.
      */
@@ -359,6 +302,7 @@ public class Plateau {
 
     /**
      * Retire le joueur sur la case "position"
+     *
      * @param position la case (x, y) de la grille
      */
     public void enleverJoueur(Point position) {
@@ -367,8 +311,9 @@ public class Plateau {
 
     /**
      * Met la case (x, y) à la valeur d'étage "value"
+     *
      * @param position la case (x, y) de la grille
-     * @param value la nouvelle valeur d'étage
+     * @param value    la nouvelle valeur d'étage
      */
     public void MAJEtage(Point position, int value) {
         setCase(position, getCase(position) + value);
@@ -381,22 +326,18 @@ public class Plateau {
         cases = new int[PLATEAU_LIGNES][PLATEAU_COLONNES];
     }
 
-    // GETTER
+    // GETTER / SETTER
 
     private void setCase(Point position, int valeur) {
         cases[position.x][position.y] = valeur;
     }
-    
+
     public int getLignes() {
         return lignes;
     }
 
     public int getColonnes() {
         return colonnes;
-    }
-
-    public void setCases(int[][] cases) {
-        this.cases = cases;
     }
 
     public int getCase(Point position) {
@@ -410,6 +351,8 @@ public class Plateau {
     public int getTypeBatisseurs(Point position) {
         return getCase(position) & (~7);
     }
+
+    // OVERRIDE MÉTHODES HÉRITÉES
 
     @Override
     public String toString() {

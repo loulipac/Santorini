@@ -1,6 +1,8 @@
 package Historique;
 
 import Modele.Jeu;
+import Utile.ConfigurationPartie;
+import Vue.PanelPlateau;
 
 import java.awt.*;
 import java.io.File;
@@ -11,18 +13,31 @@ import java.util.*;
 
 import static Utile.Constante.*;
 
+/**
+ * Classe composé de 2 piles de commande, l'une servant à stocker les commandes effectuées,
+ * l'autre à stocker les commandes annulées.
+ * Elle permet aussi de sauvegarder une partie ainsi que d'en charger une.
+ */
 public class Historique {
     private Stack<Commande> passe;
     private Stack<Commande> futur;
-
     private Jeu jeu;
 
+    /**
+     * Constructeur de l'historique.
+     * @param jeu objet sur lequel les commandes sont effectuées
+     */
     public Historique(Jeu jeu) {
         passe = new Stack<>();
         futur = new Stack<>();
         this.jeu = jeu;
     }
 
+    /**
+     * Stockage d'une commande.
+     * Efface entièrement le contenu des commandes annulées.
+     * @param cmd commande à stocker
+     */
     public void stocker(Commande cmd) {
         if (cmd == null) return;
         passe.push(cmd);
@@ -37,18 +52,28 @@ public class Historique {
         return !futur.isEmpty();
     }
 
+    /**
+     * Annulation de la dernière commande effectuée.
+     */
     public void annuler() {
         Commande cmd = passe.pop();
         cmd.desexecute(jeu);
         futur.push(cmd);
     }
 
+    /**
+     * Exécution de la dernière commande annulée.
+     */
     public void refaire() {
         Commande cmd = futur.pop();
         cmd.execute(jeu);
         passe.push(cmd);
     }
 
+    /**
+     * Sauvegarde l'avancement du jeu dans un fichier *.sav.
+     * @return le nom du fichier créé
+     */
     public String sauvegarder() {
         try {
             String passeStr = passe.toString();
@@ -59,9 +84,19 @@ public class Historique {
             String futurStr = futurArray.toString();
             futurStr = futurStr.substring(1, futurStr.length() - 1);
 
+            int ia1_mode = jeu.getConfigurationPartie().getIaMode1();
+            int ia2_mode = jeu.getConfigurationPartie().getIaMode2();
+            int index_start = jeu.getConfigurationPartie().getIndexJoueurCommence();
+            boolean j1_blue = jeu.getConfigurationPartie().isJoueur1Bleu();
+
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-            String nom_fichier = "save_" + formatter.format(new Date()) + ".sav";
+            String prefix = "p_vs_p";
+            if (ia1_mode > 0) {
+                prefix = ia2_mode > 0 ? "ia_vs_ia" : "p_vs_ia";
+            }
+            String nom_fichier = prefix + "_" + formatter.format(new Date()) + ".sav";
             FileWriter fichier = new FileWriter(SAVES_PATH + nom_fichier);
+            fichier.write(ia1_mode + " " + ia2_mode + " " + index_start + " " + j1_blue + "\n");
             fichier.write(passeStr + ", " + futurStr + "\n" + futur.size());
             fichier.close();
             return nom_fichier;
@@ -71,26 +106,50 @@ public class Historique {
         return null;
     }
 
-    public void charger(String nom_fichier) {
+    /**
+     * Chargement d'une partie à partir d'un fichier.
+     * @param lecteur
+     */
+    public void charger(Scanner lecteur) {
+        String[] points = lecteur.nextLine().split(", ");
+
+        for (String point : points) {
+            String[] coord = point.split(" ");
+            jeu.jouer(new Point(Integer.parseInt(coord[0]), Integer.parseInt(coord[1])));
+        }
+
+        int nbAnnuler = Integer.parseInt(lecteur.nextLine());
+        for (int i = 0; i < nbAnnuler; i++) annuler();
+
+        lecteur.close();
+    }
+
+    public void charger(String filename) {
         try {
-            File fichier = new File(SAVES_PATH + nom_fichier);
+            File fichier = new File(SAVES_PATH + filename);
             Scanner lecteur = new Scanner(fichier);
 
-            String[] points = lecteur.nextLine().split(", ");
-            for (String point : points) {
-                String[] coord = point.split(" ");
-                jeu.jouer(new Point(Integer.parseInt(coord[0]), Integer.parseInt(coord[1])));
-            }
+            String[] param = lecteur.nextLine().split(" ");
+            int ia1_mode = Integer.parseInt(param[0]);
+            int ia2_mode = Integer.parseInt(param[1]);
+            int index_start = Integer.parseInt(param[2]);
+            boolean j1_blue = Boolean.parseBoolean(param[3]);
 
-            int nbAnnuler = Integer.parseInt(lecteur.nextLine());
-            for (int i = 0; i < nbAnnuler; i++) annuler();
+            ConfigurationPartie config = new ConfigurationPartie(ia1_mode, ia2_mode);
+            config.setIndexJoueurCommence(index_start);
+            config.setJoueur1Bleu(j1_blue);
 
-        } catch (FileNotFoundException e) {
-            System.out.println("Le fichier " + nom_fichier + " n'existe pas");
-            e.printStackTrace();
-        } catch (Exception e) {
+            jeu.setConfigurationPartie(config);
+            jeu.RAZ();
+
+            charger(lecteur);
+
+        } catch (FileNotFoundException ex) {
+            System.out.println("Le fichier " + filename + " n'existe pas");
+            ex.printStackTrace();
+        } catch (Exception ex) {
             System.out.println("Le fichier n'a pas le bon format");
-            e.printStackTrace();
+            ex.printStackTrace();
         }
     }
 

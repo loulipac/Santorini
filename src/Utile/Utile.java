@@ -10,6 +10,9 @@ import java.io.IOException;
 
 import static Utile.Constante.*;
 
+/**
+ * Classe Utile gérant la lecture d'image et le fait des dessiner des images en fond sur des JPanels.
+ */
 public class Utile {
     private static BufferedImage bg;
     private static BufferedImage column;

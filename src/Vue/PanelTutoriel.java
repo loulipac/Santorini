@@ -94,7 +94,7 @@ public class PanelTutoriel extends Panels implements Observateur {
         if (this.num_etape < Constante.TEXTE_ETAPES.length) {
             changerEtape();
         } else {
-            this.num_etape = Constante.TEXTE_ETAPES.length;
+            this.num_etape = Constante.TEXTE_ETAPES.length - 1;
         }
     }
 

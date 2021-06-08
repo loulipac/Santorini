@@ -2,12 +2,14 @@ import Vue.Fenetre;
 
 import javax.swing.*;
 
+/**
+ * Classe démarrant l'interface graphique.
+ */
 public class Santorini implements Runnable {
 
-    Fenetre fenetre;
-
+    @Override
     public void run() {
-        fenetre = new Fenetre();
+        new Fenetre();
     }
 
     public static void main(String[] args) {
