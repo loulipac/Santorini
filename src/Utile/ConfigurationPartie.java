@@ -1,5 +1,13 @@
 package Utile;
 
+/**
+ * Classe de configuration partie pour pouvoir garder des données en une seule classe entre différentes vues et modèles
+ * et ainsi alléger les constructeurs.
+ * @see Vue.PanelOptions
+ * @see Vue.PanelChoix
+ * @see Vue.PanelPlateau
+ * @see Modele.Jeu
+ */
 public class ConfigurationPartie {
     private final int iaMode1;
     private final int iaMode2;
@@ -12,6 +20,8 @@ public class ConfigurationPartie {
         this.indexJoueurCommence = 0;
         this.joueur1Bleu = true;
     }
+
+    // GETTER / SETTER
 
     public boolean isJoueur1Bleu() {
         return joueur1Bleu;
