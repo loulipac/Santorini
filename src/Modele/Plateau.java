@@ -161,29 +161,6 @@ public class Plateau {
         return getTypeBatisseurs(position) == numJoueur;
     }
 
-
-    /**
-     * Recherche sur la grille les batisseurs du joueur passé en paramètre.
-     *
-     * @param joueur numéro du joueur
-     * @return la liste des batisseurs du joueur
-     */
-    public ArrayList<Point> rechercherBatisseurs(int joueur) {
-        ArrayList<Point> batisseurs = new ArrayList<>();
-        int nb_batisseurs = 0;
-        for (int i = 0; i < lignes && nb_batisseurs < 2; i++) {
-            for (int j = 0; j < colonnes && nb_batisseurs < 2; j++) {
-                Point point = new Point(j, i);
-                if (estBatisseur(point, joueur)) {
-                    batisseurs.add(point);
-                    nb_batisseurs++;
-                }
-            }
-        }
-        return batisseurs;
-    }
-
-
     /**
      * Vérifie que la case de la grille ne contient pas de joueur.
      *
