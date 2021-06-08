@@ -7,10 +7,21 @@ import java.net.Socket;
 
 import static Utile.Constante.*;
 
+/**
+ * Classe client gérant la connexion à un serveur grâce à une ip et communiquant avec ce dernier via des messages.
+ * Voir la classe abstraite pour une description des méthodes.
+ * @see Reseau
+ * @see Message
+ */
 public class Client extends Reseau {
     private Socket clientSocket;
     private final String ip;
 
+    /**
+     * Connecte le client à un serveur depuis l'IP de l'hôte
+     * @param ipHote ip de l'hôte
+     * @param username nom d'utilisateur du client
+     */
     public Client(String ipHote, String username) {
         super(username, JOUEUR2);
         this.ip = ipHote;
