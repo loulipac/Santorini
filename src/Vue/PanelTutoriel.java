@@ -135,12 +135,8 @@ public class PanelTutoriel extends Panels implements Observateur {
          */
         public PanelJeu(float _taille_h) {
             this.taille_h = _taille_h - 0.05f;
-            setLayout(new GridBagLayout());
+            setLayout(new BorderLayout());
             setOpaque(false);
-
-            JPanel container = new JPanel();
-            container.setLayout(new BoxLayout(container, BoxLayout.LINE_AXIS));
-            container.setOpaque(false);
             setPreferredSize(new Dimension(taille_fenetre.width, (int) (taille_fenetre.height * taille_h)));
 
             Dimension size = new Dimension((int) (taille_fenetre.width * 0.2), (int) (taille_fenetre.height * taille_h));
@@ -149,6 +145,7 @@ public class PanelTutoriel extends Panels implements Observateur {
             jg = new JeuGraphiqueTuto(jeu_tuto, num_etape, PanelTutoriel.this);
             jg.addMouseListener(new EcouteurDeSourisTuto(PanelTutoriel.this));
 
+            size = new Dimension((int)(size.width * 1.1f), (int)(size.height * 1.05f));
             panel_gauche = new PanelGauche(size);
             panel_gauche.setMaximumSize(size);
             panel_gauche.setPreferredSize(size);
@@ -171,32 +168,56 @@ public class PanelTutoriel extends Panels implements Observateur {
 
             taille_marge = taille / 4;
 
-            JPanel panel = new JPanel();
-            panel.setOpaque(false);
-            panel.setPreferredSize(size);
-            panel.setMaximumSize(size);
-            panel.setMinimumSize(size);
 
-            ajouteMarge(container);
-            container.add(panel_gauche);
-            ajouteMarge(container);
-            container.add(jg);
-            ajouteMarge(container);
-            container.add(panel);
-            ajouteMarge(container);
-            add(container);
-        }
+            int bouton_height = (int) (size.height * 0.1);
+            Dimension size_bouton = new Dimension((int) ((bouton_height/1.5) * RATIO_BOUTON_CLASSIQUE), (int)(bouton_height/1.5));
 
-        /**
-         * Crée un JPanel servant de marge.
-         */
-        private void ajouteMarge(JPanel c) {
-            JPanel j = new JPanel();
-            j.setOpaque(false);
-            Dimension size = new Dimension(taille_marge, (int) (taille_fenetre.height * taille_h));
-            j.setPreferredSize(size);
-            j.setMaximumSize(size);
-            c.add(j);
+            JPanel panel_parametres = new JPanel();
+            panel_parametres.setOpaque(false);
+            panel_parametres.setPreferredSize(new Dimension(size.width, size_bouton.height));
+            panel_parametres.setMaximumSize(new Dimension(size.width, size_bouton.height));
+
+            Bouton bRetour = new Bouton(
+                    CHEMIN_RESSOURCE + "/bouton/quitter_partie.png",
+                    CHEMIN_RESSOURCE + "/bouton/quitter_partie_hover.png",
+                    size_bouton,
+                    PanelTutoriel.this::actionBoutonRetourMenu
+            );
+
+            panel_parametres.add(bRetour);
+
+            JPanel jp_jg = new JPanel();
+
+            Bouton suivant = new Bouton(CHEMIN_RESSOURCE + "/bouton/suivant.png", CHEMIN_RESSOURCE + "/bouton/suivant_hover.png",
+                    size_bouton, PanelTutoriel.this::actionBoutonSuivant);
+            Bouton precedent = new Bouton(CHEMIN_RESSOURCE + "/bouton/precedent.png", CHEMIN_RESSOURCE + "/bouton/precedent_hover.png",
+                    size_bouton, PanelTutoriel.this::actionBoutonPrecedent);
+
+            JPanel panel_bouton = new JPanel();
+
+            panel_bouton.setOpaque(false);
+            panel_bouton.add(precedent);
+           panel_bouton.add(Box.createRigidArea(new Dimension(size_bouton.width/2, size_bouton.height/2)));
+            panel_bouton.add(suivant);
+            panel_bouton.setPreferredSize(new Dimension(size_bouton.width*4, size_bouton.height));
+            panel_bouton.setMaximumSize(new Dimension(size_bouton.width*4, size_bouton.height));
+            panel_bouton.setMinimumSize(new Dimension(size_bouton.width*4, size_bouton.height));
+            panel_bouton.setAlignmentX(CENTER_ALIGNMENT);
+
+
+            jp_jg.add(jg);
+
+            jp_jg.add(panel_bouton);
+            jp_jg.add(Box.createRigidArea(new Dimension(size_bouton.width*3, size_bouton.height)));
+            jp_jg.setMinimumSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
+            jp_jg.setMaximumSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
+            jp_jg.setPreferredSize(new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
+            jp_jg.setOpaque(false);
+
+            add(panel_gauche, BorderLayout.WEST);
+            add(jp_jg, BorderLayout.CENTER);
+            add(panel_parametres, BorderLayout.EAST);
+
         }
 
     }
@@ -216,17 +237,21 @@ public class PanelTutoriel extends Panels implements Observateur {
             JTextArea texte_bulle;
 
             public PanelInfo(Dimension size) {
+
                 setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
                 // Polices
                 lilly_belle = new Font(LILY_SCRIPT, Font.PLAIN, 20);
 
                 // Dimensions
+
                 int bouton_height = (int) (size.height * 0.1);
+
 
                 taille_personnage = new Dimension(size.height / 6, size.height / 6);
                 taille_parchemin = new Dimension(size.width, size.height * 2 / 3 - taille_personnage.height / 2);
 
-                pos_parchemin = new Dimension(0, 0);
+                pos_parchemin = new Dimension(0, (int)(size.height*0.2f));
                 pos_personnage = new Dimension(0, pos_parchemin.height + taille_parchemin.height - taille_personnage.height * 3 / 4);
                 panel_texte_taille = new Dimension(size.width * 2 / 3, taille_parchemin.height);
                 size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
@@ -234,12 +259,13 @@ public class PanelTutoriel extends Panels implements Observateur {
 
                 setOpaque(false);
                 setMaximumSize(size);
+
                 JPanel panel_texte = new JPanel();
                 panel_texte.setOpaque(false);
                 panel_texte.setMaximumSize(panel_texte_taille);
                 panel_texte.setMinimumSize(panel_texte_taille);
                 panel_texte.setPreferredSize(panel_texte_taille);
-
+                panel_texte.setAlignmentY(CENTER_ALIGNMENT);
                 texte_bulle = new JTextArea(TEXTE_ETAPES[0]);
                 texte_bulle.setOpaque(false);
                 texte_bulle.setEditable(false);
@@ -256,26 +282,9 @@ public class PanelTutoriel extends Panels implements Observateur {
 
                 panel_texte.add(texte_bulle);
 
-                Bouton suivant = new Bouton(CHEMIN_RESSOURCE + "/bouton/avant.png", CHEMIN_RESSOURCE + "/bouton/avant_hover.png",
-                        size_bouton, PanelTutoriel.this::actionBoutonSuivant);
-                Bouton precedent = new Bouton(CHEMIN_RESSOURCE + "/bouton/arriere.png", CHEMIN_RESSOURCE + "/bouton/arriere_hover.png",
-                        size_bouton, PanelTutoriel.this::actionBoutonPrecedent);
-
-                JPanel panel_bouton = new JPanel();
-
-                panel_bouton.setOpaque(false);
-                panel_bouton.add(precedent);
-                panel_bouton.add(suivant);
-                panel_bouton.setPreferredSize(new Dimension(panel_texte_taille.width, size_bouton.height));
-                panel_bouton.setMaximumSize(new Dimension(panel_texte_taille.width, size_bouton.height));
-                panel_bouton.setMinimumSize(new Dimension(panel_texte_taille.width, size_bouton.height));
-
-                add(Box.createRigidArea(new Dimension(size.width, 10)));
-
-                panel_texte.add(panel_bouton);
+                add(Box.createRigidArea(new Dimension(size.width, (int)(pos_parchemin.height*1.2f))));
 
                 add(panel_texte);
-
                 changerTexte(num_etape);
             }
 
@@ -320,28 +329,8 @@ public class PanelTutoriel extends Panels implements Observateur {
         public PanelGauche(Dimension size) {
             this.size = size;
             setOpaque(false);
-            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-            int bouton_height = (int) (size.height * 0.1);
-            Dimension size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
-
-            JPanel panel_parametres = new JPanel();
-            panel_parametres.setOpaque(false);
-            panel_parametres.setPreferredSize(new Dimension(size.width, size_bouton.height));
-            panel_parametres.setMaximumSize(new Dimension(size.width, size_bouton.height));
-
-            Bouton bRetour = new Bouton(
-                    CHEMIN_RESSOURCE + "/bouton/arriere.png",
-                    CHEMIN_RESSOURCE + "/bouton/arriere_hover.png",
-                    size_bouton,
-                    PanelTutoriel.this::actionBoutonRetourMenu
-            );
-
-            panel_parametres.add(bRetour);
-
+            setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
             panel_info = new PanelInfo(size);
-            add(panel_parametres);
-            add(Box.createRigidArea(new Dimension(size.width, size.height / 20)));
             add(panel_info);
         }
     }
