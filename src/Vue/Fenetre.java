@@ -14,14 +14,10 @@ import java.awt.*;
  */
 public class Fenetre extends JFrame {
 
-    CardLayout pileCarte;
-    JPanel panelPrincipal,shown;
-    PanelMenu menu;
-    PanelOptions options;
-    PanelRegles regles;
-    PanelTutoriel tutoriel;
-    PanelMultijoueur multi;
-    LecteurSon musique;
+    private final CardLayout pileCarte;
+    private final JPanel panelPrincipal;
+    private final LecteurSon musique;
+    private JPanel shown;
 
     /**
      * Initialise les JPanels ne nécessitant pas d'être créer selon des options.
@@ -36,11 +32,11 @@ public class Fenetre extends JFrame {
         panelPrincipal = new JPanel(pileCarte);
 
         musique = new LecteurSon("musiqueBGtest.wav");
-        menu = new PanelMenu(getSize());
-        options = new PanelOptions(getSize());
-        regles = new PanelRegles(getSize());
-        tutoriel = new PanelTutoriel(getSize());
-        multi = new PanelMultijoueur();
+        PanelMenu menu = new PanelMenu(getSize());
+        PanelOptions options = new PanelOptions(getSize());
+        PanelRegles regles = new PanelRegles(getSize());
+        PanelTutoriel tutoriel = new PanelTutoriel(getSize());
+        PanelMultijoueur multi = new PanelMultijoueur();
 
         panelPrincipal.add(menu, "menu");
         panelPrincipal.add(options, "options");
