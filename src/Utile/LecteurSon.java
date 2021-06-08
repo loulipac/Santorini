@@ -15,10 +15,9 @@ public class LecteurSon {
 
     /**
      * Constructeur de LecteurSon qui charge un son en mémoire.
-     *
      */
     public LecteurSon(String sound) {
-        fichier = new File(CHEMIN_RESSOURCE+"/sons/" + sound);
+        fichier = new File(CHEMIN_RESSOURCE + "/sons/" + sound);
     }
 
     /**
