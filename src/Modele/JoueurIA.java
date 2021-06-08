@@ -5,6 +5,12 @@ import IA.IA;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * JoueurIA joue à intervalle régulier jusqu'à ce qu'elle ne soit plus le joueur en cours ou
+ * s'arrête quand on lui demande.
+ * @see Jeu#desactiverIA()
+ * @see Jeu#iaSwitch()
+ */
 public class JoueurIA extends Joueur {
     private final IA ia;
     private final Timer timer;
