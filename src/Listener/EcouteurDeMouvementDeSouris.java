@@ -80,7 +80,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         int pos_x = e.getX() / jg.getTailleCase();
         int pos_y = e.getY() / jg.getTailleCase();
         Point position = new Point(pos_y, pos_x);
-        if ((pos_x > 4) || (pos_y > 4)) return;
+        if ((pos_x > (PLATEAU_LIGNES - 1)) || (pos_y > (PLATEAU_COLONNES - 1))) return;
 
         if ((jeu.getJoueurEnCours().getClass() == JoueurIA.class) ||
                 (jeu.getNetUser() != null && jeu.getNetUser().getNumJoueur() != jeu.getJoueurEnCours().getNum_joueur())
