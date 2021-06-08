@@ -29,6 +29,8 @@ public class PanelTutoriel extends Panels implements Observateur {
     private final Dimension taille_fenetre;
     private PanelJeu panel_jeu;
     private int num_etape;
+    private Bouton suivant;
+    private Bouton precedent;
 
     /**
      * Initialise la fenêtre Tutoriel et charge la police et les images en mémoire.
@@ -92,8 +94,10 @@ public class PanelTutoriel extends Panels implements Observateur {
         jg.getJeu_tuto().setClic_etape(num_etape,0);
         this.num_etape += 1;
         if (this.num_etape < Constante.TEXTE_ETAPES.length) {
+            precedent.setEnabled(true);
             changerEtape();
         } else {
+            suivant.setEnabled(false);
             this.num_etape = Constante.TEXTE_ETAPES.length - 1;
         }
     }
@@ -102,8 +106,12 @@ public class PanelTutoriel extends Panels implements Observateur {
         jg.getJeu_tuto().setClic_etape(num_etape,0);
         this.num_etape -= 1;
         if (this.num_etape >= 0) {
+            suivant.setEnabled(true);
             changerEtape();
-        } else this.num_etape = 0;
+        } else{
+            this.num_etape = 0;
+            precedent.setEnabled(false);
+        }
     }
 
     public void actionBoutonRetourMenu(ActionEvent e) {
@@ -188,10 +196,12 @@ public class PanelTutoriel extends Panels implements Observateur {
 
             JPanel jp_jg = new JPanel();
 
-            Bouton suivant = new Bouton(CHEMIN_RESSOURCE + "/bouton/suivant.png", CHEMIN_RESSOURCE + "/bouton/suivant_hover.png",
+            suivant = new Bouton(CHEMIN_RESSOURCE + "/bouton/suivant.png", CHEMIN_RESSOURCE + "/bouton/suivant_hover.png",
                     size_bouton, PanelTutoriel.this::actionBoutonSuivant);
-            Bouton precedent = new Bouton(CHEMIN_RESSOURCE + "/bouton/precedent.png", CHEMIN_RESSOURCE + "/bouton/precedent_hover.png",
+            precedent = new Bouton(CHEMIN_RESSOURCE + "/bouton/precedent.png", CHEMIN_RESSOURCE + "/bouton/precedent_hover.png",
                     size_bouton, PanelTutoriel.this::actionBoutonPrecedent);
+
+            precedent.setEnabled(false);
 
             JPanel panel_bouton = new JPanel();
 
