@@ -70,27 +70,25 @@ public class IADifficile implements IA {
         for (Point batisseur : batisseurs_en_cours) {
             for (Point deplacement : plateau.getCasesAccessibles(batisseur)) {
 
-                Plateau nouveau_plateau = new Plateau(plateau);
+                plateau.enleverJoueur(batisseur);
+                plateau.ajouterJoueur(deplacement, joueur_en_cours);
 
-                nouveau_plateau.enleverJoueur(batisseur);
-                nouveau_plateau.ajouterJoueur(deplacement, joueur_en_cours);
-
-                for (Point construction : nouveau_plateau.getConstructionsPossible(deplacement)) {
+                for (Point construction : plateau.getConstructionsPossible(deplacement)) {
                     Coups coup_actuel = new Coups(batisseur, deplacement, construction);
 
                     est_sur_toit = plateau.getTypeBatiments(deplacement) == TOIT;
 
                     if(!est_sur_toit){
-                        nouveau_plateau.ameliorerBatiment(construction);
+                        plateau.ameliorerBatiment(construction);
                     }
                     batisseurs_en_cours.set(batisseurs_en_cours.indexOf(batisseur),deplacement);
 
-                    score_actuel = minimax(nouveau_plateau, joueur_maximise, autre_joueur, profondeur_en_cours + 1, batisseurs_j1, batisseurs_j2);
+                    score_actuel = minimax(plateau, joueur_maximise, autre_joueur, profondeur_en_cours + 1, batisseurs_j1, batisseurs_j2);
 
                     batisseurs_en_cours.set(batisseurs_en_cours.indexOf(deplacement),batisseur);
 
                     if(!est_sur_toit){
-                        nouveau_plateau.degraderBatiment(construction);
+                        plateau.degraderBatiment(construction);
                     }
 
                     if ((est_joueur_maximise && score_actuel > meilleur_score) || (!est_joueur_maximise && score_actuel < meilleur_score)) {
@@ -100,6 +98,8 @@ public class IADifficile implements IA {
                             }
                     }
                 }
+                plateau.enleverJoueur(deplacement);
+                plateau.ajouterJoueur(batisseur, joueur_en_cours);
             }
         }
         return meilleur_score;
