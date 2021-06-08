@@ -9,7 +9,7 @@ import static Utile.Constante.*;
 
 /**
  * Classe client gérant la connexion à un serveur grâce à une ip et communiquant avec ce dernier via des messages.
- * Voir la classe abstraite pour une description des méthodes.
+ * Voir la classe abstraite Reseau pour une description des méthodes.
  * @see Reseau
  * @see Message
  */

@@ -6,6 +6,12 @@ import java.net.*;
 
 import static Utile.Constante.*;
 
+/**
+ * Classe serveur gérant la connexion d'un client grâce à l'adresse ip du joueur-serveur et communiquant avec ce dernier via des messages.
+ * Voir la classe abstraite Reseau pour une description des méthodes.
+ * @see Reseau
+ * @see Message
+ */
 public class Server extends Reseau {
     private ServerSocket serverSocket;
     private boolean client_pret = false;
@@ -15,6 +21,9 @@ public class Server extends Reseau {
         connexion();
     }
 
+    /**
+     * Démarre un serveur selon un port.
+     */
     @Override
     public void connexion() {
         try {
@@ -154,6 +163,7 @@ public class Server extends Reseau {
     }
 
     // GETTER
+    
     public boolean estClientPret() {
         return client_pret;
     }
