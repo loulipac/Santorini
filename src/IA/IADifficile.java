@@ -11,8 +11,8 @@ import static Utile.Constante.*;
 
 public class IADifficile implements IA {
 
-    private Jeu jeu;
-    private Plateau plateau;
+    private final Jeu jeu;
+    private final Plateau plateau;
     private final Random random;
     private Coups meilleur_coup;
     private final int profondeur_max = 3;
@@ -23,7 +23,7 @@ public class IADifficile implements IA {
         random = new Random();
     }
 
-    private class Coups {
+    private static class Coups {
         Point batisseur, deplacement, construction;
 
         public Coups(Point batisseur, Point deplacement, Point construction) {
@@ -52,8 +52,8 @@ public class IADifficile implements IA {
         boolean est_sur_toit;
         boolean impossibleDeJouer_j1 = plateau.getCasesAccessibles(batisseurs_j1.get(0)).isEmpty() && plateau.getCasesAccessibles(batisseurs_j1.get(1)).isEmpty();
         boolean impossibleDeJouer_j2 = plateau.getCasesAccessibles(batisseurs_j2.get(0)).isEmpty() && plateau.getCasesAccessibles(batisseurs_j2.get(1)).isEmpty();
-        boolean aGagne_j1 = (plateau.getTypeBatiments(batisseurs_j1.get(0)) == 3) || (plateau.getTypeBatiments(batisseurs_j1.get(1)) == 3);
-        boolean aGagne_j2 = (plateau.getTypeBatiments(batisseurs_j2.get(0)) == 3) || (plateau.getTypeBatiments(batisseurs_j2.get(1)) == 3);
+        boolean aGagne_j1 = (plateau.getTypeBatiments(batisseurs_j1.get(0)) == TOIT) || (plateau.getTypeBatiments(batisseurs_j1.get(1)) == TOIT);
+        boolean aGagne_j2 = (plateau.getTypeBatiments(batisseurs_j2.get(0)) == TOIT) || (plateau.getTypeBatiments(batisseurs_j2.get(1)) == TOIT);
         boolean jeu_fini = impossibleDeJouer_j1 || impossibleDeJouer_j2 || aGagne_j1 || aGagne_j2;
         boolean est_joueur_maximise = joueur_en_cours == joueur_maximise;
 
@@ -74,13 +74,13 @@ public class IADifficile implements IA {
                 plateau.ajouterJoueur(deplacement, joueur_en_cours);
 
                 for (Point construction : plateau.getConstructionsPossible(deplacement)) {
-                    Coups coup_actuel = new Coups(batisseur, deplacement, construction);
 
                     est_sur_toit = plateau.getTypeBatiments(deplacement) == TOIT;
 
                     if(!est_sur_toit){
                         plateau.ameliorerBatiment(construction);
                     }
+
                     batisseurs_en_cours.set(batisseurs_en_cours.indexOf(batisseur),deplacement);
 
                     score_actuel = minimax(plateau, joueur_maximise, autre_joueur, profondeur_en_cours + 1, batisseurs_j1, batisseurs_j2);
@@ -92,10 +92,10 @@ public class IADifficile implements IA {
                     }
 
                     if ((est_joueur_maximise && score_actuel > meilleur_score) || (!est_joueur_maximise && score_actuel < meilleur_score)) {
-                            meilleur_score = score_actuel;
-                            if (profondeur_en_cours == 0) {
-                                meilleur_coup = coup_actuel;
-                            }
+                        meilleur_score = score_actuel;
+                        if (profondeur_en_cours == 0) {
+                                meilleur_coup = new Coups(batisseur, deplacement, construction);;
+                        }
                     }
                 }
                 plateau.enleverJoueur(deplacement);
@@ -216,8 +216,7 @@ public class IADifficile implements IA {
             case PLACEMENT:
                 return jouePlacement();
             case SELECTION:
-                Plateau nouveau_plateau = new Plateau(plateau);
-                minimax(nouveau_plateau, jeu.getJoueurEnCours().getNum_joueur(), jeu.getJoueurEnCours().getNum_joueur(), 0, new ArrayList<>(jeu.getBatisseursJoueur(JOUEUR1)), new ArrayList<>(jeu.getBatisseursJoueur(JOUEUR2)));
+                minimax(new Plateau(plateau), jeu.getJoueurEnCours().getNum_joueur(), jeu.getJoueurEnCours().getNum_joueur(), 0, new ArrayList<>(jeu.getBatisseursJoueur(JOUEUR1)), new ArrayList<>(jeu.getBatisseursJoueur(JOUEUR2)));
                 return meilleur_coup.batisseur;
             case DEPLACEMENT:
                 return meilleur_coup.deplacement;
