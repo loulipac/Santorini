@@ -1,11 +1,13 @@
-package Utile;
+package Vue.PanelPartie;
+
+import Vue.PanelPartie.PanelPlateau.PanelPlateau;
 
 /**
  * Classe de configuration partie pour pouvoir garder des données en une seule classe entre différentes vues et modèles
  * et ainsi alléger les constructeurs.
  * @see Vue.PanelOptions
  * @see Vue.PanelChoix
- * @see Vue.PanelPlateau
+ * @see PanelPlateau
  * @see Modele.Jeu
  */
 public class ConfigurationPartie {

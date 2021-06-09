@@ -1,6 +1,7 @@
 package Vue;
 
 import Utile.*;
+import Vue.PanelPartie.PanelPlateau.PanelPlateau;
 
 import static Utile.Constante.*;
 

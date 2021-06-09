@@ -4,7 +4,7 @@ import Modele.Jeu;
 import Modele.JoueurHumain;
 import Modele.JoueurIA;
 import Vue.JeuGraphique;
-import Vue.PanelPlateau;
+import Vue.PanelPartie.PanelPlateau.PanelPlateau;
 
 import static Utile.Constante.*;
 

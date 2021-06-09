@@ -4,9 +4,9 @@ import Historique.*;
 import IA.*;
 import Patterns.Observateur;
 import Reseau.Reseau;
-import Utile.ConfigurationPartie;
+import Vue.PanelPartie.ConfigurationPartie;
 import Utile.LecteurSon;
-import Vue.PanelPlateau;
+import Vue.PanelPartie.PanelPlateau.PanelPlateau;
 
 import java.awt.*;
 import java.util.ArrayList;

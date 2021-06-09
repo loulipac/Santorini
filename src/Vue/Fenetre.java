@@ -2,6 +2,7 @@ package Vue;
 
 import Listener.EcouteurDeMouvementDeSouris;
 import Utile.*;
+import Vue.PanelPartie.PanelTutoriel.PanelTutoriel;
 
 import static Utile.Constante.*;
 

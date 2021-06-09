@@ -1,8 +1,7 @@
 package Historique;
 
 import Modele.Jeu;
-import Utile.ConfigurationPartie;
-import Vue.PanelPlateau;
+import Vue.PanelPartie.ConfigurationPartie;
 
 import java.awt.*;
 import java.io.File;

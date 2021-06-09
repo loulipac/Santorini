@@ -1,7 +1,8 @@
 package Vue;
 
-import Utile.ConfigurationPartie;
+import Vue.PanelPartie.ConfigurationPartie;
 import Utile.Utile;
+import Vue.PanelPartie.PanelPlateau.PanelPlateau;
 
 import javax.swing.*;
 import java.awt.*;

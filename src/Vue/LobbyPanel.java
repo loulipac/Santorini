@@ -4,6 +4,7 @@ import Reseau.Reseau;
 import Reseau.Server;
 import Reseau.Client;
 import Utile.Utile;
+import Vue.PanelPartie.PanelPlateau.PanelPlateau;
 
 import javax.swing.*;
 import java.awt.*;

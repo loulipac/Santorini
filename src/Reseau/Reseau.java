@@ -49,8 +49,8 @@ public abstract class Reseau {
     public abstract void deconnexion();
 
     /**
-     * Dans le cas du client, la fenêtre devient celle de PanelPlateau. Pour le serveur, on envoie au client
-     * que le jeu démarre et on change la fenêtre pour PanelPlateau.
+     * Dans le cas du client, la fenêtre devient celle de Vue.PanelPartie.PanelPlateau.PanelPlateau. Pour le serveur, on envoie au client
+     * que le jeu démarre et on change la fenêtre pour Vue.PanelPartie.PanelPlateau.PanelPlateau.
      */
     public abstract void demarrerPartie();
 

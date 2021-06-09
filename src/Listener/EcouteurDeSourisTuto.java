@@ -1,6 +1,6 @@
 package Listener;
 
-import Vue.PanelTutoriel;
+import Vue.PanelPartie.PanelTutoriel.PanelTutoriel;
 
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -11,9 +11,9 @@ public class EcouteurDeSourisTuto extends MouseAdapter {
     private final PanelTutoriel pt;
 
     /**
-     * Constructeur de EcouteurDeSourisTuto. Utilise un PanelTutoriel.
+     * Constructeur de EcouteurDeSourisTuto. Utilise un Vue.PanelPartie.PanelTutoriel.PanelTutoriel.
      *
-     * @param pt le PanelTutoriel
+     * @param pt le Vue.PanelPartie.PanelTutoriel.PanelTutoriel
      */
     public EcouteurDeSourisTuto(PanelTutoriel pt) {
         this.pt = pt;
