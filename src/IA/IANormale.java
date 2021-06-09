@@ -73,7 +73,7 @@ public class IANormale extends IAFacile {
                 }
             }
         }
-        return new ArrayList<>();
+        return null;
     }
 
     /**
@@ -129,7 +129,7 @@ public class IANormale extends IAFacile {
 
             }
         }
-        return new ArrayList<>();
+        return null;
 
     }
 }
