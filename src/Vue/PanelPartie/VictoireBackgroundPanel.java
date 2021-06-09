@@ -5,9 +5,9 @@ import Utile.Utile;
 import javax.swing.*;
 import java.awt.*;
 
-public class BackgroundPanel extends JPanel {
+public class VictoireBackgroundPanel extends JPanel {
 
-    public BackgroundPanel(Dimension taille) {
+    public VictoireBackgroundPanel(Dimension taille) {
         super();
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setAlignmentX(CENTER_ALIGNMENT);
@@ -18,6 +18,6 @@ public class BackgroundPanel extends JPanel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        Utile.dessinePanelBackground(g, getSize(), null);
+        Utile.dessineParcheminVictoire(g, getSize(), null);
     }
 }

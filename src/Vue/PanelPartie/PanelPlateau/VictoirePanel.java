@@ -2,6 +2,7 @@ package Vue.PanelPartie.PanelPlateau;
 
 import Vue.PanelPartie.BackgroundPanel;
 import Vue.Bouton;
+import Vue.PanelPartie.VictoireBackgroundPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +29,7 @@ public class VictoirePanel extends JPanel {
 
     private void initialiserComposant() {
         Dimension real_taille_panel = new Dimension((int) (taille_fenetre.width * 0.35), (int) (taille_fenetre.height * 0.9));
-        BackgroundPanel contenu = new BackgroundPanel(real_taille_panel);
+        VictoireBackgroundPanel contenu = new VictoireBackgroundPanel(real_taille_panel);
         Dimension taille_panel = new Dimension((int) (real_taille_panel.width * 0.75), (int) (real_taille_panel.height * 0.8));
 
         double ratio_titre = 0.1;
