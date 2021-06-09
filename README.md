@@ -1,5 +1,7 @@
 # Santorini
 
+Pour télécharger l'exécutable .jar : https://mega.nz/file/p75ADA5R#YnhubOxHnuc0TXHkGP3BQhYTPwkOy5K7Rg4u6P9gXx4
+
 A game project made by a group of 7 students.
 
 
