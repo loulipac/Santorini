@@ -4,7 +4,7 @@ import Historique.*;
 import IA.*;
 import Patterns.Observateur;
 import Reseau.Reseau;
-import Vue.PanelPartie.ConfigurationPartie;
+import Utile.ConfigurationPartie;
 import Utile.LecteurSon;
 import Vue.PanelPartie.PanelPlateau.PanelPlateau;
 

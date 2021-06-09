@@ -2,7 +2,6 @@ import Modele.Jeu;
 import Patterns.Observateur;
 
 import Utile.ConfigurationPartie;
-import Vue.PanelPlateau;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

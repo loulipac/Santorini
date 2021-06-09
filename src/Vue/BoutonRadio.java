@@ -3,6 +3,8 @@ package Vue;
 import javax.swing.*;
 import java.awt.*;
 
+import static Utile.Constante.CHEMIN_RESSOURCE;
+
 /**
  * Classe créant un JRadioButton personnalisé avec une image et une image survolé personnalisé
  * ainsi qu'une taille prédéfini et un groupe de bouton.
@@ -44,7 +46,10 @@ public class BoutonRadio extends JRadioButton {
 
         /* BoutonRadio ajouté au groupe de bouton*/
         groupe.add(this);
-        setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image imgCurseur = toolkit.getImage(CHEMIN_RESSOURCE + "/curseur/hand_gris.png");
+        setCursor(toolkit.createCustomCursor(imgCurseur.getScaledInstance(32, 32, Image.SCALE_SMOOTH), new Point(16, 16), "c_hand_gris"));
     }
 
     /**

@@ -1,6 +1,6 @@
 package Vue;
 
-import Vue.PanelPartie.ConfigurationPartie;
+import Utile.ConfigurationPartie;
 import Utile.Utile;
 import Vue.PanelPartie.PanelPlateau.PanelPlateau;
 

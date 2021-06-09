@@ -1,7 +1,7 @@
 package Vue.PanelPartie.PanelPlateau;
 
 import static Utile.Constante.*;
-import Vue.PanelPartie.ConfigurationPartie;
+import Utile.ConfigurationPartie;
 import Reseau.Reseau;
 import Utile.Utile;
 import Vue.Bouton;

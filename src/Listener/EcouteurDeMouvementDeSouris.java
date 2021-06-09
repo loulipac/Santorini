@@ -17,7 +17,6 @@ import java.awt.event.MouseMotionListener;
 public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     private final JeuGraphique jg;
     private final Jeu jeu;
-    private final Panels p;
     private final Cursor c_defaut_rouge;
     private final Cursor c_defaut_bleu;
     private final Cursor c_hand_rouge;
@@ -31,10 +30,9 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
     /**
      * Constructeur qui génère un ensemble de curseur.
      */
-    public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg, Panels p) {
+    public EcouteurDeMouvementDeSouris(Jeu j, JeuGraphique jg) {
         this.jg = jg;
         this.jeu = j;
-        this.p = p;
         this.numJoueurBleu = (j.getConfigurationPartie().isJoueur1Bleu() ? JOUEUR1 : JOUEUR2);
         c_defaut_rouge = creerCurseurGenerique("defaut_rouge", HAUT_GAUCHE);
         c_defaut_bleu = creerCurseurGenerique("defaut_bleu", HAUT_GAUCHE);
@@ -92,7 +90,7 @@ public class EcouteurDeMouvementDeSouris implements MouseMotionListener {
         switch (jeu.getSituation()) {
             case ATTENTE:
                 jg.setCursor(c_hourglass);
-                break;
+                return;
             case PLACEMENT:
                 setCursor((jg.getJeu().estAtteignable(position)), c_hand_gris, c_hand_rouge, c_hand_bleu);
                 jg.setCase_sous_souris(position);

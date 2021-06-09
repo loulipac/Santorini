@@ -1,7 +1,5 @@
 package Utile;
 
-import Vue.PanelPartie.ConfigurationPartie;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;

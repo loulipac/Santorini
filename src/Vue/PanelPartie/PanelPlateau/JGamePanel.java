@@ -70,7 +70,7 @@ public class JGamePanel extends JPanel {
         JeuGraphique jg = panel_plateau.getJg();
         Jeu jeu = panel_plateau.getJeu();
         jg.addMouseListener(new EcouteurDeSouris(jg, jeu, panel_plateau));
-        jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg, panel_plateau));
+        jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 
         SidePanelRight side_panel = new SidePanelRight(size,panel_plateau);
         side_panel.setMaximumSize(size);

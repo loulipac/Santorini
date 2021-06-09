@@ -1,4 +1,4 @@
-package Vue.PanelPartie;
+package Utile;
 
 import Vue.PanelPartie.PanelPlateau.PanelPlateau;
 

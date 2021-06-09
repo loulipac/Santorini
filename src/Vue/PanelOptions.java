@@ -1,6 +1,6 @@
 package Vue;
 
-import Vue.PanelPartie.ConfigurationPartie;
+import Utile.ConfigurationPartie;
 import Utile.*;
 
 import static Utile.Constante.*;
