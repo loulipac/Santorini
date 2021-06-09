@@ -14,8 +14,6 @@ public class VictoirePanel extends JPanel {
 
     JPanel titre_victoire;
     JPanel nb_tours;
-    JPanel tmp_reflexion_j1;
-    JPanel tmp_reflexion_j2;
     PanelPlateau panel_plateau;
     Dimension taille_fenetre;
 
@@ -53,9 +51,6 @@ public class VictoirePanel extends JPanel {
         titre_victoire = creerTexte("Victoire du joueur %n", 35,
                 new Dimension(taille_panel.width, (int) (taille_panel.height * ratio_titre)), SwingConstants.CENTER);
         nb_tours = creerTexte("%n tours passés", 20, dim_texte, SwingConstants.CENTER);
-        JPanel tmp_reflexion_titre = creerTexte("Temps moyen de réflexion :", 20, dim_texte, SwingConstants.CENTER);
-        tmp_reflexion_j1 = creerTexte("%n secondes pour le joueur 1", 20, dim_texte, SwingConstants.LEFT);
-        tmp_reflexion_j2 = creerTexte("%n secondes pour le joueur 2", 20, dim_texte, SwingConstants.LEFT);
         Dimension taille_marge = new Dimension(taille_panel.width, (int) (taille_panel.height * ratio_marge));
 
         addMargin(contenu, taille_marge);
@@ -64,20 +59,17 @@ public class VictoirePanel extends JPanel {
         contenu.add(nb_tours);
         addMargin(contenu, taille_marge);
         addMargin(contenu, taille_marge);
-
-        contenu.add(tmp_reflexion_titre);
         addMargin(contenu, taille_marge);
-        contenu.add(tmp_reflexion_j1);
         addMargin(contenu, taille_marge);
-        contenu.add(tmp_reflexion_j2);
         addMargin(contenu, taille_marge);
-
+        addMargin(contenu, taille_marge);
+        addMargin(contenu, taille_marge);
+        addMargin(contenu, taille_marge);
+        contenu.add(bNouvelle);
         addMargin(contenu, taille_marge);
         contenu.add(bVisualiser);
         addMargin(contenu, taille_marge);
         contenu.add(bSauvegarder);
-        addMargin(contenu, taille_marge);
-        contenu.add(bNouvelle);
         addMargin(contenu, taille_marge);
         contenu.add(bQuitter);
         addMargin(contenu, taille_marge);
@@ -129,13 +121,5 @@ public class VictoirePanel extends JPanel {
 
     public JPanel getNb_tours() {
         return nb_tours;
-    }
-
-    public JPanel getTmp_reflexion_j1() {
-        return tmp_reflexion_j1;
-    }
-
-    public JPanel getTmp_reflexion_j2() {
-        return tmp_reflexion_j2;
     }
 }

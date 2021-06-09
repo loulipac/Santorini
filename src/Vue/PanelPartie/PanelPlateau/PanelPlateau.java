@@ -185,8 +185,6 @@ public class PanelPlateau extends PanelPartie {
         victoire_panel.setVisible(true);
         victoire_panel.changeTexte(victoire_panel.getTitre_victoire(), "Victoire de " + nom_joueur);
         victoire_panel.changeTexte(victoire_panel.getNb_tours(), jeu.getNbTours() + " tours passés");
-        victoire_panel.changeTexte(victoire_panel.getTmp_reflexion_j1(), "n secondes pour le joueur 1");
-        victoire_panel.changeTexte(victoire_panel.getTmp_reflexion_j2(), "n secondes pour le joueur 2");
     }
 
     @Override
