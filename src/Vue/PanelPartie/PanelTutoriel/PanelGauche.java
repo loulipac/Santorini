@@ -81,7 +81,7 @@ public class PanelGauche extends JPanel {
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             try {
                 BufferedImage bg_parchemin = ImageIO.read(new File(CHEMIN_RESSOURCE + "/assets_recurrents/parchemin.png"));
-                BufferedImage personnage = ImageIO.read(new File(CHEMIN_RESSOURCE + "/carte_dieu/aphrodite.png"));
+                BufferedImage personnage = ImageIO.read(new File(CHEMIN_RESSOURCE + "/assets_recurrents/aphrodite.png"));
 
                 g2d.drawImage(
                         bg_parchemin,
