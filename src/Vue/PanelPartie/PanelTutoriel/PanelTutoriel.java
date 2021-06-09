@@ -96,23 +96,36 @@ public class PanelTutoriel extends PanelPartie {
     public void actionBoutonSuivant(ActionEvent e) {
         jg.getJeu_tuto().setClic_etape(num_etape,0);
         this.num_etape += 1;
-        if (this.num_etape < Constante.TEXTE_ETAPES.length) {
-            precedent.setEnabled(true);
+        if (this.num_etape < TEXTE_ETAPES.length) {
             changerEtape();
         } else {
+            this.num_etape = TEXTE_ETAPES.length - 1;
+        }
+
+        // Activation/Désactivation des boutons
+        if(this.num_etape < (TEXTE_ETAPES.length -1)) {
+            precedent.setEnabled(true);
+        } else {
             suivant.setEnabled(false);
-            this.num_etape = Constante.TEXTE_ETAPES.length - 1;
         }
     }
 
     public void actionBoutonPrecedent(ActionEvent e) {
         jg.getJeu_tuto().setClic_etape(num_etape,0);
         this.num_etape -= 1;
+
         if (this.num_etape >= 0) {
             suivant.setEnabled(true);
             changerEtape();
         } else{
             this.num_etape = 0;
+            precedent.setEnabled(false);
+        }
+
+        // Activation/Désactivation des boutons
+        if(this.num_etape > 0) {
+            suivant.setEnabled(true);
+        } else {
             precedent.setEnabled(false);
         }
     }
