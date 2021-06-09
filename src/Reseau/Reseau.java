@@ -1,7 +1,7 @@
 package Reseau;
 
 import Modele.Jeu;
-import Vue.LobbyPanel;
+import Vue.PanelLobby;
 
 import java.awt.*;
 import java.io.ObjectOutputStream;
@@ -12,8 +12,8 @@ import java.io.ObjectOutputStream;
  * Le numéro et nom du joueur ainsi que le nom récupéré de l'adversaire.
  * Posède un flux d'envoie pour l'envoie de messages.
  * Modifie dynamiquement l'interface de LobbyPanel pour l'affichage du nom des joueurs.
- * @see LobbyPanel#setAdversaireNom(String) 
- * @see LobbyPanel#setClient_ready(boolean)
+ * @see PanelLobby#setAdversaireNom(String)
+ * @see PanelLobby#setClient_ready(boolean)
  * @see Jeu
  */
 public abstract class Reseau {
@@ -21,7 +21,7 @@ public abstract class Reseau {
     protected int numJoueur;
     protected String nomJoueur;
     protected String nomAdversaire;
-    protected LobbyPanel lobby;
+    protected PanelLobby lobby;
     protected ObjectOutputStream streamEnvoie;
     protected Thread thread;
     protected boolean statut_modification = false;
@@ -99,7 +99,7 @@ public abstract class Reseau {
         return statut_modification;
     }
 
-    public void setLobby(LobbyPanel lobby) {
+    public void setLobby(PanelLobby lobby) {
         this.lobby = lobby;
     }
 

@@ -14,6 +14,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
+/**
+ * JPanel personnalisé qui affiche le menu principal du jeu.
+ */
 class PanelMenu extends JPanel {
     private Bouton bFullScreen;
     private Bouton bSon;
@@ -169,10 +172,10 @@ class PanelMenu extends JPanel {
                 Scanner lecteur = new Scanner(fichier);
                 f.setPanel(new PanelPlateau(getSize(), lecteur));
             } catch (FileNotFoundException ex) {
-                System.out.println("Le fichier " + chooser.getSelectedFile().getName() + " n'existe pas");
+                System.err.println("Le fichier " + chooser.getSelectedFile().getName() + " n'existe pas");
                 ex.printStackTrace();
             } catch (Exception ex) {
-                System.out.println("Le fichier n'a pas le bon format");
+                System.err.println("Le fichier n'a pas le bon format");
                 ex.printStackTrace();
             }
         }

@@ -176,47 +176,6 @@ public class Jeu {
      * Vérifie que le nombre de batisseur posé correspond à certaines valeurs pour changer le joueur et la situation du jeu.
      */
     public void verificationNbBatisseur() {
-        if (nombreBatisseurs == 4) {
-//            plateau.cases = new int[][]{
-//                    {8, 2, 17, 1, 0},
-//                    {17, 2, 9, 0, 0},
-//                    {0, 3, 0, 0, 0},
-//                    {0, 0, 0, 0, 0},
-//                    {0, 0, 0, 0, 0}};
-//
-//            getJ1().getBatisseurs().set(0,new Point(0,0));
-//            getJ1().getBatisseurs().set(1,new Point(1,2));
-//
-//            getJ2().getBatisseurs().set(0,new Point(0,2));
-//            getJ2().getBatisseurs().set(1,new Point(1,0));
-
-//            plateau.cases = new int[][]{
-//                    {8, 1, 16, 0, 0},
-//                    {0, 0, 2, 1, 1},
-//                    {0, 0, 3, 18, 9},
-//                    {0, 0, 0, 4, 3},
-//                    {0, 0, 0, 0, 0}};
-//
-//            getJ1().getBatisseurs().set(0,new Point(0,0));
-//            getJ1().getBatisseurs().set(1,new Point(2,4));
-//
-//            getJ2().getBatisseurs().set(0,new Point(0,2));
-//            getJ2().getBatisseurs().set(1,new Point(2,3));
-
-//            plateau.cases = new int[][]{
-//                                        {1, 0, 0, 0, 0},
-//                                        {0, 0, 16, 2, 0},
-//                                        {0, 0, 9, 2, 0},
-//                                        {0, 1, 10, 18, 0},
-//                                        {0, 0, 0, 0, 0}};
-//
-//            getJ1().getBatisseurs().set(0,new Point(1,2));
-//            getJ1().getBatisseurs().set(1,new Point(3,2));
-//
-//            getJ2().getBatisseurs().set(0,new Point(1,2));
-//            getJ2().getBatisseurs().set(1,new Point(3,3));
-//            finTour();
-        }
         if (nombreBatisseurs % NOMBRE_BATISSEUR_JOUEUR == 0) {
             finTour();
         }

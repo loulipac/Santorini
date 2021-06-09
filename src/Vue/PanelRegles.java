@@ -8,6 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * JPanel personnalisé qui affiche les règles du jeu.
+ */
 public class PanelRegles extends JPanel {
     private static final String TITRE_SECTION1 = "Comment jouer ?";
     private static final String TITRE_SECTION2 = "Déplacement";

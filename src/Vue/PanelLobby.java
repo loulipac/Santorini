@@ -15,7 +15,7 @@ import static Utile.Constante.*;
 /**
  * Classe affichant un JPanel personnalisé pour le lobby du jeu en réseau.
  */
-public class LobbyPanel extends JPanel {
+public class PanelLobby extends JPanel {
     private final Reseau netUser;
     private JPanel fondPanel;
 
@@ -36,7 +36,7 @@ public class LobbyPanel extends JPanel {
     private boolean pret_bool = false;
 
 
-    public LobbyPanel(Reseau netUser) {
+    public PanelLobby(Reseau netUser) {
         this.netUser = netUser;
         netUser.setLobby(this);
         lilly_belle_texte = new Font(LILY_SCRIPT, Font.PLAIN, 30);

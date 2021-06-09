@@ -8,11 +8,14 @@ import java.util.Random;
 
 import static Utile.Constante.*;
 
+/**
+ * Classe IA Facile qui fait des coups aléatoires.
+ */
 public class IAFacile implements IA {
-    Jeu j;
-    Random random;
-    private ArrayList<Point> batisseurs;
-    int index_batisseur;
+    private final Jeu j;
+    private final Random random;
+    private final ArrayList<Point> batisseurs;
+    private int index_batisseur;
 
     public IAFacile(Jeu j) {
         this.j = j;

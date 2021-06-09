@@ -36,7 +36,8 @@ public class LecteurSon {
                 clip.loop(Clip.LOOP_CONTINUOUSLY);
             }
         } catch (Exception ex) {
-            System.err.println(ex);
+            System.err.println("Erreur à la lecture du son : " + fichier.getName());
+            ex.printStackTrace();
         }
     }
 }

@@ -144,10 +144,10 @@ public class Historique {
             charger(lecteur);
 
         } catch (FileNotFoundException ex) {
-            System.out.println("Le fichier " + filename + " n'existe pas");
+            System.err.println("Le fichier " + filename + " n'existe pas");
             ex.printStackTrace();
         } catch (Exception ex) {
-            System.out.println("Le fichier n'a pas le bon format");
+            System.err.println("Le fichier n'a pas le bon format");
             ex.printStackTrace();
         }
     }

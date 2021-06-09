@@ -93,16 +93,6 @@ public class Constante {
      */
     public static final int COUPOLE = 4;
 
-
-    // TODO: Utiliser ou supprimer
-    public static final int[][] POIDS_CASES = {
-            {100, 50, 25, 12, 0},
-            {0, 100, 50, 25, 12},
-            {0, 0, 100, 50, 25},
-            {0, 0, 0, 0, 100},
-            {0, 0, 0, 100, 50},
-    };
-
     /**
      * Nombre de lignes du plateau.
      */

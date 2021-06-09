@@ -13,6 +13,9 @@ import java.io.IOException;
 import static Utile.Constante.*;
 import static Utile.Constante.CHEMIN_RESSOURCE;
 
+/**
+ * JPanel personnalisé permettant de choisir quel joueur commence et quelle est la couleur (bleu ou rouge) des joueurs.
+ */
 public class PanelChoix extends JPanel {
     private static final String TITRE_PANEL = "Options de partie";
     private static final String TITRE_SECTION2 = "Qui commence ?";
@@ -38,6 +41,7 @@ public class PanelChoix extends JPanel {
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/LilyScriptOne.ttf")));
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
+            e.printStackTrace();
         }
         lilly_belle = new Font(LILY_SCRIPT, Font.PLAIN, 20);
         initialiserPanel();

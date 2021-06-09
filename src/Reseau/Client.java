@@ -56,7 +56,7 @@ public class Client extends Reseau {
                 case Message.START -> demarrerPartie();
                 case Message.MOVE -> jouerCoupLocal((Point) _message.getContenu());
                 case Message.UNAME -> setAdversaireNom((String) _message.getContenu());
-                default -> System.out.println("Unknown code operation.");
+                default -> System.err.println("Unknown code operation.");
             }
         }
     }
@@ -65,7 +65,6 @@ public class Client extends Reseau {
     public void deconnexion() {
         synchronized (this) {
             if (clientSocket != null) {
-                System.out.println("Asking for deconnection.");
                 Message deconnexion = new Message(Message.DECO);
                 try {
                     streamEnvoie.writeObject(deconnexion);
@@ -77,7 +76,6 @@ public class Client extends Reseau {
             thread.interrupt();
             try {
                 clientSocket.close();
-                System.out.println("Successfully disconnected.");
             } catch (IOException e) {
                 e.printStackTrace();
             }

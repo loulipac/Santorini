@@ -7,6 +7,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import static Utile.Constante.*;
 
+/**
+ * Classe Listener de souris pour effectuer les actions sur la grille de jeu du tutoriel.
+ */
 public class EcouteurDeSourisTuto extends MouseAdapter {
     private final PanelTutoriel pt;
 

@@ -7,8 +7,12 @@ import java.util.ArrayList;
 
 import static Utile.Constante.*;
 
+/**
+ * Classe IA Normale qui étend l'IA facile en faisant des coups aléatoires mais qui essaye de faire les coups gagnant
+ * et d'empêcher l'adversaire de gaganer.
+ */
 public class IANormale extends IAFacile {
-    Jeu j;
+    private final Jeu j;
 
     public IANormale(Jeu j) {
         super(j);
@@ -18,12 +22,9 @@ public class IANormale extends IAFacile {
 
     @Override
     public Point joue() {
-
-
         ArrayList<Point> sequenceGagnante = deplacementGagnant();
 
         if (sequenceGagnante != null) {
-            //System.out.println("déplacement gagnant !");
             return switch (j.getSituation()) {
                 case PLACEMENT -> super.jouePlacement();
                 case SELECTION -> sequenceGagnante.get(0);
@@ -36,7 +37,6 @@ public class IANormale extends IAFacile {
         ArrayList<Point> sequenceContre = contre();
 
         if (sequenceContre != null) {
-            //System.out.println("contre !");
             return switch (j.getSituation()) {
                 case PLACEMENT -> super.jouePlacement();
                 case SELECTION -> sequenceContre.get(0);
@@ -45,7 +45,6 @@ public class IANormale extends IAFacile {
                 default -> null;
             };
         } else {
-            //System.out.println("random");
             return super.joue();
         }
     }
@@ -55,7 +54,6 @@ public class IANormale extends IAFacile {
      *
      * @return {le batisseur, le Point sur lequel se déplacer pour gagner}, null sinon.
      */
-
     public ArrayList<Point> deplacementGagnant() {
 
         ArrayList<Point> mesBatisseurs;
@@ -75,7 +73,7 @@ public class IANormale extends IAFacile {
                 }
             }
         }
-        return null;
+        return new ArrayList<>();
     }
 
     /**
@@ -91,7 +89,6 @@ public class IANormale extends IAFacile {
      * @return une séquence de trois coups, {Batisseur B,Case accessible A,Case constructible C}
      * qui contre un deplacement gagnant de l'adversaire au prochain tour. null sinon.
      */
-
     public ArrayList<Point> contre() {
 
         int adversaire = Jeu.getAutreJoueur(j.getJoueurEnCours().getNum_joueur());
@@ -132,7 +129,7 @@ public class IANormale extends IAFacile {
 
             }
         }
-        return null;
+        return new ArrayList<>();
 
     }
 }

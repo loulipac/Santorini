@@ -1,7 +1,5 @@
 package Vue;
 
-import Utile.Utile;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;

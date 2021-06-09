@@ -82,8 +82,8 @@ public class Utile {
                     o
             );
         } catch (Exception e) {
+            System.err.println(ERREUR_IMAGE_FOND + e.getMessage());
             e.printStackTrace();
-            System.out.println(ERREUR_IMAGE_FOND + e.getMessage());
         }
     }
 
@@ -110,8 +110,8 @@ public class Utile {
                     o
             );
         } catch (Exception e) {
-            e.printStackTrace();
             System.err.println(ERREUR_IMAGE_FOND + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -139,8 +139,8 @@ public class Utile {
                     o
             );
         } catch (Exception e) {
-            e.printStackTrace();
             System.err.println(ERREUR_IMAGE_FOND + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -195,8 +195,8 @@ public class Utile {
             );
 
         } catch (Exception e) {
+            System.err.println(ERREUR_IMAGE_FOND + e.getMessage());
             e.printStackTrace();
-            System.out.println(ERREUR_IMAGE_FOND + e.getMessage());
         }
     }
 
@@ -227,6 +227,7 @@ public class Utile {
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/Lora-Regular.ttf")));
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : Un fichier de police est introuvable ou non valide.");
+            e.printStackTrace();
         }
     }
 

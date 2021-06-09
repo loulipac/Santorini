@@ -5,7 +5,6 @@ import static Utile.Constante.*;
 import Modele.Jeu;
 import Modele.JoueurIA;
 import Vue.JeuGraphique;
-import Vue.Panels;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;

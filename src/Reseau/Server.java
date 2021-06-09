@@ -43,7 +43,7 @@ public class Server extends Reseau {
                 case Message.MOVE -> jouerCoupLocal((Point) _message.getContenu());
                 case Message.UNAME -> setAdversaireNom((String) _message.getContenu());
                 case Message.RDY -> setClientReadyStatus((Boolean) _message.getContenu());
-                default -> System.out.println("Unknown code operation.");
+                default -> System.err.println("Unknown code operation.");
             }
         }
     }
@@ -53,7 +53,6 @@ public class Server extends Reseau {
         thread.interrupt();
         try {
             serverSocket.close();
-            System.out.println("Client disconnected.");
         } catch (IOException e) {
             e.printStackTrace();
         }

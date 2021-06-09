@@ -128,15 +128,15 @@ public class PanelMultijoueur extends JPanel {
 
         if (nom_rejoindre.getText().equals("") && ip.getText().equals("")) {
             Client client = new Client("127.0.0.1", "anonyme_client");
-            LobbyPanel lp = new LobbyPanel(client);
+            PanelLobby lp = new PanelLobby(client);
             f.setPanel(lp);
         } else if (nom_rejoindre.getText().equals("")) {
             Client client = new Client(ip.getText(), "anonyme_client");
-            LobbyPanel lp = new LobbyPanel(client);
+            PanelLobby lp = new PanelLobby(client);
             f.setPanel(lp);
         } else {
             Client client = new Client(ip.getText(), nom_rejoindre.getText());
-            LobbyPanel lp = new LobbyPanel(client);
+            PanelLobby lp = new PanelLobby(client);
             f.setPanel(lp);
         }
     }
@@ -149,11 +149,11 @@ public class PanelMultijoueur extends JPanel {
 
         if (!nom_heberger.getText().equals("")) {
             Server serveur = new Server(nom_heberger.getText());
-            LobbyPanel lp = new LobbyPanel(serveur);
+            PanelLobby lp = new PanelLobby(serveur);
             f.setPanel(lp);
         } else {
             Server serveur = new Server("anonyme_hote");
-            LobbyPanel lp = new LobbyPanel(serveur);
+            PanelLobby lp = new PanelLobby(serveur);
             f.setPanel(lp);
         }
     }

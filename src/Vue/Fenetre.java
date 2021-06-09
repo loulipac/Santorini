@@ -17,7 +17,6 @@ public class Fenetre extends JFrame {
 
     private final CardLayout pileCarte;
     private final JPanel panelPrincipal;
-    private final LecteurSon musique;
     private JPanel shown;
 
     /**
@@ -32,7 +31,7 @@ public class Fenetre extends JFrame {
         pileCarte = new CardLayout();
         panelPrincipal = new JPanel(pileCarte);
 
-        musique = new LecteurSon("musiqueBGtest.wav");
+        LecteurSon musique = new LecteurSon("musiqueBGtest.wav");
         PanelMenu menu = new PanelMenu(getSize());
         PanelOptions options = new PanelOptions(getSize());
         PanelRegles regles = new PanelRegles(getSize());
@@ -58,7 +57,7 @@ public class Fenetre extends JFrame {
 
         setVisible(true);
 
-        // musique.joueSon(true);
+        musique.joueSon(true);
     }
 
     /**

@@ -99,8 +99,8 @@ public class PanelGauche extends JPanel {
                         this
                 );
             } catch (Exception e) {
+                System.err.println(ERREUR_IMAGE_FOND + e.getMessage());
                 e.printStackTrace();
-                System.out.println(ERREUR_IMAGE_FOND + e.getMessage());
             }
         }
 

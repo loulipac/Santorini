@@ -54,6 +54,7 @@ public class PanelTutoriel extends PanelPartie {
             ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(CHEMIN_RESSOURCE + "/font/Lora-Regular.ttf")));
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : Un fichier de police est introuvable ou non valide.");
+            e.printStackTrace();
         }
         initialiserPanel();
 

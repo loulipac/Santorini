@@ -10,6 +10,9 @@ import java.awt.geom.RoundRectangle2D;
 
 import static Utile.Constante.*;
 
+/**
+ * Classe dessinant le plateau pour le tuto.
+ */
 public class JeuGraphiqueTuto extends JeuGraphique {
     JeuTuto jeu_tuto;
     int num_etape;
@@ -62,7 +65,7 @@ public class JeuGraphiqueTuto extends JeuGraphique {
             case 13, 23 -> ActionsInitialisation(drawable, DEPLACEMENT, new Point(1,2),new Point(2,2));
             case 15 -> ActionsInitialisation(drawable, CONSTRUCTION, new Point(2,2),new Point(3,3));
             case 19 -> ActionsInitialisation(drawable, CONSTRUCTION, new Point(4,2),new Point(3,3));
-            default -> {}
+            default -> { /* NE RIEN FAIRE */}
         }
         repaint();
     }
@@ -329,9 +332,6 @@ public class JeuGraphiqueTuto extends JeuGraphique {
         repaint();
     }
 
-    /**
-     * Getter de jeu_tuto
-     */
     public JeuTuto getJeu_tuto() {
         return jeu_tuto;
     }

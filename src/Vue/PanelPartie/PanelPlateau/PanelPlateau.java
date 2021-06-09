@@ -7,7 +7,7 @@ import Utile.Utile;
 import Vue.Bouton;
 import Vue.Fenetre;
 import Vue.JeuGraphique;
-import Vue.LobbyPanel;
+import Vue.PanelLobby;
 import Vue.PanelPartie.PanelPartie;
 
 import javax.swing.*;
@@ -122,7 +122,7 @@ public class PanelPlateau extends PanelPartie {
     public void actionBoutonNouvelle(ActionEvent e) {
         Fenetre f = (Fenetre) SwingUtilities.getWindowAncestor(this);
         if (netUser != null) {
-            f.setPanel(new LobbyPanel(netUser));
+            f.setPanel(new PanelLobby(netUser));
         } else {
             f.setPanel(new PanelPlateau(taille_fenetre, config));
         }

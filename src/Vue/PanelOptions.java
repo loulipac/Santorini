@@ -9,6 +9,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
+/**
+ * JPanel personnalisé qui permet de choisir le mode de jeu (ia vs ia par exemple).
+ */
 public class PanelOptions extends JPanel {
     private static final String TITRE_SECTION1 = "Mode de jeu";
     private static final String TITRE_SECTION2 = "Difficulté de l'IA";
