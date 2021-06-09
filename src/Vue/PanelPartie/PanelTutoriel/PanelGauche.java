@@ -8,23 +8,22 @@ import java.io.File;
 
 import static Utile.Constante.*;
 
+/**
+ * JPanel personnalisé qui affiche le parchemin de texte et son contenu pour le tutoriel.
+ */
 public class PanelGauche extends JPanel {
-    Dimension size;
-    PanelInfo panel_info;
+    private final PanelInfo panel_info;
 
     public PanelInfo getPanel_info() {
         return panel_info;
     }
 
     public static class PanelInfo extends JPanel {
-        Dimension taille_personnage;
-        Dimension taille_parchemin;
-        Dimension pos_parchemin;
-        Dimension pos_personnage;
-        Dimension panel_texte_taille;
-        Dimension size_bouton;
-        Dimension texte_bulle_taille;
-        JTextArea texte_bulle;
+        private final Dimension taille_personnage;
+        private final Dimension taille_parchemin;
+        private final Dimension pos_parchemin;
+        private final Dimension pos_personnage;
+        private final JTextArea texte_bulle;
 
         public PanelInfo(Dimension size, PanelTutoriel panel_tutoriel) {
 
@@ -43,9 +42,9 @@ public class PanelGauche extends JPanel {
 
             pos_parchemin = new Dimension(0, (int)(size.height*0.2f));
             pos_personnage = new Dimension(0, pos_parchemin.height + taille_parchemin.height - taille_personnage.height * 3 / 4);
-            panel_texte_taille = new Dimension(size.width * 2 / 3, taille_parchemin.height);
-            size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
-            texte_bulle_taille = new Dimension(panel_texte_taille.width, panel_texte_taille.height - 2 * size_bouton.height);
+            Dimension panel_texte_taille = new Dimension(size.width * 2 / 3, taille_parchemin.height);
+            Dimension size_bouton = new Dimension((int) (bouton_height * RATIO_BOUTON_PETIT), bouton_height);
+            Dimension texte_bulle_taille = new Dimension(panel_texte_taille.width, panel_texte_taille.height - 2 * size_bouton.height);
 
             setOpaque(false);
             setMaximumSize(size);
@@ -56,13 +55,13 @@ public class PanelGauche extends JPanel {
             texte_bulle.setEditable(false);
             texte_bulle.setFont(panel_tutoriel.getLilyScriptOne());
             texte_bulle.setForeground(new Color(82, 60, 43));
-            panel_tutoriel.definirTaille(texte_bulle, texte_bulle_taille);
+            PanelTutoriel.definirTaille(texte_bulle, texte_bulle_taille);
             texte_bulle.setLineWrap(true);
             texte_bulle.setWrapStyleWord(true);
 
             JPanel panel_texte = new JPanel();
             panel_texte.setOpaque(false);
-            panel_tutoriel.definirTaille(panel_texte, panel_texte_taille);
+            PanelTutoriel.definirTaille(panel_texte, panel_texte_taille);
             panel_texte.setAlignmentY(CENTER_ALIGNMENT);
             panel_texte.add(texte_bulle);
 
@@ -101,7 +100,7 @@ public class PanelGauche extends JPanel {
                 );
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("Erreur image de fond: " + e.getMessage());
+                System.out.println(ERREUR_IMAGE_FOND + e.getMessage());
             }
         }
 
@@ -111,7 +110,6 @@ public class PanelGauche extends JPanel {
     }
 
     public PanelGauche(Dimension size, PanelTutoriel panel_tutoriel) {
-        this.size = size;
         setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         panel_info = new PanelInfo(size, panel_tutoriel);

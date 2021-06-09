@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
  */
 public class ActionEchap extends AbstractAction {
 
-    PanelPlateau panel_plateau;
+    private final PanelPlateau panel_plateau;
     public ActionEchap(PanelPlateau panel_plateau) {
         super();
         this.panel_plateau = panel_plateau;

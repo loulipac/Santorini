@@ -123,7 +123,7 @@ public class PanelTutoriel extends PanelPartie {
     }
 
     public void changerEtape() {
-        panel_jeu.panel_gauche.getPanel_info().changerTexte(num_etape);
+        panel_jeu.getPanel_gauche().getPanel_info().changerTexte(num_etape);
         jg.chargerEtape(num_etape);
         jt.setText("Tutoriel : Etape " + (num_etape + 1) + "/" + TEXTE_ETAPES.length);
     }
@@ -135,7 +135,6 @@ public class PanelTutoriel extends PanelPartie {
      * @see JeuGraphique
      * @see JeuTuto
      */
-
     public static void definirTaille(JComponent panel, Dimension taille_panel){
         panel.setMinimumSize(taille_panel);
         panel.setMaximumSize(taille_panel);
@@ -163,7 +162,7 @@ public class PanelTutoriel extends PanelPartie {
         num_etape++;
         changerEtape();
         jg.chargerEtape(num_etape);
-        panel_jeu.panel_gauche.getPanel_info().changerTexte(num_etape);
+        panel_jeu.getPanel_gauche().getPanel_info().changerTexte(num_etape);
 
     }
 

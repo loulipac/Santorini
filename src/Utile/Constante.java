@@ -172,6 +172,11 @@ public class Constante {
     public static final String SON_CONSTRUCTION = "son_construction.wav";
 
     /**
+     *
+     */
+    public static final String AU_TOUR_DE = "C'est au tour de ";
+
+    /**
      * Tableau du scénario des différentes étapes du tutoriel.
      */
     public static final String[] TEXTE_ETAPES = {

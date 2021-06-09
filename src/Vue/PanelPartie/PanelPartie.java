@@ -7,8 +7,10 @@ import Vue.Panels;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Classe abstraite pour les panels Tutoriels et Plateau.
+ */
 public abstract class PanelPartie extends Panels implements Observateur {
-
     protected JLabel jt;
     protected Dimension taille_fenetre;
     protected Font lilyScriptOne;
@@ -18,7 +20,7 @@ public abstract class PanelPartie extends Panels implements Observateur {
         return jt;
     }
 
-    public PanelPartie(Dimension _taille_fenetre, Font _lilyScriptOne){
+    protected PanelPartie(Dimension _taille_fenetre, Font _lilyScriptOne){
         taille_fenetre = _taille_fenetre;
         lilyScriptOne = _lilyScriptOne;
     }

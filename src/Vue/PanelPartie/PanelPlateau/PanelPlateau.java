@@ -53,11 +53,10 @@ public class PanelPlateau extends PanelPartie {
         int index_start = Integer.parseInt(param[2]);
         boolean j1_blue = Boolean.parseBoolean(param[3]);
 
-        ConfigurationPartie config = new ConfigurationPartie(ia1_mode, ia2_mode);
-        config.setIndexJoueurCommence(index_start);
-        config.setJoueur1Bleu(j1_blue);
+        this.config = new ConfigurationPartie(ia1_mode, ia2_mode);
+        this.config.setIndexJoueurCommence(index_start);
+        this.config.setJoueur1Bleu(j1_blue);
 
-        this.config = config;
         initialiserPanel();
 
         jeu.charger(lecteur);
@@ -73,8 +72,8 @@ public class PanelPlateau extends PanelPartie {
         this(_taille_fenetre, new ConfigurationPartie(0, 0));
         this.netUser = netUser;
         jeu.setNetUser(netUser);
-        if (netUser.getNumJoueur() == JOUEUR1) jt.setText("C'est au tour de " + netUser.getNomJoueur());
-        else jt.setText("C'est au tour de " + netUser.getNomAdversaire());
+        if (netUser.getNumJoueur() == JOUEUR1) jt.setText(AU_TOUR_DE + netUser.getNomJoueur());
+        else jt.setText(AU_TOUR_DE + netUser.getNomAdversaire());
     }
 
     /**
@@ -129,10 +128,12 @@ public class PanelPlateau extends PanelPartie {
         }
     }
 
+    @Override
     public JLabel getJt() {
         return jt;
     }
 
+    @Override
     public void setJt(JLabel jt) {
         this.jt = jt;
     }

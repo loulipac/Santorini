@@ -39,7 +39,7 @@ public class PanelChoix extends JPanel {
         } catch (IOException | FontFormatException e) {
             System.err.println("Erreur : La police 'LilyScriptOne' est introuvable ");
         }
-        lilly_belle = new Font("Lily Script One", Font.PLAIN, 20);
+        lilly_belle = new Font(LILY_SCRIPT, Font.PLAIN, 20);
         initialiserPanel();
     }
 
@@ -118,7 +118,7 @@ public class PanelChoix extends JPanel {
         private JPanel creerTitre(String _t, int _fs, Dimension _s) {
             JPanel _jpan = new JPanel();
             JLabel _lab = new JLabel(_t);
-            _lab.setFont(new Font("Lily Script One", Font.PLAIN, _fs));
+            _lab.setFont(new Font(LILY_SCRIPT, Font.PLAIN, _fs));
             _lab.setForeground(new Color(103, 69, 42));
             _jpan.setLayout(new GridBagLayout());
             _jpan.setOpaque(false);

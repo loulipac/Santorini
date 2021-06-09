@@ -11,6 +11,7 @@ import static Utile.Constante.TEXTE_ETAPES;
  * Crée un JPanel modifié qui ajoute le logo et le texte designant quel joueur joue.
  */
 public class TopPanel extends JPanel {
+
     /**
      * Constructeur de TopPanel. Ajoute les élements et définis les valeurs des propriétés de chacuns.
      */
@@ -33,6 +34,7 @@ public class TopPanel extends JPanel {
         jt.setForeground(Color.WHITE);
         add(jt);
     }
+
     public TopPanel(float taille_h, PanelPlateau panel_plateau) {
         setOpaque(false);
 

@@ -8,18 +8,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 
-import static Utile.Constante.CHEMIN_RESSOURCE;
-import static Utile.Constante.RATIO_BOUTON_PETIT;
+import static Utile.Constante.*;
 
+/**
+ * JPanel personnalisé qui gère les boutons de droites du plateau (IA, Historique)
+ */
 public class SidePanelRight extends JPanel {
     private Bouton acceleration;
     private ArrayList<Integer> niveauAcceleration;
-    int index_acceleration;
-    static final int TITRE_TAILLE = 30;
+    private int index_acceleration;
+    private static final int TITRE_TAILLE = 30;
     private final Dimension size;
     private final Bouton histo_annuler;
     private final Bouton histo_refaire;
-    PanelPlateau panel_plateau;
+    private final PanelPlateau panel_plateau;
 
     public SidePanelRight(Dimension size, PanelPlateau panel_plateau) {
 
@@ -96,7 +98,7 @@ public class SidePanelRight extends JPanel {
             niveauAcceleration.add(8);
             niveauAcceleration.add(16);
             niveauAcceleration.add(32);
-            Font lilli_belle_tmp = new Font("Lily Script One", Font.PLAIN, 20);
+            Font lilli_belle_tmp = new Font(LILY_SCRIPT, Font.PLAIN, 20);
             acceleration.setFont(lilli_belle_tmp);
 
             vit_ia_bouton.add(minus);
@@ -127,7 +129,7 @@ public class SidePanelRight extends JPanel {
     private JPanel creerTitre(String _t, Dimension _s) {
         JPanel _jpan = new JPanel();
         JLabel _lab = new JLabel(_t);
-        _lab.setFont(new Font("Lily Script One", Font.PLAIN, SidePanelRight.TITRE_TAILLE));
+        _lab.setFont(new Font(LILY_SCRIPT, Font.PLAIN, SidePanelRight.TITRE_TAILLE));
         _lab.setForeground(new Color(103, 69, 42));
         _jpan.setLayout(new GridBagLayout());
         _jpan.setOpaque(false);
@@ -137,7 +139,7 @@ public class SidePanelRight extends JPanel {
         return _jpan;
     }
 
-    public void ralentirIA(ActionEvent e) {
+    private void ralentirIA(ActionEvent e) {
         index_acceleration--;
         if (index_acceleration < 0) {
             index_acceleration = 0;
@@ -146,7 +148,7 @@ public class SidePanelRight extends JPanel {
         changeBoutonVitesse();
     }
 
-    public void accelerationIA(ActionEvent e) {
+    private void accelerationIA(ActionEvent e) {
         index_acceleration++;
         if (index_acceleration >= niveauAcceleration.size()) {
             index_acceleration = niveauAcceleration.size() - 1;
@@ -162,12 +164,12 @@ public class SidePanelRight extends JPanel {
         );
     }
 
-    public void actionUndo(ActionEvent e) {
+    private void actionUndo(ActionEvent e) {
         panel_plateau.getJeu().annuler();
         panel_plateau.getJg().repaint();
     }
 
-    public void actionRedo(ActionEvent e) {
+    private void actionRedo(ActionEvent e) {
         panel_plateau.getJeu().refaire();
         panel_plateau.getJg().repaint();
     }

@@ -11,16 +11,17 @@ import java.awt.*;
 import static Utile.Constante.*;
 import static Utile.Constante.PLATEAU_LIGNES;
 
+/**
+ * JPanel personnalisé qui affiche la grille de jeu.
+ */
 public class PanelJeu extends JPanel {
-    int taille_marge;
-    float taille_h;
-    PanelGauche panel_gauche;
+    private final PanelGauche panel_gauche;
 
     /**
      * Constructeur pour PanelJeu. Rajoute des components au JPanel.
      */
     public PanelJeu(float _taille_h, PanelTutoriel panel_tutoriel) {
-        this.taille_h = _taille_h - 0.05f;
+        float taille_h = _taille_h - 0.05f;
         setLayout(new BorderLayout());
         setOpaque(false);
         setPreferredSize(new Dimension(panel_tutoriel.getTailleFenetre().width, (int) (panel_tutoriel.getTailleFenetre().height * taille_h)));
@@ -41,10 +42,6 @@ public class PanelJeu extends JPanel {
         int taille_case = ((int) (panel_tutoriel.getTailleFenetre().height * (taille_h - 0.1f))) / PLATEAU_LIGNES;
 
         PanelTutoriel.definirTaille(jg, new Dimension(taille_case * PLATEAU_COLONNES, taille_case * PLATEAU_LIGNES));
-
-        // place de la grille : taille_case * PLATEAU_COLONNE, taille // place des menus : taille_fenetre.width *0.4
-        int taille = (int)(panel_tutoriel.getTailleFenetre().width * 0.6)-(taille_case * PLATEAU_COLONNES);
-        taille_marge = taille / 4;
 
         int bouton_height = (int) (dimension_panel_gauche.height * 0.1);
         Dimension size_bouton = new Dimension((int) ((bouton_height/1.5) * RATIO_BOUTON_CLASSIQUE), (int)(bouton_height/1.5));
@@ -84,6 +81,10 @@ public class PanelJeu extends JPanel {
         add(jp_jg, BorderLayout.CENTER);
         add(panel_parametres, BorderLayout.EAST);
 
+    }
+
+    public PanelGauche getPanel_gauche() {
+        return panel_gauche;
     }
 
 }

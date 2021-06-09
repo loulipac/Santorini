@@ -1,6 +1,5 @@
 package Vue.PanelPartie.PanelPlateau;
 
-import Vue.PanelPartie.BackgroundPanel;
 import Vue.Bouton;
 import Vue.PanelPartie.VictoireBackgroundPanel;
 
@@ -8,15 +7,17 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-import static Utile.Constante.CHEMIN_RESSOURCE;
-import static Utile.Constante.RATIO_BOUTON_CLASSIQUE;
+import static Utile.Constante.*;
 
+/**
+ * JPanel personnalisé qui affiche le menu de victoire.
+ */
 public class VictoirePanel extends JPanel {
 
-    JPanel titre_victoire;
-    JPanel nb_tours;
-    PanelPlateau panel_plateau;
-    Dimension taille_fenetre;
+    private JPanel titre_victoire;
+    private JPanel nb_tours;
+    private final PanelPlateau panel_plateau;
+    private final Dimension taille_fenetre;
 
     public VictoirePanel(PanelPlateau panel_plateau) {
         this.panel_plateau = panel_plateau;
@@ -81,6 +82,12 @@ public class VictoirePanel extends JPanel {
         this.setVisible(false);
     }
 
+    /**
+     * Modifie le contenu d'un JLabel dans un JPanel
+     *
+     * @param _jp   le jpanel contenant le JLabel
+     * @param texte le texte à changer
+     */
     public void changeTexte(JPanel _jp, String texte) {
         for (Component jc : _jp.getComponents()) {
             JLabel label = (JLabel) jc;
@@ -95,7 +102,7 @@ public class VictoirePanel extends JPanel {
     private JPanel creerTexte(String _t, int _fs, Dimension _s, int alignment) {
         JPanel _jpan = new JPanel();
         JLabel _lab = new JLabel(_t, alignment);
-        _lab.setFont(new Font("Lily Script One", Font.PLAIN, _fs));
+        _lab.setFont(new Font(LILY_SCRIPT, Font.PLAIN, _fs));
         _lab.setForeground(new Color(103, 69, 42));
         _lab.setPreferredSize(_s);
         _lab.setMaximumSize(_s);
@@ -116,6 +123,9 @@ public class VictoirePanel extends JPanel {
         g2d.fillRect(0, 0, taille_fenetre.width, taille_fenetre.height);
         g2d.setComposite(AlphaComposite.SrcOver);
     }
+
+    // GETTER / SETTER
+
     public JPanel getTitre_victoire() {
         return titre_victoire;
     }

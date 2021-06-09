@@ -5,6 +5,9 @@ import Utile.Utile;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Dessine le background papyrus sur un JPanel de taille "taille".
+ */
 public class BackgroundPanel extends JPanel {
 
     public BackgroundPanel(Dimension taille) {

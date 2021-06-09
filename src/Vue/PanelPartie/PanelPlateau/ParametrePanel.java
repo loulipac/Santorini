@@ -12,10 +12,13 @@ import java.awt.event.KeyEvent;
 
 import static Utile.Constante.*;
 
+/**
+ * JPanel personnalisé qui affiche les paramètes.
+ */
 public class ParametrePanel extends JPanel {
 
-    PanelPlateau panel_plateau;
-    Dimension taille_fenetre;
+    private final PanelPlateau panel_plateau;
+    private final Dimension taille_fenetre;
 
     public ParametrePanel(PanelPlateau panel_plateau) {
         this.panel_plateau = panel_plateau;
@@ -105,7 +108,7 @@ public class ParametrePanel extends JPanel {
         parent.add(Box.createRigidArea(taille));
     }
 
-    public void actionCharger(ActionEvent e) {
+    private void actionCharger(ActionEvent e) {
         JFileChooser chooser = new JFileChooser(SAVES_PATH);
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "Sauvegardes", "sav");
