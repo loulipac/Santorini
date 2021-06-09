@@ -17,7 +17,7 @@ public class IADifficile implements IA {
     private final Jeu jeu;
     private final Plateau plateau;
     private final Random random;
-    private Coups meilleur_coup;
+    private Coup meilleur_coup;
 
     public IADifficile(Jeu _jeu) {
         jeu = _jeu;
@@ -25,26 +25,6 @@ public class IADifficile implements IA {
         random = new Random();
     }
 
-    private static class Coups {
-        private final Point batisseur;
-        private final Point deplacement;
-        private final Point construction;
-
-        public Coups(Point batisseur, Point deplacement, Point construction) {
-            this.batisseur = batisseur;
-            this.deplacement = deplacement;
-            this.construction = construction;
-        }
-
-        @Override
-        public String toString() {
-            return "Coup{" +
-                    "batisseur=" + batisseur +
-                    ", deplacement=" + deplacement +
-                    ", construction=" + construction +
-                    '}';
-        }
-    }
 
 
     /**
@@ -107,7 +87,7 @@ public class IADifficile implements IA {
                     if ((est_joueur_maximise && score_actuel > meilleur_score) || (!est_joueur_maximise && score_actuel < meilleur_score)) {
                         meilleur_score = score_actuel;
                         if (profondeur_en_cours == 0) {
-                            meilleur_coup = new Coups(batisseur, deplacement, construction);
+                            meilleur_coup = new Coup(batisseur, deplacement, construction);
                         }
                     }
                 }
@@ -224,11 +204,11 @@ public class IADifficile implements IA {
                 return jouePlacement();
             case SELECTION:
                 minimax(new Plateau(plateau), jeu.getJoueurEnCours().getNum_joueur(), jeu.getJoueurEnCours().getNum_joueur(), 0, new ArrayList<>(jeu.getBatisseursJoueur(JOUEUR1)), new ArrayList<>(jeu.getBatisseursJoueur(JOUEUR2)));
-                return meilleur_coup.batisseur;
+                return meilleur_coup.getBatisseur();
             case DEPLACEMENT:
-                return meilleur_coup.deplacement;
+                return meilleur_coup.getDeplacement();
             case CONSTRUCTION:
-                return meilleur_coup.construction;
+                return meilleur_coup.getConstruction();
             default:
                 break;
         }

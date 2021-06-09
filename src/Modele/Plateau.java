@@ -286,6 +286,8 @@ public class Plateau {
             }
         }
 
+        cases_voisines.remove(batisseur);
+
         return cases_voisines;
     }
 

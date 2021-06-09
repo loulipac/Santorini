@@ -69,11 +69,11 @@ public class Jeu {
         iJoueurs = config.getIndexJoueurCommence();
 
         if (config.getIaMode2() != 0) {
-            joueurs[0] = new JoueurIA(this, JOUEUR1, setIA(config.getIaMode1()), vitesse_ia);
-            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(config.getIaMode2()), vitesse_ia);
+            joueurs[0] = new JoueurIA(this, JOUEUR1, setIA(config.getIaMode1(),JOUEUR1), vitesse_ia);
+            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(config.getIaMode2(),JOUEUR2), vitesse_ia);
         } else if (config.getIaMode1() != 0) {
             joueurs[0] = new JoueurHumain(this, JOUEUR1);
-            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(config.getIaMode1()), vitesse_ia);
+            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(config.getIaMode1(),JOUEUR2), vitesse_ia);
         } else {
             joueurs[0] = new JoueurHumain(this, JOUEUR1);
             joueurs[1] = new JoueurHumain(this, JOUEUR2);
@@ -85,10 +85,10 @@ public class Jeu {
         this(o, new ConfigurationPartie(0, 0));
     }
 
-    private IA setIA(int ia_mode) {
+    private IA setIA(int ia_mode, int joueur) {
         return switch (ia_mode) {
-            case 1 -> new IAFacile(this);
-            case 2 -> new IANormale(this);
+            case 1 -> new IAFacile(this,joueur);
+            case 2 -> new IANormale(this,joueur);
             case 3 -> new IADifficile(this);
             default -> null;
         };
@@ -352,11 +352,11 @@ public class Jeu {
         nombreBatisseurs = 0;
         iJoueurs = configurationPartie.getIndexJoueurCommence();
         if (configurationPartie.getIaMode2() != 0) {
-            joueurs[0] = new JoueurIA(this, JOUEUR1, setIA(configurationPartie.getIaMode1()), vitesse_ia);
-            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(configurationPartie.getIaMode2()), vitesse_ia);
+            joueurs[0] = new JoueurIA(this, JOUEUR1, setIA(configurationPartie.getIaMode1(),JOUEUR1), vitesse_ia);
+            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(configurationPartie.getIaMode2(),JOUEUR2), vitesse_ia);
         } else if (configurationPartie.getIaMode1() != 0) {
             joueurs[0] = new JoueurHumain(this, JOUEUR1);
-            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(configurationPartie.getIaMode1()), vitesse_ia);
+            joueurs[1] = new JoueurIA(this, JOUEUR2, setIA(configurationPartie.getIaMode1(),JOUEUR2), vitesse_ia);
         } else {
             joueurs[0] = new JoueurHumain(this, JOUEUR1);
             joueurs[1] = new JoueurHumain(this, JOUEUR2);
@@ -517,6 +517,7 @@ public class Jeu {
     public static int getAutreJoueur(int joueur) {
         return (joueur == JOUEUR2 ? JOUEUR1 : JOUEUR2);
     }
+
 
     // OVERRIDE MÉTHODES HÉRITÉES
 

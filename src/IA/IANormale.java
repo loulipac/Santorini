@@ -12,40 +12,58 @@ import static Utile.Constante.*;
  * et d'empêcher l'adversaire de gaganer.
  */
 public class IANormale extends IAFacile {
-    private final Jeu j;
+    private Coup meilleur_coup;
+    private boolean coup_random;
 
-    public IANormale(Jeu j) {
-        super(j);
-        this.j = j;
+    public IANormale(Jeu j, int joueur) {
+        super(j,joueur);
+        coup_random = false;
     }
 
 
     @Override
     public Point joue() {
-        ArrayList<Point> sequenceGagnante = deplacementGagnant();
 
-        if (sequenceGagnante != null) {
-            return switch (j.getSituation()) {
-                case PLACEMENT -> super.jouePlacement();
-                case SELECTION -> sequenceGagnante.get(0);
-                case DEPLACEMENT -> sequenceGagnante.get(1);
-                case CONSTRUCTION -> super.joueConstruction();
-                default -> null;
-            };
+        return switch (j.getSituation()) {
+            case PLACEMENT -> super.jouePlacement();
+            case SELECTION -> joueSelection();
+            case DEPLACEMENT -> joueDeplacement();
+            case CONSTRUCTION -> joueConstruction();
+            default -> null;
+        };
+    }
+
+    @Override
+    public Point joueSelection(){
+        if(deplacementGagnant() || contre()){
+            coup_random = false;
+            return meilleur_coup.getBatisseur();
         }
+        else{
+            coup_random = true;
+            return super.joueSelection();
+        }
+    }
 
-        ArrayList<Point> sequenceContre = contre();
+    @Override
+    protected Point joueConstruction() {
+        if(coup_random)
+        {
+            return super.joueConstruction();
+        }
+        else{
+            return meilleur_coup.getConstruction();
+        }
+    }
 
-        if (sequenceContre != null) {
-            return switch (j.getSituation()) {
-                case PLACEMENT -> super.jouePlacement();
-                case SELECTION -> sequenceContre.get(0);
-                case DEPLACEMENT -> sequenceContre.get(1);
-                case CONSTRUCTION -> sequenceContre.get(2);
-                default -> null;
-            };
-        } else {
-            return super.joue();
+    @Override
+    protected Point joueDeplacement() {
+        if(coup_random)
+        {
+            return super.joueConstruction();
+        }
+        else{
+            return meilleur_coup.getDeplacement();
         }
     }
 
@@ -54,26 +72,25 @@ public class IANormale extends IAFacile {
      *
      * @return {le batisseur, le Point sur lequel se déplacer pour gagner}, null sinon.
      */
-    public ArrayList<Point> deplacementGagnant() {
+    public boolean deplacementGagnant() {
 
         ArrayList<Point> mesBatisseurs;
         ArrayList<Point> casesAccessibles;
 
-        ArrayList<Point> sequenceGagnante = new ArrayList<>();
-
         mesBatisseurs = j.getBatisseurs(); //lui même ?
+        boolean deplacement_gagnant = false;
 
         for (Point batisseurActuel : mesBatisseurs) {
             casesAccessibles = j.getPlateau().getCasesAccessibles(batisseurActuel);
             for (Point caseAccActuel : casesAccessibles) {
                 if (j.getPlateau().getTypeBatiments(caseAccActuel) == 3) { // 3 = étage 3 ?
-                    sequenceGagnante.add(batisseurActuel);
-                    sequenceGagnante.add(caseAccActuel);
-                    return sequenceGagnante;
+                    meilleur_coup = new Coup(batisseurActuel,caseAccActuel,null);
+                    deplacement_gagnant = true;
+                    break;
                 }
             }
         }
-        return null;
+        return deplacement_gagnant;
     }
 
     /**
@@ -89,7 +106,7 @@ public class IANormale extends IAFacile {
      * @return une séquence de trois coups, {Batisseur B,Case accessible A,Case constructible C}
      * qui contre un deplacement gagnant de l'adversaire au prochain tour. null sinon.
      */
-    public ArrayList<Point> contre() {
+    public boolean contre() {
 
         int adversaire = Jeu.getAutreJoueur(j.getJoueurEnCours().getNum_joueur());
 
@@ -97,8 +114,7 @@ public class IANormale extends IAFacile {
         ArrayList<Point> casesAccessibles;
         ArrayList<Point> casesConstructible;
         ArrayList<Point> casesVoisine;
-
-        ArrayList<Point> contre = new ArrayList<>();
+        boolean contre_possible = false;
 
         mesBatisseurs = j.getBatisseurs();
 
@@ -110,18 +126,15 @@ public class IANormale extends IAFacile {
 
                 for (Point typeBatimentActuel : casesConstructible) {
 
-                    if (j.getPlateau().getTypeBatiments(typeBatimentActuel) == 3) {
+                    if (j.getPlateau().getTypeBatiments(typeBatimentActuel) == TOIT) {
                         casesVoisine = j.getPlateau().getCasesVoisines(typeBatimentActuel);
 
                         for (Point caseVoisineActuel : casesVoisine) {
-                            if (j.getPlateau().estBatisseur(caseVoisineActuel, adversaire) && j.getPlateau().getTypeBatiments(caseVoisineActuel) == 2) {
+                            if (j.getPlateau().estBatisseur(caseVoisineActuel, adversaire) && j.getPlateau().getTypeBatiments(caseVoisineActuel) == ETAGE) {
                                 // CONTRE !
-                                contre.add(batisseurActuel); // quel batisseur ?
-                                contre.add(caseAccActuel); // où bouger ?
-                                contre.add(typeBatimentActuel); // où construire ?
-
-                                return contre;
-
+                                meilleur_coup = new Coup(batisseurActuel,caseAccActuel,typeBatimentActuel);
+                                contre_possible = true;
+                                break;
                             }
                         }
                     }
@@ -129,7 +142,6 @@ public class IANormale extends IAFacile {
 
             }
         }
-        return null;
-
+        return contre_possible;
     }
 }

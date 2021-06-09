@@ -1,6 +1,7 @@
 package IA;
 
 import Modele.Jeu;
+import Modele.Joueur;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -12,14 +13,13 @@ import static Utile.Constante.*;
  * Classe IA Facile qui fait des coups aléatoires.
  */
 public class IAFacile implements IA {
-    private final Jeu j;
+    protected final Jeu j;
     private final Random random;
-    private final ArrayList<Point> batisseurs;
-    private int index_batisseur;
+    private final int joueur;
 
-    public IAFacile(Jeu j) {
+    public IAFacile(Jeu j, int joueur) {
         this.j = j;
-        batisseurs = new ArrayList<>();
+        this.joueur = joueur;
         random = new Random();
         random.setSeed(System.currentTimeMillis());
     }
@@ -45,11 +45,10 @@ public class IAFacile implements IA {
      *
      * @return position de la case à construire
      */
-    private Point joueDeplacement() {
-        Point batisseur = batisseurs.get(index_batisseur);
+    protected Point joueDeplacement() {
+        Point batisseur = j.getBatisseurEnCours();
         ArrayList<Point> accessibles = j.getPlateau().getCasesAccessibles(batisseur);
         Point case_random = accessibles.get(random.nextInt(accessibles.size()));
-        batisseurs.set(index_batisseur, case_random);
         return case_random;
     }
 
@@ -59,8 +58,8 @@ public class IAFacile implements IA {
      *
      * @return position de la case à construire
      */
-    public Point joueConstruction() {
-        Point batisseur = batisseurs.get(index_batisseur);
+    protected Point joueConstruction() {
+        Point batisseur = j.getBatisseurEnCours();
         ArrayList<Point> construction_possible = j.getPlateau().getConstructionsPossible(batisseur);
         return construction_possible.get(random.nextInt(construction_possible.size()));
     }
@@ -71,12 +70,13 @@ public class IAFacile implements IA {
      *
      * @return position du batisseur à sélectionner
      */
-    private Point joueSelection() {
-        index_batisseur = random.nextInt(2);
-        if (j.getPlateau().getCasesAccessibles(batisseurs.get(index_batisseur)).isEmpty()) {
+    protected Point joueSelection() {
+        int index_batisseur = random.nextInt(2);
+        if (j.getPlateau().getCasesAccessibles(j.getBatisseursJoueur(joueur).get(index_batisseur)).isEmpty()) {
             index_batisseur = (index_batisseur + 1) % 2;
         }
-        return batisseurs.get(index_batisseur);
+        Point bat =  j.getBatisseursJoueur(joueur).get(index_batisseur);
+        return bat;
     }
 
     /**
@@ -92,7 +92,6 @@ public class IAFacile implements IA {
                     random.nextInt(PLATEAU_LIGNES)
             );
         } while (!j.getPlateau().estLibre(case_alea));
-        batisseurs.add(case_alea);
         return case_alea;
     }
 }
