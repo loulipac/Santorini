@@ -128,7 +128,7 @@ public class Utile {
 
         try {
             if (parcheminVictoire == null)
-                parcheminVictoire = ImageIO.read(new File(CHEMIN_RESSOURCE + "/artwork/parchemin.png"));
+                parcheminVictoire = ImageIO.read(new File(CHEMIN_RESSOURCE + "/assets_recurrents/parchemin.png"));
 
             g2d.drawImage(
                     parcheminVictoire,
