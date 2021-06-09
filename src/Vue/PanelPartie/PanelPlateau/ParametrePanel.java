@@ -81,7 +81,7 @@ public class ParametrePanel extends JPanel {
         bQuitter.addActionListener(panel_plateau::actionQuitter);
         bReprendre.addActionListener(echap);
         bNouvellePartie.addActionListener(panel_plateau::actionQuitter);
-        bSauvegarder.addActionListener(panel_plateau::actionQuitter);
+        bSauvegarder.addActionListener(panel_plateau::actionBoutonSauvergarder);
         bCharger.addActionListener(this::actionCharger);
 
         /* Adding */

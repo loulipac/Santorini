@@ -345,6 +345,8 @@ public class Jeu {
      */
     public void RAZ() {
         plateau.RAZ();
+        jeuFini = false;
+        gagnant = null;
         situation = PLACEMENT;
         batisseurEnCours = null;
         nombreBatisseurs = 0;
