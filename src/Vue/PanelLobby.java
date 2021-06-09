@@ -12,17 +12,28 @@ import java.awt.event.ActionEvent;
 
 import static Utile.Constante.*;
 
+/**
+ * Classe affichant un JPanel personnalisé pour le lobby du jeu en réseau.
+ */
 public class LobbyPanel extends JPanel {
     private final Reseau netUser;
     private JPanel fondPanel;
 
-    private JLabel nom_hote, nom_client, versus;
-    private Bouton demarrer, pret;
-    private final Font lilly_belle_texte, lilly_belle_titre;
+    private JLabel nom_hote;
+    private JLabel nom_client;
+    private JLabel versus;
 
-    private JLabel ip_hote, client_ready,titreLobby;
+    private Bouton demarrer;
+    private Bouton pret;
 
-    boolean pret_bool = false;
+    private final Font lilly_belle_texte;
+    private final Font lilly_belle_titre;
+
+    private JLabel ip_hote;
+    private JLabel client_ready;
+    private JLabel titreLobby;
+
+    private boolean pret_bool = false;
 
 
     public LobbyPanel(Reseau netUser) {
@@ -95,6 +106,7 @@ public class LobbyPanel extends JPanel {
 
     /**
      * Affiche le nom de l'adversaire dans le label correspondant.
+     *
      * @param nom nom de l'adversaire
      */
     public void setAdversaireNom(String nom) {
@@ -214,7 +226,7 @@ public class LobbyPanel extends JPanel {
 
 
         versus.setBounds(
-                (int) ((parent.width / 2) - (parent.width * 0.05)),
+                (int) ((parent.width / 2f) - (parent.width * 0.05)),
                 (parent.height / 2) - (int) (parent.height * 0.05),
                 (int) (parent.width * 0.1),
                 (int) (parent.height * 0.1)
@@ -226,7 +238,7 @@ public class LobbyPanel extends JPanel {
             ip_hote.setBounds(
                     0,
                     (int) (parent.height * 0.2),
-                    (int) (parent.width),
+                    (parent.width),
                     (int) (parent.height * 0.1)
             );
 
@@ -239,7 +251,7 @@ public class LobbyPanel extends JPanel {
 
 
             demarrer.setBounds(
-                    (int) ((parent.width / 2) - (parent.width * 0.2)),
+                    (int) ((parent.width / 2f) - (parent.width * 0.2)),
                     versus.getHeight() + versus.getY() + (int) (parent.height * 0.2),
                     demarrer.getWidth(),
                     demarrer.getHeight()
@@ -259,7 +271,7 @@ public class LobbyPanel extends JPanel {
             }
 
             pret.setBounds(
-                    (int) ((parent.width / 2) - (parent.width * 0.2)),
+                    (int) ((parent.width / 2f) - (parent.width * 0.2)),
                     versus.getHeight() + versus.getY() + (int) (parent.height * 0.2),
                     pret.getWidth(),
                     pret.getHeight()
