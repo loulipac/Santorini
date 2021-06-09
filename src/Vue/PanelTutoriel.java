@@ -58,7 +58,7 @@ public class PanelTutoriel extends Panels implements Observateur {
 
         setCursor(EcouteurDeMouvementDeSouris.creerCurseurGenerique("defaut_gris", new Point(0, 0)));
 
-        jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu_tuto, jg, PanelTutoriel.this));
+        jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu_tuto, jg));
         is_finish_draw = true;
     }
 

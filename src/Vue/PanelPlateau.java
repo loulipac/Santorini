@@ -198,7 +198,7 @@ public class PanelPlateau extends Panels implements Observateur {
             jeu = new Jeu(PanelPlateau.this, config);
             jg = new JeuGraphique(jeu);
             jg.addMouseListener(new EcouteurDeSouris(jg, jeu, PanelPlateau.this));
-            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg, PanelPlateau.this));
+            jg.addMouseMotionListener(new EcouteurDeMouvementDeSouris(jeu, jg));
 
             SidePanelRight side_panel = new SidePanelRight(size);
             side_panel.setMaximumSize(size);

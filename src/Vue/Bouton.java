@@ -1,8 +1,12 @@
 package Vue;
 
+import Utile.Utile;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+
+import static Utile.Constante.CHEMIN_RESSOURCE;
 
 /**
  * Classe créant un JButton personnalisé avec une image et une image survolé personnalisé ainsi qu'une taille prédéfini.
@@ -42,7 +46,10 @@ public class Bouton extends JButton {
         setIcon(iconButton);
         ImageIcon iconButtonHover = scaleImage(imageHover, hauteur, largeur);
         setRolloverIcon(iconButtonHover);
-        setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Image imgCurseur = toolkit.getImage(CHEMIN_RESSOURCE + "/curseur/hand_gris.png");
+        setCursor(toolkit.createCustomCursor(imgCurseur.getScaledInstance(32, 32, Image.SCALE_SMOOTH), new Point(16, 16), "c_hand_gris"));
     }
 
     /**
