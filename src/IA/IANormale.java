@@ -23,7 +23,6 @@ public class IANormale extends IAFacile {
 
     @Override
     public Point joue() {
-
         return switch (j.getSituation()) {
             case PLACEMENT -> super.jouePlacement();
             case SELECTION -> joueSelection();
@@ -83,8 +82,8 @@ public class IANormale extends IAFacile {
         for (Point batisseurActuel : mesBatisseurs) {
             casesAccessibles = j.getPlateau().getCasesAccessibles(batisseurActuel);
             for (Point caseAccActuel : casesAccessibles) {
-                if (j.getPlateau().getTypeBatiments(caseAccActuel) == 3) { // 3 = étage 3 ?
-                    meilleur_coup = new Coup(batisseurActuel,caseAccActuel,null);
+                if (j.getPlateau().getTypeBatiments(caseAccActuel) == TOIT) {
+                    meilleur_coup = new Coup(batisseurActuel,caseAccActuel,batisseurActuel);
                     deplacement_gagnant = true;
                     break;
                 }
