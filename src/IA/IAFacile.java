@@ -48,8 +48,7 @@ public class IAFacile implements IA {
     protected Point joueDeplacement() {
         Point batisseur = j.getBatisseurEnCours();
         ArrayList<Point> accessibles = j.getPlateau().getCasesAccessibles(batisseur);
-        Point case_random = accessibles.get(random.nextInt(accessibles.size()));
-        return case_random;
+        return accessibles.get(random.nextInt(accessibles.size()));
     }
 
     /**
@@ -75,8 +74,7 @@ public class IAFacile implements IA {
         if (j.getPlateau().getCasesAccessibles(j.getBatisseursJoueur(joueur).get(index_batisseur)).isEmpty()) {
             index_batisseur = (index_batisseur + 1) % 2;
         }
-        Point bat =  j.getBatisseursJoueur(joueur).get(index_batisseur);
-        return bat;
+        return j.getBatisseursJoueur(joueur).get(index_batisseur);
     }
 
     /**
