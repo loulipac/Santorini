@@ -20,5 +20,5 @@ Le jeu est réalisé en java à l'aide de la bibliothèque Swing.
 
 ### Liens
 
-[Site officiel](https://roxley.com/products/santorini) de Santorini.
+[Site officiel](https://roxley.com/products/santorini) de Santorini.  
 Santorini sur [Board Game Geek](https://boardgamegeek.com/boardgame/194655/santorini).
