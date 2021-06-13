@@ -1,14 +1,24 @@
 # Santorini
 
-Pour télécharger l'exécutable .jar : https://mega.nz/file/p75ADA5R#YnhubOxHnuc0TXHkGP3BQhYTPwkOy5K7Rg4u6P9gXx4
+[Télécharger l'exécutble .jar](https://mega.nz/file/p75ADA5R#YnhubOxHnuc0TXHkGP3BQhYTPwkOy5K7Rg4u6P9gXx4)
 
-A game project made by a group of 7 students.
+Ce projet a été réalisé par une équipe de 7 étudiants pendant un mois, dans le cadre de leur 3ème année de licence Informatique à l'Université Grenoble Alpes.
 
+### Équipe
 
-Copyright (c) 2021 Ianis Oliver-Pacaud
+- Rose Chapelle
+- Remy Del-Grosso
+- Matteo Doyen
+- Yanis Miollany
+- Benoit Pegaz
+- Pierrick Perelle
+- Ianis Olivier-Pacaud
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+### Technique
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+Le jeu est réalisé en java à l'aide de la bibliothèque Swing.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+### Liens
+
+[Site officiel](https://roxley.com/products/santorini) de Santorini.
+Santorini sur [Board Game Geek](https://boardgamegeek.com/boardgame/194655/santorini).
